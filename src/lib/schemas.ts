@@ -108,9 +108,18 @@ export const GapQuestionSchema = z.object({
   targetRequirementId: z.string().nullable(),
   question: z.string().min(1),
   reason: z.string().min(1),
+  whyItMatters: z.string().min(1),
+  answerGuidance: z.string().min(1),
+  exampleAngles: z.array(z.string().min(1)),
 });
 
 export const GapQuestionOutputSchema = z.object({
+  coachInsight: z.object({
+    openingMessage: z.string().min(1),
+    jobWants: z.string().min(1),
+    candidateStrengths: z.array(z.string().min(1)),
+    candidateConcerns: z.array(z.string().min(1)),
+  }),
   questions: z.array(GapQuestionSchema).max(5),
 });
 
@@ -130,19 +139,71 @@ export const CvStrategyOutputSchema = z.object({
   warnings: z.array(z.string()),
 });
 
+export const CvLinkSchema = z.object({
+  label: z.string().nullable(),
+  url: z.string().min(1),
+});
+
+export const CvHeaderSchema = z.object({
+  name: z.string().nullable(),
+  targetTitle: z.string().nullable(),
+  location: z.string().nullable(),
+  phone: z.string().nullable(),
+  email: z.string().nullable(),
+  links: z.array(CvLinkSchema),
+});
+
+export const CvSkillGroupSchema = z.object({
+  label: z.string().min(1),
+  items: z.array(z.string().min(1)),
+});
+
+export const CvExperienceItemSchema = z.object({
+  title: z.string().nullable(),
+  company: z.string().nullable(),
+  dates: z.string().nullable(),
+  location: z.string().nullable(),
+  bullets: z.array(z.string().min(1)),
+});
+
+export const CvProjectItemSchema = z.object({
+  name: z.string().nullable(),
+  descriptor: z.string().nullable(),
+  dates: z.string().nullable(),
+  bullets: z.array(z.string().min(1)),
+});
+
+export const CvEducationItemSchema = z.object({
+  institution: z.string().nullable(),
+  degree: z.string().nullable(),
+  dates: z.string().nullable(),
+  details: z.array(z.string().min(1)),
+});
+
 export const CvJsonSchema = z.object({
-  header: z.string(),
-  summary: z.string(),
-  skills: z.array(z.string()),
-  projects: z.array(z.string()),
-  experience: z.array(z.string()),
-  education: z.array(z.string()),
-  certifications: z.array(z.string()),
+  sectionOrder: z.array(z.string().min(1)),
+  header: CvHeaderSchema,
+  summary: z.string().min(1),
+  skills: z.object({
+    groups: z.array(CvSkillGroupSchema),
+  }),
+  experience: z.array(CvExperienceItemSchema),
+  projects: z.array(CvProjectItemSchema),
+  education: z.array(CvEducationItemSchema),
+  certifications: z.array(z.string().min(1)),
 });
 
 export const CvWriterOutputSchema = z.object({
   cvJson: CvJsonSchema,
   cvText: z.string().min(1),
+  assumptions: z.array(z.string()),
+  improvementSuggestions: z.array(z.string()),
+});
+
+export const CvQualityReviewOutputSchema = z.object({
+  passed: z.boolean(),
+  issues: z.array(z.string()),
+  revisionInstructions: z.string(),
 });
 
 export const CvRewriteOutputSchema = z.object({
@@ -337,19 +398,45 @@ export const AgentJsonSchemas = {
   gapQuestion: {
     type: "object",
     additionalProperties: false,
-    required: ["questions"],
+    required: ["coachInsight", "questions"],
     properties: {
+      coachInsight: {
+        type: "object",
+        additionalProperties: false,
+        required: [
+          "openingMessage",
+          "jobWants",
+          "candidateStrengths",
+          "candidateConcerns",
+        ],
+        properties: {
+          openingMessage: { type: "string" },
+          jobWants: { type: "string" },
+          candidateStrengths: { type: "array", items: { type: "string" } },
+          candidateConcerns: { type: "array", items: { type: "string" } },
+        },
+      },
       questions: {
         type: "array",
         maxItems: 5,
         items: {
           type: "object",
           additionalProperties: false,
-          required: ["targetRequirementId", "question", "reason"],
+          required: [
+            "targetRequirementId",
+            "question",
+            "reason",
+            "whyItMatters",
+            "answerGuidance",
+            "exampleAngles",
+          ],
           properties: {
             targetRequirementId: { type: ["string", "null"] },
             question: { type: "string" },
             reason: { type: "string" },
+            whyItMatters: { type: "string" },
+            answerGuidance: { type: "string" },
+            exampleAngles: { type: "array", items: { type: "string" } },
           },
         },
       },
@@ -392,12 +479,13 @@ export const AgentJsonSchemas = {
   cvWriter: {
     type: "object",
     additionalProperties: false,
-    required: ["cvJson", "cvText"],
+    required: ["cvJson", "cvText", "assumptions", "improvementSuggestions"],
     properties: {
       cvJson: {
         type: "object",
         additionalProperties: false,
         required: [
+          "sectionOrder",
           "header",
           "summary",
           "skills",
@@ -407,16 +495,117 @@ export const AgentJsonSchemas = {
           "certifications",
         ],
         properties: {
-          header: { type: "string" },
+          sectionOrder: { type: "array", items: { type: "string" } },
+          header: {
+            type: "object",
+            additionalProperties: false,
+            required: [
+              "name",
+              "targetTitle",
+              "location",
+              "phone",
+              "email",
+              "links",
+            ],
+            properties: {
+              name: { type: ["string", "null"] },
+              targetTitle: { type: ["string", "null"] },
+              location: { type: ["string", "null"] },
+              phone: { type: ["string", "null"] },
+              email: { type: ["string", "null"] },
+              links: {
+                type: "array",
+                items: {
+                  type: "object",
+                  additionalProperties: false,
+                  required: ["label", "url"],
+                  properties: {
+                    label: { type: ["string", "null"] },
+                    url: { type: "string" },
+                  },
+                },
+              },
+            },
+          },
           summary: { type: "string" },
-          skills: { type: "array", items: { type: "string" } },
-          projects: { type: "array", items: { type: "string" } },
-          experience: { type: "array", items: { type: "string" } },
-          education: { type: "array", items: { type: "string" } },
+          skills: {
+            type: "object",
+            additionalProperties: false,
+            required: ["groups"],
+            properties: {
+              groups: {
+                type: "array",
+                items: {
+                  type: "object",
+                  additionalProperties: false,
+                  required: ["label", "items"],
+                  properties: {
+                    label: { type: "string" },
+                    items: { type: "array", items: { type: "string" } },
+                  },
+                },
+              },
+            },
+          },
+          experience: {
+            type: "array",
+            items: {
+              type: "object",
+              additionalProperties: false,
+              required: ["title", "company", "dates", "location", "bullets"],
+              properties: {
+                title: { type: ["string", "null"] },
+                company: { type: ["string", "null"] },
+                dates: { type: ["string", "null"] },
+                location: { type: ["string", "null"] },
+                bullets: { type: "array", items: { type: "string" } },
+              },
+            },
+          },
+          projects: {
+            type: "array",
+            items: {
+              type: "object",
+              additionalProperties: false,
+              required: ["name", "descriptor", "dates", "bullets"],
+              properties: {
+                name: { type: ["string", "null"] },
+                descriptor: { type: ["string", "null"] },
+                dates: { type: ["string", "null"] },
+                bullets: { type: "array", items: { type: "string" } },
+              },
+            },
+          },
+          education: {
+            type: "array",
+            items: {
+              type: "object",
+              additionalProperties: false,
+              required: ["institution", "degree", "dates", "details"],
+              properties: {
+                institution: { type: ["string", "null"] },
+                degree: { type: ["string", "null"] },
+                dates: { type: ["string", "null"] },
+                details: { type: "array", items: { type: "string" } },
+              },
+            },
+          },
           certifications: { type: "array", items: { type: "string" } },
         },
       },
       cvText: { type: "string" },
+      assumptions: { type: "array", items: { type: "string" } },
+      improvementSuggestions: { type: "array", items: { type: "string" } },
+    },
+  },
+  cvQualityReview: {
+    type: "object",
+    additionalProperties: false,
+    required: ["passed", "issues", "revisionInstructions"],
+    properties: {
+      passed: { type: "boolean" },
+      issues: { type: "array", items: { type: "string" } },
+      revisionInstructions: { type: "string" },
     },
   },
   cvRewrite: {

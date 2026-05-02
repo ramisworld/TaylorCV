@@ -14,6 +14,7 @@ export async function runJobParserAgent(args: {
     userPrompt: args.rawJobText,
     schema: JobParserOutputSchema,
     jsonSchema: AgentJsonSchemas.jobParser,
+    temperature: 0,
     mockOutput: () => ({
       title: "AI Application Engineer",
       company: "Taylor Labs",

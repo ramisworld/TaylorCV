@@ -91,19 +91,47 @@ export async function buildCvWriterContext(args: {
     throw new Error("Job, candidate profile, and strategy are required");
   }
 
+  const evidenceByChunkId = new Map<
+    string,
+    {
+      requirementId: string;
+      requirementLabels: string[];
+      chunkId: string | null;
+      content: string;
+      confidence: string;
+    }
+  >();
+
+  for (const match of matches) {
+    if (!match.candidateChunk) continue;
+
+    const existing = evidenceByChunkId.get(match.candidateChunk.id);
+    if (existing) {
+      existing.requirementLabels.push(match.jobRequirement.label);
+      if (existing.confidence !== "high" && match.confidence === "high") {
+        existing.confidence = "high";
+      }
+      continue;
+    }
+
+    evidenceByChunkId.set(match.candidateChunk.id, {
+      requirementId: match.jobRequirementId,
+      requirementLabels: [match.jobRequirement.label],
+      chunkId: match.candidateChunkId,
+      content: match.candidateChunk.content,
+      confidence: match.confidence,
+    });
+  }
+
   return {
     job,
     requirements: job.requirements,
     candidateProfile,
     strategy,
-    selectedEvidence: matches
-      .filter((match) => match.candidateChunk)
-      .map((match) => ({
-        requirementId: match.jobRequirementId,
-        requirementLabel: match.jobRequirement.label,
-        chunkId: match.candidateChunkId,
-        content: match.candidateChunk!.content,
-        confidence: match.confidence,
-      })),
+    selectedEvidence: [...evidenceByChunkId.values()].map((evidence) => ({
+      ...evidence,
+      requirementLabel: evidence.requirementLabels.join(", "),
+      requirementLabels: [...new Set(evidence.requirementLabels)],
+    })),
   };
 }

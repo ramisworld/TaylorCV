@@ -15,20 +15,26 @@
     "preview": "next build && next start",
     "start": "next start",
     "test:retrieval": "NODE_ENV=test USE_MOCK_AI=true node scripts/test-retrieval.mjs",
+    "test:scoring": "NODE_ENV=test USE_MOCK_AI=true node scripts/test-scoring.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
+    "@react-pdf/renderer": "^4.5.1",
     "@t3-oss/env-nextjs": "^0.12.0",
     "@tanstack/react-query": "^5.69.0",
     "@trpc/client": "^11.0.0",
     "@trpc/react-query": "^11.0.0",
     "@trpc/server": "^11.0.0",
+    "docx": "^9.6.1",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.14.0",
     "next": "^15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
+    "tesseract.js": "^7.0.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {

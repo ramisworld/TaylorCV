@@ -7,6 +7,7 @@ type JsonSchema = Record<string, unknown>;
 type ResponsesApiBody = {
   model: string;
   input: Array<{ role: "system" | "user"; content: string }>;
+  temperature?: number;
   text: {
     format: {
       type: "json_schema";
@@ -50,6 +51,7 @@ export async function createStructuredJsonResponse(args: {
   userPrompt: string;
   schemaName: string;
   jsonSchema: JsonSchema;
+  temperature?: number;
 }) {
   if (!env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is required when USE_MOCK_AI is false");
@@ -57,6 +59,7 @@ export async function createStructuredJsonResponse(args: {
 
   const body: ResponsesApiBody = {
     model: args.model,
+    temperature: args.temperature,
     input: [
       { role: "system", content: args.systemPrompt },
       { role: "user", content: args.userPrompt },

@@ -35,8 +35,14 @@ export async function runEvidenceScoringAgent(args: {
     }),
     schema: EvidenceScoringOutputSchema,
     jsonSchema: AgentJsonSchemas.evidenceScoring,
+    temperature: 0,
     mockOutput: () => {
-      if (args.retrievedChunks.length === 0) {
+      const bestSimilarity = Math.max(
+        ...args.retrievedChunks.map((chunk) => chunk.similarityScore),
+        0
+      );
+
+      if (args.retrievedChunks.length === 0 || bestSimilarity < 0.18) {
         return {
           matches: [
             {

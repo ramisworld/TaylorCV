@@ -50,7 +50,14 @@ export async function runCvStrategyAgent(args: {
       strategySummary:
         "Lead with the strongest applied AI projects and keep unsupported requirements out of headline claims.",
       targetPositioning: `${args.context.jobSummary.title} candidate who turns business problems into practical LLM workflows backed by concrete project evidence.`,
-      sectionOrder: ["Summary", "Skills", "Projects", "Experience", "Education"],
+      sectionOrder: [
+        "Summary",
+        "Selected Projects",
+        "Experience",
+        "Skills",
+        "Education",
+        "Certifications",
+      ],
       emphasis: args.context.strongEvidence
         .slice(0, 6)
         .map(

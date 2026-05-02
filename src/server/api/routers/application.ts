@@ -8,10 +8,13 @@ import {
   generateCvStrategy,
   generateGapQuestions,
   getApplicationState,
+  resetApplication,
   rewriteCvSection,
   runEvidenceMatching,
+  setDreamRole,
   submitCandidateInfo,
   submitJob,
+  updateCvSection,
 } from "~/server/services/applicationWorkflow.service";
 
 const applicationIdSchema = z.object({
@@ -22,6 +25,29 @@ export const applicationRouter = createTRPCRouter({
   createApplication: publicProcedure.mutation(({ ctx }) =>
     createApplication({ anonymousSessionId: ctx.anonymousSessionId })
   ),
+
+  setDreamRole: publicProcedure
+    .input(
+      applicationIdSchema.extend({
+        dreamRole: z.string().min(1).max(200),
+      })
+    )
+    .mutation(({ ctx, input }) =>
+      setDreamRole({
+        anonymousSessionId: ctx.anonymousSessionId,
+        applicationId: input.applicationId,
+        dreamRole: input.dreamRole,
+      })
+    ),
+
+  resetApplication: publicProcedure
+    .input(applicationIdSchema)
+    .mutation(({ ctx, input }) =>
+      resetApplication({
+        anonymousSessionId: ctx.anonymousSessionId,
+        applicationId: input.applicationId,
+      })
+    ),
 
   submitJob: publicProcedure
     .input(
@@ -85,8 +111,8 @@ export const applicationRouter = createTRPCRouter({
         answers: z.array(
           z.object({
             gapQuestionId: z.string().min(1),
-            buttonAnswer: z.enum(["yes", "kind_of", "no", "skip"]),
-            elaboration: z.string().nullable().optional(),
+            answerText: z.string().nullable().optional(),
+            skipped: z.boolean().nullable().optional(),
           })
         ),
       })
@@ -137,6 +163,24 @@ export const applicationRouter = createTRPCRouter({
         cvDraftId: input.cvDraftId,
         sectionId: input.sectionId,
         instruction: input.instruction,
+      })
+    ),
+
+  updateCvSection: publicProcedure
+    .input(
+      applicationIdSchema.extend({
+        cvDraftId: z.string().min(1),
+        sectionId: z.string().min(1),
+        content: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) =>
+      updateCvSection({
+        anonymousSessionId: ctx.anonymousSessionId,
+        applicationId: input.applicationId,
+        cvDraftId: input.cvDraftId,
+        sectionId: input.sectionId,
+        content: input.content,
       })
     ),
 

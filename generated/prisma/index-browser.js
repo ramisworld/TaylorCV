@@ -132,6 +132,9 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   anonymousSessionId: 'anonymousSessionId',
   status: 'status',
   currentStep: 'currentStep',
+  dreamRole: 'dreamRole',
+  originalEvidenceMatchScore: 'originalEvidenceMatchScore',
+  updatedEvidenceMatchScore: 'updatedEvidenceMatchScore',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -198,14 +201,43 @@ exports.Prisma.EvidenceMatchScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.RequirementFitScoreScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  jobRequirementId: 'jobRequirementId',
+  finalConfidence: 'finalConfidence',
+  bestCandidateChunkId: 'bestCandidateChunkId',
+  reason: 'reason',
+  importanceWeight: 'importanceWeight',
+  confidenceValue: 'confidenceValue',
+  earnedPoints: 'earnedPoints',
+  possiblePoints: 'possiblePoints',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.GapQuestionScalarFieldEnum = {
   id: 'id',
   applicationId: 'applicationId',
   targetRequirementId: 'targetRequirementId',
   question: 'question',
   reason: 'reason',
+  whyItMatters: 'whyItMatters',
+  answerGuidance: 'answerGuidance',
+  exampleAnglesJson: 'exampleAnglesJson',
   status: 'status',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.GapCoachInsightScalarFieldEnum = {
+  id: 'id',
+  applicationId: 'applicationId',
+  openingMessage: 'openingMessage',
+  jobWants: 'jobWants',
+  candidateStrengthsJson: 'candidateStrengthsJson',
+  candidateConcernsJson: 'candidateConcernsJson',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.GapAnswerScalarFieldEnum = {
@@ -258,6 +290,11 @@ exports.Prisma.SortOrder = {
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -351,7 +388,9 @@ exports.Prisma.ModelName = {
   CandidateProfile: 'CandidateProfile',
   CandidateChunk: 'CandidateChunk',
   EvidenceMatch: 'EvidenceMatch',
+  RequirementFitScore: 'RequirementFitScore',
   GapQuestion: 'GapQuestion',
+  GapCoachInsight: 'GapCoachInsight',
   GapAnswer: 'GapAnswer',
   CvStrategy: 'CvStrategy',
   CvDraft: 'CvDraft',

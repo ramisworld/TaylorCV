@@ -23,6 +23,7 @@ export async function runJsonAgent<TOutput>(args: {
   userPrompt: string;
   schema: z.ZodType<TOutput>;
   jsonSchema: Record<string, unknown>;
+  temperature?: number;
   mockOutput: () => TOutput;
 }): Promise<TOutput> {
   let rawOutput: unknown;
@@ -36,6 +37,7 @@ export async function runJsonAgent<TOutput>(args: {
           userPrompt: args.userPrompt,
           schemaName: args.agentName.replace(/[^a-zA-Z0-9_-]/g, "_"),
           jsonSchema: args.jsonSchema,
+          temperature: args.temperature,
         });
 
     const output = args.schema.parse(rawOutput);

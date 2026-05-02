@@ -32,54 +32,38 @@ export function CandidateProfileView(props: {
   const remainingEvidence = props.evidence.slice(5);
 
   return (
-    <section className="space-y-3 border-b border-zinc-200 py-6">
-      <h2 className="text-lg font-semibold text-zinc-950">Your Profile</h2>
-      <div className="rounded-md border border-zinc-200 bg-white p-4">
-        <p className="text-sm text-zinc-700">{props.profile.summary}</p>
-        {strengths.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {strengths.map((strength) => (
-              <span
-                className="rounded bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-800"
-                key={strength}
-              >
-                {strength}
-              </span>
-            ))}
-          </div>
-        ) : null}
-      </div>
+    <section className="border-b border-zinc-200 py-4">
+      <details
+        className="rounded-md border border-zinc-200 bg-white p-4"
+        open={isExpanded}
+        onToggle={(event) => setIsExpanded(event.currentTarget.open)}
+      >
+        <summary className="cursor-pointer text-sm font-medium text-zinc-800">
+          View profile evidence
+        </summary>
+        <div className="mt-4 border-t border-zinc-100 pt-4">
+          <p className="text-sm text-zinc-700">{props.profile.summary}</p>
+          {strengths.length > 0 ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {strengths.map((strength) => (
+                <span
+                  className="rounded bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-800"
+                  key={strength}
+                >
+                  {strength}
+                </span>
+              ))}
+            </div>
+          ) : null}
 
-      {strongestEvidence.length > 0 ? (
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-zinc-950">
-            Strongest evidence
-          </p>
-          {strongestEvidence.slice(0, 3).map((item) => (
-            <p
-              className="rounded-md border border-zinc-200 bg-white p-3 text-sm text-zinc-700"
-              key={item.id}
-            >
-              {item.content}
-            </p>
-          ))}
-        </div>
-      ) : null}
-
-      {remainingEvidence.length > 0 || strongestEvidence.length > 3 ? (
-        <>
-          <button
-            className="text-sm font-medium text-zinc-800 underline-offset-4 hover:underline"
-            onClick={() => setIsExpanded((current) => !current)}
-            type="button"
-          >
-            {isExpanded ? "Hide background evidence" : "Show more background evidence"}
-          </button>
-          {isExpanded ? (
-            <div className="space-y-2">
-              {[...strongestEvidence.slice(3), ...remainingEvidence].map((item) => (
+          {strongestEvidence.length > 0 ? (
+            <div className="mt-4 space-y-2">
+              <p className="text-sm font-medium text-zinc-950">
+                Background evidence
+              </p>
+              {[...strongestEvidence, ...remainingEvidence].map((item) => (
                 <p
-                  className="rounded-md border border-zinc-200 bg-white p-3 text-sm text-zinc-700"
+                  className="rounded-md border border-zinc-200 bg-zinc-50 p-3 text-sm text-zinc-700"
                   key={item.id}
                 >
                   {item.content}
@@ -87,8 +71,8 @@ export function CandidateProfileView(props: {
               ))}
             </div>
           ) : null}
-        </>
-      ) : null}
+        </div>
+      </details>
     </section>
   );
 }

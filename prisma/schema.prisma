@@ -91,6 +91,9 @@ model Application {
   anonymousSessionId String            @map("anonymous_session_id")
   status             ApplicationStatus @default(started)
   currentStep        String            @default("started") @map("current_step")
+  dreamRole          String?           @map("dream_role")
+  originalEvidenceMatchScore Float?    @map("original_evidence_match_score")
+  updatedEvidenceMatchScore  Float?    @map("updated_evidence_match_score")
   createdAt          DateTime          @default(now()) @map("created_at")
   updatedAt          DateTime          @updatedAt @map("updated_at")
 
@@ -99,8 +102,10 @@ model Application {
   candidateProfile CandidateProfile?
   candidateChunks  CandidateChunk[]
   evidenceMatches  EvidenceMatch[]
+  requirementFitScores RequirementFitScore[]
   gapQuestions     GapQuestion[]
   gapAnswers       GapAnswer[]
+  gapCoachInsight  GapCoachInsight?
   cvStrategies     CvStrategy[]
   cvDrafts         CvDraft[]
   agentRuns        AgentRun[]
@@ -133,6 +138,7 @@ model JobRequirement {
   importance      Importance
   job             Job                @relation(fields: [jobId], references: [id], onDelete: Cascade)
   evidenceMatches EvidenceMatch[]
+  requirementFitScores RequirementFitScore[]
   gapQuestions    GapQuestion[]
 
   @@index([jobId])
@@ -179,6 +185,7 @@ model CandidateChunk {
   application        Application         @relation(fields: [applicationId], references: [id], onDelete: Cascade)
   candidateProfile   CandidateProfile?   @relation(fields: [candidateProfileId], references: [id], onDelete: SetNull)
   evidenceMatches    EvidenceMatch[]
+  bestFitScores       RequirementFitScore[]
 
   @@index([anonymousSessionId, applicationId])
   @@index([candidateProfileId])
@@ -204,12 +211,39 @@ model EvidenceMatch {
   @@map("evidence_matches")
 }
 
+model RequirementFitScore {
+  id                   String             @id @default(cuid())
+  applicationId        String             @map("application_id")
+  jobRequirementId     String             @map("job_requirement_id")
+  finalConfidence      EvidenceConfidence @map("final_confidence")
+  bestCandidateChunkId String?            @map("best_candidate_chunk_id")
+  reason               String             @db.Text
+  importanceWeight     Float              @map("importance_weight")
+  confidenceValue      Float              @map("confidence_value")
+  earnedPoints         Float              @map("earned_points")
+  possiblePoints       Float              @map("possible_points")
+  createdAt            DateTime           @default(now()) @map("created_at")
+  updatedAt            DateTime           @updatedAt @map("updated_at")
+  application          Application        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  jobRequirement       JobRequirement     @relation(fields: [jobRequirementId], references: [id], onDelete: Cascade)
+  bestCandidateChunk   CandidateChunk?    @relation(fields: [bestCandidateChunkId], references: [id], onDelete: SetNull)
+
+  @@unique([applicationId, jobRequirementId])
+  @@index([applicationId])
+  @@index([jobRequirementId])
+  @@index([bestCandidateChunkId])
+  @@map("requirement_fit_scores")
+}
+
 model GapQuestion {
   id                  String            @id @default(cuid())
   applicationId       String            @map("application_id")
   targetRequirementId String?           @map("target_requirement_id")
   question            String            @db.Text
   reason              String            @db.Text
+  whyItMatters        String?           @map("why_it_matters") @db.Text
+  answerGuidance      String?           @map("answer_guidance") @db.Text
+  exampleAnglesJson   Json?             @map("example_angles_json")
   status              GapQuestionStatus @default(unanswered)
   createdAt           DateTime          @default(now()) @map("created_at")
   application         Application       @relation(fields: [applicationId], references: [id], onDelete: Cascade)
@@ -219,6 +253,21 @@ model GapQuestion {
   @@index([applicationId])
   @@index([targetRequirementId])
   @@map("gap_questions")
+}
+
+model GapCoachInsight {
+  id                     String      @id @default(cuid())
+  applicationId          String      @unique @map("application_id")
+  openingMessage         String      @map("opening_message") @db.Text
+  jobWants               String      @map("job_wants") @db.Text
+  candidateStrengthsJson Json        @map("candidate_strengths_json")
+  candidateConcernsJson  Json        @map("candidate_concerns_json")
+  createdAt              DateTime    @default(now()) @map("created_at")
+  updatedAt              DateTime    @updatedAt @map("updated_at")
+  application            Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+  @@map("gap_coach_insights")
 }
 
 model GapAnswer {

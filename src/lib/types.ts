@@ -4,6 +4,7 @@ import type {
   ButtonAnswerSchema,
   CandidateProfilerOutputSchema,
   CvRewriteOutputSchema,
+  CvQualityReviewOutputSchema,
   CvStrategyOutputSchema,
   CvWriterOutputSchema,
   EvidenceChunkCreatorOutputSchema,
@@ -31,6 +32,9 @@ export type EvidenceScoringOutput = z.infer<typeof EvidenceScoringOutputSchema>;
 export type GapQuestionOutput = z.infer<typeof GapQuestionOutputSchema>;
 export type CvStrategyOutput = z.infer<typeof CvStrategyOutputSchema>;
 export type CvWriterOutput = z.infer<typeof CvWriterOutputSchema>;
+export type CvQualityReviewOutput = z.infer<
+  typeof CvQualityReviewOutputSchema
+>;
 export type CvRewriteOutput = z.infer<typeof CvRewriteOutputSchema>;
 
 export type RetrievedCandidateChunk = {
