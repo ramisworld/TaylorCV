@@ -5,10 +5,12 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  Clipboard,
   Download,
   ExternalLink,
   FileText,
   GitBranch,
+  Lock,
   Loader2,
   RotateCcw,
   Sparkles,
@@ -264,6 +266,93 @@ function TopRail(props: { onReset: () => void; resetDisabled?: boolean }) {
   );
 }
 
+function TaylorMark() {
+  return (
+    <span className="relative flex h-8 w-8 shrink-0 items-center justify-center">
+      <span className="absolute left-1 top-1 h-1 w-[26px] rounded-full bg-cyan-300 shadow-[0_0_13px_rgba(34,211,238,0.58)]" />
+      <span className="absolute left-1 top-2.5 h-1 w-[26px] rounded-full bg-blue-500 shadow-[0_0_16px_rgba(37,99,235,0.62)]" />
+      <span className="absolute left-[11px] top-[12px] h-[18px] w-1.5 rounded-full bg-blue-600" />
+      <span className="absolute left-[17px] top-[12px] h-[18px] w-1.5 skew-y-[-18deg] rounded-full bg-cyan-400" />
+    </span>
+  );
+}
+
+function JobPasteHeader() {
+  return (
+    <header className="relative z-20 border-b border-white/[0.075] bg-[#030b18]/72 backdrop-blur-2xl">
+      <div className="mx-auto flex h-16 w-full max-w-[1480px] items-center px-5 sm:px-8 lg:px-10">
+        <div className="flex items-center gap-2.5" aria-label="Taylor CV">
+          <TaylorMark />
+          <span className="text-[21px] font-medium tracking-[-0.035em] text-white">
+            Taylor CV
+          </span>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function JobStepProgress() {
+  const steps = ["Paste job", "Match", "Build", "Review"];
+
+  return (
+    <nav aria-label="Application progress" className="mx-auto w-full max-w-[620px]">
+      <ol className="flex items-center justify-center">
+        {steps.map((step, index) => {
+          const active = index === 0;
+          return (
+            <li
+              className={cn(
+                "flex items-center",
+                index < steps.length - 1 ? "flex-1" : "shrink-0"
+              )}
+              key={step}
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "flex h-7 w-7 items-center justify-center rounded-full border text-[12px] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]",
+                    active
+                      ? "border-blue-300/38 bg-blue-600 text-white shadow-[0_0_22px_rgba(37,99,235,0.34)]"
+                      : "border-white/12 bg-white/[0.035] text-slate-500"
+                  )}
+                >
+                  {index + 1}
+                </span>
+                <span
+                  className={cn(
+                    "hidden whitespace-nowrap text-[13px] font-medium md:inline",
+                    active ? "text-white" : "text-slate-500/80"
+                  )}
+                >
+                  {step}
+                </span>
+              </div>
+              {index < steps.length - 1 ? (
+                <span className="mx-4 h-px flex-1 bg-white/10" />
+              ) : null}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+function JobGlassCard(props: { children: React.ReactNode; className?: string }) {
+  return (
+    <section
+      className={cn(
+        "relative overflow-hidden rounded-[18px] border border-white/11 bg-[#071425]/76 shadow-[0_22px_70px_rgba(0,0,0,0.30),inset_0_1px_0_rgba(255,255,255,0.065)] backdrop-blur-2xl",
+        "before:pointer-events-none before:absolute before:inset-0 before:bg-[linear-gradient(145deg,rgba(255,255,255,0.06),transparent_38%,rgba(37,99,235,0.06))]",
+        props.className
+      )}
+    >
+      <div className="relative">{props.children}</div>
+    </section>
+  );
+}
+
 function ProgressChecklist(props: { items: string[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const key = props.items.join("|");
@@ -310,69 +399,296 @@ function ProgressChecklist(props: { items: string[] }) {
   );
 }
 
+function TimelineGlyph(props: { kind: "read" | "target" | "map" }) {
+  if (props.kind === "read") {
+    return (
+      <svg
+        aria-hidden="true"
+        className="h-7 w-7"
+        fill="none"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M9 5.5h9.3L24 11.2V25a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7.5a2 2 0 0 1 2-2Z"
+          stroke="currentColor"
+          strokeLinejoin="round"
+          strokeWidth="2"
+        />
+        <path
+          d="M18 5.8V11h5.5M11 15h7M11 19h5"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+        />
+        <circle
+          cx="22"
+          cy="21.5"
+          r="3.1"
+          stroke="currentColor"
+          strokeWidth="2"
+        />
+        <path
+          d="m24.3 23.8 2.4 2.4"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="2"
+        />
+      </svg>
+    );
+  }
+
+  if (props.kind === "target") {
+    return (
+      <svg
+        aria-hidden="true"
+        className="h-7 w-7"
+        fill="none"
+        viewBox="0 0 32 32"
+      >
+        <circle cx="16" cy="16" r="8.5" stroke="currentColor" strokeWidth="2" />
+        <circle cx="16" cy="16" r="3.1" stroke="currentColor" strokeWidth="2" />
+        <path
+          d="M16 3.8v5.1M16 23.1v5.1M3.8 16h5.1M23.1 16h5.1"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="2.2"
+        />
+        <path
+          d="M10.2 10.2 8.3 8.3M21.8 10.2l1.9-1.9M10.2 21.8l-1.9 1.9M21.8 21.8l1.9 1.9"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeOpacity=".55"
+          strokeWidth="1.6"
+        />
+      </svg>
+    );
+  }
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-7 w-7"
+      fill="none"
+      viewBox="0 0 32 32"
+    >
+      <path
+        d="m5.5 8.5 6.8-3.1 7.4 3.1 6.8-3.1v18.1l-6.8 3.1-7.4-3.1-6.8 3.1V8.5Z"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="2.2"
+      />
+      <path
+        d="M12.3 5.4v18.1M19.7 8.5v18.1"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
 function JobInputStage(props: {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
   isLoading: boolean;
 }) {
+  const trimmedValue = props.value.trim();
+  const wordCount = trimmedValue ? trimmedValue.split(/\s+/).length : 0;
+  const timeline = [
+    {
+      title: "Read the role",
+      copy: "Our AI reads and understands the job description in detail.",
+      kind: "read" as const,
+      tone:
+        "border-blue-300/24 bg-blue-500/18 text-blue-200 shadow-[0_0_46px_rgba(37,99,235,0.34),inset_0_0_24px_rgba(59,130,246,0.20),inset_0_1px_0_rgba(255,255,255,0.14)]",
+    },
+    {
+      title: "Find key requirements",
+      copy: "We extract must-haves, skills, experience, and hidden priorities.",
+      kind: "target" as const,
+      tone:
+        "border-violet-300/24 bg-violet-500/18 text-violet-200 shadow-[0_0_46px_rgba(124,58,237,0.32),inset_0_0_24px_rgba(139,92,246,0.20),inset_0_1px_0_rgba(255,255,255,0.14)]",
+    },
+    {
+      title: "Build your role map",
+      copy: "We create a tailored role map to align your CV with what matters most.",
+      kind: "map" as const,
+      tone:
+        "border-emerald-300/24 bg-emerald-400/16 text-emerald-200 shadow-[0_0_46px_rgba(16,185,129,0.28),inset_0_0_24px_rgba(16,185,129,0.18),inset_0_1px_0_rgba(255,255,255,0.14)]",
+    },
+  ];
+
   return (
-    <Shell
-      eyebrow="Paste job"
-      title="Paste the role. Taylor will find the hiring signals."
-      subtitle="Use the full job description when you have it. If you only know the target role, paste that instead."
+    <motion.section
+      animate={{ opacity: 1, y: 0 }}
+      className="flex h-full min-h-0 flex-col"
+      exit={{ opacity: 0, y: -12 }}
+      initial={{ opacity: 0, y: 12 }}
+      transition={{ duration: 0.24 }}
     >
-      <Panel className="grid max-h-[72vh] grid-cols-1 overflow-hidden lg:grid-cols-[0.4fr_0.6fr]">
-        <div className="border-b border-white/10 p-5 lg:border-b-0 lg:border-r">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-cyan-200/10 text-cyan-100">
-            <FileText className="h-5 w-5" />
-          </div>
-          <h2 className="mt-5 text-2xl font-semibold text-white">Job description</h2>
-          <p className="mt-3 text-sm leading-6 text-zinc-300">
-            Taylor caps and merges requirements so the rest of the pipeline stays fast.
-          </p>
-          <div className="mt-5 rounded-lg border border-white/10 bg-black/20 p-4">
-            <p className="text-sm font-semibold text-cyan-100">Taylor extracts</p>
-            <ul className="mt-3 space-y-2 text-sm leading-5 text-zinc-300">
-              {[
-                "Role and company summary",
-                "Top requirements and importance",
-                "Role domain and CV archetype",
-                "Language to reuse in the final CV",
-              ].map((item) => (
-                <li className="flex gap-2" key={item}>
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-200" />
-                  {item}
-                </li>
-              ))}
-            </ul>
+      <JobPasteHeader />
+      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 sm:px-8 lg:h-[calc(100dvh-64px)] lg:overflow-visible lg:px-10">
+        <div className="mx-auto flex min-h-full max-w-[1480px] flex-col lg:h-full lg:min-h-0">
+          <JobStepProgress />
+
+          <div className="mt-4 grid gap-5 lg:h-[min(620px,calc(100dvh-140px))] lg:min-h-[560px] lg:grid-cols-[280px_minmax(0,1fr)_264px] xl:grid-cols-[286px_minmax(0,1fr)_272px]">
+            <JobGlassCard className="order-2 p-5 lg:order-1 lg:h-full lg:min-h-0 xl:p-5">
+              <div className="flex h-full flex-col">
+                <span className="w-fit rounded-lg bg-white/[0.055] px-2.5 py-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-white/84">
+                  Step 1 of 4
+                </span>
+
+                <h1 className="mt-6 max-w-[240px] text-[27px] font-medium leading-[1.17] tracking-[-0.04em] text-white xl:text-[29px]">
+                  Paste the <span className="text-blue-400">job</span> you
+                  want to apply for
+                </h1>
+
+                <p className="mt-4 max-w-[238px] text-[13.5px] leading-6 text-slate-300/92">
+                  Add the full job description for the strongest match. We’ll
+                  extract key requirements, skills, and priorities to tailor
+                  your CV.
+                </p>
+
+                <div className="mt-7 rounded-xl border border-white/8 bg-white/[0.032] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.045)]">
+                  <div className="flex items-center gap-2.5">
+                    <Lock className="h-3.5 w-3.5 text-slate-300" />
+                    <p className="text-[13px] font-medium text-white">
+                      Your data is private & secure
+                    </p>
+                  </div>
+                  <p className="mt-2.5 text-[13px] leading-5 text-slate-400">
+                    We never store or share your job descriptions.
+                  </p>
+                </div>
+
+                <div className="mt-auto pt-6">
+                  <p className="text-[13px] text-slate-400">Need help?</p>
+                  <button
+                    className="mt-2.5 inline-flex cursor-default items-center gap-2 text-[13px] font-medium text-blue-400"
+                    type="button"
+                  >
+                    Show example
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+            </JobGlassCard>
+
+            <JobGlassCard className="order-1 p-5 lg:order-2 lg:h-full lg:min-h-0 xl:p-5">
+              <div className="flex h-full min-h-0 flex-col">
+                <div className="mb-3 flex items-center justify-between gap-4">
+                  <h2 className="text-[16px] font-semibold tracking-[-0.02em] text-white">
+                    Job description
+                  </h2>
+                  <button
+                    className="inline-flex cursor-default items-center gap-2 text-[13px] font-medium text-blue-400"
+                    type="button"
+                  >
+                    Paste as text
+                    <Clipboard className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <div className="relative min-h-0 flex-1">
+                  <textarea
+                    className="h-[340px] min-h-[300px] w-full resize-none rounded-lg border border-blue-300/14 bg-[#050d18]/90 px-4 py-4 pr-5 text-[14px] leading-6 text-slate-100 outline-none shadow-[inset_0_0_0_1px_rgba(15,23,42,0.7),inset_0_16px_40px_rgba(0,0,0,0.24)] placeholder:text-slate-500 focus:border-blue-400/90 focus:shadow-[0_0_0_1px_rgba(59,130,246,0.48),0_0_28px_rgba(37,99,235,0.14),inset_0_16px_40px_rgba(0,0,0,0.24)] lg:h-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-600/60 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-2"
+                    maxLength={20_000}
+                    onChange={(event) => props.onChange(event.target.value)}
+                    placeholder="Paste the full job description here..."
+                    value={props.value}
+                  />
+                  <p className="pointer-events-none absolute bottom-3 right-4 text-[12px] text-slate-500">
+                    {wordCount.toLocaleString()} words •{" "}
+                    {props.value.length.toLocaleString()} characters
+                  </p>
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-2.5">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[13px] text-slate-200">
+                    <Check className="h-3.5 w-3.5 text-lime-300" />
+                    Full job description gives better results
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-[13px] text-slate-200">
+                    <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-blue-400/18 text-[10px] font-semibold text-blue-300">
+                      i
+                    </span>
+                    No full JD? Use target role instead
+                  </span>
+                </div>
+
+                <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <button
+                    className="group inline-flex min-h-12 w-full max-w-[360px] items-center justify-center gap-3 rounded-lg bg-blue-600 px-6 text-[15px] font-semibold text-white shadow-[0_22px_62px_rgba(37,99,235,0.30),inset_0_1px_0_rgba(255,255,255,0.20)] transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled={props.isLoading || !props.value.trim()}
+                    onClick={props.onSubmit}
+                    type="button"
+                  >
+                    {props.isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-[18px] w-[18px]" />
+                    )}
+                    Analyse this role
+                    <ArrowRight className="ml-auto h-[18px] w-[18px] transition group-hover:translate-x-0.5" />
+                  </button>
+                  <p className="text-[13px] text-slate-500">Press Enter ↵</p>
+                </div>
+
+                <p className="mt-3 flex items-center justify-center gap-2 text-center text-[13px] text-slate-500">
+                  <Lock className="h-3.5 w-3.5" />
+                  Secure analysis • Your data is never stored or shared
+                </p>
+              </div>
+            </JobGlassCard>
+
+            <JobGlassCard className="order-3 p-5 lg:h-full lg:min-h-0 xl:p-5">
+              <div className="flex h-full flex-col">
+                <h2 className="text-center text-[16px] font-semibold tracking-[-0.02em] text-white">
+                  What Taylor will do next
+                </h2>
+
+                <div className="relative mt-8 space-y-7">
+                  {timeline.map((item, index) => {
+                    return (
+                      <div className="relative grid grid-cols-[60px_1fr] gap-4" key={item.title}>
+                        <span
+                          className={cn(
+                            "relative z-10 flex h-[58px] w-[58px] items-center justify-center rounded-2xl border",
+                            item.tone
+                          )}
+                        >
+                          <TimelineGlyph kind={item.kind} />
+                          {index < timeline.length - 1 ? (
+                            <span className="absolute left-1/2 top-[66px] h-[32px] w-px -translate-x-1/2 bg-gradient-to-b from-blue-300/25 to-blue-300/8" />
+                          ) : null}
+                        </span>
+                        <div className="pt-1">
+                          <h3 className="text-[14px] font-semibold text-white">
+                            {item.title}
+                          </h3>
+                          <p className="mt-1.5 text-[13px] leading-5 text-slate-400">
+                            {item.copy}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-auto flex justify-center pt-6">
+                  <span className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.055] px-3.5 py-2.5 text-[13px] font-medium text-slate-200">
+                    <Lock className="h-3.5 w-3.5" />
+                    Takes ~30 seconds
+                  </span>
+                </div>
+              </div>
+            </JobGlassCard>
           </div>
         </div>
-        <div className="flex min-h-0 flex-col p-4">
-          <textarea
-            className="min-h-[360px] flex-1 resize-none rounded-lg border border-white/10 bg-black/30 p-4 text-sm leading-6 text-white outline-none placeholder:text-zinc-500 focus:border-cyan-200/60"
-            maxLength={20_000}
-            onChange={(event) => props.onChange(event.target.value)}
-            placeholder="Paste the job description here."
-            value={props.value}
-          />
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <p className="text-xs text-zinc-500">
-              {props.value.length.toLocaleString()} / 20,000
-            </p>
-            <PrimaryButton
-              disabled={props.isLoading || !props.value.trim()}
-              onClick={props.onSubmit}
-              type="button"
-            >
-              {props.isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              Analyse role
-              <ArrowRight className="h-4 w-4" />
-            </PrimaryButton>
-          </div>
-        </div>
-      </Panel>
-    </Shell>
+      </div>
+    </motion.section>
   );
 }
 
@@ -1424,18 +1740,37 @@ export default function Home() {
 
   const unansweredQuestions =
     state?.gapQuestions.filter((question) => question.status === "unanswered").slice(0, 4) ?? [];
+  const isJobInputStage = stage === "job_input";
 
   return (
-    <main className="relative h-screen overflow-hidden bg-zinc-950 text-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(45,212,191,0.24),transparent_30%),radial-gradient(circle_at_84%_24%,rgba(250,204,21,0.12),transparent_25%),linear-gradient(135deg,#09090b_0%,#111827_45%,#052e2b_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:56px_56px]" />
+    <main
+      className={cn(
+        "relative h-[100dvh] overflow-hidden text-white",
+        isJobInputStage ? "bg-[#030814]" : "bg-zinc-950"
+      )}
+    >
+      {isJobInputStage ? (
+        <>
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(118deg,#020712_0%,#06111f_44%,#071a2e_70%,#02050b_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_58%_38%,rgba(0,141,255,0.24),transparent_31%),radial-gradient(circle_at_78%_44%,rgba(37,99,235,0.16),transparent_28%),radial-gradient(circle_at_18%_56%,rgba(14,165,233,0.065),transparent_34%)]" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.018] [background-image:linear-gradient(rgba(148,163,184,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.16)_1px,transparent_1px)] [background-size:88px_88px]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(3,8,20,0)_0%,rgba(3,8,20,0.12)_72%,#020611_100%)]" />
+        </>
+      ) : (
+        <>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(45,212,191,0.24),transparent_30%),radial-gradient(circle_at_84%_24%,rgba(250,204,21,0.12),transparent_25%),linear-gradient(135deg,#09090b_0%,#111827_45%,#052e2b_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:56px_56px]" />
+        </>
+      )}
       <div className="relative z-10 flex h-full flex-col">
-        <TopRail
-          onReset={() => {
-            if (applicationId) resetApplication.mutate({ applicationId });
-          }}
-          resetDisabled={!applicationId || resetApplication.isPending}
-        />
+        {isJobInputStage ? null : (
+          <TopRail
+            onReset={() => {
+              if (applicationId) resetApplication.mutate({ applicationId });
+            }}
+            resetDisabled={!applicationId || resetApplication.isPending}
+          />
+        )}
         {error && stage !== "error" ? (
           <div className="absolute left-1/2 top-20 z-30 w-[min(720px,calc(100%-32px))] -translate-x-1/2 rounded-lg border border-amber-300/20 bg-amber-300/10 p-3 text-sm text-amber-100 backdrop-blur-xl">
             {error}
