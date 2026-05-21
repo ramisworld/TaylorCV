@@ -18,6 +18,17 @@ type ResponsesApiBody = {
   };
 };
 
+function parseJsonPayload(text: string, serviceName: string) {
+  try {
+    return JSON.parse(text) as unknown;
+  } catch {
+    const looksLikeHtml = /^\s*</.test(text);
+    throw new Error(
+      `${serviceName} returned ${looksLikeHtml ? "HTML" : "invalid JSON"} instead of JSON`
+    );
+  }
+}
+
 export function isMockAiEnabled() {
   return env.USE_MOCK_AI === "true";
 }
@@ -83,12 +94,12 @@ export async function createStructuredJsonResponse(args: {
     body: JSON.stringify(body),
   });
 
+  const responseText = await response.text();
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`OpenAI Responses API failed: ${errorText}`);
+    throw new Error(`OpenAI Responses API failed: ${responseText}`);
   }
 
-  const data = (await response.json()) as {
+  const data = parseJsonPayload(responseText, "OpenAI Responses API") as {
     output_text?: string;
     output?: Array<{
       content?: Array<{ type?: string; text?: string }>;
@@ -105,7 +116,7 @@ export async function createStructuredJsonResponse(args: {
     throw new Error("OpenAI response did not include output text");
   }
 
-  return JSON.parse(outputText) as unknown;
+  return parseJsonPayload(outputText, "OpenAI output text");
 }
 
 export async function createOpenAIEmbedding(text: string) {
@@ -125,12 +136,12 @@ export async function createOpenAIEmbedding(text: string) {
     }),
   });
 
+  const responseText = await response.text();
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`OpenAI Embeddings API failed: ${errorText}`);
+    throw new Error(`OpenAI Embeddings API failed: ${responseText}`);
   }
 
-  const data = (await response.json()) as {
+  const data = parseJsonPayload(responseText, "OpenAI Embeddings API") as {
     data?: Array<{ embedding?: number[] }>;
   };
 
@@ -160,12 +171,12 @@ export async function createOpenAIEmbeddings(texts: string[]) {
     }),
   });
 
+  const responseText = await response.text();
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`OpenAI Embeddings API failed: ${errorText}`);
+    throw new Error(`OpenAI Embeddings API failed: ${responseText}`);
   }
 
-  const data = (await response.json()) as {
+  const data = parseJsonPayload(responseText, "OpenAI Embeddings API") as {
     data?: Array<{ index?: number; embedding?: number[] }>;
   };
 

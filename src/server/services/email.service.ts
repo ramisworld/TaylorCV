@@ -5,11 +5,24 @@ import { Resend } from "resend";
 import { env } from "~/env";
 
 let resend: Resend | null = null;
-const fallbackFrom = "TaylorCV <hello@taylorcv.local>";
 
 function getResend() {
+  if (!env.RESEND_API_KEY) {
+    throw new Error(
+      'Email sending is not configured. Set ENABLE_EMAIL="true", RESEND_API_KEY, and AUTH_EMAIL_FROM before using email flows.'
+    );
+  }
   resend ??= new Resend(env.RESEND_API_KEY);
   return resend;
+}
+
+function getEmailFrom() {
+  if (!env.AUTH_EMAIL_FROM) {
+    throw new Error(
+      'Email sender is not configured. Set ENABLE_EMAIL="true" and AUTH_EMAIL_FROM before using email flows.'
+    );
+  }
+  return env.AUTH_EMAIL_FROM;
 }
 
 function emailShell(args: { title: string; body: string; cta: string; url: string }) {
@@ -28,7 +41,7 @@ function emailShell(args: { title: string; body: string; cta: string; url: strin
 
 export async function sendVerificationEmail(args: { email: string; url: string }) {
   await getResend().emails.send({
-    from: env.AUTH_EMAIL_FROM ?? fallbackFrom,
+    from: getEmailFrom(),
     to: args.email,
     subject: "Verify your TaylorCV email",
     html: emailShell({
@@ -42,7 +55,7 @@ export async function sendVerificationEmail(args: { email: string; url: string }
 
 export async function sendPasswordResetEmail(args: { email: string; url: string }) {
   await getResend().emails.send({
-    from: env.AUTH_EMAIL_FROM ?? fallbackFrom,
+    from: getEmailFrom(),
     to: args.email,
     subject: "Reset your TaylorCV password",
     html: emailShell({

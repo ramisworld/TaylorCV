@@ -129,7 +129,6 @@ exports.Prisma.AnonymousSessionScalarFieldEnum = {
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  clerkUserId: 'clerkUserId',
   email: 'email',
   emailVerified: 'emailVerified',
   name: 'name',

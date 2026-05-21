@@ -4595,7 +4595,6 @@ export namespace Prisma {
 
   export type UserMinAggregateOutputType = {
     id: string | null
-    clerkUserId: string | null
     email: string | null
     emailVerified: boolean | null
     name: string | null
@@ -4606,7 +4605,6 @@ export namespace Prisma {
 
   export type UserMaxAggregateOutputType = {
     id: string | null
-    clerkUserId: string | null
     email: string | null
     emailVerified: boolean | null
     name: string | null
@@ -4617,7 +4615,6 @@ export namespace Prisma {
 
   export type UserCountAggregateOutputType = {
     id: number
-    clerkUserId: number
     email: number
     emailVerified: number
     name: number
@@ -4630,7 +4627,6 @@ export namespace Prisma {
 
   export type UserMinAggregateInputType = {
     id?: true
-    clerkUserId?: true
     email?: true
     emailVerified?: true
     name?: true
@@ -4641,7 +4637,6 @@ export namespace Prisma {
 
   export type UserMaxAggregateInputType = {
     id?: true
-    clerkUserId?: true
     email?: true
     emailVerified?: true
     name?: true
@@ -4652,7 +4647,6 @@ export namespace Prisma {
 
   export type UserCountAggregateInputType = {
     id?: true
-    clerkUserId?: true
     email?: true
     emailVerified?: true
     name?: true
@@ -4736,7 +4730,6 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: string
-    clerkUserId: string | null
     email: string
     emailVerified: boolean
     name: string
@@ -4764,7 +4757,6 @@ export namespace Prisma {
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    clerkUserId?: boolean
     email?: boolean
     emailVerified?: boolean
     name?: boolean
@@ -4783,7 +4775,6 @@ export namespace Prisma {
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    clerkUserId?: boolean
     email?: boolean
     emailVerified?: boolean
     name?: boolean
@@ -4794,7 +4785,6 @@ export namespace Prisma {
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    clerkUserId?: boolean
     email?: boolean
     emailVerified?: boolean
     name?: boolean
@@ -4805,7 +4795,6 @@ export namespace Prisma {
 
   export type UserSelectScalar = {
     id?: boolean
-    clerkUserId?: boolean
     email?: boolean
     emailVerified?: boolean
     name?: boolean
@@ -4814,7 +4803,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clerkUserId" | "email" | "emailVerified" | "name" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "emailVerified" | "name" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -4841,7 +4830,6 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      clerkUserId: string | null
       email: string
       emailVerified: boolean
       name: string
@@ -5279,7 +5267,6 @@ export namespace Prisma {
    */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
-    readonly clerkUserId: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'Boolean'>
     readonly name: FieldRef<"User", 'String'>
@@ -29696,7 +29683,6 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
-    clerkUserId: 'clerkUserId',
     email: 'email',
     emailVerified: 'emailVerified',
     name: 'name',
@@ -30465,7 +30451,6 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
-    clerkUserId?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
     emailVerified?: BoolFilter<"User"> | boolean
     name?: StringFilter<"User"> | string
@@ -30483,7 +30468,6 @@ export namespace Prisma {
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    clerkUserId?: SortOrderInput | SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     name?: SortOrder
@@ -30501,7 +30485,6 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    clerkUserId?: string
     email?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -30518,11 +30501,10 @@ export namespace Prisma {
     applications?: ApplicationListRelationFilter
     candidateProfiles?: CandidateProfileListRelationFilter
     candidateChunks?: CandidateChunkListRelationFilter
-  }, "id" | "clerkUserId" | "email">
+  }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
-    clerkUserId?: SortOrderInput | SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     name?: SortOrder
@@ -30539,7 +30521,6 @@ export namespace Prisma {
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
-    clerkUserId?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
     emailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     name?: StringWithAggregatesFilter<"User"> | string
@@ -32507,7 +32488,6 @@ export namespace Prisma {
 
   export type UserCreateInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -32525,7 +32505,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -32543,7 +32522,6 @@ export namespace Prisma {
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -32561,7 +32539,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -32579,7 +32556,6 @@ export namespace Prisma {
 
   export type UserCreateManyInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -32590,7 +32566,6 @@ export namespace Prisma {
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -32601,7 +32576,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -34858,6 +34832,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -34871,11 +34850,6 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type SessionListRelationFilter = {
@@ -34920,7 +34894,6 @@ export namespace Prisma {
 
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
-    clerkUserId?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     name?: SortOrder
@@ -34931,7 +34904,6 @@ export namespace Prisma {
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
-    clerkUserId?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     name?: SortOrder
@@ -34942,13 +34914,20 @@ export namespace Prisma {
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
-    clerkUserId?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     name?: SortOrder
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -34967,14 +34946,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -36728,12 +36699,12 @@ export namespace Prisma {
     connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type SessionUpdateManyWithoutUserNestedInput = {
@@ -38461,6 +38432,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -38475,9 +38451,12 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -38506,14 +38485,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -39818,7 +39789,6 @@ export namespace Prisma {
 
   export type UserCreateWithoutSessionsInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -39835,7 +39805,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutSessionsInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -39868,7 +39837,6 @@ export namespace Prisma {
 
   export type UserUpdateWithoutSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -39885,7 +39853,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -39902,7 +39869,6 @@ export namespace Prisma {
 
   export type UserCreateWithoutAccountsInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -39919,7 +39885,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutAccountsInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -39952,7 +39917,6 @@ export namespace Prisma {
 
   export type UserUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -39969,7 +39933,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -40007,7 +39970,6 @@ export namespace Prisma {
 
   export type UserCreateWithoutApplicationsInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -40024,7 +39986,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutApplicationsInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -40556,7 +40517,6 @@ export namespace Prisma {
 
   export type UserUpdateWithoutApplicationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -40573,7 +40533,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutApplicationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -41376,7 +41335,6 @@ export namespace Prisma {
 
   export type UserCreateWithoutCandidateProfilesInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -41393,7 +41351,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutCandidateProfilesInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -41570,7 +41527,6 @@ export namespace Prisma {
 
   export type UserUpdateWithoutCandidateProfilesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -41587,7 +41543,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutCandidateProfilesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -41708,7 +41663,6 @@ export namespace Prisma {
 
   export type UserCreateWithoutCandidateChunksInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -41725,7 +41679,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutCandidateChunksInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -41995,7 +41948,6 @@ export namespace Prisma {
 
   export type UserUpdateWithoutCandidateChunksInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -42012,7 +41964,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutCandidateChunksInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -43831,7 +43782,6 @@ export namespace Prisma {
 
   export type UserCreateWithoutBillingAccountInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -43848,7 +43798,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutBillingAccountInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -43881,7 +43830,6 @@ export namespace Prisma {
 
   export type UserUpdateWithoutBillingAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -43898,7 +43846,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutBillingAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -43915,7 +43862,6 @@ export namespace Prisma {
 
   export type UserCreateWithoutCvGenerationUsageInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -43932,7 +43878,6 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutCvGenerationUsageInput = {
     id?: string
-    clerkUserId?: string | null
     email: string
     emailVerified?: boolean
     name?: string
@@ -44057,7 +44002,6 @@ export namespace Prisma {
 
   export type UserUpdateWithoutCvGenerationUsageInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string
@@ -44074,7 +44018,6 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutCvGenerationUsageInput = {
     id?: StringFieldUpdateOperationsInput | string
-    clerkUserId?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
     emailVerified?: BoolFieldUpdateOperationsInput | boolean
     name?: StringFieldUpdateOperationsInput | string

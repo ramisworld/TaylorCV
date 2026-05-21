@@ -15,9 +15,34 @@ import {
 } from "~/server/services/abuse.service";
 import { ensureBillingAccount } from "~/server/services/entitlement.service";
 
-export const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? "sk_test_missing", {
-  apiVersion: "2026-04-22.dahlia",
-});
+let stripeClient: Stripe | null = null;
+
+function billingConfigError() {
+  return new TRPCError({
+    code: "INTERNAL_SERVER_ERROR",
+    message:
+      'Stripe billing is not configured. Set ENABLE_BILLING="true" and provide the required STRIPE_* variables before using checkout or billing portal flows.',
+  });
+}
+
+function getStripe() {
+  if (!env.STRIPE_SECRET_KEY) {
+    throw billingConfigError();
+  }
+  stripeClient ??= new Stripe(env.STRIPE_SECRET_KEY, {
+    apiVersion: "2026-04-22.dahlia",
+  });
+  return stripeClient;
+}
+
+function getStripeWebhookSecret() {
+  if (!env.STRIPE_WEBHOOK_SECRET) {
+    throw new Error(
+      'Stripe webhooks are not configured. Set ENABLE_BILLING="true" and provide STRIPE_WEBHOOK_SECRET before using the webhook endpoint.'
+    );
+  }
+  return env.STRIPE_WEBHOOK_SECRET;
+}
 
 function appUrl(path: string) {
   return new URL(path, env.BETTER_AUTH_URL ?? "http://localhost:3000").toString();
@@ -37,6 +62,7 @@ export function stripePriceIdForPlan(planKey: PlanKey) {
 }
 
 export async function getOrCreateStripeCustomer(userId: string) {
+  const stripe = getStripe();
   const user = await db.user.findUnique({ where: { id: userId } });
   if (!user) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Sign in to continue." });
@@ -70,6 +96,7 @@ export async function createCheckoutSession(args: {
   if (!plan.paid) {
     throw new TRPCError({ code: "BAD_REQUEST", message: "Choose a paid plan." });
   }
+  const stripe = getStripe();
   const abuse = await checkAndRecordAbuse({
     action: "checkout_create",
     headers: args.headers,
@@ -141,6 +168,7 @@ export async function createCheckoutSession(args: {
 }
 
 export async function createPortalSession(args: { userId: string }) {
+  const stripe = getStripe();
   const billingAccount = await ensureBillingAccount(args.userId);
   if (!billingAccount.stripeCustomerId) {
     throw new TRPCError({ code: "BAD_REQUEST", message: "No Stripe customer found." });
@@ -247,6 +275,7 @@ async function syncSubscription(subscription: Stripe.Subscription) {
 }
 
 async function ensureAnnualSchedule(subscriptionId: string, planKey: PlanKey) {
+  const stripe = getStripe();
   const plan = plans[planKey];
   if (!plan.requiresTwelveMonthCommitment) return;
   const billingAccount = await db.billingAccount.findUnique({
@@ -318,6 +347,7 @@ async function syncSchedule(schedule: Stripe.SubscriptionSchedule) {
 }
 
 export async function processStripeEvent(event: Stripe.Event) {
+  const stripe = getStripe();
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
@@ -387,10 +417,11 @@ export async function handleStripeWebhook(args: {
   if (!args.signature) {
     throw new Error("Missing Stripe signature");
   }
+  const stripe = getStripe();
   const event = stripe.webhooks.constructEvent(
     args.payload,
     args.signature,
-    env.STRIPE_WEBHOOK_SECRET ?? "whsec_missing"
+    getStripeWebhookSecret()
   );
   const existing = await db.stripeWebhookEvent.findUnique({
     where: { stripeEventId: event.id },

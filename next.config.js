@@ -1,6 +1,6 @@
 /**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
- * for Docker builds.
+ * `SKIP_ENV_VALIDATION` is only for special build environments that inject
+ * runtime secrets later. Local dev and production should use validated env.
  */
 import "./src/env.js";
 
