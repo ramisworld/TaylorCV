@@ -157,6 +157,7 @@ export type CvPresentation = {
     metadataTextMustRemain: "grey";
   };
   headerStyle: (typeof cvHeaderStyles)[number];
+  headerLayout: "centered" | "left";
   skillsStyle: CvSkillsStyle;
   sectionStyles: Partial<Record<PresentationSectionId, CvSectionPresentation>>;
   sectionLabelOverrides: Partial<Record<PresentationSectionId, string>>;
@@ -170,6 +171,7 @@ export type RendererTokens = {
   careerStyle: CvCareerStyle;
   density: CvDensity;
   headerStyle: (typeof cvHeaderStyles)[number];
+  headerLayout: "centered" | "left";
   skillsStyle: CvSkillsStyle;
   fontFamily: string;
   pdfFontFamily: "Helvetica" | "Times-Roman" | "Courier";
@@ -197,7 +199,7 @@ export type RendererTokens = {
 const defaultSectionLabels = {
   summary: "Professional Summary",
   experience: "Experience",
-  projects: "Selected Projects",
+  projects: "Projects",
   skills: "Skills",
   education: "Education",
   certifications: "Certifications",
@@ -219,16 +221,18 @@ const paletteHex = {
 const templateDefaults = {
   technical_compact: {
     careerStyle: "technical",
-    accentPalette: "navy",
+    accentPalette: "graphite",
     fontPairing: "technical_sans",
     headerStyle: "left_aligned_large_name",
+    headerLayout: "centered" as const,
     skillsStyle: "two_column_table",
   },
   modern_professional: {
     careerStyle: "general",
-    accentPalette: "blue",
+    accentPalette: "graphite",
     fontPairing: "modern_sans",
     headerStyle: "left_aligned_large_name",
+    headerLayout: "centered" as const,
     skillsStyle: "grouped_rows",
   },
   creative_marketing: {
@@ -236,13 +240,15 @@ const templateDefaults = {
     accentPalette: "teal",
     fontPairing: "modern_sans",
     headerStyle: "editorial_header",
+    headerLayout: "centered" as const,
     skillsStyle: "category_blocks",
   },
   graduate_clean: {
     careerStyle: "general",
-    accentPalette: "blue",
+    accentPalette: "graphite",
     fontPairing: "compact_sans",
     headerStyle: "compact_top_bar",
+    headerLayout: "centered" as const,
     skillsStyle: "compact_inline_groups",
   },
   executive_clean: {
@@ -250,6 +256,7 @@ const templateDefaults = {
     accentPalette: "graphite",
     fontPairing: "classic_serif_sans",
     headerStyle: "centered_classic",
+    headerLayout: "centered" as const,
     skillsStyle: "grouped_rows",
   },
   trades_practical: {
@@ -257,6 +264,7 @@ const templateDefaults = {
     accentPalette: "green",
     fontPairing: "compact_sans",
     headerStyle: "compact_top_bar",
+    headerLayout: "centered" as const,
     skillsStyle: "simple_list",
   },
   retail_service: {
@@ -264,20 +272,23 @@ const templateDefaults = {
     accentPalette: "teal",
     fontPairing: "modern_sans",
     headerStyle: "compact_top_bar",
+    headerLayout: "centered" as const,
     skillsStyle: "simple_list",
   },
   analytical_finance: {
     careerStyle: "finance",
-    accentPalette: "navy",
+    accentPalette: "graphite",
     fontPairing: "compact_sans",
     headerStyle: "left_aligned_large_name",
+    headerLayout: "centered" as const,
     skillsStyle: "two_column_table",
   },
   project_heavy_builder: {
     careerStyle: "technical",
-    accentPalette: "blue",
+    accentPalette: "graphite",
     fontPairing: "technical_sans",
     headerStyle: "left_aligned_large_name",
+    headerLayout: "centered" as const,
     skillsStyle: "grouped_rows",
   },
 } satisfies Record<
@@ -287,6 +298,7 @@ const templateDefaults = {
     accentPalette: CvAccentPalette;
     fontPairing: (typeof cvFontPairings)[number];
     headerStyle: (typeof cvHeaderStyles)[number];
+    headerLayout: "centered" | "left";
     skillsStyle: CvSkillsStyle;
   }
 >;
@@ -433,41 +445,41 @@ function defaultLabelsForCareer(careerStyle: CvCareerStyle) {
     return {
       ...defaultSectionLabels,
       summary: "Professional Summary",
-      skills: "Technical Skills",
-      projects: "Selected Projects",
+      skills: "Skills",
+      projects: "Projects",
     };
   }
   if (careerStyle === "marketing" || careerStyle === "creative") {
     return {
       ...defaultSectionLabels,
-      summary: "Profile",
-      skills: "Marketing Skills",
-      projects: "Campaign Projects",
-      experience: "Relevant Experience",
+      summary: "Professional Summary",
+      skills: "Skills",
+      projects: "Projects",
+      experience: "Experience",
     };
   }
   if (careerStyle === "retail") {
     return {
       ...defaultSectionLabels,
-      summary: "Profile",
-      experience: "Customer Experience",
-      skills: "Customer Service Skills",
+      summary: "Professional Summary",
+      experience: "Experience",
+      skills: "Skills",
     };
   }
   if (careerStyle === "trades") {
     return {
       ...defaultSectionLabels,
-      summary: "Profile",
-      skills: "Tools & Site Skills",
-      experience: "Site Experience",
+      summary: "Professional Summary",
+      skills: "Skills",
+      experience: "Experience",
     };
   }
   if (careerStyle === "finance") {
     return {
       ...defaultSectionLabels,
       summary: "Professional Summary",
-      projects: "Research & Projects",
-      skills: "Analytical Skills",
+      projects: "Projects",
+      skills: "Skills",
     };
   }
   return defaultSectionLabels;
@@ -628,10 +640,8 @@ export function normalizeCvPresentation(
     },
     accentUsageRules: {
       useAccentFor: [
-        "section_headings",
-        "selected_labels",
-        "links",
-        "small_emphasis",
+      "links",
+      "small_emphasis",
       ],
       neverUseAccentForBodyText: true,
       bodyTextMustRemain: "dark",
@@ -643,6 +653,10 @@ export function normalizeCvPresentation(
         ? source.headerStyle
         : template.headerStyle,
     skillsStyle,
+    headerLayout:
+      typeof source?.headerLayout === "string" && (source.headerLayout === "centered" || source.headerLayout === "left")
+        ? source.headerLayout
+        : template.headerLayout,
     sectionStyles,
     sectionLabelOverrides,
     renderWarnings:
@@ -694,9 +708,7 @@ export function presentationToRendererTokens(
   const spacious = presentation.density === "spacious";
   const fonts = fontFamilyFor(presentation.typography.fontPairing);
   const accentColor = paletteHex[presentation.colourSystem.accentPalette];
-  const centered =
-    presentation.headerStyle === "centered_classic" ||
-    presentation.headerStyle === "editorial_header";
+  const centered = presentation.headerLayout === "centered";
 
   return {
     layoutArchitecture: presentation.layoutArchitecture,
@@ -704,31 +716,32 @@ export function presentationToRendererTokens(
     careerStyle: presentation.careerStyle,
     density: presentation.density,
     headerStyle: presentation.headerStyle,
+    headerLayout: presentation.headerLayout,
     skillsStyle: presentation.skillsStyle,
     fontFamily: fonts.css,
     pdfFontFamily: fonts.pdf,
     docxFontFamily: fonts.docx,
-    pagePadding: compact ? 30 : spacious ? 48 : 40,
-    pagePaddingCss: compact ? "30px 38px" : spacious ? "48px 56px" : "40px 48px",
+    pagePadding: compact ? 32 : spacious ? 46 : 40,
+    pagePaddingCss: compact ? "32px 40px" : spacious ? "46px 56px" : "40px 50px",
     headerAlign: centered ? "center" : "left",
     nameSize:
-      presentation.typography.nameSize === "very_large" && !compact ? 32 : 29,
-    subtitleSize: compact ? 11.5 : 12.5,
+      presentation.typography.nameSize === "very_large" && !compact ? 36 : compact ? 33 : 35,
+    subtitleSize: compact ? 13.2 : spacious ? 14.4 : 14,
     bodySize:
-      presentation.typography.bodySize === "compact" || compact ? 11.2 : 12,
-    headingSize: compact ? 11.4 : 12.6,
-    lineHeight: compact ? 1.38 : 1.48,
-    sectionGap: compact ? 12 : spacious ? 22 : 16,
-    itemGap: compact ? 7 : spacious ? 12 : 9,
-    bulletGap: compact ? 1.5 : 3,
+      presentation.typography.bodySize === "compact" || compact ? 11.8 : spacious ? 13.1 : 12.7,
+    headingSize: compact ? 14.4 : spacious ? 16.2 : 15.5,
+    lineHeight: compact ? 1.4 : spacious ? 1.52 : 1.48,
+    sectionGap: compact ? 14 : spacious ? 24 : 19,
+    itemGap: compact ? 8 : spacious ? 13 : 10,
+    bulletGap: compact ? 2 : 3.4,
     headingWeight:
       presentation.typography.headingWeight === "medium"
         ? 500
         : presentation.typography.headingWeight === "semibold"
-          ? 600
-          : 700,
-    bodyTextColor: "#18181b",
-    mutedTextColor: "#52525b",
+          ? 700
+          : 800,
+    bodyTextColor: "#111827",
+    mutedTextColor: "#374151",
     accentColor,
     dividerColor: "#d4d4d8",
     dividerStyle: presentation.colourSystem.dividerStyle,

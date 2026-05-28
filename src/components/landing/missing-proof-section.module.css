@@ -1,0 +1,646 @@
+/* src/components/landing/missing-proof-section.module.css */
+
+.section {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  color: #070b1f;
+  background: #f7f8ff;
+  isolation: isolate;
+}
+
+.bgBase {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 7% 10%,
+      rgba(230, 238, 255, 0.9),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 93% 4%,
+      rgba(244, 234, 255, 0.92),
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 47% 82%,
+      rgba(187, 207, 255, 0.42),
+      transparent 54%
+    ),
+    radial-gradient(
+      ellipse at 86% 64%,
+      rgba(215, 197, 255, 0.42),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 61% 40%,
+      rgba(210, 222, 255, 0.28),
+      transparent 42%
+    ),
+    linear-gradient(180deg, #fbfcff 0%, #f7f8ff 48%, #f5f6ff 100%);
+}
+
+.bgArc {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.32;
+  background:
+    radial-gradient(
+      ellipse 96% 50% at 56% 56%,
+      transparent 60%,
+      rgba(116, 122, 255, 0.17) 60.3%,
+      transparent 60.8%
+    ),
+    radial-gradient(
+      ellipse 92% 47% at 56% 56%,
+      transparent 61%,
+      rgba(255, 255, 255, 0.54) 61.3%,
+      transparent 61.8%
+    );
+}
+
+.bgContours {
+  position: absolute;
+  bottom: -21%;
+  left: -5%;
+  z-index: 0;
+  width: 36%;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  border-radius: 999px;
+  opacity: 0.27;
+  background: repeating-radial-gradient(
+    ellipse at center,
+    rgba(74, 97, 255, 0.105) 0 1px,
+    transparent 1px 15px
+  );
+  mask-image: radial-gradient(ellipse at center, black 0 52%, transparent 72%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    black 0 52%,
+    transparent 72%
+  );
+}
+
+.scoreGlow {
+  position: absolute;
+  left: 28%;
+  bottom: 8%;
+  z-index: 1;
+  width: 70%;
+  height: 29%;
+  pointer-events: none;
+  border-radius: 120px;
+  background:
+    radial-gradient(
+      ellipse at 19% 48%,
+      rgba(170, 206, 255, 0.42),
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse at 51% 42%,
+      rgba(255, 255, 255, 0.65),
+      transparent 30%
+    ),
+    radial-gradient(
+      ellipse at 83% 52%,
+      rgba(178, 137, 255, 0.3),
+      transparent 46%
+    ),
+    radial-gradient(
+      ellipse at 63% 82%,
+      rgba(132, 94, 255, 0.14),
+      transparent 48%
+    );
+  filter: blur(46px);
+}
+
+/* IMPORTANT: reference-frame layout. No 1920px hard-coded scene. */
+.scene {
+  position: relative;
+  z-index: 2;
+  width: min(100vw, 2048px);
+  aspect-ratio: 2048 / 1152;
+  min-height: 760px;
+  max-height: 1152px;
+  margin: 0 auto;
+}
+
+/* Hero */
+
+.heroBlock {
+  position: absolute;
+  top: 9.4%;
+  left: 5.35%;
+  z-index: 5;
+  width: 39%;
+  max-width: 720px;
+}
+
+.pill {
+  position: relative;
+  display: inline-flex;
+  height: clamp(36px, 2.55vw, 54px);
+  align-items: center;
+  gap: clamp(7px, 0.58vw, 12px);
+  padding: 0 clamp(16px, 1.25vw, 26px);
+  overflow: hidden;
+  color: #684cff;
+  font-size: clamp(13px, 0.88vw, 18px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  border: 1px solid rgba(146, 124, 255, 0.42);
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.58),
+      rgba(255, 255, 255, 0.24)
+    ),
+    rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 16px 34px rgba(72, 80, 150, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(115, 95, 255, 0.1);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+.pill::before {
+  position: absolute;
+  inset: 1px;
+  content: "";
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0.65),
+    transparent 42%
+  );
+  opacity: 0.7;
+}
+
+.pill > * {
+  position: relative;
+  z-index: 1;
+}
+
+.headline {
+  display: grid;
+  gap: clamp(2px, 0.35vw, 7px);
+  margin-top: clamp(32px, 3.4vw, 70px);
+  color: #080a1f;
+  font-family: Georgia, ui-serif, Cambria, "Times New Roman", serif;
+  font-size: clamp(46px, 4.75vw, 92px);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.052em;
+}
+
+.headline > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.gradientText {
+  font-style: normal;
+  color: transparent;
+  background: linear-gradient(92deg, #2452ff 0%, #4d5eff 48%, #8a42f2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.subheadline {
+  width: 75%;
+  max-width: 575px;
+  margin-top: clamp(18px, 1.72vw, 34px);
+  color: #33415f;
+  font-size: clamp(15px, 1.12vw, 22px);
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: -0.01em;
+}
+
+.benefits {
+  display: grid;
+  gap: clamp(15px, 1.32vw, 27px);
+  margin-top: clamp(30px, 3.3vw, 66px);
+}
+
+.benefitRow {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.25vw, 25px);
+}
+
+.benefitRow p {
+  color: #091126;
+  font-size: clamp(16px, 1.18vw, 24px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* Diagram */
+
+.diagramStage {
+  position: absolute;
+  top: 8.8%;
+  left: 38.3%;
+  z-index: 3;
+  width: 57.6%;
+  height: 48.7%;
+}
+
+.connectorSvg {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Shared frosted glass card */
+
+.glassCard {
+  position: absolute;
+  z-index: 3;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: clamp(18px, 1.32vw, 27px);
+  background:
+    radial-gradient(
+      ellipse at 18% 7%,
+      rgba(255, 255, 255, 0.64),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 90% 92%,
+      rgba(206, 198, 255, 0.16),
+      transparent 34%
+    ),
+    linear-gradient(
+      142deg,
+      rgba(255, 255, 255, 0.44),
+      rgba(255, 255, 255, 0.2)
+    ),
+    rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 30px 86px rgba(31, 35, 90, 0.105),
+    0 10px 28px rgba(31, 35, 90, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(102, 82, 255, 0.12);
+  backdrop-filter: blur(26px) saturate(1.48) brightness(1.04);
+  -webkit-backdrop-filter: blur(26px) saturate(1.48) brightness(1.04);
+}
+
+.glassCard::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(124deg, rgba(255, 255, 255, 0.64), transparent 39%),
+    linear-gradient(
+      90deg,
+      rgba(96, 126, 255, 0.055),
+      transparent 20%,
+      transparent 76%,
+      rgba(130, 82, 255, 0.07)
+    ),
+    radial-gradient(
+      ellipse at 76% 8%,
+      rgba(228, 238, 255, 0.38),
+      transparent 30%
+    );
+  opacity: 0.82;
+}
+
+.glassCard::after {
+  position: absolute;
+  inset: 1px;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.46),
+    inset 0 2px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -2px 0 rgba(98, 88, 218, 0.15),
+    inset 0 0 26px rgba(255, 255, 255, 0.32);
+}
+
+.glassCard > * {
+  position: relative;
+  z-index: 2;
+}
+
+.jobCard {
+  top: 0;
+  left: 0;
+  width: 30.8%;
+  min-height: 38.4%;
+  padding: clamp(20px, 1.55vw, 32px);
+}
+
+.questionsCard {
+  top: 2.4%;
+  right: 0;
+  width: 33.2%;
+  min-height: 70.8%;
+  padding: clamp(20px, 1.52vw, 31px);
+}
+
+.gapCard {
+  top: 52.6%;
+  left: 24.2%;
+  width: 30.6%;
+  min-height: 35.2%;
+  padding: clamp(20px, 1.52vw, 31px);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: clamp(11px, 0.88vw, 18px);
+}
+
+.cardTitle {
+  color: #070b1f;
+  font-size: clamp(15px, 1.02vw, 21px);
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+}
+
+.cardBody {
+  margin-top: clamp(17px, 1.36vw, 28px);
+  color: #33415f;
+  font-size: clamp(13px, 0.91vw, 18.5px);
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+}
+
+.questionList {
+  margin-top: clamp(17px, 1.22vw, 25px);
+}
+
+.questionRow {
+  display: grid;
+  grid-template-columns: clamp(30px, 2.15vw, 44px) minmax(0, 1fr);
+  gap: clamp(9px, 0.73vw, 15px);
+  align-items: start;
+  padding: clamp(12px, 1.02vw, 21px) 0;
+  border-bottom: 1px solid rgba(197, 205, 232, 0.74);
+}
+
+.questionRow:first-child {
+  padding-top: 0;
+}
+
+.questionRow:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.questionRow p {
+  color: #111830;
+  font-size: clamp(11px, 0.78vw, 16px);
+  font-weight: 520;
+  line-height: 1.48;
+  letter-spacing: -0.01em;
+}
+
+/* Icons */
+
+.iconCircle {
+  display: grid;
+  flex-shrink: 0;
+  width: clamp(42px, 3.03vw, 62px);
+  height: clamp(42px, 3.03vw, 62px);
+  place-items: center;
+  color: #4657ff;
+  border: 1px solid rgba(210, 220, 255, 0.56);
+  border-radius: clamp(13px, 0.93vw, 19px);
+  background:
+    radial-gradient(
+      circle at 34% 18%,
+      rgba(255, 255, 255, 0.9),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.44),
+      rgba(255, 255, 255, 0.2)
+    ),
+    rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 16px 30px rgba(47, 74, 175, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(102, 82, 255, 0.1);
+  backdrop-filter: blur(14px) saturate(1.35);
+  -webkit-backdrop-filter: blur(14px) saturate(1.35);
+}
+
+.iconCircleSmall {
+  width: clamp(30px, 2.1vw, 43px);
+  height: clamp(30px, 2.1vw, 43px);
+  border-radius: clamp(10px, 0.68vw, 14px);
+}
+
+.orbSlot {
+  position: absolute;
+  top: 8.8%;
+  left: 37.9%;
+  z-index: 4;
+  width: 14.2%;
+  aspect-ratio: 1 / 1;
+}
+
+.orbSlot > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* Score */
+
+.scoreWrap {
+  position: absolute;
+  top: 65.2%;
+  left: 34.2%;
+  z-index: 4;
+  width: 55%;
+  height: 25.2%;
+}
+
+/* Fallbacks */
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .pill,
+  .glassCard,
+  .iconCircle {
+    background: rgba(255, 255, 255, 0.86);
+  }
+}
+
+/* Tablet/mobile flow */
+
+@media (max-width: 1023px) {
+  .section {
+    padding: 72px 20px 80px;
+  }
+
+  .scene {
+    width: 100%;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: auto;
+  }
+
+  .heroBlock {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    max-width: 640px;
+  }
+
+  .headline {
+    margin-top: 34px;
+    font-size: clamp(48px, 8vw, 68px);
+  }
+
+  .subheadline {
+    width: auto;
+    max-width: 560px;
+  }
+
+  .diagramStage {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(100%, 560px);
+    height: auto;
+    margin: 54px auto 0;
+  }
+
+  .connectorSvg {
+    display: none;
+  }
+
+  .glassCard,
+  .jobCard,
+  .questionsCard,
+  .gapCard,
+  .orbSlot {
+    position: relative;
+    inset: auto;
+    width: auto;
+    min-height: 0;
+    margin-bottom: 18px;
+  }
+
+  .orbSlot {
+    display: grid;
+    place-items: center;
+    width: 156px;
+    margin: 10px auto 22px;
+  }
+
+  .scoreWrap {
+    position: relative;
+    inset: auto;
+    width: min(100%, 620px);
+    height: auto;
+    margin: 32px auto 0;
+  }
+
+  .scoreGlow {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 56px 14px 64px;
+  }
+
+  .pill {
+    height: 42px;
+    padding-inline: 17px;
+    font-size: 13.5px;
+  }
+
+  .headline {
+    margin-top: 25px;
+    font-size: clamp(40px, 10vw, 52px);
+    line-height: 1;
+  }
+
+  .subheadline {
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .benefits {
+    gap: 16px;
+    margin-top: 30px;
+  }
+
+  .benefitRow {
+    gap: 13px;
+  }
+
+  .benefitRow p {
+    font-size: 16px;
+  }
+
+  .iconCircle {
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+  }
+
+  .iconCircleSmall {
+    width: 36px;
+    height: 36px;
+  }
+
+  .glassCard {
+    padding: 22px 19px;
+    border-radius: 22px;
+  }
+
+  .cardTitle {
+    font-size: 18px;
+  }
+
+  .cardBody {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .questionRow {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 11px;
+    padding: 13px 0;
+  }
+
+  .questionRow p {
+    font-size: 13.5px;
+  }
+}

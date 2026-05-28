@@ -20,8 +20,11 @@ import {
 import { LandingBackground } from "./LandingBackground";
 import { FlowArrow } from "./FlowArrow";
 import { GlassHeader } from "./GlassHeader";
-import { PrimaryButton, SecondaryButton } from "./GlassButton";
+import { PrimaryButton } from "./GlassButton";
 import { LiquidGlassDefs } from "./LiquidGlassDefs";
+import { CareerWorkspaceSection } from "./CareerWorkspaceSection";
+import { MissingProofSection } from "./MissingProofSection";
+import { ProofSection } from "./ProofSection";
 import { ProofStrip } from "./ProofStrip";
 
 type LandingPageProps = {
@@ -79,25 +82,6 @@ const cvSkills = [
   "Cost & Margin Focus",
   "Cross-functional Alignment",
   "High-velocity Execution",
-] as const;
-
-const howSteps = [
-  {
-    title: "Paste the role",
-    body: "TaylorCV extracts seniority, requirements, hiring signals, and must-have evidence from the job ad.",
-  },
-  {
-    title: "Compare your background",
-    body: "Your strongest proof is matched to each requirement so the CV is built from evidence, not generic claims.",
-  },
-  {
-    title: "Answer the gaps",
-    body: "A few targeted questions surface missing metrics, leadership scope, tools, and outcomes before the draft is written.",
-  },
-  {
-    title: "Export a one-page CV",
-    body: "The final CV stays concise, ATS-safe, and aligned to the role without overclaiming.",
-  },
 ] as const;
 
 const faqItems = [
@@ -542,44 +526,6 @@ function Hero(props: LandingPageProps) {
   );
 }
 
-function HowItWorksSection() {
-  return (
-    <section className="relative z-10 mx-auto max-w-[1240px] px-6 py-24" id="how-it-works">
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.25fr] lg:items-start">
-        <div>
-          <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-[#2047f0]">
-            How it works
-          </p>
-          <h2 className="mt-4 text-[clamp(2.2rem,3vw,3.6rem)] font-semibold leading-[1.08] tracking-[-0.045em] text-[#080d22]">
-            Role evidence in.
-            <br />
-            One-page CV out.
-          </h2>
-          <p className="mt-5 max-w-[500px] text-[17px] leading-7 text-[#42506d]">
-            TaylorCV keeps the workflow focused: parse the job, match your evidence, ask only the highest-value questions, then produce the draft.
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {howSteps.map((step, index) => (
-            <article
-              className="rounded-[15px] border border-[#dfe5ef] bg-white/76 p-6 shadow-[0_18px_38px_rgba(29,42,78,0.08),inset_0_1px_0_rgba(255,255,255,0.9)]"
-              key={step.title}
-            >
-              <span className="grid h-9 w-9 place-items-center rounded-[9px] bg-[#eef3ff] text-[15px] font-bold text-[#2047f0]">
-                {index + 1}
-              </span>
-              <h3 className="mt-5 text-[19px] font-semibold tracking-[-0.025em] text-[#080d22]">
-                {step.title}
-              </h3>
-              <p className="mt-2.5 text-[14.5px] leading-6 text-[#42506d]">{step.body}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function PricingSection(props: LandingPageProps) {
   const [variant, setVariant] = useState<"annual" | "monthly">("annual");
   const proKey = paidPlanFromSelection("pro", variant);
@@ -741,7 +687,9 @@ export function LandingPage(props: LandingPageProps) {
       <LandingBackground />
       <GlassHeader {...props} />
       <Hero {...props} />
-      <HowItWorksSection />
+      <MissingProofSection />
+      <CareerWorkspaceSection onGetStarted={props.onGetStarted} />
+      <ProofSection />
       <PricingSection {...props} />
       <FaqSection />
     </main>

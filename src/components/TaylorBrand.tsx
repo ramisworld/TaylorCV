@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-const logoSrc = "/assets/taylor-cv-logo-mark-transparent.png";
+const logoSrc = "/assets/taylorcv-logo-transparent.png";
 
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");

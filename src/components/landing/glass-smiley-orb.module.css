@@ -1,0 +1,180 @@
+/* src/components/landing/glass-smiley-orb.module.css */
+
+.orbRoot {
+  position: relative;
+  display: grid;
+  width: 168px;
+  height: 168px;
+  place-items: center;
+  transform: translateZ(0);
+}
+
+.orbRoot::before {
+  position: absolute;
+  inset: -28px;
+  content: "";
+  pointer-events: none;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(93, 102, 255, 0.2), transparent 58%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.72), transparent 42%);
+  filter: blur(10px);
+}
+
+.orbRoot::after {
+  position: absolute;
+  inset: 8px;
+  content: "";
+  pointer-events: none;
+  border-radius: 999px;
+  border: 1px solid rgba(123, 121, 255, 0.12);
+  box-shadow:
+    0 0 0 14px rgba(255, 255, 255, 0.16),
+    0 0 0 28px rgba(105, 112, 255, 0.045),
+    0 0 0 44px rgba(105, 112, 255, 0.025);
+}
+
+.orbOuterRing {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      circle at 34% 18%,
+      rgba(255, 255, 255, 0.62),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 62% 74%,
+      rgba(100, 120, 255, 0.16),
+      transparent 50%
+    ),
+    rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 20px 55px rgba(80, 84, 220, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -1px 0 rgba(82, 74, 210, 0.12);
+  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+}
+
+.orbMiddleRing {
+  position: absolute;
+  inset: 22px;
+  overflow: hidden;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      circle at 32% 16%,
+      rgba(255, 255, 255, 0.92),
+      rgba(206, 226, 255, 0.44) 31%,
+      transparent 46%
+    ),
+    radial-gradient(
+      circle at 58% 72%,
+      rgba(63, 84, 255, 0.72),
+      rgba(96, 84, 255, 0.62) 50%,
+      rgba(141, 77, 230, 0.54) 82%
+    ),
+    rgba(104, 115, 255, 0.32);
+  box-shadow:
+    0 24px 52px rgba(55, 71, 223, 0.2),
+    inset 0 2px 12px rgba(255, 255, 255, 0.88),
+    inset 0 -16px 26px rgba(45, 54, 211, 0.24);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+}
+
+.orbMiddleRing::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.58) 0%, transparent 38%),
+    linear-gradient(
+      30deg,
+      transparent 48%,
+      rgba(255, 255, 255, 0.28) 53%,
+      transparent 62%
+    ),
+    radial-gradient(
+      circle at 75% 13%,
+      rgba(215, 237, 255, 0.52),
+      transparent 30%
+    );
+  opacity: 0.88;
+  mix-blend-mode: screen;
+}
+
+.orbMiddleRing::after {
+  position: absolute;
+  inset: 1px;
+  content: "";
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.64),
+    inset 0 -2px 0 rgba(98, 88, 218, 0.16);
+}
+
+.orbCore {
+  position: relative;
+  display: grid;
+  width: 96px;
+  height: 96px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      circle at 34% 18%,
+      rgba(255, 255, 255, 0.96),
+      rgba(208, 230, 255, 0.52) 29%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 56% 68%,
+      rgba(54, 78, 255, 0.94),
+      rgba(96, 82, 255, 0.82) 48%,
+      rgba(143, 72, 230, 0.7) 82%
+    ),
+    rgba(93, 102, 255, 0.68);
+  box-shadow:
+    inset 0 2px 12px rgba(255, 255, 255, 0.92),
+    inset 0 -16px 24px rgba(45, 54, 211, 0.26),
+    0 12px 26px rgba(55, 71, 223, 0.16);
+}
+
+.orbCoreHighlight {
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  width: 38px;
+  height: 13px;
+  pointer-events: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  filter: blur(6px);
+  transform: rotate(-22deg);
+}
+
+.orbFace {
+  position: relative;
+  z-index: 2;
+  width: 58px;
+  height: 58px;
+  color: #244cff;
+}
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .orbOuterRing,
+  .orbMiddleRing {
+    background: rgba(155, 170, 255, 0.82);
+  }
+}

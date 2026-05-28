@@ -4,7 +4,7 @@ export type CvHeader = {
   location: string | null;
   phone: string | null;
   email: string | null;
-  links: Array<{ label: string | null; url: string }>;
+  links: Array<{ label: string | null; url: string; linkType?: string | null }>;
 };
 
 export type CvBulletClaim = {
@@ -205,14 +205,15 @@ function parseDates(value: Record<string, unknown>) {
 function parseHeader(value: unknown): CvHeader | null {
   if (!isRecord(value)) return null;
 
-  const links = Array.isArray(value.links)
+  const links: Array<{ label: string | null; url: string; linkType: string | null }> = Array.isArray(value.links)
     ? value.links
         .filter(isRecord)
         .map((link) => ({
           label: textOrNull(link.label),
-          url: textOrNull(link.url),
+          url: textOrNull(link.url) ?? "",
+          linkType: typeof link.linkType === "string" ? link.linkType : null,
         }))
-        .filter((link): link is { label: string | null; url: string } =>
+        .filter((link): link is { label: string | null; url: string; linkType: string | null } =>
           Boolean(link.url)
         )
     : [];
@@ -386,13 +387,50 @@ export function joinPresent(
   return joined || "";
 }
 
-export function linkText(link: { label: string | null; url: string }) {
-  return link.label && link.label !== link.url
-    ? `${link.label}: ${link.url}`
-    : link.url;
+function projectNameFromUrl(url: string) {
+  const compactUrl = url
+    .replace(/^https?:\/\//i, "")
+    .replace(/^www\./i, "")
+    .replace(/\/.*$/, "");
+  const firstSegment = compactUrl.split(".")[0] ?? "";
+  if (!firstSegment || /^(?:app|demo|product|www)$/i.test(firstSegment)) return null;
+  return firstSegment
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .replace(/\bAi\b/g, "AI")
+    .replace(/\bCv\b/g, "CV");
 }
 
-function linkKind(link: { label: string | null; url: string }): CvContactKind {
+export function linkText(link: { label: string | null; url: string; linkType?: string | null }) {
+  const value = `${link.label ?? ""} ${link.url}`.toLowerCase();
+  if (value.includes("linkedin")) {
+    const handle = link.url.replace(/^https?:\/\/(?:www\.)?linkedin\.com\/in\//i, "").replace(/\/$/, "").replace(/\?.+$/, "");
+    return handle ? `linkedin.com/in/${handle}` : "LinkedIn";
+  }
+  if (value.includes("github")) {
+    const handle = link.url.replace(/^https?:\/\/(?:www\.)?github\.com\//i, "").replace(/\/$/, "");
+    return handle ? `github.com/${handle}` : "GitHub";
+  }
+  if (value.includes("portfolio")) return "Portfolio";
+  const compactUrl = link.url
+    .replace(/^https?:\/\//i, "")
+    .replace(/^www\./i, "")
+    .replace(/\/$/, "");
+  if (link.label && link.label !== link.url && link.label.length <= 24) {
+    return link.label;
+  }
+  return compactUrl;
+}
+
+function linkKind(link: { label: string | null; url: string; linkType?: string | null }): CvContactKind {
+  if (link.linkType === "product_link") return "portfolio";
+  if (link.linkType === "portfolio_link") return "portfolio";
+  if (link.linkType === "personal_contact") {
+    const value = `${link.label ?? ""} ${link.url}`.toLowerCase();
+    if (value.includes("linkedin")) return "linkedin";
+    if (value.includes("github")) return "github";
+    return "link";
+  }
   const value = `${link.label ?? ""} ${link.url}`.toLowerCase();
   if (value.includes("linkedin")) return "linkedin";
   if (value.includes("github")) return "github";
@@ -400,19 +438,60 @@ function linkKind(link: { label: string | null; url: string }): CvContactKind {
   return "link";
 }
 
-export function contactItems(header: CvHeader): CvContactItem[] {
-  return [
+function isProductOrPortfolioLink(link: { label: string | null; url: string; linkType?: string | null }) {
+  if (link.linkType === "product_link" || link.linkType === "portfolio_link") return true;
+  const label = (link.label ?? "").toLowerCase();
+  const url = (link.url ?? "").toLowerCase();
+  if (/^(?:product|deployed product|app|demo|portfolio)$/i.test(label.trim())) return true;
+  if (/portfolio/i.test(label) && !/linkedin|github/i.test(url)) return true;
+  return false;
+}
+
+export function personalContactItems(header: CvHeader): CvContactItem[] {
+  const baseCandidates: Array<CvContactItem | null> = [
     header.location
       ? { kind: "location" as const, label: "Location", value: header.location }
       : null,
     header.phone ? { kind: "phone" as const, label: "Phone", value: header.phone } : null,
     header.email ? { kind: "email" as const, label: "Email", value: header.email } : null,
-    ...header.links.map((link) => ({
+  ];
+  const base = baseCandidates.filter((item): item is CvContactItem => !!item);
+  const linkPriority: Record<CvContactKind, number> = {
+    location: 0,
+    phone: 1,
+    email: 2,
+    linkedin: 3,
+    portfolio: 4,
+    github: 5,
+    link: 6,
+  };
+  const personalLinks = header.links
+    .filter((link) => !isProductOrPortfolioLink(link))
+    .map((link) => ({
       kind: linkKind(link),
       label: link.label ?? "Link",
       value: linkText(link),
-    })),
-  ].filter((item): item is CvContactItem => !!item);
+    }));
+  const seenLinks = new Set<string>();
+  const links: CvContactItem[] = personalLinks
+    .filter((item) => {
+      const key = `${item.kind}:${item.value}`.toLowerCase();
+      if (seenLinks.has(key)) return false;
+      seenLinks.add(key);
+      return true;
+    })
+    .sort((a, b) => linkPriority[a.kind] - linkPriority[b.kind])
+    .slice(0, 2);
+
+  return [...base, ...links];
+}
+
+export function productLinkItems(header: CvHeader) {
+  return header.links.filter((link) => isProductOrPortfolioLink(link));
+}
+
+export function contactItems(header: CvHeader): CvContactItem[] {
+  return personalContactItems(header);
 }
 
 export function normalizeSectionId(section: string): CvSectionId | null {
@@ -605,7 +684,7 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
       if (section === "summary") {
         return {
           id: "summary",
-          label: "Profile",
+          label: "Professional Summary",
           type: "summary",
           priority: "primary",
           paragraphs: [cv.summary],
@@ -614,7 +693,7 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
       if (section === "projects" && cv.projects.length > 0) {
         return {
           id: "projects",
-          label: "Selected Projects",
+          label: "Projects",
           type: "projects",
           priority: "primary",
           items: cv.projects,
@@ -632,7 +711,7 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
       if (section === "skills" && cv.skills.groups.length > 0) {
         return {
           id: "skills",
-          label: "Technical Skills",
+          label: "Skills",
           type: "skills",
           priority: "secondary",
           groups: cv.skills.groups,
