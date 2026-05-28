@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 import { anonymousSessionCookieName } from "~/server/services/session.service";
-import { claimApplication } from "~/server/services/applicationWorkflow.service";
 import { getAuthSession } from "~/server/auth";
+import { db } from "~/server/db";
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -22,10 +22,13 @@ export async function GET(request: NextRequest) {
   )?.value;
 
   if (applicationId && anonymousSessionId) {
-    await claimApplication({
-      anonymousSessionId,
-      applicationId,
-      userId: authSession.user.id,
+    await db.application.updateMany({
+      where: {
+        id: applicationId,
+        anonymousSessionId,
+        userId: null,
+      },
+      data: { userId: authSession.user.id },
     }).catch(() => undefined);
   }
 

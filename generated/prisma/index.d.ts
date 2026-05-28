@@ -49,50 +49,20 @@ export type Application = $Result.DefaultSelection<Prisma.$ApplicationPayload>
  */
 export type Job = $Result.DefaultSelection<Prisma.$JobPayload>
 /**
- * Model JobRequirement
- * 
- */
-export type JobRequirement = $Result.DefaultSelection<Prisma.$JobRequirementPayload>
-/**
  * Model CandidateProfile
  * 
  */
 export type CandidateProfile = $Result.DefaultSelection<Prisma.$CandidateProfilePayload>
-/**
- * Model CandidateChunk
- * 
- */
-export type CandidateChunk = $Result.DefaultSelection<Prisma.$CandidateChunkPayload>
-/**
- * Model EvidenceMatch
- * 
- */
-export type EvidenceMatch = $Result.DefaultSelection<Prisma.$EvidenceMatchPayload>
-/**
- * Model RequirementFitScore
- * 
- */
-export type RequirementFitScore = $Result.DefaultSelection<Prisma.$RequirementFitScorePayload>
 /**
  * Model GapQuestion
  * 
  */
 export type GapQuestion = $Result.DefaultSelection<Prisma.$GapQuestionPayload>
 /**
- * Model GapCoachInsight
- * 
- */
-export type GapCoachInsight = $Result.DefaultSelection<Prisma.$GapCoachInsightPayload>
-/**
  * Model GapAnswer
  * 
  */
 export type GapAnswer = $Result.DefaultSelection<Prisma.$GapAnswerPayload>
-/**
- * Model CvStrategy
- * 
- */
-export type CvStrategy = $Result.DefaultSelection<Prisma.$CvStrategyPayload>
 /**
  * Model CvDraft
  * 
@@ -145,27 +115,6 @@ export namespace $Enums {
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
 
 
-export const RequirementType: {
-  skill: 'skill',
-  tool: 'tool',
-  responsibility: 'responsibility',
-  soft_skill: 'soft_skill',
-  domain: 'domain',
-  keyword: 'keyword'
-};
-
-export type RequirementType = (typeof RequirementType)[keyof typeof RequirementType]
-
-
-export const Importance: {
-  high: 'high',
-  medium: 'medium',
-  low: 'low'
-};
-
-export type Importance = (typeof Importance)[keyof typeof Importance]
-
-
 export const SourceType: {
   profile: 'profile',
   cv_upload: 'cv_upload',
@@ -176,29 +125,6 @@ export const SourceType: {
 };
 
 export type SourceType = (typeof SourceType)[keyof typeof SourceType]
-
-
-export const ChunkType: {
-  project: 'project',
-  skill: 'skill',
-  certification: 'certification',
-  education: 'education',
-  experience: 'experience',
-  gap_answer: 'gap_answer',
-  achievement: 'achievement'
-};
-
-export type ChunkType = (typeof ChunkType)[keyof typeof ChunkType]
-
-
-export const EvidenceConfidence: {
-  high: 'high',
-  medium: 'medium',
-  low: 'low',
-  missing: 'missing'
-};
-
-export type EvidenceConfidence = (typeof EvidenceConfidence)[keyof typeof EvidenceConfidence]
 
 
 export const GapQuestionStatus: {
@@ -299,25 +225,9 @@ export type ApplicationStatus = $Enums.ApplicationStatus
 
 export const ApplicationStatus: typeof $Enums.ApplicationStatus
 
-export type RequirementType = $Enums.RequirementType
-
-export const RequirementType: typeof $Enums.RequirementType
-
-export type Importance = $Enums.Importance
-
-export const Importance: typeof $Enums.Importance
-
 export type SourceType = $Enums.SourceType
 
 export const SourceType: typeof $Enums.SourceType
-
-export type ChunkType = $Enums.ChunkType
-
-export const ChunkType: typeof $Enums.ChunkType
-
-export type EvidenceConfidence = $Enums.EvidenceConfidence
-
-export const EvidenceConfidence: typeof $Enums.EvidenceConfidence
 
 export type GapQuestionStatus = $Enums.GapQuestionStatus
 
@@ -544,16 +454,6 @@ export class PrismaClient<
   get job(): Prisma.JobDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.jobRequirement`: Exposes CRUD operations for the **JobRequirement** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more JobRequirements
-    * const jobRequirements = await prisma.jobRequirement.findMany()
-    * ```
-    */
-  get jobRequirement(): Prisma.JobRequirementDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.candidateProfile`: Exposes CRUD operations for the **CandidateProfile** model.
     * Example usage:
     * ```ts
@@ -562,36 +462,6 @@ export class PrismaClient<
     * ```
     */
   get candidateProfile(): Prisma.CandidateProfileDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.candidateChunk`: Exposes CRUD operations for the **CandidateChunk** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more CandidateChunks
-    * const candidateChunks = await prisma.candidateChunk.findMany()
-    * ```
-    */
-  get candidateChunk(): Prisma.CandidateChunkDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.evidenceMatch`: Exposes CRUD operations for the **EvidenceMatch** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more EvidenceMatches
-    * const evidenceMatches = await prisma.evidenceMatch.findMany()
-    * ```
-    */
-  get evidenceMatch(): Prisma.EvidenceMatchDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.requirementFitScore`: Exposes CRUD operations for the **RequirementFitScore** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more RequirementFitScores
-    * const requirementFitScores = await prisma.requirementFitScore.findMany()
-    * ```
-    */
-  get requirementFitScore(): Prisma.RequirementFitScoreDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.gapQuestion`: Exposes CRUD operations for the **GapQuestion** model.
@@ -604,16 +474,6 @@ export class PrismaClient<
   get gapQuestion(): Prisma.GapQuestionDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.gapCoachInsight`: Exposes CRUD operations for the **GapCoachInsight** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more GapCoachInsights
-    * const gapCoachInsights = await prisma.gapCoachInsight.findMany()
-    * ```
-    */
-  get gapCoachInsight(): Prisma.GapCoachInsightDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.gapAnswer`: Exposes CRUD operations for the **GapAnswer** model.
     * Example usage:
     * ```ts
@@ -622,16 +482,6 @@ export class PrismaClient<
     * ```
     */
   get gapAnswer(): Prisma.GapAnswerDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.cvStrategy`: Exposes CRUD operations for the **CvStrategy** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more CvStrategies
-    * const cvStrategies = await prisma.cvStrategy.findMany()
-    * ```
-    */
-  get cvStrategy(): Prisma.CvStrategyDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.cvDraft`: Exposes CRUD operations for the **CvDraft** model.
@@ -1140,15 +990,9 @@ export namespace Prisma {
     Verification: 'Verification',
     Application: 'Application',
     Job: 'Job',
-    JobRequirement: 'JobRequirement',
     CandidateProfile: 'CandidateProfile',
-    CandidateChunk: 'CandidateChunk',
-    EvidenceMatch: 'EvidenceMatch',
-    RequirementFitScore: 'RequirementFitScore',
     GapQuestion: 'GapQuestion',
-    GapCoachInsight: 'GapCoachInsight',
     GapAnswer: 'GapAnswer',
-    CvStrategy: 'CvStrategy',
     CvDraft: 'CvDraft',
     BillingAccount: 'BillingAccount',
     CvGenerationUsage: 'CvGenerationUsage',
@@ -1173,7 +1017,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "anonymousSession" | "user" | "session" | "account" | "verification" | "application" | "job" | "jobRequirement" | "candidateProfile" | "candidateChunk" | "evidenceMatch" | "requirementFitScore" | "gapQuestion" | "gapCoachInsight" | "gapAnswer" | "cvStrategy" | "cvDraft" | "billingAccount" | "cvGenerationUsage" | "stripeWebhookEvent" | "abuseSignalEvent" | "agentRun"
+      modelProps: "anonymousSession" | "user" | "session" | "account" | "verification" | "application" | "job" | "candidateProfile" | "gapQuestion" | "gapAnswer" | "cvDraft" | "billingAccount" | "cvGenerationUsage" | "stripeWebhookEvent" | "abuseSignalEvent" | "agentRun"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1695,80 +1539,6 @@ export namespace Prisma {
           }
         }
       }
-      JobRequirement: {
-        payload: Prisma.$JobRequirementPayload<ExtArgs>
-        fields: Prisma.JobRequirementFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.JobRequirementFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.JobRequirementFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>
-          }
-          findFirst: {
-            args: Prisma.JobRequirementFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.JobRequirementFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>
-          }
-          findMany: {
-            args: Prisma.JobRequirementFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>[]
-          }
-          create: {
-            args: Prisma.JobRequirementCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>
-          }
-          createMany: {
-            args: Prisma.JobRequirementCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.JobRequirementCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>[]
-          }
-          delete: {
-            args: Prisma.JobRequirementDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>
-          }
-          update: {
-            args: Prisma.JobRequirementUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>
-          }
-          deleteMany: {
-            args: Prisma.JobRequirementDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.JobRequirementUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.JobRequirementUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>[]
-          }
-          upsert: {
-            args: Prisma.JobRequirementUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$JobRequirementPayload>
-          }
-          aggregate: {
-            args: Prisma.JobRequirementAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateJobRequirement>
-          }
-          groupBy: {
-            args: Prisma.JobRequirementGroupByArgs<ExtArgs>
-            result: $Utils.Optional<JobRequirementGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.JobRequirementCountArgs<ExtArgs>
-            result: $Utils.Optional<JobRequirementCountAggregateOutputType> | number
-          }
-        }
-      }
       CandidateProfile: {
         payload: Prisma.$CandidateProfilePayload<ExtArgs>
         fields: Prisma.CandidateProfileFieldRefs
@@ -1840,228 +1610,6 @@ export namespace Prisma {
           count: {
             args: Prisma.CandidateProfileCountArgs<ExtArgs>
             result: $Utils.Optional<CandidateProfileCountAggregateOutputType> | number
-          }
-        }
-      }
-      CandidateChunk: {
-        payload: Prisma.$CandidateChunkPayload<ExtArgs>
-        fields: Prisma.CandidateChunkFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CandidateChunkFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CandidateChunkFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>
-          }
-          findFirst: {
-            args: Prisma.CandidateChunkFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CandidateChunkFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>
-          }
-          findMany: {
-            args: Prisma.CandidateChunkFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>[]
-          }
-          create: {
-            args: Prisma.CandidateChunkCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>
-          }
-          createMany: {
-            args: Prisma.CandidateChunkCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.CandidateChunkCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>[]
-          }
-          delete: {
-            args: Prisma.CandidateChunkDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>
-          }
-          update: {
-            args: Prisma.CandidateChunkUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>
-          }
-          deleteMany: {
-            args: Prisma.CandidateChunkDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CandidateChunkUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.CandidateChunkUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>[]
-          }
-          upsert: {
-            args: Prisma.CandidateChunkUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CandidateChunkPayload>
-          }
-          aggregate: {
-            args: Prisma.CandidateChunkAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCandidateChunk>
-          }
-          groupBy: {
-            args: Prisma.CandidateChunkGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CandidateChunkGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CandidateChunkCountArgs<ExtArgs>
-            result: $Utils.Optional<CandidateChunkCountAggregateOutputType> | number
-          }
-        }
-      }
-      EvidenceMatch: {
-        payload: Prisma.$EvidenceMatchPayload<ExtArgs>
-        fields: Prisma.EvidenceMatchFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.EvidenceMatchFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.EvidenceMatchFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>
-          }
-          findFirst: {
-            args: Prisma.EvidenceMatchFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.EvidenceMatchFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>
-          }
-          findMany: {
-            args: Prisma.EvidenceMatchFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>[]
-          }
-          create: {
-            args: Prisma.EvidenceMatchCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>
-          }
-          createMany: {
-            args: Prisma.EvidenceMatchCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.EvidenceMatchCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>[]
-          }
-          delete: {
-            args: Prisma.EvidenceMatchDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>
-          }
-          update: {
-            args: Prisma.EvidenceMatchUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>
-          }
-          deleteMany: {
-            args: Prisma.EvidenceMatchDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.EvidenceMatchUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.EvidenceMatchUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>[]
-          }
-          upsert: {
-            args: Prisma.EvidenceMatchUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$EvidenceMatchPayload>
-          }
-          aggregate: {
-            args: Prisma.EvidenceMatchAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateEvidenceMatch>
-          }
-          groupBy: {
-            args: Prisma.EvidenceMatchGroupByArgs<ExtArgs>
-            result: $Utils.Optional<EvidenceMatchGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.EvidenceMatchCountArgs<ExtArgs>
-            result: $Utils.Optional<EvidenceMatchCountAggregateOutputType> | number
-          }
-        }
-      }
-      RequirementFitScore: {
-        payload: Prisma.$RequirementFitScorePayload<ExtArgs>
-        fields: Prisma.RequirementFitScoreFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.RequirementFitScoreFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.RequirementFitScoreFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>
-          }
-          findFirst: {
-            args: Prisma.RequirementFitScoreFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.RequirementFitScoreFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>
-          }
-          findMany: {
-            args: Prisma.RequirementFitScoreFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>[]
-          }
-          create: {
-            args: Prisma.RequirementFitScoreCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>
-          }
-          createMany: {
-            args: Prisma.RequirementFitScoreCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.RequirementFitScoreCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>[]
-          }
-          delete: {
-            args: Prisma.RequirementFitScoreDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>
-          }
-          update: {
-            args: Prisma.RequirementFitScoreUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>
-          }
-          deleteMany: {
-            args: Prisma.RequirementFitScoreDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.RequirementFitScoreUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.RequirementFitScoreUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>[]
-          }
-          upsert: {
-            args: Prisma.RequirementFitScoreUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$RequirementFitScorePayload>
-          }
-          aggregate: {
-            args: Prisma.RequirementFitScoreAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateRequirementFitScore>
-          }
-          groupBy: {
-            args: Prisma.RequirementFitScoreGroupByArgs<ExtArgs>
-            result: $Utils.Optional<RequirementFitScoreGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.RequirementFitScoreCountArgs<ExtArgs>
-            result: $Utils.Optional<RequirementFitScoreCountAggregateOutputType> | number
           }
         }
       }
@@ -2139,80 +1687,6 @@ export namespace Prisma {
           }
         }
       }
-      GapCoachInsight: {
-        payload: Prisma.$GapCoachInsightPayload<ExtArgs>
-        fields: Prisma.GapCoachInsightFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.GapCoachInsightFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.GapCoachInsightFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>
-          }
-          findFirst: {
-            args: Prisma.GapCoachInsightFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.GapCoachInsightFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>
-          }
-          findMany: {
-            args: Prisma.GapCoachInsightFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>[]
-          }
-          create: {
-            args: Prisma.GapCoachInsightCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>
-          }
-          createMany: {
-            args: Prisma.GapCoachInsightCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.GapCoachInsightCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>[]
-          }
-          delete: {
-            args: Prisma.GapCoachInsightDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>
-          }
-          update: {
-            args: Prisma.GapCoachInsightUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>
-          }
-          deleteMany: {
-            args: Prisma.GapCoachInsightDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.GapCoachInsightUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.GapCoachInsightUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>[]
-          }
-          upsert: {
-            args: Prisma.GapCoachInsightUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$GapCoachInsightPayload>
-          }
-          aggregate: {
-            args: Prisma.GapCoachInsightAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateGapCoachInsight>
-          }
-          groupBy: {
-            args: Prisma.GapCoachInsightGroupByArgs<ExtArgs>
-            result: $Utils.Optional<GapCoachInsightGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.GapCoachInsightCountArgs<ExtArgs>
-            result: $Utils.Optional<GapCoachInsightCountAggregateOutputType> | number
-          }
-        }
-      }
       GapAnswer: {
         payload: Prisma.$GapAnswerPayload<ExtArgs>
         fields: Prisma.GapAnswerFieldRefs
@@ -2284,80 +1758,6 @@ export namespace Prisma {
           count: {
             args: Prisma.GapAnswerCountArgs<ExtArgs>
             result: $Utils.Optional<GapAnswerCountAggregateOutputType> | number
-          }
-        }
-      }
-      CvStrategy: {
-        payload: Prisma.$CvStrategyPayload<ExtArgs>
-        fields: Prisma.CvStrategyFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.CvStrategyFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.CvStrategyFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>
-          }
-          findFirst: {
-            args: Prisma.CvStrategyFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.CvStrategyFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>
-          }
-          findMany: {
-            args: Prisma.CvStrategyFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>[]
-          }
-          create: {
-            args: Prisma.CvStrategyCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>
-          }
-          createMany: {
-            args: Prisma.CvStrategyCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.CvStrategyCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>[]
-          }
-          delete: {
-            args: Prisma.CvStrategyDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>
-          }
-          update: {
-            args: Prisma.CvStrategyUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>
-          }
-          deleteMany: {
-            args: Prisma.CvStrategyDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.CvStrategyUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.CvStrategyUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>[]
-          }
-          upsert: {
-            args: Prisma.CvStrategyUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$CvStrategyPayload>
-          }
-          aggregate: {
-            args: Prisma.CvStrategyAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateCvStrategy>
-          }
-          groupBy: {
-            args: Prisma.CvStrategyGroupByArgs<ExtArgs>
-            result: $Utils.Optional<CvStrategyGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.CvStrategyCountArgs<ExtArgs>
-            result: $Utils.Optional<CvStrategyCountAggregateOutputType> | number
           }
         }
       }
@@ -2850,7 +2250,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     *
+     * 
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -2858,7 +2258,7 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     *
+     * 
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
@@ -2908,15 +2308,9 @@ export namespace Prisma {
     verification?: VerificationOmit
     application?: ApplicationOmit
     job?: JobOmit
-    jobRequirement?: JobRequirementOmit
     candidateProfile?: CandidateProfileOmit
-    candidateChunk?: CandidateChunkOmit
-    evidenceMatch?: EvidenceMatchOmit
-    requirementFitScore?: RequirementFitScoreOmit
     gapQuestion?: GapQuestionOmit
-    gapCoachInsight?: GapCoachInsightOmit
     gapAnswer?: GapAnswerOmit
-    cvStrategy?: CvStrategyOmit
     cvDraft?: CvDraftOmit
     billingAccount?: BillingAccountOmit
     cvGenerationUsage?: CvGenerationUsageOmit
@@ -3005,13 +2399,11 @@ export namespace Prisma {
   export type AnonymousSessionCountOutputType = {
     applications: number
     candidateProfiles: number
-    candidateChunks: number
   }
 
   export type AnonymousSessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     applications?: boolean | AnonymousSessionCountOutputTypeCountApplicationsArgs
     candidateProfiles?: boolean | AnonymousSessionCountOutputTypeCountCandidateProfilesArgs
-    candidateChunks?: boolean | AnonymousSessionCountOutputTypeCountCandidateChunksArgs
   }
 
   // Custom InputTypes
@@ -3039,13 +2431,6 @@ export namespace Prisma {
     where?: CandidateProfileWhereInput
   }
 
-  /**
-   * AnonymousSessionCountOutputType without action
-   */
-  export type AnonymousSessionCountOutputTypeCountCandidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CandidateChunkWhereInput
-  }
-
 
   /**
    * Count Type UserCountOutputType
@@ -3057,7 +2442,6 @@ export namespace Prisma {
     cvGenerationUsage: number
     applications: number
     candidateProfiles: number
-    candidateChunks: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3066,7 +2450,6 @@ export namespace Prisma {
     cvGenerationUsage?: boolean | UserCountOutputTypeCountCvGenerationUsageArgs
     applications?: boolean | UserCountOutputTypeCountApplicationsArgs
     candidateProfiles?: boolean | UserCountOutputTypeCountCandidateProfilesArgs
-    candidateChunks?: boolean | UserCountOutputTypeCountCandidateChunksArgs
   }
 
   // Custom InputTypes
@@ -3115,13 +2498,6 @@ export namespace Prisma {
     where?: CandidateProfileWhereInput
   }
 
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountCandidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CandidateChunkWhereInput
-  }
-
 
   /**
    * Count Type ApplicationCountOutputType
@@ -3129,12 +2505,8 @@ export namespace Prisma {
 
   export type ApplicationCountOutputType = {
     sourceCandidateProfiles: number
-    sourceCandidateChunks: number
-    evidenceMatches: number
-    requirementFitScores: number
     gapQuestions: number
     gapAnswers: number
-    cvStrategies: number
     cvDrafts: number
     cvGenerationUsage: number
     agentRuns: number
@@ -3142,12 +2514,8 @@ export namespace Prisma {
 
   export type ApplicationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sourceCandidateProfiles?: boolean | ApplicationCountOutputTypeCountSourceCandidateProfilesArgs
-    sourceCandidateChunks?: boolean | ApplicationCountOutputTypeCountSourceCandidateChunksArgs
-    evidenceMatches?: boolean | ApplicationCountOutputTypeCountEvidenceMatchesArgs
-    requirementFitScores?: boolean | ApplicationCountOutputTypeCountRequirementFitScoresArgs
     gapQuestions?: boolean | ApplicationCountOutputTypeCountGapQuestionsArgs
     gapAnswers?: boolean | ApplicationCountOutputTypeCountGapAnswersArgs
-    cvStrategies?: boolean | ApplicationCountOutputTypeCountCvStrategiesArgs
     cvDrafts?: boolean | ApplicationCountOutputTypeCountCvDraftsArgs
     cvGenerationUsage?: boolean | ApplicationCountOutputTypeCountCvGenerationUsageArgs
     agentRuns?: boolean | ApplicationCountOutputTypeCountAgentRunsArgs
@@ -3174,27 +2542,6 @@ export namespace Prisma {
   /**
    * ApplicationCountOutputType without action
    */
-  export type ApplicationCountOutputTypeCountSourceCandidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CandidateChunkWhereInput
-  }
-
-  /**
-   * ApplicationCountOutputType without action
-   */
-  export type ApplicationCountOutputTypeCountEvidenceMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EvidenceMatchWhereInput
-  }
-
-  /**
-   * ApplicationCountOutputType without action
-   */
-  export type ApplicationCountOutputTypeCountRequirementFitScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RequirementFitScoreWhereInput
-  }
-
-  /**
-   * ApplicationCountOutputType without action
-   */
   export type ApplicationCountOutputTypeCountGapQuestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GapQuestionWhereInput
   }
@@ -3204,13 +2551,6 @@ export namespace Prisma {
    */
   export type ApplicationCountOutputTypeCountGapAnswersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GapAnswerWhereInput
-  }
-
-  /**
-   * ApplicationCountOutputType without action
-   */
-  export type ApplicationCountOutputTypeCountCvStrategiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CvStrategyWhereInput
   }
 
   /**
@@ -3232,157 +2572,6 @@ export namespace Prisma {
    */
   export type ApplicationCountOutputTypeCountAgentRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AgentRunWhereInput
-  }
-
-
-  /**
-   * Count Type JobCountOutputType
-   */
-
-  export type JobCountOutputType = {
-    requirements: number
-  }
-
-  export type JobCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    requirements?: boolean | JobCountOutputTypeCountRequirementsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * JobCountOutputType without action
-   */
-  export type JobCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobCountOutputType
-     */
-    select?: JobCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * JobCountOutputType without action
-   */
-  export type JobCountOutputTypeCountRequirementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobRequirementWhereInput
-  }
-
-
-  /**
-   * Count Type JobRequirementCountOutputType
-   */
-
-  export type JobRequirementCountOutputType = {
-    evidenceMatches: number
-    requirementFitScores: number
-    gapQuestions: number
-  }
-
-  export type JobRequirementCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    evidenceMatches?: boolean | JobRequirementCountOutputTypeCountEvidenceMatchesArgs
-    requirementFitScores?: boolean | JobRequirementCountOutputTypeCountRequirementFitScoresArgs
-    gapQuestions?: boolean | JobRequirementCountOutputTypeCountGapQuestionsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * JobRequirementCountOutputType without action
-   */
-  export type JobRequirementCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirementCountOutputType
-     */
-    select?: JobRequirementCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * JobRequirementCountOutputType without action
-   */
-  export type JobRequirementCountOutputTypeCountEvidenceMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EvidenceMatchWhereInput
-  }
-
-  /**
-   * JobRequirementCountOutputType without action
-   */
-  export type JobRequirementCountOutputTypeCountRequirementFitScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RequirementFitScoreWhereInput
-  }
-
-  /**
-   * JobRequirementCountOutputType without action
-   */
-  export type JobRequirementCountOutputTypeCountGapQuestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GapQuestionWhereInput
-  }
-
-
-  /**
-   * Count Type CandidateProfileCountOutputType
-   */
-
-  export type CandidateProfileCountOutputType = {
-    candidateChunks: number
-  }
-
-  export type CandidateProfileCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    candidateChunks?: boolean | CandidateProfileCountOutputTypeCountCandidateChunksArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * CandidateProfileCountOutputType without action
-   */
-  export type CandidateProfileCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateProfileCountOutputType
-     */
-    select?: CandidateProfileCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * CandidateProfileCountOutputType without action
-   */
-  export type CandidateProfileCountOutputTypeCountCandidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CandidateChunkWhereInput
-  }
-
-
-  /**
-   * Count Type CandidateChunkCountOutputType
-   */
-
-  export type CandidateChunkCountOutputType = {
-    evidenceMatches: number
-    bestFitScores: number
-  }
-
-  export type CandidateChunkCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    evidenceMatches?: boolean | CandidateChunkCountOutputTypeCountEvidenceMatchesArgs
-    bestFitScores?: boolean | CandidateChunkCountOutputTypeCountBestFitScoresArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * CandidateChunkCountOutputType without action
-   */
-  export type CandidateChunkCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunkCountOutputType
-     */
-    select?: CandidateChunkCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * CandidateChunkCountOutputType without action
-   */
-  export type CandidateChunkCountOutputTypeCountEvidenceMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EvidenceMatchWhereInput
-  }
-
-  /**
-   * CandidateChunkCountOutputType without action
-   */
-  export type CandidateChunkCountOutputTypeCountBestFitScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RequirementFitScoreWhereInput
   }
 
 
@@ -3414,37 +2603,6 @@ export namespace Prisma {
    */
   export type GapQuestionCountOutputTypeCountAnswersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GapAnswerWhereInput
-  }
-
-
-  /**
-   * Count Type CvStrategyCountOutputType
-   */
-
-  export type CvStrategyCountOutputType = {
-    cvDrafts: number
-  }
-
-  export type CvStrategyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cvDrafts?: boolean | CvStrategyCountOutputTypeCountCvDraftsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * CvStrategyCountOutputType without action
-   */
-  export type CvStrategyCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategyCountOutputType
-     */
-    select?: CvStrategyCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * CvStrategyCountOutputType without action
-   */
-  export type CvStrategyCountOutputTypeCountCvDraftsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CvDraftWhereInput
   }
 
 
@@ -3633,7 +2791,6 @@ export namespace Prisma {
     updatedAt?: boolean
     applications?: boolean | AnonymousSession$applicationsArgs<ExtArgs>
     candidateProfiles?: boolean | AnonymousSession$candidateProfilesArgs<ExtArgs>
-    candidateChunks?: boolean | AnonymousSession$candidateChunksArgs<ExtArgs>
     _count?: boolean | AnonymousSessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["anonymousSession"]>
 
@@ -3659,7 +2816,6 @@ export namespace Prisma {
   export type AnonymousSessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     applications?: boolean | AnonymousSession$applicationsArgs<ExtArgs>
     candidateProfiles?: boolean | AnonymousSession$candidateProfilesArgs<ExtArgs>
-    candidateChunks?: boolean | AnonymousSession$candidateChunksArgs<ExtArgs>
     _count?: boolean | AnonymousSessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AnonymousSessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3670,7 +2826,6 @@ export namespace Prisma {
     objects: {
       applications: Prisma.$ApplicationPayload<ExtArgs>[]
       candidateProfiles: Prisma.$CandidateProfilePayload<ExtArgs>[]
-      candidateChunks: Prisma.$CandidateChunkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4072,7 +3227,6 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     applications<T extends AnonymousSession$applicationsArgs<ExtArgs> = {}>(args?: Subset<T, AnonymousSession$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     candidateProfiles<T extends AnonymousSession$candidateProfilesArgs<ExtArgs> = {}>(args?: Subset<T, AnonymousSession$candidateProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    candidateChunks<T extends AnonymousSession$candidateChunksArgs<ExtArgs> = {}>(args?: Subset<T, AnonymousSession$candidateChunksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4541,30 +3695,6 @@ export namespace Prisma {
   }
 
   /**
-   * AnonymousSession.candidateChunks
-   */
-  export type AnonymousSession$candidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    where?: CandidateChunkWhereInput
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    cursor?: CandidateChunkWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CandidateChunkScalarFieldEnum | CandidateChunkScalarFieldEnum[]
-  }
-
-  /**
    * AnonymousSession without action
    */
   export type AnonymousSessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4769,7 +3899,6 @@ export namespace Prisma {
     cvGenerationUsage?: boolean | User$cvGenerationUsageArgs<ExtArgs>
     applications?: boolean | User$applicationsArgs<ExtArgs>
     candidateProfiles?: boolean | User$candidateProfilesArgs<ExtArgs>
-    candidateChunks?: boolean | User$candidateChunksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4811,7 +3940,6 @@ export namespace Prisma {
     cvGenerationUsage?: boolean | User$cvGenerationUsageArgs<ExtArgs>
     applications?: boolean | User$applicationsArgs<ExtArgs>
     candidateProfiles?: boolean | User$candidateProfilesArgs<ExtArgs>
-    candidateChunks?: boolean | User$candidateChunksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4826,7 +3954,6 @@ export namespace Prisma {
       cvGenerationUsage: Prisma.$CvGenerationUsagePayload<ExtArgs>[]
       applications: Prisma.$ApplicationPayload<ExtArgs>[]
       candidateProfiles: Prisma.$CandidateProfilePayload<ExtArgs>[]
-      candidateChunks: Prisma.$CandidateChunkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5236,7 +4363,6 @@ export namespace Prisma {
     cvGenerationUsage<T extends User$cvGenerationUsageArgs<ExtArgs> = {}>(args?: Subset<T, User$cvGenerationUsageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvGenerationUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     applications<T extends User$applicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     candidateProfiles<T extends User$candidateProfilesArgs<ExtArgs> = {}>(args?: Subset<T, User$candidateProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    candidateChunks<T extends User$candidateChunksArgs<ExtArgs> = {}>(args?: Subset<T, User$candidateChunksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5797,30 +4923,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CandidateProfileScalarFieldEnum | CandidateProfileScalarFieldEnum[]
-  }
-
-  /**
-   * User.candidateChunks
-   */
-  export type User$candidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    where?: CandidateChunkWhereInput
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    cursor?: CandidateChunkWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CandidateChunkScalarFieldEnum | CandidateChunkScalarFieldEnum[]
   }
 
   /**
@@ -9383,13 +8485,8 @@ export namespace Prisma {
     user?: boolean | Application$userArgs<ExtArgs>
     job?: boolean | Application$jobArgs<ExtArgs>
     sourceCandidateProfiles?: boolean | Application$sourceCandidateProfilesArgs<ExtArgs>
-    sourceCandidateChunks?: boolean | Application$sourceCandidateChunksArgs<ExtArgs>
-    evidenceMatches?: boolean | Application$evidenceMatchesArgs<ExtArgs>
-    requirementFitScores?: boolean | Application$requirementFitScoresArgs<ExtArgs>
     gapQuestions?: boolean | Application$gapQuestionsArgs<ExtArgs>
     gapAnswers?: boolean | Application$gapAnswersArgs<ExtArgs>
-    gapCoachInsight?: boolean | Application$gapCoachInsightArgs<ExtArgs>
-    cvStrategies?: boolean | Application$cvStrategiesArgs<ExtArgs>
     cvDrafts?: boolean | Application$cvDraftsArgs<ExtArgs>
     cvGenerationUsage?: boolean | Application$cvGenerationUsageArgs<ExtArgs>
     agentRuns?: boolean | Application$agentRunsArgs<ExtArgs>
@@ -9457,13 +8554,8 @@ export namespace Prisma {
     user?: boolean | Application$userArgs<ExtArgs>
     job?: boolean | Application$jobArgs<ExtArgs>
     sourceCandidateProfiles?: boolean | Application$sourceCandidateProfilesArgs<ExtArgs>
-    sourceCandidateChunks?: boolean | Application$sourceCandidateChunksArgs<ExtArgs>
-    evidenceMatches?: boolean | Application$evidenceMatchesArgs<ExtArgs>
-    requirementFitScores?: boolean | Application$requirementFitScoresArgs<ExtArgs>
     gapQuestions?: boolean | Application$gapQuestionsArgs<ExtArgs>
     gapAnswers?: boolean | Application$gapAnswersArgs<ExtArgs>
-    gapCoachInsight?: boolean | Application$gapCoachInsightArgs<ExtArgs>
-    cvStrategies?: boolean | Application$cvStrategiesArgs<ExtArgs>
     cvDrafts?: boolean | Application$cvDraftsArgs<ExtArgs>
     cvGenerationUsage?: boolean | Application$cvGenerationUsageArgs<ExtArgs>
     agentRuns?: boolean | Application$agentRunsArgs<ExtArgs>
@@ -9485,13 +8577,8 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs> | null
       job: Prisma.$JobPayload<ExtArgs> | null
       sourceCandidateProfiles: Prisma.$CandidateProfilePayload<ExtArgs>[]
-      sourceCandidateChunks: Prisma.$CandidateChunkPayload<ExtArgs>[]
-      evidenceMatches: Prisma.$EvidenceMatchPayload<ExtArgs>[]
-      requirementFitScores: Prisma.$RequirementFitScorePayload<ExtArgs>[]
       gapQuestions: Prisma.$GapQuestionPayload<ExtArgs>[]
       gapAnswers: Prisma.$GapAnswerPayload<ExtArgs>[]
-      gapCoachInsight: Prisma.$GapCoachInsightPayload<ExtArgs> | null
-      cvStrategies: Prisma.$CvStrategyPayload<ExtArgs>[]
       cvDrafts: Prisma.$CvDraftPayload<ExtArgs>[]
       cvGenerationUsage: Prisma.$CvGenerationUsagePayload<ExtArgs>[]
       agentRuns: Prisma.$AgentRunPayload<ExtArgs>[]
@@ -9909,13 +8996,8 @@ export namespace Prisma {
     user<T extends Application$userArgs<ExtArgs> = {}>(args?: Subset<T, Application$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     job<T extends Application$jobArgs<ExtArgs> = {}>(args?: Subset<T, Application$jobArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sourceCandidateProfiles<T extends Application$sourceCandidateProfilesArgs<ExtArgs> = {}>(args?: Subset<T, Application$sourceCandidateProfilesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateProfilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    sourceCandidateChunks<T extends Application$sourceCandidateChunksArgs<ExtArgs> = {}>(args?: Subset<T, Application$sourceCandidateChunksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    evidenceMatches<T extends Application$evidenceMatchesArgs<ExtArgs> = {}>(args?: Subset<T, Application$evidenceMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    requirementFitScores<T extends Application$requirementFitScoresArgs<ExtArgs> = {}>(args?: Subset<T, Application$requirementFitScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gapQuestions<T extends Application$gapQuestionsArgs<ExtArgs> = {}>(args?: Subset<T, Application$gapQuestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GapQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gapAnswers<T extends Application$gapAnswersArgs<ExtArgs> = {}>(args?: Subset<T, Application$gapAnswersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GapAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    gapCoachInsight<T extends Application$gapCoachInsightArgs<ExtArgs> = {}>(args?: Subset<T, Application$gapCoachInsightArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    cvStrategies<T extends Application$cvStrategiesArgs<ExtArgs> = {}>(args?: Subset<T, Application$cvStrategiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cvDrafts<T extends Application$cvDraftsArgs<ExtArgs> = {}>(args?: Subset<T, Application$cvDraftsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cvGenerationUsage<T extends Application$cvGenerationUsageArgs<ExtArgs> = {}>(args?: Subset<T, Application$cvGenerationUsageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvGenerationUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     agentRuns<T extends Application$agentRunsArgs<ExtArgs> = {}>(args?: Subset<T, Application$agentRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -10420,78 +9502,6 @@ export namespace Prisma {
   }
 
   /**
-   * Application.sourceCandidateChunks
-   */
-  export type Application$sourceCandidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    where?: CandidateChunkWhereInput
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    cursor?: CandidateChunkWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CandidateChunkScalarFieldEnum | CandidateChunkScalarFieldEnum[]
-  }
-
-  /**
-   * Application.evidenceMatches
-   */
-  export type Application$evidenceMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    where?: EvidenceMatchWhereInput
-    orderBy?: EvidenceMatchOrderByWithRelationInput | EvidenceMatchOrderByWithRelationInput[]
-    cursor?: EvidenceMatchWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EvidenceMatchScalarFieldEnum | EvidenceMatchScalarFieldEnum[]
-  }
-
-  /**
-   * Application.requirementFitScores
-   */
-  export type Application$requirementFitScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    where?: RequirementFitScoreWhereInput
-    orderBy?: RequirementFitScoreOrderByWithRelationInput | RequirementFitScoreOrderByWithRelationInput[]
-    cursor?: RequirementFitScoreWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RequirementFitScoreScalarFieldEnum | RequirementFitScoreScalarFieldEnum[]
-  }
-
-  /**
    * Application.gapQuestions
    */
   export type Application$gapQuestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10537,49 +9547,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GapAnswerScalarFieldEnum | GapAnswerScalarFieldEnum[]
-  }
-
-  /**
-   * Application.gapCoachInsight
-   */
-  export type Application$gapCoachInsightArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    where?: GapCoachInsightWhereInput
-  }
-
-  /**
-   * Application.cvStrategies
-   */
-  export type Application$cvStrategiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    where?: CvStrategyWhereInput
-    orderBy?: CvStrategyOrderByWithRelationInput | CvStrategyOrderByWithRelationInput[]
-    cursor?: CvStrategyWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CvStrategyScalarFieldEnum | CvStrategyScalarFieldEnum[]
   }
 
   /**
@@ -10878,8 +9845,6 @@ export namespace Prisma {
     archetypeHint?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    requirements?: boolean | Job$requirementsArgs<ExtArgs>
-    _count?: boolean | JobCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["job"]>
 
   export type JobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10926,8 +9891,6 @@ export namespace Prisma {
   export type JobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "rawText" | "title" | "company" | "seniority" | "summary" | "roleDomain" | "archetypeHint" | "createdAt", ExtArgs["result"]["job"]>
   export type JobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    requirements?: boolean | Job$requirementsArgs<ExtArgs>
-    _count?: boolean | JobCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type JobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
@@ -10940,7 +9903,6 @@ export namespace Prisma {
     name: "Job"
     objects: {
       application: Prisma.$ApplicationPayload<ExtArgs>
-      requirements: Prisma.$JobRequirementPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11348,7 +10310,6 @@ export namespace Prisma {
   export interface Prisma__JobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    requirements<T extends Job$requirementsArgs<ExtArgs> = {}>(args?: Subset<T, Job$requirementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11784,30 +10745,6 @@ export namespace Prisma {
   }
 
   /**
-   * Job.requirements
-   */
-  export type Job$requirementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    where?: JobRequirementWhereInput
-    orderBy?: JobRequirementOrderByWithRelationInput | JobRequirementOrderByWithRelationInput[]
-    cursor?: JobRequirementWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: JobRequirementScalarFieldEnum | JobRequirementScalarFieldEnum[]
-  }
-
-  /**
    * Job without action
    */
   export type JobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11823,1202 +10760,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: JobInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model JobRequirement
-   */
-
-  export type AggregateJobRequirement = {
-    _count: JobRequirementCountAggregateOutputType | null
-    _min: JobRequirementMinAggregateOutputType | null
-    _max: JobRequirementMaxAggregateOutputType | null
-  }
-
-  export type JobRequirementMinAggregateOutputType = {
-    id: string | null
-    jobId: string | null
-    type: $Enums.RequirementType | null
-    label: string | null
-    description: string | null
-    importance: $Enums.Importance | null
-    queryEmbeddingModel: string | null
-    queryEmbeddingInputHash: string | null
-    queryEmbeddedAt: Date | null
-  }
-
-  export type JobRequirementMaxAggregateOutputType = {
-    id: string | null
-    jobId: string | null
-    type: $Enums.RequirementType | null
-    label: string | null
-    description: string | null
-    importance: $Enums.Importance | null
-    queryEmbeddingModel: string | null
-    queryEmbeddingInputHash: string | null
-    queryEmbeddedAt: Date | null
-  }
-
-  export type JobRequirementCountAggregateOutputType = {
-    id: number
-    jobId: number
-    type: number
-    label: number
-    description: number
-    importance: number
-    queryEmbeddingModel: number
-    queryEmbeddingInputHash: number
-    queryEmbeddedAt: number
-    _all: number
-  }
-
-
-  export type JobRequirementMinAggregateInputType = {
-    id?: true
-    jobId?: true
-    type?: true
-    label?: true
-    description?: true
-    importance?: true
-    queryEmbeddingModel?: true
-    queryEmbeddingInputHash?: true
-    queryEmbeddedAt?: true
-  }
-
-  export type JobRequirementMaxAggregateInputType = {
-    id?: true
-    jobId?: true
-    type?: true
-    label?: true
-    description?: true
-    importance?: true
-    queryEmbeddingModel?: true
-    queryEmbeddingInputHash?: true
-    queryEmbeddedAt?: true
-  }
-
-  export type JobRequirementCountAggregateInputType = {
-    id?: true
-    jobId?: true
-    type?: true
-    label?: true
-    description?: true
-    importance?: true
-    queryEmbeddingModel?: true
-    queryEmbeddingInputHash?: true
-    queryEmbeddedAt?: true
-    _all?: true
-  }
-
-  export type JobRequirementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which JobRequirement to aggregate.
-     */
-    where?: JobRequirementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobRequirements to fetch.
-     */
-    orderBy?: JobRequirementOrderByWithRelationInput | JobRequirementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: JobRequirementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobRequirements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobRequirements.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned JobRequirements
-    **/
-    _count?: true | JobRequirementCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: JobRequirementMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: JobRequirementMaxAggregateInputType
-  }
-
-  export type GetJobRequirementAggregateType<T extends JobRequirementAggregateArgs> = {
-        [P in keyof T & keyof AggregateJobRequirement]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateJobRequirement[P]>
-      : GetScalarType<T[P], AggregateJobRequirement[P]>
-  }
-
-
-
-
-  export type JobRequirementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobRequirementWhereInput
-    orderBy?: JobRequirementOrderByWithAggregationInput | JobRequirementOrderByWithAggregationInput[]
-    by: JobRequirementScalarFieldEnum[] | JobRequirementScalarFieldEnum
-    having?: JobRequirementScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: JobRequirementCountAggregateInputType | true
-    _min?: JobRequirementMinAggregateInputType
-    _max?: JobRequirementMaxAggregateInputType
-  }
-
-  export type JobRequirementGroupByOutputType = {
-    id: string
-    jobId: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel: string | null
-    queryEmbeddingInputHash: string | null
-    queryEmbeddedAt: Date | null
-    _count: JobRequirementCountAggregateOutputType | null
-    _min: JobRequirementMinAggregateOutputType | null
-    _max: JobRequirementMaxAggregateOutputType | null
-  }
-
-  type GetJobRequirementGroupByPayload<T extends JobRequirementGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<JobRequirementGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof JobRequirementGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], JobRequirementGroupByOutputType[P]>
-            : GetScalarType<T[P], JobRequirementGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type JobRequirementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    jobId?: boolean
-    type?: boolean
-    label?: boolean
-    description?: boolean
-    importance?: boolean
-    queryEmbeddingModel?: boolean
-    queryEmbeddingInputHash?: boolean
-    queryEmbeddedAt?: boolean
-    job?: boolean | JobDefaultArgs<ExtArgs>
-    evidenceMatches?: boolean | JobRequirement$evidenceMatchesArgs<ExtArgs>
-    requirementFitScores?: boolean | JobRequirement$requirementFitScoresArgs<ExtArgs>
-    gapQuestions?: boolean | JobRequirement$gapQuestionsArgs<ExtArgs>
-    _count?: boolean | JobRequirementCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["jobRequirement"]>
-
-  export type JobRequirementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    jobId?: boolean
-    type?: boolean
-    label?: boolean
-    description?: boolean
-    importance?: boolean
-    queryEmbeddingModel?: boolean
-    queryEmbeddingInputHash?: boolean
-    queryEmbeddedAt?: boolean
-    job?: boolean | JobDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["jobRequirement"]>
-
-  export type JobRequirementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    jobId?: boolean
-    type?: boolean
-    label?: boolean
-    description?: boolean
-    importance?: boolean
-    queryEmbeddingModel?: boolean
-    queryEmbeddingInputHash?: boolean
-    queryEmbeddedAt?: boolean
-    job?: boolean | JobDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["jobRequirement"]>
-
-  export type JobRequirementSelectScalar = {
-    id?: boolean
-    jobId?: boolean
-    type?: boolean
-    label?: boolean
-    description?: boolean
-    importance?: boolean
-    queryEmbeddingModel?: boolean
-    queryEmbeddingInputHash?: boolean
-    queryEmbeddedAt?: boolean
-  }
-
-  export type JobRequirementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "jobId" | "type" | "label" | "description" | "importance" | "queryEmbeddingModel" | "queryEmbeddingInputHash" | "queryEmbeddedAt", ExtArgs["result"]["jobRequirement"]>
-  export type JobRequirementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    job?: boolean | JobDefaultArgs<ExtArgs>
-    evidenceMatches?: boolean | JobRequirement$evidenceMatchesArgs<ExtArgs>
-    requirementFitScores?: boolean | JobRequirement$requirementFitScoresArgs<ExtArgs>
-    gapQuestions?: boolean | JobRequirement$gapQuestionsArgs<ExtArgs>
-    _count?: boolean | JobRequirementCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type JobRequirementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    job?: boolean | JobDefaultArgs<ExtArgs>
-  }
-  export type JobRequirementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    job?: boolean | JobDefaultArgs<ExtArgs>
-  }
-
-  export type $JobRequirementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "JobRequirement"
-    objects: {
-      job: Prisma.$JobPayload<ExtArgs>
-      evidenceMatches: Prisma.$EvidenceMatchPayload<ExtArgs>[]
-      requirementFitScores: Prisma.$RequirementFitScorePayload<ExtArgs>[]
-      gapQuestions: Prisma.$GapQuestionPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      jobId: string
-      type: $Enums.RequirementType
-      label: string
-      description: string
-      importance: $Enums.Importance
-      queryEmbeddingModel: string | null
-      queryEmbeddingInputHash: string | null
-      queryEmbeddedAt: Date | null
-    }, ExtArgs["result"]["jobRequirement"]>
-    composites: {}
-  }
-
-  type JobRequirementGetPayload<S extends boolean | null | undefined | JobRequirementDefaultArgs> = $Result.GetResult<Prisma.$JobRequirementPayload, S>
-
-  type JobRequirementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<JobRequirementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: JobRequirementCountAggregateInputType | true
-    }
-
-  export interface JobRequirementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['JobRequirement'], meta: { name: 'JobRequirement' } }
-    /**
-     * Find zero or one JobRequirement that matches the filter.
-     * @param {JobRequirementFindUniqueArgs} args - Arguments to find a JobRequirement
-     * @example
-     * // Get one JobRequirement
-     * const jobRequirement = await prisma.jobRequirement.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends JobRequirementFindUniqueArgs>(args: SelectSubset<T, JobRequirementFindUniqueArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one JobRequirement that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {JobRequirementFindUniqueOrThrowArgs} args - Arguments to find a JobRequirement
-     * @example
-     * // Get one JobRequirement
-     * const jobRequirement = await prisma.jobRequirement.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends JobRequirementFindUniqueOrThrowArgs>(args: SelectSubset<T, JobRequirementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first JobRequirement that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobRequirementFindFirstArgs} args - Arguments to find a JobRequirement
-     * @example
-     * // Get one JobRequirement
-     * const jobRequirement = await prisma.jobRequirement.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends JobRequirementFindFirstArgs>(args?: SelectSubset<T, JobRequirementFindFirstArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first JobRequirement that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobRequirementFindFirstOrThrowArgs} args - Arguments to find a JobRequirement
-     * @example
-     * // Get one JobRequirement
-     * const jobRequirement = await prisma.jobRequirement.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends JobRequirementFindFirstOrThrowArgs>(args?: SelectSubset<T, JobRequirementFindFirstOrThrowArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more JobRequirements that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobRequirementFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all JobRequirements
-     * const jobRequirements = await prisma.jobRequirement.findMany()
-     * 
-     * // Get first 10 JobRequirements
-     * const jobRequirements = await prisma.jobRequirement.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const jobRequirementWithIdOnly = await prisma.jobRequirement.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends JobRequirementFindManyArgs>(args?: SelectSubset<T, JobRequirementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a JobRequirement.
-     * @param {JobRequirementCreateArgs} args - Arguments to create a JobRequirement.
-     * @example
-     * // Create one JobRequirement
-     * const JobRequirement = await prisma.jobRequirement.create({
-     *   data: {
-     *     // ... data to create a JobRequirement
-     *   }
-     * })
-     * 
-     */
-    create<T extends JobRequirementCreateArgs>(args: SelectSubset<T, JobRequirementCreateArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many JobRequirements.
-     * @param {JobRequirementCreateManyArgs} args - Arguments to create many JobRequirements.
-     * @example
-     * // Create many JobRequirements
-     * const jobRequirement = await prisma.jobRequirement.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends JobRequirementCreateManyArgs>(args?: SelectSubset<T, JobRequirementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many JobRequirements and returns the data saved in the database.
-     * @param {JobRequirementCreateManyAndReturnArgs} args - Arguments to create many JobRequirements.
-     * @example
-     * // Create many JobRequirements
-     * const jobRequirement = await prisma.jobRequirement.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many JobRequirements and only return the `id`
-     * const jobRequirementWithIdOnly = await prisma.jobRequirement.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends JobRequirementCreateManyAndReturnArgs>(args?: SelectSubset<T, JobRequirementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a JobRequirement.
-     * @param {JobRequirementDeleteArgs} args - Arguments to delete one JobRequirement.
-     * @example
-     * // Delete one JobRequirement
-     * const JobRequirement = await prisma.jobRequirement.delete({
-     *   where: {
-     *     // ... filter to delete one JobRequirement
-     *   }
-     * })
-     * 
-     */
-    delete<T extends JobRequirementDeleteArgs>(args: SelectSubset<T, JobRequirementDeleteArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one JobRequirement.
-     * @param {JobRequirementUpdateArgs} args - Arguments to update one JobRequirement.
-     * @example
-     * // Update one JobRequirement
-     * const jobRequirement = await prisma.jobRequirement.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends JobRequirementUpdateArgs>(args: SelectSubset<T, JobRequirementUpdateArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more JobRequirements.
-     * @param {JobRequirementDeleteManyArgs} args - Arguments to filter JobRequirements to delete.
-     * @example
-     * // Delete a few JobRequirements
-     * const { count } = await prisma.jobRequirement.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends JobRequirementDeleteManyArgs>(args?: SelectSubset<T, JobRequirementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more JobRequirements.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobRequirementUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many JobRequirements
-     * const jobRequirement = await prisma.jobRequirement.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends JobRequirementUpdateManyArgs>(args: SelectSubset<T, JobRequirementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more JobRequirements and returns the data updated in the database.
-     * @param {JobRequirementUpdateManyAndReturnArgs} args - Arguments to update many JobRequirements.
-     * @example
-     * // Update many JobRequirements
-     * const jobRequirement = await prisma.jobRequirement.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more JobRequirements and only return the `id`
-     * const jobRequirementWithIdOnly = await prisma.jobRequirement.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends JobRequirementUpdateManyAndReturnArgs>(args: SelectSubset<T, JobRequirementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one JobRequirement.
-     * @param {JobRequirementUpsertArgs} args - Arguments to update or create a JobRequirement.
-     * @example
-     * // Update or create a JobRequirement
-     * const jobRequirement = await prisma.jobRequirement.upsert({
-     *   create: {
-     *     // ... data to create a JobRequirement
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the JobRequirement we want to update
-     *   }
-     * })
-     */
-    upsert<T extends JobRequirementUpsertArgs>(args: SelectSubset<T, JobRequirementUpsertArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of JobRequirements.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobRequirementCountArgs} args - Arguments to filter JobRequirements to count.
-     * @example
-     * // Count the number of JobRequirements
-     * const count = await prisma.jobRequirement.count({
-     *   where: {
-     *     // ... the filter for the JobRequirements we want to count
-     *   }
-     * })
-    **/
-    count<T extends JobRequirementCountArgs>(
-      args?: Subset<T, JobRequirementCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], JobRequirementCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a JobRequirement.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobRequirementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends JobRequirementAggregateArgs>(args: Subset<T, JobRequirementAggregateArgs>): Prisma.PrismaPromise<GetJobRequirementAggregateType<T>>
-
-    /**
-     * Group by JobRequirement.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {JobRequirementGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends JobRequirementGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: JobRequirementGroupByArgs['orderBy'] }
-        : { orderBy?: JobRequirementGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, JobRequirementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJobRequirementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the JobRequirement model
-   */
-  readonly fields: JobRequirementFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for JobRequirement.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__JobRequirementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    job<T extends JobDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JobDefaultArgs<ExtArgs>>): Prisma__JobClient<$Result.GetResult<Prisma.$JobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    evidenceMatches<T extends JobRequirement$evidenceMatchesArgs<ExtArgs> = {}>(args?: Subset<T, JobRequirement$evidenceMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    requirementFitScores<T extends JobRequirement$requirementFitScoresArgs<ExtArgs> = {}>(args?: Subset<T, JobRequirement$requirementFitScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    gapQuestions<T extends JobRequirement$gapQuestionsArgs<ExtArgs> = {}>(args?: Subset<T, JobRequirement$gapQuestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GapQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the JobRequirement model
-   */
-  interface JobRequirementFieldRefs {
-    readonly id: FieldRef<"JobRequirement", 'String'>
-    readonly jobId: FieldRef<"JobRequirement", 'String'>
-    readonly type: FieldRef<"JobRequirement", 'RequirementType'>
-    readonly label: FieldRef<"JobRequirement", 'String'>
-    readonly description: FieldRef<"JobRequirement", 'String'>
-    readonly importance: FieldRef<"JobRequirement", 'Importance'>
-    readonly queryEmbeddingModel: FieldRef<"JobRequirement", 'String'>
-    readonly queryEmbeddingInputHash: FieldRef<"JobRequirement", 'String'>
-    readonly queryEmbeddedAt: FieldRef<"JobRequirement", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * JobRequirement findUnique
-   */
-  export type JobRequirementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * Filter, which JobRequirement to fetch.
-     */
-    where: JobRequirementWhereUniqueInput
-  }
-
-  /**
-   * JobRequirement findUniqueOrThrow
-   */
-  export type JobRequirementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * Filter, which JobRequirement to fetch.
-     */
-    where: JobRequirementWhereUniqueInput
-  }
-
-  /**
-   * JobRequirement findFirst
-   */
-  export type JobRequirementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * Filter, which JobRequirement to fetch.
-     */
-    where?: JobRequirementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobRequirements to fetch.
-     */
-    orderBy?: JobRequirementOrderByWithRelationInput | JobRequirementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for JobRequirements.
-     */
-    cursor?: JobRequirementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobRequirements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobRequirements.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of JobRequirements.
-     */
-    distinct?: JobRequirementScalarFieldEnum | JobRequirementScalarFieldEnum[]
-  }
-
-  /**
-   * JobRequirement findFirstOrThrow
-   */
-  export type JobRequirementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * Filter, which JobRequirement to fetch.
-     */
-    where?: JobRequirementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobRequirements to fetch.
-     */
-    orderBy?: JobRequirementOrderByWithRelationInput | JobRequirementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for JobRequirements.
-     */
-    cursor?: JobRequirementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobRequirements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobRequirements.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of JobRequirements.
-     */
-    distinct?: JobRequirementScalarFieldEnum | JobRequirementScalarFieldEnum[]
-  }
-
-  /**
-   * JobRequirement findMany
-   */
-  export type JobRequirementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * Filter, which JobRequirements to fetch.
-     */
-    where?: JobRequirementWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of JobRequirements to fetch.
-     */
-    orderBy?: JobRequirementOrderByWithRelationInput | JobRequirementOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing JobRequirements.
-     */
-    cursor?: JobRequirementWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` JobRequirements from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` JobRequirements.
-     */
-    skip?: number
-    distinct?: JobRequirementScalarFieldEnum | JobRequirementScalarFieldEnum[]
-  }
-
-  /**
-   * JobRequirement create
-   */
-  export type JobRequirementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * The data needed to create a JobRequirement.
-     */
-    data: XOR<JobRequirementCreateInput, JobRequirementUncheckedCreateInput>
-  }
-
-  /**
-   * JobRequirement createMany
-   */
-  export type JobRequirementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many JobRequirements.
-     */
-    data: JobRequirementCreateManyInput | JobRequirementCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * JobRequirement createManyAndReturn
-   */
-  export type JobRequirementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * The data used to create many JobRequirements.
-     */
-    data: JobRequirementCreateManyInput | JobRequirementCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * JobRequirement update
-   */
-  export type JobRequirementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * The data needed to update a JobRequirement.
-     */
-    data: XOR<JobRequirementUpdateInput, JobRequirementUncheckedUpdateInput>
-    /**
-     * Choose, which JobRequirement to update.
-     */
-    where: JobRequirementWhereUniqueInput
-  }
-
-  /**
-   * JobRequirement updateMany
-   */
-  export type JobRequirementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update JobRequirements.
-     */
-    data: XOR<JobRequirementUpdateManyMutationInput, JobRequirementUncheckedUpdateManyInput>
-    /**
-     * Filter which JobRequirements to update
-     */
-    where?: JobRequirementWhereInput
-    /**
-     * Limit how many JobRequirements to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * JobRequirement updateManyAndReturn
-   */
-  export type JobRequirementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * The data used to update JobRequirements.
-     */
-    data: XOR<JobRequirementUpdateManyMutationInput, JobRequirementUncheckedUpdateManyInput>
-    /**
-     * Filter which JobRequirements to update
-     */
-    where?: JobRequirementWhereInput
-    /**
-     * Limit how many JobRequirements to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * JobRequirement upsert
-   */
-  export type JobRequirementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * The filter to search for the JobRequirement to update in case it exists.
-     */
-    where: JobRequirementWhereUniqueInput
-    /**
-     * In case the JobRequirement found by the `where` argument doesn't exist, create a new JobRequirement with this data.
-     */
-    create: XOR<JobRequirementCreateInput, JobRequirementUncheckedCreateInput>
-    /**
-     * In case the JobRequirement was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<JobRequirementUpdateInput, JobRequirementUncheckedUpdateInput>
-  }
-
-  /**
-   * JobRequirement delete
-   */
-  export type JobRequirementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    /**
-     * Filter which JobRequirement to delete.
-     */
-    where: JobRequirementWhereUniqueInput
-  }
-
-  /**
-   * JobRequirement deleteMany
-   */
-  export type JobRequirementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which JobRequirements to delete
-     */
-    where?: JobRequirementWhereInput
-    /**
-     * Limit how many JobRequirements to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * JobRequirement.evidenceMatches
-   */
-  export type JobRequirement$evidenceMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    where?: EvidenceMatchWhereInput
-    orderBy?: EvidenceMatchOrderByWithRelationInput | EvidenceMatchOrderByWithRelationInput[]
-    cursor?: EvidenceMatchWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EvidenceMatchScalarFieldEnum | EvidenceMatchScalarFieldEnum[]
-  }
-
-  /**
-   * JobRequirement.requirementFitScores
-   */
-  export type JobRequirement$requirementFitScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    where?: RequirementFitScoreWhereInput
-    orderBy?: RequirementFitScoreOrderByWithRelationInput | RequirementFitScoreOrderByWithRelationInput[]
-    cursor?: RequirementFitScoreWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RequirementFitScoreScalarFieldEnum | RequirementFitScoreScalarFieldEnum[]
-  }
-
-  /**
-   * JobRequirement.gapQuestions
-   */
-  export type JobRequirement$gapQuestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapQuestion
-     */
-    select?: GapQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapQuestion
-     */
-    omit?: GapQuestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapQuestionInclude<ExtArgs> | null
-    where?: GapQuestionWhereInput
-    orderBy?: GapQuestionOrderByWithRelationInput | GapQuestionOrderByWithRelationInput[]
-    cursor?: GapQuestionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: GapQuestionScalarFieldEnum | GapQuestionScalarFieldEnum[]
-  }
-
-  /**
-   * JobRequirement without action
-   */
-  export type JobRequirementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
   }
 
 
@@ -13357,8 +11098,6 @@ export namespace Prisma {
     anonymousSession?: boolean | CandidateProfile$anonymousSessionArgs<ExtArgs>
     user?: boolean | CandidateProfile$userArgs<ExtArgs>
     sourceApplication?: boolean | CandidateProfile$sourceApplicationArgs<ExtArgs>
-    candidateChunks?: boolean | CandidateProfile$candidateChunksArgs<ExtArgs>
-    _count?: boolean | CandidateProfileCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["candidateProfile"]>
 
   export type CandidateProfileSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13480,8 +11219,6 @@ export namespace Prisma {
     anonymousSession?: boolean | CandidateProfile$anonymousSessionArgs<ExtArgs>
     user?: boolean | CandidateProfile$userArgs<ExtArgs>
     sourceApplication?: boolean | CandidateProfile$sourceApplicationArgs<ExtArgs>
-    candidateChunks?: boolean | CandidateProfile$candidateChunksArgs<ExtArgs>
-    _count?: boolean | CandidateProfileCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CandidateProfileIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     anonymousSession?: boolean | CandidateProfile$anonymousSessionArgs<ExtArgs>
@@ -13500,7 +11237,6 @@ export namespace Prisma {
       anonymousSession: Prisma.$AnonymousSessionPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs> | null
       sourceApplication: Prisma.$ApplicationPayload<ExtArgs> | null
-      candidateChunks: Prisma.$CandidateChunkPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13933,7 +11669,6 @@ export namespace Prisma {
     anonymousSession<T extends CandidateProfile$anonymousSessionArgs<ExtArgs> = {}>(args?: Subset<T, CandidateProfile$anonymousSessionArgs<ExtArgs>>): Prisma__AnonymousSessionClient<$Result.GetResult<Prisma.$AnonymousSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends CandidateProfile$userArgs<ExtArgs> = {}>(args?: Subset<T, CandidateProfile$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     sourceApplication<T extends CandidateProfile$sourceApplicationArgs<ExtArgs> = {}>(args?: Subset<T, CandidateProfile$sourceApplicationArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    candidateChunks<T extends CandidateProfile$candidateChunksArgs<ExtArgs> = {}>(args?: Subset<T, CandidateProfile$candidateChunksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -14449,30 +12184,6 @@ export namespace Prisma {
   }
 
   /**
-   * CandidateProfile.candidateChunks
-   */
-  export type CandidateProfile$candidateChunksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    where?: CandidateChunkWhereInput
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    cursor?: CandidateChunkWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CandidateChunkScalarFieldEnum | CandidateChunkScalarFieldEnum[]
-  }
-
-  /**
    * CandidateProfile without action
    */
   export type CandidateProfileDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14492,3818 +12203,6 @@ export namespace Prisma {
 
 
   /**
-   * Model CandidateChunk
-   */
-
-  export type AggregateCandidateChunk = {
-    _count: CandidateChunkCountAggregateOutputType | null
-    _min: CandidateChunkMinAggregateOutputType | null
-    _max: CandidateChunkMaxAggregateOutputType | null
-  }
-
-  export type CandidateChunkMinAggregateOutputType = {
-    id: string | null
-    anonymousSessionId: string | null
-    userId: string | null
-    sourceApplicationId: string | null
-    candidateProfileId: string | null
-    sourceType: $Enums.SourceType | null
-    sourceId: string | null
-    sourceKey: string | null
-    sourceHash: string | null
-    contentHash: string | null
-    chunkType: $Enums.ChunkType | null
-    content: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    embeddedAt: Date | null
-    lastSeenAt: Date | null
-    archivedAt: Date | null
-  }
-
-  export type CandidateChunkMaxAggregateOutputType = {
-    id: string | null
-    anonymousSessionId: string | null
-    userId: string | null
-    sourceApplicationId: string | null
-    candidateProfileId: string | null
-    sourceType: $Enums.SourceType | null
-    sourceId: string | null
-    sourceKey: string | null
-    sourceHash: string | null
-    contentHash: string | null
-    chunkType: $Enums.ChunkType | null
-    content: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-    embeddedAt: Date | null
-    lastSeenAt: Date | null
-    archivedAt: Date | null
-  }
-
-  export type CandidateChunkCountAggregateOutputType = {
-    id: number
-    anonymousSessionId: number
-    userId: number
-    sourceApplicationId: number
-    candidateProfileId: number
-    sourceType: number
-    sourceId: number
-    sourceKey: number
-    sourceHash: number
-    contentHash: number
-    chunkType: number
-    content: number
-    tagsJson: number
-    metadataJson: number
-    createdAt: number
-    updatedAt: number
-    embeddedAt: number
-    lastSeenAt: number
-    archivedAt: number
-    _all: number
-  }
-
-
-  export type CandidateChunkMinAggregateInputType = {
-    id?: true
-    anonymousSessionId?: true
-    userId?: true
-    sourceApplicationId?: true
-    candidateProfileId?: true
-    sourceType?: true
-    sourceId?: true
-    sourceKey?: true
-    sourceHash?: true
-    contentHash?: true
-    chunkType?: true
-    content?: true
-    createdAt?: true
-    updatedAt?: true
-    embeddedAt?: true
-    lastSeenAt?: true
-    archivedAt?: true
-  }
-
-  export type CandidateChunkMaxAggregateInputType = {
-    id?: true
-    anonymousSessionId?: true
-    userId?: true
-    sourceApplicationId?: true
-    candidateProfileId?: true
-    sourceType?: true
-    sourceId?: true
-    sourceKey?: true
-    sourceHash?: true
-    contentHash?: true
-    chunkType?: true
-    content?: true
-    createdAt?: true
-    updatedAt?: true
-    embeddedAt?: true
-    lastSeenAt?: true
-    archivedAt?: true
-  }
-
-  export type CandidateChunkCountAggregateInputType = {
-    id?: true
-    anonymousSessionId?: true
-    userId?: true
-    sourceApplicationId?: true
-    candidateProfileId?: true
-    sourceType?: true
-    sourceId?: true
-    sourceKey?: true
-    sourceHash?: true
-    contentHash?: true
-    chunkType?: true
-    content?: true
-    tagsJson?: true
-    metadataJson?: true
-    createdAt?: true
-    updatedAt?: true
-    embeddedAt?: true
-    lastSeenAt?: true
-    archivedAt?: true
-    _all?: true
-  }
-
-  export type CandidateChunkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CandidateChunk to aggregate.
-     */
-    where?: CandidateChunkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CandidateChunks to fetch.
-     */
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CandidateChunkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CandidateChunks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CandidateChunks.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned CandidateChunks
-    **/
-    _count?: true | CandidateChunkCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CandidateChunkMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CandidateChunkMaxAggregateInputType
-  }
-
-  export type GetCandidateChunkAggregateType<T extends CandidateChunkAggregateArgs> = {
-        [P in keyof T & keyof AggregateCandidateChunk]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCandidateChunk[P]>
-      : GetScalarType<T[P], AggregateCandidateChunk[P]>
-  }
-
-
-
-
-  export type CandidateChunkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CandidateChunkWhereInput
-    orderBy?: CandidateChunkOrderByWithAggregationInput | CandidateChunkOrderByWithAggregationInput[]
-    by: CandidateChunkScalarFieldEnum[] | CandidateChunkScalarFieldEnum
-    having?: CandidateChunkScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CandidateChunkCountAggregateInputType | true
-    _min?: CandidateChunkMinAggregateInputType
-    _max?: CandidateChunkMaxAggregateInputType
-  }
-
-  export type CandidateChunkGroupByOutputType = {
-    id: string
-    anonymousSessionId: string | null
-    userId: string | null
-    sourceApplicationId: string | null
-    candidateProfileId: string | null
-    sourceType: $Enums.SourceType
-    sourceId: string | null
-    sourceKey: string | null
-    sourceHash: string | null
-    contentHash: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonValue
-    metadataJson: JsonValue
-    createdAt: Date
-    updatedAt: Date
-    embeddedAt: Date | null
-    lastSeenAt: Date
-    archivedAt: Date | null
-    _count: CandidateChunkCountAggregateOutputType | null
-    _min: CandidateChunkMinAggregateOutputType | null
-    _max: CandidateChunkMaxAggregateOutputType | null
-  }
-
-  type GetCandidateChunkGroupByPayload<T extends CandidateChunkGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CandidateChunkGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CandidateChunkGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CandidateChunkGroupByOutputType[P]>
-            : GetScalarType<T[P], CandidateChunkGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CandidateChunkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    anonymousSessionId?: boolean
-    userId?: boolean
-    sourceApplicationId?: boolean
-    candidateProfileId?: boolean
-    sourceType?: boolean
-    sourceId?: boolean
-    sourceKey?: boolean
-    sourceHash?: boolean
-    contentHash?: boolean
-    chunkType?: boolean
-    content?: boolean
-    tagsJson?: boolean
-    metadataJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    embeddedAt?: boolean
-    lastSeenAt?: boolean
-    archivedAt?: boolean
-    anonymousSession?: boolean | CandidateChunk$anonymousSessionArgs<ExtArgs>
-    user?: boolean | CandidateChunk$userArgs<ExtArgs>
-    sourceApplication?: boolean | CandidateChunk$sourceApplicationArgs<ExtArgs>
-    candidateProfile?: boolean | CandidateChunk$candidateProfileArgs<ExtArgs>
-    evidenceMatches?: boolean | CandidateChunk$evidenceMatchesArgs<ExtArgs>
-    bestFitScores?: boolean | CandidateChunk$bestFitScoresArgs<ExtArgs>
-    _count?: boolean | CandidateChunkCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["candidateChunk"]>
-
-  export type CandidateChunkSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    anonymousSessionId?: boolean
-    userId?: boolean
-    sourceApplicationId?: boolean
-    candidateProfileId?: boolean
-    sourceType?: boolean
-    sourceId?: boolean
-    sourceKey?: boolean
-    sourceHash?: boolean
-    contentHash?: boolean
-    chunkType?: boolean
-    content?: boolean
-    tagsJson?: boolean
-    metadataJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    embeddedAt?: boolean
-    lastSeenAt?: boolean
-    archivedAt?: boolean
-    anonymousSession?: boolean | CandidateChunk$anonymousSessionArgs<ExtArgs>
-    user?: boolean | CandidateChunk$userArgs<ExtArgs>
-    sourceApplication?: boolean | CandidateChunk$sourceApplicationArgs<ExtArgs>
-    candidateProfile?: boolean | CandidateChunk$candidateProfileArgs<ExtArgs>
-  }, ExtArgs["result"]["candidateChunk"]>
-
-  export type CandidateChunkSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    anonymousSessionId?: boolean
-    userId?: boolean
-    sourceApplicationId?: boolean
-    candidateProfileId?: boolean
-    sourceType?: boolean
-    sourceId?: boolean
-    sourceKey?: boolean
-    sourceHash?: boolean
-    contentHash?: boolean
-    chunkType?: boolean
-    content?: boolean
-    tagsJson?: boolean
-    metadataJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    embeddedAt?: boolean
-    lastSeenAt?: boolean
-    archivedAt?: boolean
-    anonymousSession?: boolean | CandidateChunk$anonymousSessionArgs<ExtArgs>
-    user?: boolean | CandidateChunk$userArgs<ExtArgs>
-    sourceApplication?: boolean | CandidateChunk$sourceApplicationArgs<ExtArgs>
-    candidateProfile?: boolean | CandidateChunk$candidateProfileArgs<ExtArgs>
-  }, ExtArgs["result"]["candidateChunk"]>
-
-  export type CandidateChunkSelectScalar = {
-    id?: boolean
-    anonymousSessionId?: boolean
-    userId?: boolean
-    sourceApplicationId?: boolean
-    candidateProfileId?: boolean
-    sourceType?: boolean
-    sourceId?: boolean
-    sourceKey?: boolean
-    sourceHash?: boolean
-    contentHash?: boolean
-    chunkType?: boolean
-    content?: boolean
-    tagsJson?: boolean
-    metadataJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    embeddedAt?: boolean
-    lastSeenAt?: boolean
-    archivedAt?: boolean
-  }
-
-  export type CandidateChunkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "anonymousSessionId" | "userId" | "sourceApplicationId" | "candidateProfileId" | "sourceType" | "sourceId" | "sourceKey" | "sourceHash" | "contentHash" | "chunkType" | "content" | "tagsJson" | "metadataJson" | "createdAt" | "updatedAt" | "embeddedAt" | "lastSeenAt" | "archivedAt", ExtArgs["result"]["candidateChunk"]>
-  export type CandidateChunkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    anonymousSession?: boolean | CandidateChunk$anonymousSessionArgs<ExtArgs>
-    user?: boolean | CandidateChunk$userArgs<ExtArgs>
-    sourceApplication?: boolean | CandidateChunk$sourceApplicationArgs<ExtArgs>
-    candidateProfile?: boolean | CandidateChunk$candidateProfileArgs<ExtArgs>
-    evidenceMatches?: boolean | CandidateChunk$evidenceMatchesArgs<ExtArgs>
-    bestFitScores?: boolean | CandidateChunk$bestFitScoresArgs<ExtArgs>
-    _count?: boolean | CandidateChunkCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type CandidateChunkIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    anonymousSession?: boolean | CandidateChunk$anonymousSessionArgs<ExtArgs>
-    user?: boolean | CandidateChunk$userArgs<ExtArgs>
-    sourceApplication?: boolean | CandidateChunk$sourceApplicationArgs<ExtArgs>
-    candidateProfile?: boolean | CandidateChunk$candidateProfileArgs<ExtArgs>
-  }
-  export type CandidateChunkIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    anonymousSession?: boolean | CandidateChunk$anonymousSessionArgs<ExtArgs>
-    user?: boolean | CandidateChunk$userArgs<ExtArgs>
-    sourceApplication?: boolean | CandidateChunk$sourceApplicationArgs<ExtArgs>
-    candidateProfile?: boolean | CandidateChunk$candidateProfileArgs<ExtArgs>
-  }
-
-  export type $CandidateChunkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CandidateChunk"
-    objects: {
-      anonymousSession: Prisma.$AnonymousSessionPayload<ExtArgs> | null
-      user: Prisma.$UserPayload<ExtArgs> | null
-      sourceApplication: Prisma.$ApplicationPayload<ExtArgs> | null
-      candidateProfile: Prisma.$CandidateProfilePayload<ExtArgs> | null
-      evidenceMatches: Prisma.$EvidenceMatchPayload<ExtArgs>[]
-      bestFitScores: Prisma.$RequirementFitScorePayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      anonymousSessionId: string | null
-      userId: string | null
-      sourceApplicationId: string | null
-      candidateProfileId: string | null
-      sourceType: $Enums.SourceType
-      sourceId: string | null
-      sourceKey: string | null
-      sourceHash: string | null
-      contentHash: string | null
-      chunkType: $Enums.ChunkType
-      content: string
-      tagsJson: Prisma.JsonValue
-      metadataJson: Prisma.JsonValue
-      createdAt: Date
-      updatedAt: Date
-      embeddedAt: Date | null
-      lastSeenAt: Date
-      archivedAt: Date | null
-    }, ExtArgs["result"]["candidateChunk"]>
-    composites: {}
-  }
-
-  type CandidateChunkGetPayload<S extends boolean | null | undefined | CandidateChunkDefaultArgs> = $Result.GetResult<Prisma.$CandidateChunkPayload, S>
-
-  type CandidateChunkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CandidateChunkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CandidateChunkCountAggregateInputType | true
-    }
-
-  export interface CandidateChunkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CandidateChunk'], meta: { name: 'CandidateChunk' } }
-    /**
-     * Find zero or one CandidateChunk that matches the filter.
-     * @param {CandidateChunkFindUniqueArgs} args - Arguments to find a CandidateChunk
-     * @example
-     * // Get one CandidateChunk
-     * const candidateChunk = await prisma.candidateChunk.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CandidateChunkFindUniqueArgs>(args: SelectSubset<T, CandidateChunkFindUniqueArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one CandidateChunk that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CandidateChunkFindUniqueOrThrowArgs} args - Arguments to find a CandidateChunk
-     * @example
-     * // Get one CandidateChunk
-     * const candidateChunk = await prisma.candidateChunk.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CandidateChunkFindUniqueOrThrowArgs>(args: SelectSubset<T, CandidateChunkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CandidateChunk that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CandidateChunkFindFirstArgs} args - Arguments to find a CandidateChunk
-     * @example
-     * // Get one CandidateChunk
-     * const candidateChunk = await prisma.candidateChunk.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CandidateChunkFindFirstArgs>(args?: SelectSubset<T, CandidateChunkFindFirstArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CandidateChunk that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CandidateChunkFindFirstOrThrowArgs} args - Arguments to find a CandidateChunk
-     * @example
-     * // Get one CandidateChunk
-     * const candidateChunk = await prisma.candidateChunk.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CandidateChunkFindFirstOrThrowArgs>(args?: SelectSubset<T, CandidateChunkFindFirstOrThrowArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more CandidateChunks that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CandidateChunkFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all CandidateChunks
-     * const candidateChunks = await prisma.candidateChunk.findMany()
-     * 
-     * // Get first 10 CandidateChunks
-     * const candidateChunks = await prisma.candidateChunk.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const candidateChunkWithIdOnly = await prisma.candidateChunk.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CandidateChunkFindManyArgs>(args?: SelectSubset<T, CandidateChunkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a CandidateChunk.
-     * @param {CandidateChunkCreateArgs} args - Arguments to create a CandidateChunk.
-     * @example
-     * // Create one CandidateChunk
-     * const CandidateChunk = await prisma.candidateChunk.create({
-     *   data: {
-     *     // ... data to create a CandidateChunk
-     *   }
-     * })
-     * 
-     */
-    create<T extends CandidateChunkCreateArgs>(args: SelectSubset<T, CandidateChunkCreateArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many CandidateChunks.
-     * @param {CandidateChunkCreateManyArgs} args - Arguments to create many CandidateChunks.
-     * @example
-     * // Create many CandidateChunks
-     * const candidateChunk = await prisma.candidateChunk.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CandidateChunkCreateManyArgs>(args?: SelectSubset<T, CandidateChunkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many CandidateChunks and returns the data saved in the database.
-     * @param {CandidateChunkCreateManyAndReturnArgs} args - Arguments to create many CandidateChunks.
-     * @example
-     * // Create many CandidateChunks
-     * const candidateChunk = await prisma.candidateChunk.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many CandidateChunks and only return the `id`
-     * const candidateChunkWithIdOnly = await prisma.candidateChunk.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends CandidateChunkCreateManyAndReturnArgs>(args?: SelectSubset<T, CandidateChunkCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a CandidateChunk.
-     * @param {CandidateChunkDeleteArgs} args - Arguments to delete one CandidateChunk.
-     * @example
-     * // Delete one CandidateChunk
-     * const CandidateChunk = await prisma.candidateChunk.delete({
-     *   where: {
-     *     // ... filter to delete one CandidateChunk
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CandidateChunkDeleteArgs>(args: SelectSubset<T, CandidateChunkDeleteArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one CandidateChunk.
-     * @param {CandidateChunkUpdateArgs} args - Arguments to update one CandidateChunk.
-     * @example
-     * // Update one CandidateChunk
-     * const candidateChunk = await prisma.candidateChunk.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CandidateChunkUpdateArgs>(args: SelectSubset<T, CandidateChunkUpdateArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more CandidateChunks.
-     * @param {CandidateChunkDeleteManyArgs} args - Arguments to filter CandidateChunks to delete.
-     * @example
-     * // Delete a few CandidateChunks
-     * const { count } = await prisma.candidateChunk.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CandidateChunkDeleteManyArgs>(args?: SelectSubset<T, CandidateChunkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CandidateChunks.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CandidateChunkUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many CandidateChunks
-     * const candidateChunk = await prisma.candidateChunk.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CandidateChunkUpdateManyArgs>(args: SelectSubset<T, CandidateChunkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CandidateChunks and returns the data updated in the database.
-     * @param {CandidateChunkUpdateManyAndReturnArgs} args - Arguments to update many CandidateChunks.
-     * @example
-     * // Update many CandidateChunks
-     * const candidateChunk = await prisma.candidateChunk.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more CandidateChunks and only return the `id`
-     * const candidateChunkWithIdOnly = await prisma.candidateChunk.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CandidateChunkUpdateManyAndReturnArgs>(args: SelectSubset<T, CandidateChunkUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one CandidateChunk.
-     * @param {CandidateChunkUpsertArgs} args - Arguments to update or create a CandidateChunk.
-     * @example
-     * // Update or create a CandidateChunk
-     * const candidateChunk = await prisma.candidateChunk.upsert({
-     *   create: {
-     *     // ... data to create a CandidateChunk
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the CandidateChunk we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CandidateChunkUpsertArgs>(args: SelectSubset<T, CandidateChunkUpsertArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of CandidateChunks.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CandidateChunkCountArgs} args - Arguments to filter CandidateChunks to count.
-     * @example
-     * // Count the number of CandidateChunks
-     * const count = await prisma.candidateChunk.count({
-     *   where: {
-     *     // ... the filter for the CandidateChunks we want to count
-     *   }
-     * })
-    **/
-    count<T extends CandidateChunkCountArgs>(
-      args?: Subset<T, CandidateChunkCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CandidateChunkCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a CandidateChunk.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CandidateChunkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CandidateChunkAggregateArgs>(args: Subset<T, CandidateChunkAggregateArgs>): Prisma.PrismaPromise<GetCandidateChunkAggregateType<T>>
-
-    /**
-     * Group by CandidateChunk.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CandidateChunkGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CandidateChunkGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CandidateChunkGroupByArgs['orderBy'] }
-        : { orderBy?: CandidateChunkGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CandidateChunkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCandidateChunkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CandidateChunk model
-   */
-  readonly fields: CandidateChunkFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for CandidateChunk.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CandidateChunkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    anonymousSession<T extends CandidateChunk$anonymousSessionArgs<ExtArgs> = {}>(args?: Subset<T, CandidateChunk$anonymousSessionArgs<ExtArgs>>): Prisma__AnonymousSessionClient<$Result.GetResult<Prisma.$AnonymousSessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    user<T extends CandidateChunk$userArgs<ExtArgs> = {}>(args?: Subset<T, CandidateChunk$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    sourceApplication<T extends CandidateChunk$sourceApplicationArgs<ExtArgs> = {}>(args?: Subset<T, CandidateChunk$sourceApplicationArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    candidateProfile<T extends CandidateChunk$candidateProfileArgs<ExtArgs> = {}>(args?: Subset<T, CandidateChunk$candidateProfileArgs<ExtArgs>>): Prisma__CandidateProfileClient<$Result.GetResult<Prisma.$CandidateProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    evidenceMatches<T extends CandidateChunk$evidenceMatchesArgs<ExtArgs> = {}>(args?: Subset<T, CandidateChunk$evidenceMatchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    bestFitScores<T extends CandidateChunk$bestFitScoresArgs<ExtArgs> = {}>(args?: Subset<T, CandidateChunk$bestFitScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the CandidateChunk model
-   */
-  interface CandidateChunkFieldRefs {
-    readonly id: FieldRef<"CandidateChunk", 'String'>
-    readonly anonymousSessionId: FieldRef<"CandidateChunk", 'String'>
-    readonly userId: FieldRef<"CandidateChunk", 'String'>
-    readonly sourceApplicationId: FieldRef<"CandidateChunk", 'String'>
-    readonly candidateProfileId: FieldRef<"CandidateChunk", 'String'>
-    readonly sourceType: FieldRef<"CandidateChunk", 'SourceType'>
-    readonly sourceId: FieldRef<"CandidateChunk", 'String'>
-    readonly sourceKey: FieldRef<"CandidateChunk", 'String'>
-    readonly sourceHash: FieldRef<"CandidateChunk", 'String'>
-    readonly contentHash: FieldRef<"CandidateChunk", 'String'>
-    readonly chunkType: FieldRef<"CandidateChunk", 'ChunkType'>
-    readonly content: FieldRef<"CandidateChunk", 'String'>
-    readonly tagsJson: FieldRef<"CandidateChunk", 'Json'>
-    readonly metadataJson: FieldRef<"CandidateChunk", 'Json'>
-    readonly createdAt: FieldRef<"CandidateChunk", 'DateTime'>
-    readonly updatedAt: FieldRef<"CandidateChunk", 'DateTime'>
-    readonly embeddedAt: FieldRef<"CandidateChunk", 'DateTime'>
-    readonly lastSeenAt: FieldRef<"CandidateChunk", 'DateTime'>
-    readonly archivedAt: FieldRef<"CandidateChunk", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * CandidateChunk findUnique
-   */
-  export type CandidateChunkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * Filter, which CandidateChunk to fetch.
-     */
-    where: CandidateChunkWhereUniqueInput
-  }
-
-  /**
-   * CandidateChunk findUniqueOrThrow
-   */
-  export type CandidateChunkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * Filter, which CandidateChunk to fetch.
-     */
-    where: CandidateChunkWhereUniqueInput
-  }
-
-  /**
-   * CandidateChunk findFirst
-   */
-  export type CandidateChunkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * Filter, which CandidateChunk to fetch.
-     */
-    where?: CandidateChunkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CandidateChunks to fetch.
-     */
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CandidateChunks.
-     */
-    cursor?: CandidateChunkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CandidateChunks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CandidateChunks.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CandidateChunks.
-     */
-    distinct?: CandidateChunkScalarFieldEnum | CandidateChunkScalarFieldEnum[]
-  }
-
-  /**
-   * CandidateChunk findFirstOrThrow
-   */
-  export type CandidateChunkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * Filter, which CandidateChunk to fetch.
-     */
-    where?: CandidateChunkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CandidateChunks to fetch.
-     */
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CandidateChunks.
-     */
-    cursor?: CandidateChunkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CandidateChunks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CandidateChunks.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CandidateChunks.
-     */
-    distinct?: CandidateChunkScalarFieldEnum | CandidateChunkScalarFieldEnum[]
-  }
-
-  /**
-   * CandidateChunk findMany
-   */
-  export type CandidateChunkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * Filter, which CandidateChunks to fetch.
-     */
-    where?: CandidateChunkWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CandidateChunks to fetch.
-     */
-    orderBy?: CandidateChunkOrderByWithRelationInput | CandidateChunkOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing CandidateChunks.
-     */
-    cursor?: CandidateChunkWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CandidateChunks from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CandidateChunks.
-     */
-    skip?: number
-    distinct?: CandidateChunkScalarFieldEnum | CandidateChunkScalarFieldEnum[]
-  }
-
-  /**
-   * CandidateChunk create
-   */
-  export type CandidateChunkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * The data needed to create a CandidateChunk.
-     */
-    data: XOR<CandidateChunkCreateInput, CandidateChunkUncheckedCreateInput>
-  }
-
-  /**
-   * CandidateChunk createMany
-   */
-  export type CandidateChunkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many CandidateChunks.
-     */
-    data: CandidateChunkCreateManyInput | CandidateChunkCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CandidateChunk createManyAndReturn
-   */
-  export type CandidateChunkCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * The data used to create many CandidateChunks.
-     */
-    data: CandidateChunkCreateManyInput | CandidateChunkCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * CandidateChunk update
-   */
-  export type CandidateChunkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * The data needed to update a CandidateChunk.
-     */
-    data: XOR<CandidateChunkUpdateInput, CandidateChunkUncheckedUpdateInput>
-    /**
-     * Choose, which CandidateChunk to update.
-     */
-    where: CandidateChunkWhereUniqueInput
-  }
-
-  /**
-   * CandidateChunk updateMany
-   */
-  export type CandidateChunkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update CandidateChunks.
-     */
-    data: XOR<CandidateChunkUpdateManyMutationInput, CandidateChunkUncheckedUpdateManyInput>
-    /**
-     * Filter which CandidateChunks to update
-     */
-    where?: CandidateChunkWhereInput
-    /**
-     * Limit how many CandidateChunks to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CandidateChunk updateManyAndReturn
-   */
-  export type CandidateChunkUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * The data used to update CandidateChunks.
-     */
-    data: XOR<CandidateChunkUpdateManyMutationInput, CandidateChunkUncheckedUpdateManyInput>
-    /**
-     * Filter which CandidateChunks to update
-     */
-    where?: CandidateChunkWhereInput
-    /**
-     * Limit how many CandidateChunks to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * CandidateChunk upsert
-   */
-  export type CandidateChunkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * The filter to search for the CandidateChunk to update in case it exists.
-     */
-    where: CandidateChunkWhereUniqueInput
-    /**
-     * In case the CandidateChunk found by the `where` argument doesn't exist, create a new CandidateChunk with this data.
-     */
-    create: XOR<CandidateChunkCreateInput, CandidateChunkUncheckedCreateInput>
-    /**
-     * In case the CandidateChunk was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CandidateChunkUpdateInput, CandidateChunkUncheckedUpdateInput>
-  }
-
-  /**
-   * CandidateChunk delete
-   */
-  export type CandidateChunkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    /**
-     * Filter which CandidateChunk to delete.
-     */
-    where: CandidateChunkWhereUniqueInput
-  }
-
-  /**
-   * CandidateChunk deleteMany
-   */
-  export type CandidateChunkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CandidateChunks to delete
-     */
-    where?: CandidateChunkWhereInput
-    /**
-     * Limit how many CandidateChunks to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * CandidateChunk.anonymousSession
-   */
-  export type CandidateChunk$anonymousSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AnonymousSession
-     */
-    select?: AnonymousSessionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AnonymousSession
-     */
-    omit?: AnonymousSessionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AnonymousSessionInclude<ExtArgs> | null
-    where?: AnonymousSessionWhereInput
-  }
-
-  /**
-   * CandidateChunk.user
-   */
-  export type CandidateChunk$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * CandidateChunk.sourceApplication
-   */
-  export type CandidateChunk$sourceApplicationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Application
-     */
-    select?: ApplicationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Application
-     */
-    omit?: ApplicationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApplicationInclude<ExtArgs> | null
-    where?: ApplicationWhereInput
-  }
-
-  /**
-   * CandidateChunk.candidateProfile
-   */
-  export type CandidateChunk$candidateProfileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateProfile
-     */
-    select?: CandidateProfileSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateProfile
-     */
-    omit?: CandidateProfileOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateProfileInclude<ExtArgs> | null
-    where?: CandidateProfileWhereInput
-  }
-
-  /**
-   * CandidateChunk.evidenceMatches
-   */
-  export type CandidateChunk$evidenceMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    where?: EvidenceMatchWhereInput
-    orderBy?: EvidenceMatchOrderByWithRelationInput | EvidenceMatchOrderByWithRelationInput[]
-    cursor?: EvidenceMatchWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EvidenceMatchScalarFieldEnum | EvidenceMatchScalarFieldEnum[]
-  }
-
-  /**
-   * CandidateChunk.bestFitScores
-   */
-  export type CandidateChunk$bestFitScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    where?: RequirementFitScoreWhereInput
-    orderBy?: RequirementFitScoreOrderByWithRelationInput | RequirementFitScoreOrderByWithRelationInput[]
-    cursor?: RequirementFitScoreWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RequirementFitScoreScalarFieldEnum | RequirementFitScoreScalarFieldEnum[]
-  }
-
-  /**
-   * CandidateChunk without action
-   */
-  export type CandidateChunkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model EvidenceMatch
-   */
-
-  export type AggregateEvidenceMatch = {
-    _count: EvidenceMatchCountAggregateOutputType | null
-    _avg: EvidenceMatchAvgAggregateOutputType | null
-    _sum: EvidenceMatchSumAggregateOutputType | null
-    _min: EvidenceMatchMinAggregateOutputType | null
-    _max: EvidenceMatchMaxAggregateOutputType | null
-  }
-
-  export type EvidenceMatchAvgAggregateOutputType = {
-    similarityScore: number | null
-  }
-
-  export type EvidenceMatchSumAggregateOutputType = {
-    similarityScore: number | null
-  }
-
-  export type EvidenceMatchMinAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    jobRequirementId: string | null
-    candidateChunkId: string | null
-    similarityScore: number | null
-    confidence: $Enums.EvidenceConfidence | null
-    cvUsefulness: string | null
-    claimRisk: string | null
-    reason: string | null
-    createdAt: Date | null
-  }
-
-  export type EvidenceMatchMaxAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    jobRequirementId: string | null
-    candidateChunkId: string | null
-    similarityScore: number | null
-    confidence: $Enums.EvidenceConfidence | null
-    cvUsefulness: string | null
-    claimRisk: string | null
-    reason: string | null
-    createdAt: Date | null
-  }
-
-  export type EvidenceMatchCountAggregateOutputType = {
-    id: number
-    applicationId: number
-    jobRequirementId: number
-    candidateChunkId: number
-    similarityScore: number
-    confidence: number
-    cvUsefulness: number
-    claimRisk: number
-    reason: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type EvidenceMatchAvgAggregateInputType = {
-    similarityScore?: true
-  }
-
-  export type EvidenceMatchSumAggregateInputType = {
-    similarityScore?: true
-  }
-
-  export type EvidenceMatchMinAggregateInputType = {
-    id?: true
-    applicationId?: true
-    jobRequirementId?: true
-    candidateChunkId?: true
-    similarityScore?: true
-    confidence?: true
-    cvUsefulness?: true
-    claimRisk?: true
-    reason?: true
-    createdAt?: true
-  }
-
-  export type EvidenceMatchMaxAggregateInputType = {
-    id?: true
-    applicationId?: true
-    jobRequirementId?: true
-    candidateChunkId?: true
-    similarityScore?: true
-    confidence?: true
-    cvUsefulness?: true
-    claimRisk?: true
-    reason?: true
-    createdAt?: true
-  }
-
-  export type EvidenceMatchCountAggregateInputType = {
-    id?: true
-    applicationId?: true
-    jobRequirementId?: true
-    candidateChunkId?: true
-    similarityScore?: true
-    confidence?: true
-    cvUsefulness?: true
-    claimRisk?: true
-    reason?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type EvidenceMatchAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which EvidenceMatch to aggregate.
-     */
-    where?: EvidenceMatchWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EvidenceMatches to fetch.
-     */
-    orderBy?: EvidenceMatchOrderByWithRelationInput | EvidenceMatchOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: EvidenceMatchWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EvidenceMatches from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EvidenceMatches.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned EvidenceMatches
-    **/
-    _count?: true | EvidenceMatchCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: EvidenceMatchAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: EvidenceMatchSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: EvidenceMatchMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: EvidenceMatchMaxAggregateInputType
-  }
-
-  export type GetEvidenceMatchAggregateType<T extends EvidenceMatchAggregateArgs> = {
-        [P in keyof T & keyof AggregateEvidenceMatch]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateEvidenceMatch[P]>
-      : GetScalarType<T[P], AggregateEvidenceMatch[P]>
-  }
-
-
-
-
-  export type EvidenceMatchGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EvidenceMatchWhereInput
-    orderBy?: EvidenceMatchOrderByWithAggregationInput | EvidenceMatchOrderByWithAggregationInput[]
-    by: EvidenceMatchScalarFieldEnum[] | EvidenceMatchScalarFieldEnum
-    having?: EvidenceMatchScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: EvidenceMatchCountAggregateInputType | true
-    _avg?: EvidenceMatchAvgAggregateInputType
-    _sum?: EvidenceMatchSumAggregateInputType
-    _min?: EvidenceMatchMinAggregateInputType
-    _max?: EvidenceMatchMaxAggregateInputType
-  }
-
-  export type EvidenceMatchGroupByOutputType = {
-    id: string
-    applicationId: string
-    jobRequirementId: string
-    candidateChunkId: string | null
-    similarityScore: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness: string | null
-    claimRisk: string | null
-    reason: string
-    createdAt: Date
-    _count: EvidenceMatchCountAggregateOutputType | null
-    _avg: EvidenceMatchAvgAggregateOutputType | null
-    _sum: EvidenceMatchSumAggregateOutputType | null
-    _min: EvidenceMatchMinAggregateOutputType | null
-    _max: EvidenceMatchMaxAggregateOutputType | null
-  }
-
-  type GetEvidenceMatchGroupByPayload<T extends EvidenceMatchGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<EvidenceMatchGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof EvidenceMatchGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], EvidenceMatchGroupByOutputType[P]>
-            : GetScalarType<T[P], EvidenceMatchGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type EvidenceMatchSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    candidateChunkId?: boolean
-    similarityScore?: boolean
-    confidence?: boolean
-    cvUsefulness?: boolean
-    claimRisk?: boolean
-    reason?: boolean
-    createdAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    candidateChunk?: boolean | EvidenceMatch$candidateChunkArgs<ExtArgs>
-  }, ExtArgs["result"]["evidenceMatch"]>
-
-  export type EvidenceMatchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    candidateChunkId?: boolean
-    similarityScore?: boolean
-    confidence?: boolean
-    cvUsefulness?: boolean
-    claimRisk?: boolean
-    reason?: boolean
-    createdAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    candidateChunk?: boolean | EvidenceMatch$candidateChunkArgs<ExtArgs>
-  }, ExtArgs["result"]["evidenceMatch"]>
-
-  export type EvidenceMatchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    candidateChunkId?: boolean
-    similarityScore?: boolean
-    confidence?: boolean
-    cvUsefulness?: boolean
-    claimRisk?: boolean
-    reason?: boolean
-    createdAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    candidateChunk?: boolean | EvidenceMatch$candidateChunkArgs<ExtArgs>
-  }, ExtArgs["result"]["evidenceMatch"]>
-
-  export type EvidenceMatchSelectScalar = {
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    candidateChunkId?: boolean
-    similarityScore?: boolean
-    confidence?: boolean
-    cvUsefulness?: boolean
-    claimRisk?: boolean
-    reason?: boolean
-    createdAt?: boolean
-  }
-
-  export type EvidenceMatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "jobRequirementId" | "candidateChunkId" | "similarityScore" | "confidence" | "cvUsefulness" | "claimRisk" | "reason" | "createdAt", ExtArgs["result"]["evidenceMatch"]>
-  export type EvidenceMatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    candidateChunk?: boolean | EvidenceMatch$candidateChunkArgs<ExtArgs>
-  }
-  export type EvidenceMatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    candidateChunk?: boolean | EvidenceMatch$candidateChunkArgs<ExtArgs>
-  }
-  export type EvidenceMatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    candidateChunk?: boolean | EvidenceMatch$candidateChunkArgs<ExtArgs>
-  }
-
-  export type $EvidenceMatchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "EvidenceMatch"
-    objects: {
-      application: Prisma.$ApplicationPayload<ExtArgs>
-      jobRequirement: Prisma.$JobRequirementPayload<ExtArgs>
-      candidateChunk: Prisma.$CandidateChunkPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      applicationId: string
-      jobRequirementId: string
-      candidateChunkId: string | null
-      similarityScore: number | null
-      confidence: $Enums.EvidenceConfidence
-      cvUsefulness: string | null
-      claimRisk: string | null
-      reason: string
-      createdAt: Date
-    }, ExtArgs["result"]["evidenceMatch"]>
-    composites: {}
-  }
-
-  type EvidenceMatchGetPayload<S extends boolean | null | undefined | EvidenceMatchDefaultArgs> = $Result.GetResult<Prisma.$EvidenceMatchPayload, S>
-
-  type EvidenceMatchCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<EvidenceMatchFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: EvidenceMatchCountAggregateInputType | true
-    }
-
-  export interface EvidenceMatchDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EvidenceMatch'], meta: { name: 'EvidenceMatch' } }
-    /**
-     * Find zero or one EvidenceMatch that matches the filter.
-     * @param {EvidenceMatchFindUniqueArgs} args - Arguments to find a EvidenceMatch
-     * @example
-     * // Get one EvidenceMatch
-     * const evidenceMatch = await prisma.evidenceMatch.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends EvidenceMatchFindUniqueArgs>(args: SelectSubset<T, EvidenceMatchFindUniqueArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one EvidenceMatch that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {EvidenceMatchFindUniqueOrThrowArgs} args - Arguments to find a EvidenceMatch
-     * @example
-     * // Get one EvidenceMatch
-     * const evidenceMatch = await prisma.evidenceMatch.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends EvidenceMatchFindUniqueOrThrowArgs>(args: SelectSubset<T, EvidenceMatchFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first EvidenceMatch that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EvidenceMatchFindFirstArgs} args - Arguments to find a EvidenceMatch
-     * @example
-     * // Get one EvidenceMatch
-     * const evidenceMatch = await prisma.evidenceMatch.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends EvidenceMatchFindFirstArgs>(args?: SelectSubset<T, EvidenceMatchFindFirstArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first EvidenceMatch that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EvidenceMatchFindFirstOrThrowArgs} args - Arguments to find a EvidenceMatch
-     * @example
-     * // Get one EvidenceMatch
-     * const evidenceMatch = await prisma.evidenceMatch.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends EvidenceMatchFindFirstOrThrowArgs>(args?: SelectSubset<T, EvidenceMatchFindFirstOrThrowArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more EvidenceMatches that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EvidenceMatchFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all EvidenceMatches
-     * const evidenceMatches = await prisma.evidenceMatch.findMany()
-     * 
-     * // Get first 10 EvidenceMatches
-     * const evidenceMatches = await prisma.evidenceMatch.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const evidenceMatchWithIdOnly = await prisma.evidenceMatch.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends EvidenceMatchFindManyArgs>(args?: SelectSubset<T, EvidenceMatchFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a EvidenceMatch.
-     * @param {EvidenceMatchCreateArgs} args - Arguments to create a EvidenceMatch.
-     * @example
-     * // Create one EvidenceMatch
-     * const EvidenceMatch = await prisma.evidenceMatch.create({
-     *   data: {
-     *     // ... data to create a EvidenceMatch
-     *   }
-     * })
-     * 
-     */
-    create<T extends EvidenceMatchCreateArgs>(args: SelectSubset<T, EvidenceMatchCreateArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many EvidenceMatches.
-     * @param {EvidenceMatchCreateManyArgs} args - Arguments to create many EvidenceMatches.
-     * @example
-     * // Create many EvidenceMatches
-     * const evidenceMatch = await prisma.evidenceMatch.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends EvidenceMatchCreateManyArgs>(args?: SelectSubset<T, EvidenceMatchCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many EvidenceMatches and returns the data saved in the database.
-     * @param {EvidenceMatchCreateManyAndReturnArgs} args - Arguments to create many EvidenceMatches.
-     * @example
-     * // Create many EvidenceMatches
-     * const evidenceMatch = await prisma.evidenceMatch.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many EvidenceMatches and only return the `id`
-     * const evidenceMatchWithIdOnly = await prisma.evidenceMatch.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends EvidenceMatchCreateManyAndReturnArgs>(args?: SelectSubset<T, EvidenceMatchCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a EvidenceMatch.
-     * @param {EvidenceMatchDeleteArgs} args - Arguments to delete one EvidenceMatch.
-     * @example
-     * // Delete one EvidenceMatch
-     * const EvidenceMatch = await prisma.evidenceMatch.delete({
-     *   where: {
-     *     // ... filter to delete one EvidenceMatch
-     *   }
-     * })
-     * 
-     */
-    delete<T extends EvidenceMatchDeleteArgs>(args: SelectSubset<T, EvidenceMatchDeleteArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one EvidenceMatch.
-     * @param {EvidenceMatchUpdateArgs} args - Arguments to update one EvidenceMatch.
-     * @example
-     * // Update one EvidenceMatch
-     * const evidenceMatch = await prisma.evidenceMatch.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends EvidenceMatchUpdateArgs>(args: SelectSubset<T, EvidenceMatchUpdateArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more EvidenceMatches.
-     * @param {EvidenceMatchDeleteManyArgs} args - Arguments to filter EvidenceMatches to delete.
-     * @example
-     * // Delete a few EvidenceMatches
-     * const { count } = await prisma.evidenceMatch.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends EvidenceMatchDeleteManyArgs>(args?: SelectSubset<T, EvidenceMatchDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more EvidenceMatches.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EvidenceMatchUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many EvidenceMatches
-     * const evidenceMatch = await prisma.evidenceMatch.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends EvidenceMatchUpdateManyArgs>(args: SelectSubset<T, EvidenceMatchUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more EvidenceMatches and returns the data updated in the database.
-     * @param {EvidenceMatchUpdateManyAndReturnArgs} args - Arguments to update many EvidenceMatches.
-     * @example
-     * // Update many EvidenceMatches
-     * const evidenceMatch = await prisma.evidenceMatch.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more EvidenceMatches and only return the `id`
-     * const evidenceMatchWithIdOnly = await prisma.evidenceMatch.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends EvidenceMatchUpdateManyAndReturnArgs>(args: SelectSubset<T, EvidenceMatchUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one EvidenceMatch.
-     * @param {EvidenceMatchUpsertArgs} args - Arguments to update or create a EvidenceMatch.
-     * @example
-     * // Update or create a EvidenceMatch
-     * const evidenceMatch = await prisma.evidenceMatch.upsert({
-     *   create: {
-     *     // ... data to create a EvidenceMatch
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the EvidenceMatch we want to update
-     *   }
-     * })
-     */
-    upsert<T extends EvidenceMatchUpsertArgs>(args: SelectSubset<T, EvidenceMatchUpsertArgs<ExtArgs>>): Prisma__EvidenceMatchClient<$Result.GetResult<Prisma.$EvidenceMatchPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of EvidenceMatches.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EvidenceMatchCountArgs} args - Arguments to filter EvidenceMatches to count.
-     * @example
-     * // Count the number of EvidenceMatches
-     * const count = await prisma.evidenceMatch.count({
-     *   where: {
-     *     // ... the filter for the EvidenceMatches we want to count
-     *   }
-     * })
-    **/
-    count<T extends EvidenceMatchCountArgs>(
-      args?: Subset<T, EvidenceMatchCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], EvidenceMatchCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a EvidenceMatch.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EvidenceMatchAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends EvidenceMatchAggregateArgs>(args: Subset<T, EvidenceMatchAggregateArgs>): Prisma.PrismaPromise<GetEvidenceMatchAggregateType<T>>
-
-    /**
-     * Group by EvidenceMatch.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {EvidenceMatchGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends EvidenceMatchGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: EvidenceMatchGroupByArgs['orderBy'] }
-        : { orderBy?: EvidenceMatchGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, EvidenceMatchGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEvidenceMatchGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the EvidenceMatch model
-   */
-  readonly fields: EvidenceMatchFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for EvidenceMatch.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__EvidenceMatchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    jobRequirement<T extends JobRequirementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JobRequirementDefaultArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    candidateChunk<T extends EvidenceMatch$candidateChunkArgs<ExtArgs> = {}>(args?: Subset<T, EvidenceMatch$candidateChunkArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the EvidenceMatch model
-   */
-  interface EvidenceMatchFieldRefs {
-    readonly id: FieldRef<"EvidenceMatch", 'String'>
-    readonly applicationId: FieldRef<"EvidenceMatch", 'String'>
-    readonly jobRequirementId: FieldRef<"EvidenceMatch", 'String'>
-    readonly candidateChunkId: FieldRef<"EvidenceMatch", 'String'>
-    readonly similarityScore: FieldRef<"EvidenceMatch", 'Float'>
-    readonly confidence: FieldRef<"EvidenceMatch", 'EvidenceConfidence'>
-    readonly cvUsefulness: FieldRef<"EvidenceMatch", 'String'>
-    readonly claimRisk: FieldRef<"EvidenceMatch", 'String'>
-    readonly reason: FieldRef<"EvidenceMatch", 'String'>
-    readonly createdAt: FieldRef<"EvidenceMatch", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * EvidenceMatch findUnique
-   */
-  export type EvidenceMatchFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * Filter, which EvidenceMatch to fetch.
-     */
-    where: EvidenceMatchWhereUniqueInput
-  }
-
-  /**
-   * EvidenceMatch findUniqueOrThrow
-   */
-  export type EvidenceMatchFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * Filter, which EvidenceMatch to fetch.
-     */
-    where: EvidenceMatchWhereUniqueInput
-  }
-
-  /**
-   * EvidenceMatch findFirst
-   */
-  export type EvidenceMatchFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * Filter, which EvidenceMatch to fetch.
-     */
-    where?: EvidenceMatchWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EvidenceMatches to fetch.
-     */
-    orderBy?: EvidenceMatchOrderByWithRelationInput | EvidenceMatchOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for EvidenceMatches.
-     */
-    cursor?: EvidenceMatchWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EvidenceMatches from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EvidenceMatches.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of EvidenceMatches.
-     */
-    distinct?: EvidenceMatchScalarFieldEnum | EvidenceMatchScalarFieldEnum[]
-  }
-
-  /**
-   * EvidenceMatch findFirstOrThrow
-   */
-  export type EvidenceMatchFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * Filter, which EvidenceMatch to fetch.
-     */
-    where?: EvidenceMatchWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EvidenceMatches to fetch.
-     */
-    orderBy?: EvidenceMatchOrderByWithRelationInput | EvidenceMatchOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for EvidenceMatches.
-     */
-    cursor?: EvidenceMatchWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EvidenceMatches from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EvidenceMatches.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of EvidenceMatches.
-     */
-    distinct?: EvidenceMatchScalarFieldEnum | EvidenceMatchScalarFieldEnum[]
-  }
-
-  /**
-   * EvidenceMatch findMany
-   */
-  export type EvidenceMatchFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * Filter, which EvidenceMatches to fetch.
-     */
-    where?: EvidenceMatchWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of EvidenceMatches to fetch.
-     */
-    orderBy?: EvidenceMatchOrderByWithRelationInput | EvidenceMatchOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing EvidenceMatches.
-     */
-    cursor?: EvidenceMatchWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` EvidenceMatches from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` EvidenceMatches.
-     */
-    skip?: number
-    distinct?: EvidenceMatchScalarFieldEnum | EvidenceMatchScalarFieldEnum[]
-  }
-
-  /**
-   * EvidenceMatch create
-   */
-  export type EvidenceMatchCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * The data needed to create a EvidenceMatch.
-     */
-    data: XOR<EvidenceMatchCreateInput, EvidenceMatchUncheckedCreateInput>
-  }
-
-  /**
-   * EvidenceMatch createMany
-   */
-  export type EvidenceMatchCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many EvidenceMatches.
-     */
-    data: EvidenceMatchCreateManyInput | EvidenceMatchCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * EvidenceMatch createManyAndReturn
-   */
-  export type EvidenceMatchCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * The data used to create many EvidenceMatches.
-     */
-    data: EvidenceMatchCreateManyInput | EvidenceMatchCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * EvidenceMatch update
-   */
-  export type EvidenceMatchUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * The data needed to update a EvidenceMatch.
-     */
-    data: XOR<EvidenceMatchUpdateInput, EvidenceMatchUncheckedUpdateInput>
-    /**
-     * Choose, which EvidenceMatch to update.
-     */
-    where: EvidenceMatchWhereUniqueInput
-  }
-
-  /**
-   * EvidenceMatch updateMany
-   */
-  export type EvidenceMatchUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update EvidenceMatches.
-     */
-    data: XOR<EvidenceMatchUpdateManyMutationInput, EvidenceMatchUncheckedUpdateManyInput>
-    /**
-     * Filter which EvidenceMatches to update
-     */
-    where?: EvidenceMatchWhereInput
-    /**
-     * Limit how many EvidenceMatches to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * EvidenceMatch updateManyAndReturn
-   */
-  export type EvidenceMatchUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * The data used to update EvidenceMatches.
-     */
-    data: XOR<EvidenceMatchUpdateManyMutationInput, EvidenceMatchUncheckedUpdateManyInput>
-    /**
-     * Filter which EvidenceMatches to update
-     */
-    where?: EvidenceMatchWhereInput
-    /**
-     * Limit how many EvidenceMatches to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * EvidenceMatch upsert
-   */
-  export type EvidenceMatchUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * The filter to search for the EvidenceMatch to update in case it exists.
-     */
-    where: EvidenceMatchWhereUniqueInput
-    /**
-     * In case the EvidenceMatch found by the `where` argument doesn't exist, create a new EvidenceMatch with this data.
-     */
-    create: XOR<EvidenceMatchCreateInput, EvidenceMatchUncheckedCreateInput>
-    /**
-     * In case the EvidenceMatch was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<EvidenceMatchUpdateInput, EvidenceMatchUncheckedUpdateInput>
-  }
-
-  /**
-   * EvidenceMatch delete
-   */
-  export type EvidenceMatchDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-    /**
-     * Filter which EvidenceMatch to delete.
-     */
-    where: EvidenceMatchWhereUniqueInput
-  }
-
-  /**
-   * EvidenceMatch deleteMany
-   */
-  export type EvidenceMatchDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which EvidenceMatches to delete
-     */
-    where?: EvidenceMatchWhereInput
-    /**
-     * Limit how many EvidenceMatches to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * EvidenceMatch.candidateChunk
-   */
-  export type EvidenceMatch$candidateChunkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    where?: CandidateChunkWhereInput
-  }
-
-  /**
-   * EvidenceMatch without action
-   */
-  export type EvidenceMatchDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the EvidenceMatch
-     */
-    select?: EvidenceMatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the EvidenceMatch
-     */
-    omit?: EvidenceMatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EvidenceMatchInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model RequirementFitScore
-   */
-
-  export type AggregateRequirementFitScore = {
-    _count: RequirementFitScoreCountAggregateOutputType | null
-    _avg: RequirementFitScoreAvgAggregateOutputType | null
-    _sum: RequirementFitScoreSumAggregateOutputType | null
-    _min: RequirementFitScoreMinAggregateOutputType | null
-    _max: RequirementFitScoreMaxAggregateOutputType | null
-  }
-
-  export type RequirementFitScoreAvgAggregateOutputType = {
-    importanceWeight: number | null
-    confidenceValue: number | null
-    earnedPoints: number | null
-    possiblePoints: number | null
-  }
-
-  export type RequirementFitScoreSumAggregateOutputType = {
-    importanceWeight: number | null
-    confidenceValue: number | null
-    earnedPoints: number | null
-    possiblePoints: number | null
-  }
-
-  export type RequirementFitScoreMinAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    jobRequirementId: string | null
-    finalConfidence: $Enums.EvidenceConfidence | null
-    bestCandidateChunkId: string | null
-    reason: string | null
-    importanceWeight: number | null
-    confidenceValue: number | null
-    earnedPoints: number | null
-    possiblePoints: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type RequirementFitScoreMaxAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    jobRequirementId: string | null
-    finalConfidence: $Enums.EvidenceConfidence | null
-    bestCandidateChunkId: string | null
-    reason: string | null
-    importanceWeight: number | null
-    confidenceValue: number | null
-    earnedPoints: number | null
-    possiblePoints: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type RequirementFitScoreCountAggregateOutputType = {
-    id: number
-    applicationId: number
-    jobRequirementId: number
-    finalConfidence: number
-    bestCandidateChunkId: number
-    reason: number
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type RequirementFitScoreAvgAggregateInputType = {
-    importanceWeight?: true
-    confidenceValue?: true
-    earnedPoints?: true
-    possiblePoints?: true
-  }
-
-  export type RequirementFitScoreSumAggregateInputType = {
-    importanceWeight?: true
-    confidenceValue?: true
-    earnedPoints?: true
-    possiblePoints?: true
-  }
-
-  export type RequirementFitScoreMinAggregateInputType = {
-    id?: true
-    applicationId?: true
-    jobRequirementId?: true
-    finalConfidence?: true
-    bestCandidateChunkId?: true
-    reason?: true
-    importanceWeight?: true
-    confidenceValue?: true
-    earnedPoints?: true
-    possiblePoints?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type RequirementFitScoreMaxAggregateInputType = {
-    id?: true
-    applicationId?: true
-    jobRequirementId?: true
-    finalConfidence?: true
-    bestCandidateChunkId?: true
-    reason?: true
-    importanceWeight?: true
-    confidenceValue?: true
-    earnedPoints?: true
-    possiblePoints?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type RequirementFitScoreCountAggregateInputType = {
-    id?: true
-    applicationId?: true
-    jobRequirementId?: true
-    finalConfidence?: true
-    bestCandidateChunkId?: true
-    reason?: true
-    importanceWeight?: true
-    confidenceValue?: true
-    earnedPoints?: true
-    possiblePoints?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type RequirementFitScoreAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which RequirementFitScore to aggregate.
-     */
-    where?: RequirementFitScoreWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RequirementFitScores to fetch.
-     */
-    orderBy?: RequirementFitScoreOrderByWithRelationInput | RequirementFitScoreOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: RequirementFitScoreWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RequirementFitScores from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RequirementFitScores.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned RequirementFitScores
-    **/
-    _count?: true | RequirementFitScoreCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: RequirementFitScoreAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: RequirementFitScoreSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: RequirementFitScoreMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: RequirementFitScoreMaxAggregateInputType
-  }
-
-  export type GetRequirementFitScoreAggregateType<T extends RequirementFitScoreAggregateArgs> = {
-        [P in keyof T & keyof AggregateRequirementFitScore]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateRequirementFitScore[P]>
-      : GetScalarType<T[P], AggregateRequirementFitScore[P]>
-  }
-
-
-
-
-  export type RequirementFitScoreGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RequirementFitScoreWhereInput
-    orderBy?: RequirementFitScoreOrderByWithAggregationInput | RequirementFitScoreOrderByWithAggregationInput[]
-    by: RequirementFitScoreScalarFieldEnum[] | RequirementFitScoreScalarFieldEnum
-    having?: RequirementFitScoreScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: RequirementFitScoreCountAggregateInputType | true
-    _avg?: RequirementFitScoreAvgAggregateInputType
-    _sum?: RequirementFitScoreSumAggregateInputType
-    _min?: RequirementFitScoreMinAggregateInputType
-    _max?: RequirementFitScoreMaxAggregateInputType
-  }
-
-  export type RequirementFitScoreGroupByOutputType = {
-    id: string
-    applicationId: string
-    jobRequirementId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    bestCandidateChunkId: string | null
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt: Date
-    updatedAt: Date
-    _count: RequirementFitScoreCountAggregateOutputType | null
-    _avg: RequirementFitScoreAvgAggregateOutputType | null
-    _sum: RequirementFitScoreSumAggregateOutputType | null
-    _min: RequirementFitScoreMinAggregateOutputType | null
-    _max: RequirementFitScoreMaxAggregateOutputType | null
-  }
-
-  type GetRequirementFitScoreGroupByPayload<T extends RequirementFitScoreGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<RequirementFitScoreGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof RequirementFitScoreGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], RequirementFitScoreGroupByOutputType[P]>
-            : GetScalarType<T[P], RequirementFitScoreGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type RequirementFitScoreSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    finalConfidence?: boolean
-    bestCandidateChunkId?: boolean
-    reason?: boolean
-    importanceWeight?: boolean
-    confidenceValue?: boolean
-    earnedPoints?: boolean
-    possiblePoints?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    bestCandidateChunk?: boolean | RequirementFitScore$bestCandidateChunkArgs<ExtArgs>
-  }, ExtArgs["result"]["requirementFitScore"]>
-
-  export type RequirementFitScoreSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    finalConfidence?: boolean
-    bestCandidateChunkId?: boolean
-    reason?: boolean
-    importanceWeight?: boolean
-    confidenceValue?: boolean
-    earnedPoints?: boolean
-    possiblePoints?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    bestCandidateChunk?: boolean | RequirementFitScore$bestCandidateChunkArgs<ExtArgs>
-  }, ExtArgs["result"]["requirementFitScore"]>
-
-  export type RequirementFitScoreSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    finalConfidence?: boolean
-    bestCandidateChunkId?: boolean
-    reason?: boolean
-    importanceWeight?: boolean
-    confidenceValue?: boolean
-    earnedPoints?: boolean
-    possiblePoints?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    bestCandidateChunk?: boolean | RequirementFitScore$bestCandidateChunkArgs<ExtArgs>
-  }, ExtArgs["result"]["requirementFitScore"]>
-
-  export type RequirementFitScoreSelectScalar = {
-    id?: boolean
-    applicationId?: boolean
-    jobRequirementId?: boolean
-    finalConfidence?: boolean
-    bestCandidateChunkId?: boolean
-    reason?: boolean
-    importanceWeight?: boolean
-    confidenceValue?: boolean
-    earnedPoints?: boolean
-    possiblePoints?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type RequirementFitScoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "jobRequirementId" | "finalConfidence" | "bestCandidateChunkId" | "reason" | "importanceWeight" | "confidenceValue" | "earnedPoints" | "possiblePoints" | "createdAt" | "updatedAt", ExtArgs["result"]["requirementFitScore"]>
-  export type RequirementFitScoreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    bestCandidateChunk?: boolean | RequirementFitScore$bestCandidateChunkArgs<ExtArgs>
-  }
-  export type RequirementFitScoreIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    bestCandidateChunk?: boolean | RequirementFitScore$bestCandidateChunkArgs<ExtArgs>
-  }
-  export type RequirementFitScoreIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    jobRequirement?: boolean | JobRequirementDefaultArgs<ExtArgs>
-    bestCandidateChunk?: boolean | RequirementFitScore$bestCandidateChunkArgs<ExtArgs>
-  }
-
-  export type $RequirementFitScorePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "RequirementFitScore"
-    objects: {
-      application: Prisma.$ApplicationPayload<ExtArgs>
-      jobRequirement: Prisma.$JobRequirementPayload<ExtArgs>
-      bestCandidateChunk: Prisma.$CandidateChunkPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      applicationId: string
-      jobRequirementId: string
-      finalConfidence: $Enums.EvidenceConfidence
-      bestCandidateChunkId: string | null
-      reason: string
-      importanceWeight: number
-      confidenceValue: number
-      earnedPoints: number
-      possiblePoints: number
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["requirementFitScore"]>
-    composites: {}
-  }
-
-  type RequirementFitScoreGetPayload<S extends boolean | null | undefined | RequirementFitScoreDefaultArgs> = $Result.GetResult<Prisma.$RequirementFitScorePayload, S>
-
-  type RequirementFitScoreCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<RequirementFitScoreFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: RequirementFitScoreCountAggregateInputType | true
-    }
-
-  export interface RequirementFitScoreDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RequirementFitScore'], meta: { name: 'RequirementFitScore' } }
-    /**
-     * Find zero or one RequirementFitScore that matches the filter.
-     * @param {RequirementFitScoreFindUniqueArgs} args - Arguments to find a RequirementFitScore
-     * @example
-     * // Get one RequirementFitScore
-     * const requirementFitScore = await prisma.requirementFitScore.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends RequirementFitScoreFindUniqueArgs>(args: SelectSubset<T, RequirementFitScoreFindUniqueArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one RequirementFitScore that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {RequirementFitScoreFindUniqueOrThrowArgs} args - Arguments to find a RequirementFitScore
-     * @example
-     * // Get one RequirementFitScore
-     * const requirementFitScore = await prisma.requirementFitScore.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends RequirementFitScoreFindUniqueOrThrowArgs>(args: SelectSubset<T, RequirementFitScoreFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first RequirementFitScore that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RequirementFitScoreFindFirstArgs} args - Arguments to find a RequirementFitScore
-     * @example
-     * // Get one RequirementFitScore
-     * const requirementFitScore = await prisma.requirementFitScore.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends RequirementFitScoreFindFirstArgs>(args?: SelectSubset<T, RequirementFitScoreFindFirstArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first RequirementFitScore that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RequirementFitScoreFindFirstOrThrowArgs} args - Arguments to find a RequirementFitScore
-     * @example
-     * // Get one RequirementFitScore
-     * const requirementFitScore = await prisma.requirementFitScore.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends RequirementFitScoreFindFirstOrThrowArgs>(args?: SelectSubset<T, RequirementFitScoreFindFirstOrThrowArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more RequirementFitScores that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RequirementFitScoreFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all RequirementFitScores
-     * const requirementFitScores = await prisma.requirementFitScore.findMany()
-     * 
-     * // Get first 10 RequirementFitScores
-     * const requirementFitScores = await prisma.requirementFitScore.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const requirementFitScoreWithIdOnly = await prisma.requirementFitScore.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends RequirementFitScoreFindManyArgs>(args?: SelectSubset<T, RequirementFitScoreFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a RequirementFitScore.
-     * @param {RequirementFitScoreCreateArgs} args - Arguments to create a RequirementFitScore.
-     * @example
-     * // Create one RequirementFitScore
-     * const RequirementFitScore = await prisma.requirementFitScore.create({
-     *   data: {
-     *     // ... data to create a RequirementFitScore
-     *   }
-     * })
-     * 
-     */
-    create<T extends RequirementFitScoreCreateArgs>(args: SelectSubset<T, RequirementFitScoreCreateArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many RequirementFitScores.
-     * @param {RequirementFitScoreCreateManyArgs} args - Arguments to create many RequirementFitScores.
-     * @example
-     * // Create many RequirementFitScores
-     * const requirementFitScore = await prisma.requirementFitScore.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends RequirementFitScoreCreateManyArgs>(args?: SelectSubset<T, RequirementFitScoreCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many RequirementFitScores and returns the data saved in the database.
-     * @param {RequirementFitScoreCreateManyAndReturnArgs} args - Arguments to create many RequirementFitScores.
-     * @example
-     * // Create many RequirementFitScores
-     * const requirementFitScore = await prisma.requirementFitScore.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many RequirementFitScores and only return the `id`
-     * const requirementFitScoreWithIdOnly = await prisma.requirementFitScore.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends RequirementFitScoreCreateManyAndReturnArgs>(args?: SelectSubset<T, RequirementFitScoreCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a RequirementFitScore.
-     * @param {RequirementFitScoreDeleteArgs} args - Arguments to delete one RequirementFitScore.
-     * @example
-     * // Delete one RequirementFitScore
-     * const RequirementFitScore = await prisma.requirementFitScore.delete({
-     *   where: {
-     *     // ... filter to delete one RequirementFitScore
-     *   }
-     * })
-     * 
-     */
-    delete<T extends RequirementFitScoreDeleteArgs>(args: SelectSubset<T, RequirementFitScoreDeleteArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one RequirementFitScore.
-     * @param {RequirementFitScoreUpdateArgs} args - Arguments to update one RequirementFitScore.
-     * @example
-     * // Update one RequirementFitScore
-     * const requirementFitScore = await prisma.requirementFitScore.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends RequirementFitScoreUpdateArgs>(args: SelectSubset<T, RequirementFitScoreUpdateArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more RequirementFitScores.
-     * @param {RequirementFitScoreDeleteManyArgs} args - Arguments to filter RequirementFitScores to delete.
-     * @example
-     * // Delete a few RequirementFitScores
-     * const { count } = await prisma.requirementFitScore.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends RequirementFitScoreDeleteManyArgs>(args?: SelectSubset<T, RequirementFitScoreDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more RequirementFitScores.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RequirementFitScoreUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many RequirementFitScores
-     * const requirementFitScore = await prisma.requirementFitScore.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends RequirementFitScoreUpdateManyArgs>(args: SelectSubset<T, RequirementFitScoreUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more RequirementFitScores and returns the data updated in the database.
-     * @param {RequirementFitScoreUpdateManyAndReturnArgs} args - Arguments to update many RequirementFitScores.
-     * @example
-     * // Update many RequirementFitScores
-     * const requirementFitScore = await prisma.requirementFitScore.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more RequirementFitScores and only return the `id`
-     * const requirementFitScoreWithIdOnly = await prisma.requirementFitScore.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends RequirementFitScoreUpdateManyAndReturnArgs>(args: SelectSubset<T, RequirementFitScoreUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one RequirementFitScore.
-     * @param {RequirementFitScoreUpsertArgs} args - Arguments to update or create a RequirementFitScore.
-     * @example
-     * // Update or create a RequirementFitScore
-     * const requirementFitScore = await prisma.requirementFitScore.upsert({
-     *   create: {
-     *     // ... data to create a RequirementFitScore
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the RequirementFitScore we want to update
-     *   }
-     * })
-     */
-    upsert<T extends RequirementFitScoreUpsertArgs>(args: SelectSubset<T, RequirementFitScoreUpsertArgs<ExtArgs>>): Prisma__RequirementFitScoreClient<$Result.GetResult<Prisma.$RequirementFitScorePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of RequirementFitScores.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RequirementFitScoreCountArgs} args - Arguments to filter RequirementFitScores to count.
-     * @example
-     * // Count the number of RequirementFitScores
-     * const count = await prisma.requirementFitScore.count({
-     *   where: {
-     *     // ... the filter for the RequirementFitScores we want to count
-     *   }
-     * })
-    **/
-    count<T extends RequirementFitScoreCountArgs>(
-      args?: Subset<T, RequirementFitScoreCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], RequirementFitScoreCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a RequirementFitScore.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RequirementFitScoreAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends RequirementFitScoreAggregateArgs>(args: Subset<T, RequirementFitScoreAggregateArgs>): Prisma.PrismaPromise<GetRequirementFitScoreAggregateType<T>>
-
-    /**
-     * Group by RequirementFitScore.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {RequirementFitScoreGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends RequirementFitScoreGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: RequirementFitScoreGroupByArgs['orderBy'] }
-        : { orderBy?: RequirementFitScoreGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, RequirementFitScoreGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRequirementFitScoreGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the RequirementFitScore model
-   */
-  readonly fields: RequirementFitScoreFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for RequirementFitScore.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__RequirementFitScoreClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    jobRequirement<T extends JobRequirementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, JobRequirementDefaultArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    bestCandidateChunk<T extends RequirementFitScore$bestCandidateChunkArgs<ExtArgs> = {}>(args?: Subset<T, RequirementFitScore$bestCandidateChunkArgs<ExtArgs>>): Prisma__CandidateChunkClient<$Result.GetResult<Prisma.$CandidateChunkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the RequirementFitScore model
-   */
-  interface RequirementFitScoreFieldRefs {
-    readonly id: FieldRef<"RequirementFitScore", 'String'>
-    readonly applicationId: FieldRef<"RequirementFitScore", 'String'>
-    readonly jobRequirementId: FieldRef<"RequirementFitScore", 'String'>
-    readonly finalConfidence: FieldRef<"RequirementFitScore", 'EvidenceConfidence'>
-    readonly bestCandidateChunkId: FieldRef<"RequirementFitScore", 'String'>
-    readonly reason: FieldRef<"RequirementFitScore", 'String'>
-    readonly importanceWeight: FieldRef<"RequirementFitScore", 'Float'>
-    readonly confidenceValue: FieldRef<"RequirementFitScore", 'Float'>
-    readonly earnedPoints: FieldRef<"RequirementFitScore", 'Float'>
-    readonly possiblePoints: FieldRef<"RequirementFitScore", 'Float'>
-    readonly createdAt: FieldRef<"RequirementFitScore", 'DateTime'>
-    readonly updatedAt: FieldRef<"RequirementFitScore", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * RequirementFitScore findUnique
-   */
-  export type RequirementFitScoreFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * Filter, which RequirementFitScore to fetch.
-     */
-    where: RequirementFitScoreWhereUniqueInput
-  }
-
-  /**
-   * RequirementFitScore findUniqueOrThrow
-   */
-  export type RequirementFitScoreFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * Filter, which RequirementFitScore to fetch.
-     */
-    where: RequirementFitScoreWhereUniqueInput
-  }
-
-  /**
-   * RequirementFitScore findFirst
-   */
-  export type RequirementFitScoreFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * Filter, which RequirementFitScore to fetch.
-     */
-    where?: RequirementFitScoreWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RequirementFitScores to fetch.
-     */
-    orderBy?: RequirementFitScoreOrderByWithRelationInput | RequirementFitScoreOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for RequirementFitScores.
-     */
-    cursor?: RequirementFitScoreWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RequirementFitScores from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RequirementFitScores.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of RequirementFitScores.
-     */
-    distinct?: RequirementFitScoreScalarFieldEnum | RequirementFitScoreScalarFieldEnum[]
-  }
-
-  /**
-   * RequirementFitScore findFirstOrThrow
-   */
-  export type RequirementFitScoreFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * Filter, which RequirementFitScore to fetch.
-     */
-    where?: RequirementFitScoreWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RequirementFitScores to fetch.
-     */
-    orderBy?: RequirementFitScoreOrderByWithRelationInput | RequirementFitScoreOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for RequirementFitScores.
-     */
-    cursor?: RequirementFitScoreWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RequirementFitScores from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RequirementFitScores.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of RequirementFitScores.
-     */
-    distinct?: RequirementFitScoreScalarFieldEnum | RequirementFitScoreScalarFieldEnum[]
-  }
-
-  /**
-   * RequirementFitScore findMany
-   */
-  export type RequirementFitScoreFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * Filter, which RequirementFitScores to fetch.
-     */
-    where?: RequirementFitScoreWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of RequirementFitScores to fetch.
-     */
-    orderBy?: RequirementFitScoreOrderByWithRelationInput | RequirementFitScoreOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing RequirementFitScores.
-     */
-    cursor?: RequirementFitScoreWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` RequirementFitScores from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` RequirementFitScores.
-     */
-    skip?: number
-    distinct?: RequirementFitScoreScalarFieldEnum | RequirementFitScoreScalarFieldEnum[]
-  }
-
-  /**
-   * RequirementFitScore create
-   */
-  export type RequirementFitScoreCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * The data needed to create a RequirementFitScore.
-     */
-    data: XOR<RequirementFitScoreCreateInput, RequirementFitScoreUncheckedCreateInput>
-  }
-
-  /**
-   * RequirementFitScore createMany
-   */
-  export type RequirementFitScoreCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many RequirementFitScores.
-     */
-    data: RequirementFitScoreCreateManyInput | RequirementFitScoreCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * RequirementFitScore createManyAndReturn
-   */
-  export type RequirementFitScoreCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * The data used to create many RequirementFitScores.
-     */
-    data: RequirementFitScoreCreateManyInput | RequirementFitScoreCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * RequirementFitScore update
-   */
-  export type RequirementFitScoreUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * The data needed to update a RequirementFitScore.
-     */
-    data: XOR<RequirementFitScoreUpdateInput, RequirementFitScoreUncheckedUpdateInput>
-    /**
-     * Choose, which RequirementFitScore to update.
-     */
-    where: RequirementFitScoreWhereUniqueInput
-  }
-
-  /**
-   * RequirementFitScore updateMany
-   */
-  export type RequirementFitScoreUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update RequirementFitScores.
-     */
-    data: XOR<RequirementFitScoreUpdateManyMutationInput, RequirementFitScoreUncheckedUpdateManyInput>
-    /**
-     * Filter which RequirementFitScores to update
-     */
-    where?: RequirementFitScoreWhereInput
-    /**
-     * Limit how many RequirementFitScores to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * RequirementFitScore updateManyAndReturn
-   */
-  export type RequirementFitScoreUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * The data used to update RequirementFitScores.
-     */
-    data: XOR<RequirementFitScoreUpdateManyMutationInput, RequirementFitScoreUncheckedUpdateManyInput>
-    /**
-     * Filter which RequirementFitScores to update
-     */
-    where?: RequirementFitScoreWhereInput
-    /**
-     * Limit how many RequirementFitScores to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * RequirementFitScore upsert
-   */
-  export type RequirementFitScoreUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * The filter to search for the RequirementFitScore to update in case it exists.
-     */
-    where: RequirementFitScoreWhereUniqueInput
-    /**
-     * In case the RequirementFitScore found by the `where` argument doesn't exist, create a new RequirementFitScore with this data.
-     */
-    create: XOR<RequirementFitScoreCreateInput, RequirementFitScoreUncheckedCreateInput>
-    /**
-     * In case the RequirementFitScore was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<RequirementFitScoreUpdateInput, RequirementFitScoreUncheckedUpdateInput>
-  }
-
-  /**
-   * RequirementFitScore delete
-   */
-  export type RequirementFitScoreDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-    /**
-     * Filter which RequirementFitScore to delete.
-     */
-    where: RequirementFitScoreWhereUniqueInput
-  }
-
-  /**
-   * RequirementFitScore deleteMany
-   */
-  export type RequirementFitScoreDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which RequirementFitScores to delete
-     */
-    where?: RequirementFitScoreWhereInput
-    /**
-     * Limit how many RequirementFitScores to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * RequirementFitScore.bestCandidateChunk
-   */
-  export type RequirementFitScore$bestCandidateChunkArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CandidateChunk
-     */
-    select?: CandidateChunkSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CandidateChunk
-     */
-    omit?: CandidateChunkOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CandidateChunkInclude<ExtArgs> | null
-    where?: CandidateChunkWhereInput
-  }
-
-  /**
-   * RequirementFitScore without action
-   */
-  export type RequirementFitScoreDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the RequirementFitScore
-     */
-    select?: RequirementFitScoreSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the RequirementFitScore
-     */
-    omit?: RequirementFitScoreOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RequirementFitScoreInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model GapQuestion
    */
 
@@ -18316,7 +12215,6 @@ export namespace Prisma {
   export type GapQuestionMinAggregateOutputType = {
     id: string | null
     applicationId: string | null
-    targetRequirementId: string | null
     question: string | null
     reason: string | null
     whyItMatters: string | null
@@ -18328,7 +12226,6 @@ export namespace Prisma {
   export type GapQuestionMaxAggregateOutputType = {
     id: string | null
     applicationId: string | null
-    targetRequirementId: string | null
     question: string | null
     reason: string | null
     whyItMatters: string | null
@@ -18340,7 +12237,6 @@ export namespace Prisma {
   export type GapQuestionCountAggregateOutputType = {
     id: number
     applicationId: number
-    targetRequirementId: number
     question: number
     reason: number
     whyItMatters: number
@@ -18356,7 +12252,6 @@ export namespace Prisma {
   export type GapQuestionMinAggregateInputType = {
     id?: true
     applicationId?: true
-    targetRequirementId?: true
     question?: true
     reason?: true
     whyItMatters?: true
@@ -18368,7 +12263,6 @@ export namespace Prisma {
   export type GapQuestionMaxAggregateInputType = {
     id?: true
     applicationId?: true
-    targetRequirementId?: true
     question?: true
     reason?: true
     whyItMatters?: true
@@ -18380,7 +12274,6 @@ export namespace Prisma {
   export type GapQuestionCountAggregateInputType = {
     id?: true
     applicationId?: true
-    targetRequirementId?: true
     question?: true
     reason?: true
     whyItMatters?: true
@@ -18467,7 +12360,6 @@ export namespace Prisma {
   export type GapQuestionGroupByOutputType = {
     id: string
     applicationId: string
-    targetRequirementId: string | null
     question: string
     reason: string
     whyItMatters: string | null
@@ -18498,7 +12390,6 @@ export namespace Prisma {
   export type GapQuestionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
-    targetRequirementId?: boolean
     question?: boolean
     reason?: boolean
     whyItMatters?: boolean
@@ -18508,7 +12399,6 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    targetRequirement?: boolean | GapQuestion$targetRequirementArgs<ExtArgs>
     answers?: boolean | GapQuestion$answersArgs<ExtArgs>
     _count?: boolean | GapQuestionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["gapQuestion"]>
@@ -18516,7 +12406,6 @@ export namespace Prisma {
   export type GapQuestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
-    targetRequirementId?: boolean
     question?: boolean
     reason?: boolean
     whyItMatters?: boolean
@@ -18526,13 +12415,11 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    targetRequirement?: boolean | GapQuestion$targetRequirementArgs<ExtArgs>
   }, ExtArgs["result"]["gapQuestion"]>
 
   export type GapQuestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
-    targetRequirementId?: boolean
     question?: boolean
     reason?: boolean
     whyItMatters?: boolean
@@ -18542,13 +12429,11 @@ export namespace Prisma {
     status?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    targetRequirement?: boolean | GapQuestion$targetRequirementArgs<ExtArgs>
   }, ExtArgs["result"]["gapQuestion"]>
 
   export type GapQuestionSelectScalar = {
     id?: boolean
     applicationId?: boolean
-    targetRequirementId?: boolean
     question?: boolean
     reason?: boolean
     whyItMatters?: boolean
@@ -18559,33 +12444,28 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type GapQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "targetRequirementId" | "question" | "reason" | "whyItMatters" | "answerGuidance" | "exampleAnglesJson" | "questionJson" | "status" | "createdAt", ExtArgs["result"]["gapQuestion"]>
+  export type GapQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "question" | "reason" | "whyItMatters" | "answerGuidance" | "exampleAnglesJson" | "questionJson" | "status" | "createdAt", ExtArgs["result"]["gapQuestion"]>
   export type GapQuestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    targetRequirement?: boolean | GapQuestion$targetRequirementArgs<ExtArgs>
     answers?: boolean | GapQuestion$answersArgs<ExtArgs>
     _count?: boolean | GapQuestionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GapQuestionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    targetRequirement?: boolean | GapQuestion$targetRequirementArgs<ExtArgs>
   }
   export type GapQuestionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    targetRequirement?: boolean | GapQuestion$targetRequirementArgs<ExtArgs>
   }
 
   export type $GapQuestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "GapQuestion"
     objects: {
       application: Prisma.$ApplicationPayload<ExtArgs>
-      targetRequirement: Prisma.$JobRequirementPayload<ExtArgs> | null
       answers: Prisma.$GapAnswerPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       applicationId: string
-      targetRequirementId: string | null
       question: string
       reason: string
       whyItMatters: string | null
@@ -18989,7 +12869,6 @@ export namespace Prisma {
   export interface Prisma__GapQuestionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    targetRequirement<T extends GapQuestion$targetRequirementArgs<ExtArgs> = {}>(args?: Subset<T, GapQuestion$targetRequirementArgs<ExtArgs>>): Prisma__JobRequirementClient<$Result.GetResult<Prisma.$JobRequirementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     answers<T extends GapQuestion$answersArgs<ExtArgs> = {}>(args?: Subset<T, GapQuestion$answersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GapAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -19022,7 +12901,6 @@ export namespace Prisma {
   interface GapQuestionFieldRefs {
     readonly id: FieldRef<"GapQuestion", 'String'>
     readonly applicationId: FieldRef<"GapQuestion", 'String'>
-    readonly targetRequirementId: FieldRef<"GapQuestion", 'String'>
     readonly question: FieldRef<"GapQuestion", 'String'>
     readonly reason: FieldRef<"GapQuestion", 'String'>
     readonly whyItMatters: FieldRef<"GapQuestion", 'String'>
@@ -19427,25 +13305,6 @@ export namespace Prisma {
   }
 
   /**
-   * GapQuestion.targetRequirement
-   */
-  export type GapQuestion$targetRequirementArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobRequirement
-     */
-    select?: JobRequirementSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobRequirement
-     */
-    omit?: JobRequirementOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobRequirementInclude<ExtArgs> | null
-    where?: JobRequirementWhereInput
-  }
-
-  /**
    * GapQuestion.answers
    */
   export type GapQuestion$answersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19489,1095 +13348,6 @@ export namespace Prisma {
 
 
   /**
-   * Model GapCoachInsight
-   */
-
-  export type AggregateGapCoachInsight = {
-    _count: GapCoachInsightCountAggregateOutputType | null
-    _min: GapCoachInsightMinAggregateOutputType | null
-    _max: GapCoachInsightMaxAggregateOutputType | null
-  }
-
-  export type GapCoachInsightMinAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    openingMessage: string | null
-    jobWants: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type GapCoachInsightMaxAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    openingMessage: string | null
-    jobWants: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type GapCoachInsightCountAggregateOutputType = {
-    id: number
-    applicationId: number
-    openingMessage: number
-    jobWants: number
-    candidateStrengthsJson: number
-    candidateConcernsJson: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type GapCoachInsightMinAggregateInputType = {
-    id?: true
-    applicationId?: true
-    openingMessage?: true
-    jobWants?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type GapCoachInsightMaxAggregateInputType = {
-    id?: true
-    applicationId?: true
-    openingMessage?: true
-    jobWants?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type GapCoachInsightCountAggregateInputType = {
-    id?: true
-    applicationId?: true
-    openingMessage?: true
-    jobWants?: true
-    candidateStrengthsJson?: true
-    candidateConcernsJson?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type GapCoachInsightAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which GapCoachInsight to aggregate.
-     */
-    where?: GapCoachInsightWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GapCoachInsights to fetch.
-     */
-    orderBy?: GapCoachInsightOrderByWithRelationInput | GapCoachInsightOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: GapCoachInsightWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GapCoachInsights from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GapCoachInsights.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned GapCoachInsights
-    **/
-    _count?: true | GapCoachInsightCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: GapCoachInsightMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: GapCoachInsightMaxAggregateInputType
-  }
-
-  export type GetGapCoachInsightAggregateType<T extends GapCoachInsightAggregateArgs> = {
-        [P in keyof T & keyof AggregateGapCoachInsight]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateGapCoachInsight[P]>
-      : GetScalarType<T[P], AggregateGapCoachInsight[P]>
-  }
-
-
-
-
-  export type GapCoachInsightGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: GapCoachInsightWhereInput
-    orderBy?: GapCoachInsightOrderByWithAggregationInput | GapCoachInsightOrderByWithAggregationInput[]
-    by: GapCoachInsightScalarFieldEnum[] | GapCoachInsightScalarFieldEnum
-    having?: GapCoachInsightScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: GapCoachInsightCountAggregateInputType | true
-    _min?: GapCoachInsightMinAggregateInputType
-    _max?: GapCoachInsightMaxAggregateInputType
-  }
-
-  export type GapCoachInsightGroupByOutputType = {
-    id: string
-    applicationId: string
-    openingMessage: string
-    jobWants: string
-    candidateStrengthsJson: JsonValue
-    candidateConcernsJson: JsonValue
-    createdAt: Date
-    updatedAt: Date
-    _count: GapCoachInsightCountAggregateOutputType | null
-    _min: GapCoachInsightMinAggregateOutputType | null
-    _max: GapCoachInsightMaxAggregateOutputType | null
-  }
-
-  type GetGapCoachInsightGroupByPayload<T extends GapCoachInsightGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<GapCoachInsightGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof GapCoachInsightGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], GapCoachInsightGroupByOutputType[P]>
-            : GetScalarType<T[P], GapCoachInsightGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type GapCoachInsightSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    openingMessage?: boolean
-    jobWants?: boolean
-    candidateStrengthsJson?: boolean
-    candidateConcernsJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["gapCoachInsight"]>
-
-  export type GapCoachInsightSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    openingMessage?: boolean
-    jobWants?: boolean
-    candidateStrengthsJson?: boolean
-    candidateConcernsJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["gapCoachInsight"]>
-
-  export type GapCoachInsightSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    openingMessage?: boolean
-    jobWants?: boolean
-    candidateStrengthsJson?: boolean
-    candidateConcernsJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["gapCoachInsight"]>
-
-  export type GapCoachInsightSelectScalar = {
-    id?: boolean
-    applicationId?: boolean
-    openingMessage?: boolean
-    jobWants?: boolean
-    candidateStrengthsJson?: boolean
-    candidateConcernsJson?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type GapCoachInsightOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "openingMessage" | "jobWants" | "candidateStrengthsJson" | "candidateConcernsJson" | "createdAt" | "updatedAt", ExtArgs["result"]["gapCoachInsight"]>
-  export type GapCoachInsightInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }
-  export type GapCoachInsightIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }
-  export type GapCoachInsightIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }
-
-  export type $GapCoachInsightPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "GapCoachInsight"
-    objects: {
-      application: Prisma.$ApplicationPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      applicationId: string
-      openingMessage: string
-      jobWants: string
-      candidateStrengthsJson: Prisma.JsonValue
-      candidateConcernsJson: Prisma.JsonValue
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["gapCoachInsight"]>
-    composites: {}
-  }
-
-  type GapCoachInsightGetPayload<S extends boolean | null | undefined | GapCoachInsightDefaultArgs> = $Result.GetResult<Prisma.$GapCoachInsightPayload, S>
-
-  type GapCoachInsightCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<GapCoachInsightFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: GapCoachInsightCountAggregateInputType | true
-    }
-
-  export interface GapCoachInsightDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GapCoachInsight'], meta: { name: 'GapCoachInsight' } }
-    /**
-     * Find zero or one GapCoachInsight that matches the filter.
-     * @param {GapCoachInsightFindUniqueArgs} args - Arguments to find a GapCoachInsight
-     * @example
-     * // Get one GapCoachInsight
-     * const gapCoachInsight = await prisma.gapCoachInsight.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends GapCoachInsightFindUniqueArgs>(args: SelectSubset<T, GapCoachInsightFindUniqueArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one GapCoachInsight that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {GapCoachInsightFindUniqueOrThrowArgs} args - Arguments to find a GapCoachInsight
-     * @example
-     * // Get one GapCoachInsight
-     * const gapCoachInsight = await prisma.gapCoachInsight.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends GapCoachInsightFindUniqueOrThrowArgs>(args: SelectSubset<T, GapCoachInsightFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first GapCoachInsight that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GapCoachInsightFindFirstArgs} args - Arguments to find a GapCoachInsight
-     * @example
-     * // Get one GapCoachInsight
-     * const gapCoachInsight = await prisma.gapCoachInsight.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends GapCoachInsightFindFirstArgs>(args?: SelectSubset<T, GapCoachInsightFindFirstArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first GapCoachInsight that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GapCoachInsightFindFirstOrThrowArgs} args - Arguments to find a GapCoachInsight
-     * @example
-     * // Get one GapCoachInsight
-     * const gapCoachInsight = await prisma.gapCoachInsight.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends GapCoachInsightFindFirstOrThrowArgs>(args?: SelectSubset<T, GapCoachInsightFindFirstOrThrowArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more GapCoachInsights that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GapCoachInsightFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all GapCoachInsights
-     * const gapCoachInsights = await prisma.gapCoachInsight.findMany()
-     * 
-     * // Get first 10 GapCoachInsights
-     * const gapCoachInsights = await prisma.gapCoachInsight.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const gapCoachInsightWithIdOnly = await prisma.gapCoachInsight.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends GapCoachInsightFindManyArgs>(args?: SelectSubset<T, GapCoachInsightFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a GapCoachInsight.
-     * @param {GapCoachInsightCreateArgs} args - Arguments to create a GapCoachInsight.
-     * @example
-     * // Create one GapCoachInsight
-     * const GapCoachInsight = await prisma.gapCoachInsight.create({
-     *   data: {
-     *     // ... data to create a GapCoachInsight
-     *   }
-     * })
-     * 
-     */
-    create<T extends GapCoachInsightCreateArgs>(args: SelectSubset<T, GapCoachInsightCreateArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many GapCoachInsights.
-     * @param {GapCoachInsightCreateManyArgs} args - Arguments to create many GapCoachInsights.
-     * @example
-     * // Create many GapCoachInsights
-     * const gapCoachInsight = await prisma.gapCoachInsight.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends GapCoachInsightCreateManyArgs>(args?: SelectSubset<T, GapCoachInsightCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many GapCoachInsights and returns the data saved in the database.
-     * @param {GapCoachInsightCreateManyAndReturnArgs} args - Arguments to create many GapCoachInsights.
-     * @example
-     * // Create many GapCoachInsights
-     * const gapCoachInsight = await prisma.gapCoachInsight.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many GapCoachInsights and only return the `id`
-     * const gapCoachInsightWithIdOnly = await prisma.gapCoachInsight.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends GapCoachInsightCreateManyAndReturnArgs>(args?: SelectSubset<T, GapCoachInsightCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a GapCoachInsight.
-     * @param {GapCoachInsightDeleteArgs} args - Arguments to delete one GapCoachInsight.
-     * @example
-     * // Delete one GapCoachInsight
-     * const GapCoachInsight = await prisma.gapCoachInsight.delete({
-     *   where: {
-     *     // ... filter to delete one GapCoachInsight
-     *   }
-     * })
-     * 
-     */
-    delete<T extends GapCoachInsightDeleteArgs>(args: SelectSubset<T, GapCoachInsightDeleteArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one GapCoachInsight.
-     * @param {GapCoachInsightUpdateArgs} args - Arguments to update one GapCoachInsight.
-     * @example
-     * // Update one GapCoachInsight
-     * const gapCoachInsight = await prisma.gapCoachInsight.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends GapCoachInsightUpdateArgs>(args: SelectSubset<T, GapCoachInsightUpdateArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more GapCoachInsights.
-     * @param {GapCoachInsightDeleteManyArgs} args - Arguments to filter GapCoachInsights to delete.
-     * @example
-     * // Delete a few GapCoachInsights
-     * const { count } = await prisma.gapCoachInsight.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends GapCoachInsightDeleteManyArgs>(args?: SelectSubset<T, GapCoachInsightDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more GapCoachInsights.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GapCoachInsightUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many GapCoachInsights
-     * const gapCoachInsight = await prisma.gapCoachInsight.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends GapCoachInsightUpdateManyArgs>(args: SelectSubset<T, GapCoachInsightUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more GapCoachInsights and returns the data updated in the database.
-     * @param {GapCoachInsightUpdateManyAndReturnArgs} args - Arguments to update many GapCoachInsights.
-     * @example
-     * // Update many GapCoachInsights
-     * const gapCoachInsight = await prisma.gapCoachInsight.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more GapCoachInsights and only return the `id`
-     * const gapCoachInsightWithIdOnly = await prisma.gapCoachInsight.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends GapCoachInsightUpdateManyAndReturnArgs>(args: SelectSubset<T, GapCoachInsightUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one GapCoachInsight.
-     * @param {GapCoachInsightUpsertArgs} args - Arguments to update or create a GapCoachInsight.
-     * @example
-     * // Update or create a GapCoachInsight
-     * const gapCoachInsight = await prisma.gapCoachInsight.upsert({
-     *   create: {
-     *     // ... data to create a GapCoachInsight
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the GapCoachInsight we want to update
-     *   }
-     * })
-     */
-    upsert<T extends GapCoachInsightUpsertArgs>(args: SelectSubset<T, GapCoachInsightUpsertArgs<ExtArgs>>): Prisma__GapCoachInsightClient<$Result.GetResult<Prisma.$GapCoachInsightPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of GapCoachInsights.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GapCoachInsightCountArgs} args - Arguments to filter GapCoachInsights to count.
-     * @example
-     * // Count the number of GapCoachInsights
-     * const count = await prisma.gapCoachInsight.count({
-     *   where: {
-     *     // ... the filter for the GapCoachInsights we want to count
-     *   }
-     * })
-    **/
-    count<T extends GapCoachInsightCountArgs>(
-      args?: Subset<T, GapCoachInsightCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], GapCoachInsightCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a GapCoachInsight.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GapCoachInsightAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends GapCoachInsightAggregateArgs>(args: Subset<T, GapCoachInsightAggregateArgs>): Prisma.PrismaPromise<GetGapCoachInsightAggregateType<T>>
-
-    /**
-     * Group by GapCoachInsight.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {GapCoachInsightGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends GapCoachInsightGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: GapCoachInsightGroupByArgs['orderBy'] }
-        : { orderBy?: GapCoachInsightGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, GapCoachInsightGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGapCoachInsightGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the GapCoachInsight model
-   */
-  readonly fields: GapCoachInsightFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for GapCoachInsight.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__GapCoachInsightClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the GapCoachInsight model
-   */
-  interface GapCoachInsightFieldRefs {
-    readonly id: FieldRef<"GapCoachInsight", 'String'>
-    readonly applicationId: FieldRef<"GapCoachInsight", 'String'>
-    readonly openingMessage: FieldRef<"GapCoachInsight", 'String'>
-    readonly jobWants: FieldRef<"GapCoachInsight", 'String'>
-    readonly candidateStrengthsJson: FieldRef<"GapCoachInsight", 'Json'>
-    readonly candidateConcernsJson: FieldRef<"GapCoachInsight", 'Json'>
-    readonly createdAt: FieldRef<"GapCoachInsight", 'DateTime'>
-    readonly updatedAt: FieldRef<"GapCoachInsight", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * GapCoachInsight findUnique
-   */
-  export type GapCoachInsightFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * Filter, which GapCoachInsight to fetch.
-     */
-    where: GapCoachInsightWhereUniqueInput
-  }
-
-  /**
-   * GapCoachInsight findUniqueOrThrow
-   */
-  export type GapCoachInsightFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * Filter, which GapCoachInsight to fetch.
-     */
-    where: GapCoachInsightWhereUniqueInput
-  }
-
-  /**
-   * GapCoachInsight findFirst
-   */
-  export type GapCoachInsightFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * Filter, which GapCoachInsight to fetch.
-     */
-    where?: GapCoachInsightWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GapCoachInsights to fetch.
-     */
-    orderBy?: GapCoachInsightOrderByWithRelationInput | GapCoachInsightOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for GapCoachInsights.
-     */
-    cursor?: GapCoachInsightWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GapCoachInsights from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GapCoachInsights.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of GapCoachInsights.
-     */
-    distinct?: GapCoachInsightScalarFieldEnum | GapCoachInsightScalarFieldEnum[]
-  }
-
-  /**
-   * GapCoachInsight findFirstOrThrow
-   */
-  export type GapCoachInsightFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * Filter, which GapCoachInsight to fetch.
-     */
-    where?: GapCoachInsightWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GapCoachInsights to fetch.
-     */
-    orderBy?: GapCoachInsightOrderByWithRelationInput | GapCoachInsightOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for GapCoachInsights.
-     */
-    cursor?: GapCoachInsightWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GapCoachInsights from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GapCoachInsights.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of GapCoachInsights.
-     */
-    distinct?: GapCoachInsightScalarFieldEnum | GapCoachInsightScalarFieldEnum[]
-  }
-
-  /**
-   * GapCoachInsight findMany
-   */
-  export type GapCoachInsightFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * Filter, which GapCoachInsights to fetch.
-     */
-    where?: GapCoachInsightWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of GapCoachInsights to fetch.
-     */
-    orderBy?: GapCoachInsightOrderByWithRelationInput | GapCoachInsightOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing GapCoachInsights.
-     */
-    cursor?: GapCoachInsightWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` GapCoachInsights from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` GapCoachInsights.
-     */
-    skip?: number
-    distinct?: GapCoachInsightScalarFieldEnum | GapCoachInsightScalarFieldEnum[]
-  }
-
-  /**
-   * GapCoachInsight create
-   */
-  export type GapCoachInsightCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * The data needed to create a GapCoachInsight.
-     */
-    data: XOR<GapCoachInsightCreateInput, GapCoachInsightUncheckedCreateInput>
-  }
-
-  /**
-   * GapCoachInsight createMany
-   */
-  export type GapCoachInsightCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many GapCoachInsights.
-     */
-    data: GapCoachInsightCreateManyInput | GapCoachInsightCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * GapCoachInsight createManyAndReturn
-   */
-  export type GapCoachInsightCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * The data used to create many GapCoachInsights.
-     */
-    data: GapCoachInsightCreateManyInput | GapCoachInsightCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * GapCoachInsight update
-   */
-  export type GapCoachInsightUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * The data needed to update a GapCoachInsight.
-     */
-    data: XOR<GapCoachInsightUpdateInput, GapCoachInsightUncheckedUpdateInput>
-    /**
-     * Choose, which GapCoachInsight to update.
-     */
-    where: GapCoachInsightWhereUniqueInput
-  }
-
-  /**
-   * GapCoachInsight updateMany
-   */
-  export type GapCoachInsightUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update GapCoachInsights.
-     */
-    data: XOR<GapCoachInsightUpdateManyMutationInput, GapCoachInsightUncheckedUpdateManyInput>
-    /**
-     * Filter which GapCoachInsights to update
-     */
-    where?: GapCoachInsightWhereInput
-    /**
-     * Limit how many GapCoachInsights to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * GapCoachInsight updateManyAndReturn
-   */
-  export type GapCoachInsightUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * The data used to update GapCoachInsights.
-     */
-    data: XOR<GapCoachInsightUpdateManyMutationInput, GapCoachInsightUncheckedUpdateManyInput>
-    /**
-     * Filter which GapCoachInsights to update
-     */
-    where?: GapCoachInsightWhereInput
-    /**
-     * Limit how many GapCoachInsights to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * GapCoachInsight upsert
-   */
-  export type GapCoachInsightUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * The filter to search for the GapCoachInsight to update in case it exists.
-     */
-    where: GapCoachInsightWhereUniqueInput
-    /**
-     * In case the GapCoachInsight found by the `where` argument doesn't exist, create a new GapCoachInsight with this data.
-     */
-    create: XOR<GapCoachInsightCreateInput, GapCoachInsightUncheckedCreateInput>
-    /**
-     * In case the GapCoachInsight was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<GapCoachInsightUpdateInput, GapCoachInsightUncheckedUpdateInput>
-  }
-
-  /**
-   * GapCoachInsight delete
-   */
-  export type GapCoachInsightDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-    /**
-     * Filter which GapCoachInsight to delete.
-     */
-    where: GapCoachInsightWhereUniqueInput
-  }
-
-  /**
-   * GapCoachInsight deleteMany
-   */
-  export type GapCoachInsightDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which GapCoachInsights to delete
-     */
-    where?: GapCoachInsightWhereInput
-    /**
-     * Limit how many GapCoachInsights to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * GapCoachInsight without action
-   */
-  export type GapCoachInsightDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the GapCoachInsight
-     */
-    select?: GapCoachInsightSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the GapCoachInsight
-     */
-    omit?: GapCoachInsightOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: GapCoachInsightInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model GapAnswer
    */
 
@@ -20602,7 +13372,6 @@ export namespace Prisma {
     gapQuestionId: string | null
     applicationId: string | null
     userId: string | null
-    targetRequirementId: string | null
     buttonAnswer: $Enums.ButtonAnswer | null
     elaboration: string | null
     selectedOption: string | null
@@ -20624,7 +13393,6 @@ export namespace Prisma {
     gapQuestionId: string | null
     applicationId: string | null
     userId: string | null
-    targetRequirementId: string | null
     buttonAnswer: $Enums.ButtonAnswer | null
     elaboration: string | null
     selectedOption: string | null
@@ -20646,7 +13414,6 @@ export namespace Prisma {
     gapQuestionId: number
     applicationId: number
     userId: number
-    targetRequirementId: number
     buttonAnswer: number
     elaboration: number
     selectedOption: number
@@ -20678,7 +13445,6 @@ export namespace Prisma {
     gapQuestionId?: true
     applicationId?: true
     userId?: true
-    targetRequirementId?: true
     buttonAnswer?: true
     elaboration?: true
     selectedOption?: true
@@ -20700,7 +13466,6 @@ export namespace Prisma {
     gapQuestionId?: true
     applicationId?: true
     userId?: true
-    targetRequirementId?: true
     buttonAnswer?: true
     elaboration?: true
     selectedOption?: true
@@ -20722,7 +13487,6 @@ export namespace Prisma {
     gapQuestionId?: true
     applicationId?: true
     userId?: true
-    targetRequirementId?: true
     buttonAnswer?: true
     elaboration?: true
     selectedOption?: true
@@ -20777,13 +13541,13 @@ export namespace Prisma {
     _count?: true | GapAnswerCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: GapAnswerAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: GapAnswerSumAggregateInputType
@@ -20831,7 +13595,6 @@ export namespace Prisma {
     gapQuestionId: string
     applicationId: string
     userId: string | null
-    targetRequirementId: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration: string | null
     selectedOption: string | null
@@ -20872,7 +13635,6 @@ export namespace Prisma {
     gapQuestionId?: boolean
     applicationId?: boolean
     userId?: boolean
-    targetRequirementId?: boolean
     buttonAnswer?: boolean
     elaboration?: boolean
     selectedOption?: boolean
@@ -20896,7 +13658,6 @@ export namespace Prisma {
     gapQuestionId?: boolean
     applicationId?: boolean
     userId?: boolean
-    targetRequirementId?: boolean
     buttonAnswer?: boolean
     elaboration?: boolean
     selectedOption?: boolean
@@ -20920,7 +13681,6 @@ export namespace Prisma {
     gapQuestionId?: boolean
     applicationId?: boolean
     userId?: boolean
-    targetRequirementId?: boolean
     buttonAnswer?: boolean
     elaboration?: boolean
     selectedOption?: boolean
@@ -20944,7 +13704,6 @@ export namespace Prisma {
     gapQuestionId?: boolean
     applicationId?: boolean
     userId?: boolean
-    targetRequirementId?: boolean
     buttonAnswer?: boolean
     elaboration?: boolean
     selectedOption?: boolean
@@ -20961,7 +13720,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type GapAnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gapQuestionId" | "applicationId" | "userId" | "targetRequirementId" | "buttonAnswer" | "elaboration" | "selectedOption" | "followUpText" | "metricText" | "rawUserAnswer" | "extractedEvidenceSummary" | "originalQuestion" | "usableStatus" | "evidenceQuality" | "boostPercent" | "source" | "skipped" | "createdAt", ExtArgs["result"]["gapAnswer"]>
+  export type GapAnswerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "gapQuestionId" | "applicationId" | "userId" | "buttonAnswer" | "elaboration" | "selectedOption" | "followUpText" | "metricText" | "rawUserAnswer" | "extractedEvidenceSummary" | "originalQuestion" | "usableStatus" | "evidenceQuality" | "boostPercent" | "source" | "skipped" | "createdAt", ExtArgs["result"]["gapAnswer"]>
   export type GapAnswerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     gapQuestion?: boolean | GapQuestionDefaultArgs<ExtArgs>
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
@@ -20986,7 +13745,6 @@ export namespace Prisma {
       gapQuestionId: string
       applicationId: string
       userId: string | null
-      targetRequirementId: string | null
       buttonAnswer: $Enums.ButtonAnswer
       elaboration: string | null
       selectedOption: string | null
@@ -21430,7 +14188,6 @@ export namespace Prisma {
     readonly gapQuestionId: FieldRef<"GapAnswer", 'String'>
     readonly applicationId: FieldRef<"GapAnswer", 'String'>
     readonly userId: FieldRef<"GapAnswer", 'String'>
-    readonly targetRequirementId: FieldRef<"GapAnswer", 'String'>
     readonly buttonAnswer: FieldRef<"GapAnswer", 'ButtonAnswer'>
     readonly elaboration: FieldRef<"GapAnswer", 'String'>
     readonly selectedOption: FieldRef<"GapAnswer", 'String'>
@@ -21860,1148 +14617,6 @@ export namespace Prisma {
 
 
   /**
-   * Model CvStrategy
-   */
-
-  export type AggregateCvStrategy = {
-    _count: CvStrategyCountAggregateOutputType | null
-    _min: CvStrategyMinAggregateOutputType | null
-    _max: CvStrategyMaxAggregateOutputType | null
-  }
-
-  export type CvStrategyMinAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    strategySummary: string | null
-    targetPositioning: string | null
-    createdAt: Date | null
-  }
-
-  export type CvStrategyMaxAggregateOutputType = {
-    id: string | null
-    applicationId: string | null
-    strategySummary: string | null
-    targetPositioning: string | null
-    createdAt: Date | null
-  }
-
-  export type CvStrategyCountAggregateOutputType = {
-    id: number
-    applicationId: number
-    strategySummary: number
-    targetPositioning: number
-    sectionOrderJson: number
-    emphasisJson: number
-    deEmphasisJson: number
-    evidenceToUseJson: number
-    warningsJson: number
-    strategyJson: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type CvStrategyMinAggregateInputType = {
-    id?: true
-    applicationId?: true
-    strategySummary?: true
-    targetPositioning?: true
-    createdAt?: true
-  }
-
-  export type CvStrategyMaxAggregateInputType = {
-    id?: true
-    applicationId?: true
-    strategySummary?: true
-    targetPositioning?: true
-    createdAt?: true
-  }
-
-  export type CvStrategyCountAggregateInputType = {
-    id?: true
-    applicationId?: true
-    strategySummary?: true
-    targetPositioning?: true
-    sectionOrderJson?: true
-    emphasisJson?: true
-    deEmphasisJson?: true
-    evidenceToUseJson?: true
-    warningsJson?: true
-    strategyJson?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type CvStrategyAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CvStrategy to aggregate.
-     */
-    where?: CvStrategyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CvStrategies to fetch.
-     */
-    orderBy?: CvStrategyOrderByWithRelationInput | CvStrategyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: CvStrategyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CvStrategies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CvStrategies.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned CvStrategies
-    **/
-    _count?: true | CvStrategyCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: CvStrategyMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: CvStrategyMaxAggregateInputType
-  }
-
-  export type GetCvStrategyAggregateType<T extends CvStrategyAggregateArgs> = {
-        [P in keyof T & keyof AggregateCvStrategy]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCvStrategy[P]>
-      : GetScalarType<T[P], AggregateCvStrategy[P]>
-  }
-
-
-
-
-  export type CvStrategyGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CvStrategyWhereInput
-    orderBy?: CvStrategyOrderByWithAggregationInput | CvStrategyOrderByWithAggregationInput[]
-    by: CvStrategyScalarFieldEnum[] | CvStrategyScalarFieldEnum
-    having?: CvStrategyScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: CvStrategyCountAggregateInputType | true
-    _min?: CvStrategyMinAggregateInputType
-    _max?: CvStrategyMaxAggregateInputType
-  }
-
-  export type CvStrategyGroupByOutputType = {
-    id: string
-    applicationId: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonValue
-    emphasisJson: JsonValue
-    deEmphasisJson: JsonValue
-    evidenceToUseJson: JsonValue
-    warningsJson: JsonValue
-    strategyJson: JsonValue | null
-    createdAt: Date
-    _count: CvStrategyCountAggregateOutputType | null
-    _min: CvStrategyMinAggregateOutputType | null
-    _max: CvStrategyMaxAggregateOutputType | null
-  }
-
-  type GetCvStrategyGroupByPayload<T extends CvStrategyGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<CvStrategyGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CvStrategyGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CvStrategyGroupByOutputType[P]>
-            : GetScalarType<T[P], CvStrategyGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type CvStrategySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    strategySummary?: boolean
-    targetPositioning?: boolean
-    sectionOrderJson?: boolean
-    emphasisJson?: boolean
-    deEmphasisJson?: boolean
-    evidenceToUseJson?: boolean
-    warningsJson?: boolean
-    strategyJson?: boolean
-    createdAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    cvDrafts?: boolean | CvStrategy$cvDraftsArgs<ExtArgs>
-    _count?: boolean | CvStrategyCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["cvStrategy"]>
-
-  export type CvStrategySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    strategySummary?: boolean
-    targetPositioning?: boolean
-    sectionOrderJson?: boolean
-    emphasisJson?: boolean
-    deEmphasisJson?: boolean
-    evidenceToUseJson?: boolean
-    warningsJson?: boolean
-    strategyJson?: boolean
-    createdAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["cvStrategy"]>
-
-  export type CvStrategySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    applicationId?: boolean
-    strategySummary?: boolean
-    targetPositioning?: boolean
-    sectionOrderJson?: boolean
-    emphasisJson?: boolean
-    deEmphasisJson?: boolean
-    evidenceToUseJson?: boolean
-    warningsJson?: boolean
-    strategyJson?: boolean
-    createdAt?: boolean
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["cvStrategy"]>
-
-  export type CvStrategySelectScalar = {
-    id?: boolean
-    applicationId?: boolean
-    strategySummary?: boolean
-    targetPositioning?: boolean
-    sectionOrderJson?: boolean
-    emphasisJson?: boolean
-    deEmphasisJson?: boolean
-    evidenceToUseJson?: boolean
-    warningsJson?: boolean
-    strategyJson?: boolean
-    createdAt?: boolean
-  }
-
-  export type CvStrategyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "strategySummary" | "targetPositioning" | "sectionOrderJson" | "emphasisJson" | "deEmphasisJson" | "evidenceToUseJson" | "warningsJson" | "strategyJson" | "createdAt", ExtArgs["result"]["cvStrategy"]>
-  export type CvStrategyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    cvDrafts?: boolean | CvStrategy$cvDraftsArgs<ExtArgs>
-    _count?: boolean | CvStrategyCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type CvStrategyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }
-  export type CvStrategyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    application?: boolean | ApplicationDefaultArgs<ExtArgs>
-  }
-
-  export type $CvStrategyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "CvStrategy"
-    objects: {
-      application: Prisma.$ApplicationPayload<ExtArgs>
-      cvDrafts: Prisma.$CvDraftPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      applicationId: string
-      strategySummary: string
-      targetPositioning: string
-      sectionOrderJson: Prisma.JsonValue
-      emphasisJson: Prisma.JsonValue
-      deEmphasisJson: Prisma.JsonValue
-      evidenceToUseJson: Prisma.JsonValue
-      warningsJson: Prisma.JsonValue
-      strategyJson: Prisma.JsonValue | null
-      createdAt: Date
-    }, ExtArgs["result"]["cvStrategy"]>
-    composites: {}
-  }
-
-  type CvStrategyGetPayload<S extends boolean | null | undefined | CvStrategyDefaultArgs> = $Result.GetResult<Prisma.$CvStrategyPayload, S>
-
-  type CvStrategyCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<CvStrategyFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: CvStrategyCountAggregateInputType | true
-    }
-
-  export interface CvStrategyDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CvStrategy'], meta: { name: 'CvStrategy' } }
-    /**
-     * Find zero or one CvStrategy that matches the filter.
-     * @param {CvStrategyFindUniqueArgs} args - Arguments to find a CvStrategy
-     * @example
-     * // Get one CvStrategy
-     * const cvStrategy = await prisma.cvStrategy.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends CvStrategyFindUniqueArgs>(args: SelectSubset<T, CvStrategyFindUniqueArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one CvStrategy that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {CvStrategyFindUniqueOrThrowArgs} args - Arguments to find a CvStrategy
-     * @example
-     * // Get one CvStrategy
-     * const cvStrategy = await prisma.cvStrategy.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends CvStrategyFindUniqueOrThrowArgs>(args: SelectSubset<T, CvStrategyFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CvStrategy that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CvStrategyFindFirstArgs} args - Arguments to find a CvStrategy
-     * @example
-     * // Get one CvStrategy
-     * const cvStrategy = await prisma.cvStrategy.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends CvStrategyFindFirstArgs>(args?: SelectSubset<T, CvStrategyFindFirstArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first CvStrategy that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CvStrategyFindFirstOrThrowArgs} args - Arguments to find a CvStrategy
-     * @example
-     * // Get one CvStrategy
-     * const cvStrategy = await prisma.cvStrategy.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends CvStrategyFindFirstOrThrowArgs>(args?: SelectSubset<T, CvStrategyFindFirstOrThrowArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more CvStrategies that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CvStrategyFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all CvStrategies
-     * const cvStrategies = await prisma.cvStrategy.findMany()
-     * 
-     * // Get first 10 CvStrategies
-     * const cvStrategies = await prisma.cvStrategy.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const cvStrategyWithIdOnly = await prisma.cvStrategy.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends CvStrategyFindManyArgs>(args?: SelectSubset<T, CvStrategyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a CvStrategy.
-     * @param {CvStrategyCreateArgs} args - Arguments to create a CvStrategy.
-     * @example
-     * // Create one CvStrategy
-     * const CvStrategy = await prisma.cvStrategy.create({
-     *   data: {
-     *     // ... data to create a CvStrategy
-     *   }
-     * })
-     * 
-     */
-    create<T extends CvStrategyCreateArgs>(args: SelectSubset<T, CvStrategyCreateArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many CvStrategies.
-     * @param {CvStrategyCreateManyArgs} args - Arguments to create many CvStrategies.
-     * @example
-     * // Create many CvStrategies
-     * const cvStrategy = await prisma.cvStrategy.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends CvStrategyCreateManyArgs>(args?: SelectSubset<T, CvStrategyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many CvStrategies and returns the data saved in the database.
-     * @param {CvStrategyCreateManyAndReturnArgs} args - Arguments to create many CvStrategies.
-     * @example
-     * // Create many CvStrategies
-     * const cvStrategy = await prisma.cvStrategy.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many CvStrategies and only return the `id`
-     * const cvStrategyWithIdOnly = await prisma.cvStrategy.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends CvStrategyCreateManyAndReturnArgs>(args?: SelectSubset<T, CvStrategyCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a CvStrategy.
-     * @param {CvStrategyDeleteArgs} args - Arguments to delete one CvStrategy.
-     * @example
-     * // Delete one CvStrategy
-     * const CvStrategy = await prisma.cvStrategy.delete({
-     *   where: {
-     *     // ... filter to delete one CvStrategy
-     *   }
-     * })
-     * 
-     */
-    delete<T extends CvStrategyDeleteArgs>(args: SelectSubset<T, CvStrategyDeleteArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one CvStrategy.
-     * @param {CvStrategyUpdateArgs} args - Arguments to update one CvStrategy.
-     * @example
-     * // Update one CvStrategy
-     * const cvStrategy = await prisma.cvStrategy.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends CvStrategyUpdateArgs>(args: SelectSubset<T, CvStrategyUpdateArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more CvStrategies.
-     * @param {CvStrategyDeleteManyArgs} args - Arguments to filter CvStrategies to delete.
-     * @example
-     * // Delete a few CvStrategies
-     * const { count } = await prisma.cvStrategy.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends CvStrategyDeleteManyArgs>(args?: SelectSubset<T, CvStrategyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CvStrategies.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CvStrategyUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many CvStrategies
-     * const cvStrategy = await prisma.cvStrategy.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends CvStrategyUpdateManyArgs>(args: SelectSubset<T, CvStrategyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more CvStrategies and returns the data updated in the database.
-     * @param {CvStrategyUpdateManyAndReturnArgs} args - Arguments to update many CvStrategies.
-     * @example
-     * // Update many CvStrategies
-     * const cvStrategy = await prisma.cvStrategy.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more CvStrategies and only return the `id`
-     * const cvStrategyWithIdOnly = await prisma.cvStrategy.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends CvStrategyUpdateManyAndReturnArgs>(args: SelectSubset<T, CvStrategyUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one CvStrategy.
-     * @param {CvStrategyUpsertArgs} args - Arguments to update or create a CvStrategy.
-     * @example
-     * // Update or create a CvStrategy
-     * const cvStrategy = await prisma.cvStrategy.upsert({
-     *   create: {
-     *     // ... data to create a CvStrategy
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the CvStrategy we want to update
-     *   }
-     * })
-     */
-    upsert<T extends CvStrategyUpsertArgs>(args: SelectSubset<T, CvStrategyUpsertArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of CvStrategies.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CvStrategyCountArgs} args - Arguments to filter CvStrategies to count.
-     * @example
-     * // Count the number of CvStrategies
-     * const count = await prisma.cvStrategy.count({
-     *   where: {
-     *     // ... the filter for the CvStrategies we want to count
-     *   }
-     * })
-    **/
-    count<T extends CvStrategyCountArgs>(
-      args?: Subset<T, CvStrategyCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CvStrategyCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a CvStrategy.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CvStrategyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends CvStrategyAggregateArgs>(args: Subset<T, CvStrategyAggregateArgs>): Prisma.PrismaPromise<GetCvStrategyAggregateType<T>>
-
-    /**
-     * Group by CvStrategy.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {CvStrategyGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends CvStrategyGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CvStrategyGroupByArgs['orderBy'] }
-        : { orderBy?: CvStrategyGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, CvStrategyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCvStrategyGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CvStrategy model
-   */
-  readonly fields: CvStrategyFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for CvStrategy.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__CvStrategyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    cvDrafts<T extends CvStrategy$cvDraftsArgs<ExtArgs> = {}>(args?: Subset<T, CvStrategy$cvDraftsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvDraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the CvStrategy model
-   */
-  interface CvStrategyFieldRefs {
-    readonly id: FieldRef<"CvStrategy", 'String'>
-    readonly applicationId: FieldRef<"CvStrategy", 'String'>
-    readonly strategySummary: FieldRef<"CvStrategy", 'String'>
-    readonly targetPositioning: FieldRef<"CvStrategy", 'String'>
-    readonly sectionOrderJson: FieldRef<"CvStrategy", 'Json'>
-    readonly emphasisJson: FieldRef<"CvStrategy", 'Json'>
-    readonly deEmphasisJson: FieldRef<"CvStrategy", 'Json'>
-    readonly evidenceToUseJson: FieldRef<"CvStrategy", 'Json'>
-    readonly warningsJson: FieldRef<"CvStrategy", 'Json'>
-    readonly strategyJson: FieldRef<"CvStrategy", 'Json'>
-    readonly createdAt: FieldRef<"CvStrategy", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * CvStrategy findUnique
-   */
-  export type CvStrategyFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * Filter, which CvStrategy to fetch.
-     */
-    where: CvStrategyWhereUniqueInput
-  }
-
-  /**
-   * CvStrategy findUniqueOrThrow
-   */
-  export type CvStrategyFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * Filter, which CvStrategy to fetch.
-     */
-    where: CvStrategyWhereUniqueInput
-  }
-
-  /**
-   * CvStrategy findFirst
-   */
-  export type CvStrategyFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * Filter, which CvStrategy to fetch.
-     */
-    where?: CvStrategyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CvStrategies to fetch.
-     */
-    orderBy?: CvStrategyOrderByWithRelationInput | CvStrategyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CvStrategies.
-     */
-    cursor?: CvStrategyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CvStrategies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CvStrategies.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CvStrategies.
-     */
-    distinct?: CvStrategyScalarFieldEnum | CvStrategyScalarFieldEnum[]
-  }
-
-  /**
-   * CvStrategy findFirstOrThrow
-   */
-  export type CvStrategyFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * Filter, which CvStrategy to fetch.
-     */
-    where?: CvStrategyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CvStrategies to fetch.
-     */
-    orderBy?: CvStrategyOrderByWithRelationInput | CvStrategyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for CvStrategies.
-     */
-    cursor?: CvStrategyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CvStrategies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CvStrategies.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of CvStrategies.
-     */
-    distinct?: CvStrategyScalarFieldEnum | CvStrategyScalarFieldEnum[]
-  }
-
-  /**
-   * CvStrategy findMany
-   */
-  export type CvStrategyFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * Filter, which CvStrategies to fetch.
-     */
-    where?: CvStrategyWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of CvStrategies to fetch.
-     */
-    orderBy?: CvStrategyOrderByWithRelationInput | CvStrategyOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing CvStrategies.
-     */
-    cursor?: CvStrategyWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` CvStrategies from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` CvStrategies.
-     */
-    skip?: number
-    distinct?: CvStrategyScalarFieldEnum | CvStrategyScalarFieldEnum[]
-  }
-
-  /**
-   * CvStrategy create
-   */
-  export type CvStrategyCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * The data needed to create a CvStrategy.
-     */
-    data: XOR<CvStrategyCreateInput, CvStrategyUncheckedCreateInput>
-  }
-
-  /**
-   * CvStrategy createMany
-   */
-  export type CvStrategyCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many CvStrategies.
-     */
-    data: CvStrategyCreateManyInput | CvStrategyCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * CvStrategy createManyAndReturn
-   */
-  export type CvStrategyCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * The data used to create many CvStrategies.
-     */
-    data: CvStrategyCreateManyInput | CvStrategyCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * CvStrategy update
-   */
-  export type CvStrategyUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * The data needed to update a CvStrategy.
-     */
-    data: XOR<CvStrategyUpdateInput, CvStrategyUncheckedUpdateInput>
-    /**
-     * Choose, which CvStrategy to update.
-     */
-    where: CvStrategyWhereUniqueInput
-  }
-
-  /**
-   * CvStrategy updateMany
-   */
-  export type CvStrategyUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update CvStrategies.
-     */
-    data: XOR<CvStrategyUpdateManyMutationInput, CvStrategyUncheckedUpdateManyInput>
-    /**
-     * Filter which CvStrategies to update
-     */
-    where?: CvStrategyWhereInput
-    /**
-     * Limit how many CvStrategies to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * CvStrategy updateManyAndReturn
-   */
-  export type CvStrategyUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * The data used to update CvStrategies.
-     */
-    data: XOR<CvStrategyUpdateManyMutationInput, CvStrategyUncheckedUpdateManyInput>
-    /**
-     * Filter which CvStrategies to update
-     */
-    where?: CvStrategyWhereInput
-    /**
-     * Limit how many CvStrategies to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * CvStrategy upsert
-   */
-  export type CvStrategyUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * The filter to search for the CvStrategy to update in case it exists.
-     */
-    where: CvStrategyWhereUniqueInput
-    /**
-     * In case the CvStrategy found by the `where` argument doesn't exist, create a new CvStrategy with this data.
-     */
-    create: XOR<CvStrategyCreateInput, CvStrategyUncheckedCreateInput>
-    /**
-     * In case the CvStrategy was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<CvStrategyUpdateInput, CvStrategyUncheckedUpdateInput>
-  }
-
-  /**
-   * CvStrategy delete
-   */
-  export type CvStrategyDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    /**
-     * Filter which CvStrategy to delete.
-     */
-    where: CvStrategyWhereUniqueInput
-  }
-
-  /**
-   * CvStrategy deleteMany
-   */
-  export type CvStrategyDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which CvStrategies to delete
-     */
-    where?: CvStrategyWhereInput
-    /**
-     * Limit how many CvStrategies to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * CvStrategy.cvDrafts
-   */
-  export type CvStrategy$cvDraftsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvDraft
-     */
-    select?: CvDraftSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvDraft
-     */
-    omit?: CvDraftOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvDraftInclude<ExtArgs> | null
-    where?: CvDraftWhereInput
-    orderBy?: CvDraftOrderByWithRelationInput | CvDraftOrderByWithRelationInput[]
-    cursor?: CvDraftWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CvDraftScalarFieldEnum | CvDraftScalarFieldEnum[]
-  }
-
-  /**
-   * CvStrategy without action
-   */
-  export type CvStrategyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model CvDraft
    */
 
@@ -23024,7 +14639,6 @@ export namespace Prisma {
   export type CvDraftMinAggregateOutputType = {
     id: string | null
     applicationId: string | null
-    strategyId: string | null
     version: number | null
     cvText: string | null
     createdAt: Date | null
@@ -23034,7 +14648,6 @@ export namespace Prisma {
   export type CvDraftMaxAggregateOutputType = {
     id: string | null
     applicationId: string | null
-    strategyId: string | null
     version: number | null
     cvText: string | null
     createdAt: Date | null
@@ -23044,7 +14657,6 @@ export namespace Prisma {
   export type CvDraftCountAggregateOutputType = {
     id: number
     applicationId: number
-    strategyId: number
     version: number
     cvJson: number
     cvText: number
@@ -23067,7 +14679,6 @@ export namespace Prisma {
   export type CvDraftMinAggregateInputType = {
     id?: true
     applicationId?: true
-    strategyId?: true
     version?: true
     cvText?: true
     createdAt?: true
@@ -23077,7 +14688,6 @@ export namespace Prisma {
   export type CvDraftMaxAggregateInputType = {
     id?: true
     applicationId?: true
-    strategyId?: true
     version?: true
     cvText?: true
     createdAt?: true
@@ -23087,7 +14697,6 @@ export namespace Prisma {
   export type CvDraftCountAggregateInputType = {
     id?: true
     applicationId?: true
-    strategyId?: true
     version?: true
     cvJson?: true
     cvText?: true
@@ -23187,7 +14796,6 @@ export namespace Prisma {
   export type CvDraftGroupByOutputType = {
     id: string
     applicationId: string
-    strategyId: string | null
     version: number
     cvJson: JsonValue
     cvText: string
@@ -23219,7 +14827,6 @@ export namespace Prisma {
   export type CvDraftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
-    strategyId?: boolean
     version?: boolean
     cvJson?: boolean
     cvText?: boolean
@@ -23228,7 +14835,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    strategy?: boolean | CvDraft$strategyArgs<ExtArgs>
     usage?: boolean | CvDraft$usageArgs<ExtArgs>
     _count?: boolean | CvDraftCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["cvDraft"]>
@@ -23236,7 +14842,6 @@ export namespace Prisma {
   export type CvDraftSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
-    strategyId?: boolean
     version?: boolean
     cvJson?: boolean
     cvText?: boolean
@@ -23245,13 +14850,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    strategy?: boolean | CvDraft$strategyArgs<ExtArgs>
   }, ExtArgs["result"]["cvDraft"]>
 
   export type CvDraftSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     applicationId?: boolean
-    strategyId?: boolean
     version?: boolean
     cvJson?: boolean
     cvText?: boolean
@@ -23260,13 +14863,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    strategy?: boolean | CvDraft$strategyArgs<ExtArgs>
   }, ExtArgs["result"]["cvDraft"]>
 
   export type CvDraftSelectScalar = {
     id?: boolean
     applicationId?: boolean
-    strategyId?: boolean
     version?: boolean
     cvJson?: boolean
     cvText?: boolean
@@ -23276,33 +14877,28 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type CvDraftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "strategyId" | "version" | "cvJson" | "cvText" | "presentationJson" | "builderOutputJson" | "createdAt" | "updatedAt", ExtArgs["result"]["cvDraft"]>
+  export type CvDraftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "version" | "cvJson" | "cvText" | "presentationJson" | "builderOutputJson" | "createdAt" | "updatedAt", ExtArgs["result"]["cvDraft"]>
   export type CvDraftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    strategy?: boolean | CvDraft$strategyArgs<ExtArgs>
     usage?: boolean | CvDraft$usageArgs<ExtArgs>
     _count?: boolean | CvDraftCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CvDraftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    strategy?: boolean | CvDraft$strategyArgs<ExtArgs>
   }
   export type CvDraftIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
-    strategy?: boolean | CvDraft$strategyArgs<ExtArgs>
   }
 
   export type $CvDraftPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CvDraft"
     objects: {
       application: Prisma.$ApplicationPayload<ExtArgs>
-      strategy: Prisma.$CvStrategyPayload<ExtArgs> | null
       usage: Prisma.$CvGenerationUsagePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       applicationId: string
-      strategyId: string | null
       version: number
       cvJson: Prisma.JsonValue
       cvText: string
@@ -23705,7 +15301,6 @@ export namespace Prisma {
   export interface Prisma__CvDraftClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     application<T extends ApplicationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ApplicationDefaultArgs<ExtArgs>>): Prisma__ApplicationClient<$Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    strategy<T extends CvDraft$strategyArgs<ExtArgs> = {}>(args?: Subset<T, CvDraft$strategyArgs<ExtArgs>>): Prisma__CvStrategyClient<$Result.GetResult<Prisma.$CvStrategyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     usage<T extends CvDraft$usageArgs<ExtArgs> = {}>(args?: Subset<T, CvDraft$usageArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CvGenerationUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -23738,7 +15333,6 @@ export namespace Prisma {
   interface CvDraftFieldRefs {
     readonly id: FieldRef<"CvDraft", 'String'>
     readonly applicationId: FieldRef<"CvDraft", 'String'>
-    readonly strategyId: FieldRef<"CvDraft", 'String'>
     readonly version: FieldRef<"CvDraft", 'Int'>
     readonly cvJson: FieldRef<"CvDraft", 'Json'>
     readonly cvText: FieldRef<"CvDraft", 'String'>
@@ -24139,25 +15733,6 @@ export namespace Prisma {
      * Limit how many CvDrafts to delete.
      */
     limit?: number
-  }
-
-  /**
-   * CvDraft.strategy
-   */
-  export type CvDraft$strategyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CvStrategy
-     */
-    select?: CvStrategySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CvStrategy
-     */
-    omit?: CvStrategyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CvStrategyInclude<ExtArgs> | null
-    where?: CvStrategyWhereInput
   }
 
   /**
@@ -29926,21 +21501,6 @@ export namespace Prisma {
   export type JobScalarFieldEnum = (typeof JobScalarFieldEnum)[keyof typeof JobScalarFieldEnum]
 
 
-  export const JobRequirementScalarFieldEnum: {
-    id: 'id',
-    jobId: 'jobId',
-    type: 'type',
-    label: 'label',
-    description: 'description',
-    importance: 'importance',
-    queryEmbeddingModel: 'queryEmbeddingModel',
-    queryEmbeddingInputHash: 'queryEmbeddingInputHash',
-    queryEmbeddedAt: 'queryEmbeddedAt'
-  };
-
-  export type JobRequirementScalarFieldEnum = (typeof JobRequirementScalarFieldEnum)[keyof typeof JobRequirementScalarFieldEnum]
-
-
   export const CandidateProfileScalarFieldEnum: {
     id: 'id',
     anonymousSessionId: 'anonymousSessionId',
@@ -29980,69 +21540,9 @@ export namespace Prisma {
   export type CandidateProfileScalarFieldEnum = (typeof CandidateProfileScalarFieldEnum)[keyof typeof CandidateProfileScalarFieldEnum]
 
 
-  export const CandidateChunkScalarFieldEnum: {
-    id: 'id',
-    anonymousSessionId: 'anonymousSessionId',
-    userId: 'userId',
-    sourceApplicationId: 'sourceApplicationId',
-    candidateProfileId: 'candidateProfileId',
-    sourceType: 'sourceType',
-    sourceId: 'sourceId',
-    sourceKey: 'sourceKey',
-    sourceHash: 'sourceHash',
-    contentHash: 'contentHash',
-    chunkType: 'chunkType',
-    content: 'content',
-    tagsJson: 'tagsJson',
-    metadataJson: 'metadataJson',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    embeddedAt: 'embeddedAt',
-    lastSeenAt: 'lastSeenAt',
-    archivedAt: 'archivedAt'
-  };
-
-  export type CandidateChunkScalarFieldEnum = (typeof CandidateChunkScalarFieldEnum)[keyof typeof CandidateChunkScalarFieldEnum]
-
-
-  export const EvidenceMatchScalarFieldEnum: {
-    id: 'id',
-    applicationId: 'applicationId',
-    jobRequirementId: 'jobRequirementId',
-    candidateChunkId: 'candidateChunkId',
-    similarityScore: 'similarityScore',
-    confidence: 'confidence',
-    cvUsefulness: 'cvUsefulness',
-    claimRisk: 'claimRisk',
-    reason: 'reason',
-    createdAt: 'createdAt'
-  };
-
-  export type EvidenceMatchScalarFieldEnum = (typeof EvidenceMatchScalarFieldEnum)[keyof typeof EvidenceMatchScalarFieldEnum]
-
-
-  export const RequirementFitScoreScalarFieldEnum: {
-    id: 'id',
-    applicationId: 'applicationId',
-    jobRequirementId: 'jobRequirementId',
-    finalConfidence: 'finalConfidence',
-    bestCandidateChunkId: 'bestCandidateChunkId',
-    reason: 'reason',
-    importanceWeight: 'importanceWeight',
-    confidenceValue: 'confidenceValue',
-    earnedPoints: 'earnedPoints',
-    possiblePoints: 'possiblePoints',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type RequirementFitScoreScalarFieldEnum = (typeof RequirementFitScoreScalarFieldEnum)[keyof typeof RequirementFitScoreScalarFieldEnum]
-
-
   export const GapQuestionScalarFieldEnum: {
     id: 'id',
     applicationId: 'applicationId',
-    targetRequirementId: 'targetRequirementId',
     question: 'question',
     reason: 'reason',
     whyItMatters: 'whyItMatters',
@@ -30056,26 +21556,11 @@ export namespace Prisma {
   export type GapQuestionScalarFieldEnum = (typeof GapQuestionScalarFieldEnum)[keyof typeof GapQuestionScalarFieldEnum]
 
 
-  export const GapCoachInsightScalarFieldEnum: {
-    id: 'id',
-    applicationId: 'applicationId',
-    openingMessage: 'openingMessage',
-    jobWants: 'jobWants',
-    candidateStrengthsJson: 'candidateStrengthsJson',
-    candidateConcernsJson: 'candidateConcernsJson',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type GapCoachInsightScalarFieldEnum = (typeof GapCoachInsightScalarFieldEnum)[keyof typeof GapCoachInsightScalarFieldEnum]
-
-
   export const GapAnswerScalarFieldEnum: {
     id: 'id',
     gapQuestionId: 'gapQuestionId',
     applicationId: 'applicationId',
     userId: 'userId',
-    targetRequirementId: 'targetRequirementId',
     buttonAnswer: 'buttonAnswer',
     elaboration: 'elaboration',
     selectedOption: 'selectedOption',
@@ -30095,27 +21580,9 @@ export namespace Prisma {
   export type GapAnswerScalarFieldEnum = (typeof GapAnswerScalarFieldEnum)[keyof typeof GapAnswerScalarFieldEnum]
 
 
-  export const CvStrategyScalarFieldEnum: {
-    id: 'id',
-    applicationId: 'applicationId',
-    strategySummary: 'strategySummary',
-    targetPositioning: 'targetPositioning',
-    sectionOrderJson: 'sectionOrderJson',
-    emphasisJson: 'emphasisJson',
-    deEmphasisJson: 'deEmphasisJson',
-    evidenceToUseJson: 'evidenceToUseJson',
-    warningsJson: 'warningsJson',
-    strategyJson: 'strategyJson',
-    createdAt: 'createdAt'
-  };
-
-  export type CvStrategyScalarFieldEnum = (typeof CvStrategyScalarFieldEnum)[keyof typeof CvStrategyScalarFieldEnum]
-
-
   export const CvDraftScalarFieldEnum: {
     id: 'id',
     applicationId: 'applicationId',
-    strategyId: 'strategyId',
     version: 'version',
     cvJson: 'cvJson',
     cvText: 'cvText',
@@ -30343,34 +21810,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'RequirementType'
-   */
-  export type EnumRequirementTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RequirementType'>
-    
-
-
-  /**
-   * Reference to a field of type 'RequirementType[]'
-   */
-  export type ListEnumRequirementTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RequirementType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Importance'
-   */
-  export type EnumImportanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Importance'>
-    
-
-
-  /**
-   * Reference to a field of type 'Importance[]'
-   */
-  export type ListEnumImportanceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Importance[]'>
-    
-
-
-  /**
    * Reference to a field of type 'SourceType'
    */
   export type EnumSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceType'>
@@ -30381,34 +21820,6 @@ export namespace Prisma {
    * Reference to a field of type 'SourceType[]'
    */
   export type ListEnumSourceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SourceType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'ChunkType'
-   */
-  export type EnumChunkTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChunkType'>
-    
-
-
-  /**
-   * Reference to a field of type 'ChunkType[]'
-   */
-  export type ListEnumChunkTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChunkType[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'EvidenceConfidence'
-   */
-  export type EnumEvidenceConfidenceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EvidenceConfidence'>
-    
-
-
-  /**
-   * Reference to a field of type 'EvidenceConfidence[]'
-   */
-  export type ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EvidenceConfidence[]'>
     
 
 
@@ -30564,7 +21975,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AnonymousSession"> | Date | string
     applications?: ApplicationListRelationFilter
     candidateProfiles?: CandidateProfileListRelationFilter
-    candidateChunks?: CandidateChunkListRelationFilter
   }
 
   export type AnonymousSessionOrderByWithRelationInput = {
@@ -30573,7 +21983,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     applications?: ApplicationOrderByRelationAggregateInput
     candidateProfiles?: CandidateProfileOrderByRelationAggregateInput
-    candidateChunks?: CandidateChunkOrderByRelationAggregateInput
   }
 
   export type AnonymousSessionWhereUniqueInput = Prisma.AtLeast<{
@@ -30585,7 +21994,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"AnonymousSession"> | Date | string
     applications?: ApplicationListRelationFilter
     candidateProfiles?: CandidateProfileListRelationFilter
-    candidateChunks?: CandidateChunkListRelationFilter
   }, "id">
 
   export type AnonymousSessionOrderByWithAggregationInput = {
@@ -30623,7 +22031,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageListRelationFilter
     applications?: ApplicationListRelationFilter
     candidateProfiles?: CandidateProfileListRelationFilter
-    candidateChunks?: CandidateChunkListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -30640,7 +22047,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageOrderByRelationAggregateInput
     applications?: ApplicationOrderByRelationAggregateInput
     candidateProfiles?: CandidateProfileOrderByRelationAggregateInput
-    candidateChunks?: CandidateChunkOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -30660,7 +22066,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageListRelationFilter
     applications?: ApplicationListRelationFilter
     candidateProfiles?: CandidateProfileListRelationFilter
-    candidateChunks?: CandidateChunkListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -30933,13 +22338,8 @@ export namespace Prisma {
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     job?: XOR<JobNullableScalarRelationFilter, JobWhereInput> | null
     sourceCandidateProfiles?: CandidateProfileListRelationFilter
-    sourceCandidateChunks?: CandidateChunkListRelationFilter
-    evidenceMatches?: EvidenceMatchListRelationFilter
-    requirementFitScores?: RequirementFitScoreListRelationFilter
     gapQuestions?: GapQuestionListRelationFilter
     gapAnswers?: GapAnswerListRelationFilter
-    gapCoachInsight?: XOR<GapCoachInsightNullableScalarRelationFilter, GapCoachInsightWhereInput> | null
-    cvStrategies?: CvStrategyListRelationFilter
     cvDrafts?: CvDraftListRelationFilter
     cvGenerationUsage?: CvGenerationUsageListRelationFilter
     agentRuns?: AgentRunListRelationFilter
@@ -30964,13 +22364,8 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     job?: JobOrderByWithRelationInput
     sourceCandidateProfiles?: CandidateProfileOrderByRelationAggregateInput
-    sourceCandidateChunks?: CandidateChunkOrderByRelationAggregateInput
-    evidenceMatches?: EvidenceMatchOrderByRelationAggregateInput
-    requirementFitScores?: RequirementFitScoreOrderByRelationAggregateInput
     gapQuestions?: GapQuestionOrderByRelationAggregateInput
     gapAnswers?: GapAnswerOrderByRelationAggregateInput
-    gapCoachInsight?: GapCoachInsightOrderByWithRelationInput
-    cvStrategies?: CvStrategyOrderByRelationAggregateInput
     cvDrafts?: CvDraftOrderByRelationAggregateInput
     cvGenerationUsage?: CvGenerationUsageOrderByRelationAggregateInput
     agentRuns?: AgentRunOrderByRelationAggregateInput
@@ -30998,13 +22393,8 @@ export namespace Prisma {
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     job?: XOR<JobNullableScalarRelationFilter, JobWhereInput> | null
     sourceCandidateProfiles?: CandidateProfileListRelationFilter
-    sourceCandidateChunks?: CandidateChunkListRelationFilter
-    evidenceMatches?: EvidenceMatchListRelationFilter
-    requirementFitScores?: RequirementFitScoreListRelationFilter
     gapQuestions?: GapQuestionListRelationFilter
     gapAnswers?: GapAnswerListRelationFilter
-    gapCoachInsight?: XOR<GapCoachInsightNullableScalarRelationFilter, GapCoachInsightWhereInput> | null
-    cvStrategies?: CvStrategyListRelationFilter
     cvDrafts?: CvDraftListRelationFilter
     cvGenerationUsage?: CvGenerationUsageListRelationFilter
     agentRuns?: AgentRunListRelationFilter
@@ -31067,7 +22457,6 @@ export namespace Prisma {
     archetypeHint?: StringNullableFilter<"Job"> | string | null
     createdAt?: DateTimeFilter<"Job"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    requirements?: JobRequirementListRelationFilter
   }
 
   export type JobOrderByWithRelationInput = {
@@ -31082,7 +22471,6 @@ export namespace Prisma {
     archetypeHint?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     application?: ApplicationOrderByWithRelationInput
-    requirements?: JobRequirementOrderByRelationAggregateInput
   }
 
   export type JobWhereUniqueInput = Prisma.AtLeast<{
@@ -31100,7 +22488,6 @@ export namespace Prisma {
     archetypeHint?: StringNullableFilter<"Job"> | string | null
     createdAt?: DateTimeFilter<"Job"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    requirements?: JobRequirementListRelationFilter
   }, "id" | "applicationId">
 
   export type JobOrderByWithAggregationInput = {
@@ -31133,90 +22520,6 @@ export namespace Prisma {
     roleDomain?: StringNullableWithAggregatesFilter<"Job"> | string | null
     archetypeHint?: StringNullableWithAggregatesFilter<"Job"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Job"> | Date | string
-  }
-
-  export type JobRequirementWhereInput = {
-    AND?: JobRequirementWhereInput | JobRequirementWhereInput[]
-    OR?: JobRequirementWhereInput[]
-    NOT?: JobRequirementWhereInput | JobRequirementWhereInput[]
-    id?: StringFilter<"JobRequirement"> | string
-    jobId?: StringFilter<"JobRequirement"> | string
-    type?: EnumRequirementTypeFilter<"JobRequirement"> | $Enums.RequirementType
-    label?: StringFilter<"JobRequirement"> | string
-    description?: StringFilter<"JobRequirement"> | string
-    importance?: EnumImportanceFilter<"JobRequirement"> | $Enums.Importance
-    queryEmbeddingModel?: StringNullableFilter<"JobRequirement"> | string | null
-    queryEmbeddingInputHash?: StringNullableFilter<"JobRequirement"> | string | null
-    queryEmbeddedAt?: DateTimeNullableFilter<"JobRequirement"> | Date | string | null
-    job?: XOR<JobScalarRelationFilter, JobWhereInput>
-    evidenceMatches?: EvidenceMatchListRelationFilter
-    requirementFitScores?: RequirementFitScoreListRelationFilter
-    gapQuestions?: GapQuestionListRelationFilter
-  }
-
-  export type JobRequirementOrderByWithRelationInput = {
-    id?: SortOrder
-    jobId?: SortOrder
-    type?: SortOrder
-    label?: SortOrder
-    description?: SortOrder
-    importance?: SortOrder
-    queryEmbeddingModel?: SortOrderInput | SortOrder
-    queryEmbeddingInputHash?: SortOrderInput | SortOrder
-    queryEmbeddedAt?: SortOrderInput | SortOrder
-    job?: JobOrderByWithRelationInput
-    evidenceMatches?: EvidenceMatchOrderByRelationAggregateInput
-    requirementFitScores?: RequirementFitScoreOrderByRelationAggregateInput
-    gapQuestions?: GapQuestionOrderByRelationAggregateInput
-  }
-
-  export type JobRequirementWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: JobRequirementWhereInput | JobRequirementWhereInput[]
-    OR?: JobRequirementWhereInput[]
-    NOT?: JobRequirementWhereInput | JobRequirementWhereInput[]
-    jobId?: StringFilter<"JobRequirement"> | string
-    type?: EnumRequirementTypeFilter<"JobRequirement"> | $Enums.RequirementType
-    label?: StringFilter<"JobRequirement"> | string
-    description?: StringFilter<"JobRequirement"> | string
-    importance?: EnumImportanceFilter<"JobRequirement"> | $Enums.Importance
-    queryEmbeddingModel?: StringNullableFilter<"JobRequirement"> | string | null
-    queryEmbeddingInputHash?: StringNullableFilter<"JobRequirement"> | string | null
-    queryEmbeddedAt?: DateTimeNullableFilter<"JobRequirement"> | Date | string | null
-    job?: XOR<JobScalarRelationFilter, JobWhereInput>
-    evidenceMatches?: EvidenceMatchListRelationFilter
-    requirementFitScores?: RequirementFitScoreListRelationFilter
-    gapQuestions?: GapQuestionListRelationFilter
-  }, "id">
-
-  export type JobRequirementOrderByWithAggregationInput = {
-    id?: SortOrder
-    jobId?: SortOrder
-    type?: SortOrder
-    label?: SortOrder
-    description?: SortOrder
-    importance?: SortOrder
-    queryEmbeddingModel?: SortOrderInput | SortOrder
-    queryEmbeddingInputHash?: SortOrderInput | SortOrder
-    queryEmbeddedAt?: SortOrderInput | SortOrder
-    _count?: JobRequirementCountOrderByAggregateInput
-    _max?: JobRequirementMaxOrderByAggregateInput
-    _min?: JobRequirementMinOrderByAggregateInput
-  }
-
-  export type JobRequirementScalarWhereWithAggregatesInput = {
-    AND?: JobRequirementScalarWhereWithAggregatesInput | JobRequirementScalarWhereWithAggregatesInput[]
-    OR?: JobRequirementScalarWhereWithAggregatesInput[]
-    NOT?: JobRequirementScalarWhereWithAggregatesInput | JobRequirementScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"JobRequirement"> | string
-    jobId?: StringWithAggregatesFilter<"JobRequirement"> | string
-    type?: EnumRequirementTypeWithAggregatesFilter<"JobRequirement"> | $Enums.RequirementType
-    label?: StringWithAggregatesFilter<"JobRequirement"> | string
-    description?: StringWithAggregatesFilter<"JobRequirement"> | string
-    importance?: EnumImportanceWithAggregatesFilter<"JobRequirement"> | $Enums.Importance
-    queryEmbeddingModel?: StringNullableWithAggregatesFilter<"JobRequirement"> | string | null
-    queryEmbeddingInputHash?: StringNullableWithAggregatesFilter<"JobRequirement"> | string | null
-    queryEmbeddedAt?: DateTimeNullableWithAggregatesFilter<"JobRequirement"> | Date | string | null
   }
 
   export type CandidateProfileWhereInput = {
@@ -31259,7 +22562,6 @@ export namespace Prisma {
     anonymousSession?: XOR<AnonymousSessionNullableScalarRelationFilter, AnonymousSessionWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     sourceApplication?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
-    candidateChunks?: CandidateChunkListRelationFilter
   }
 
   export type CandidateProfileOrderByWithRelationInput = {
@@ -31299,7 +22601,6 @@ export namespace Prisma {
     anonymousSession?: AnonymousSessionOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
     sourceApplication?: ApplicationOrderByWithRelationInput
-    candidateChunks?: CandidateChunkOrderByRelationAggregateInput
   }
 
   export type CandidateProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -31342,7 +22643,6 @@ export namespace Prisma {
     anonymousSession?: XOR<AnonymousSessionNullableScalarRelationFilter, AnonymousSessionWhereInput> | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     sourceApplication?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
-    candidateChunks?: CandidateChunkListRelationFilter
   }, "id">
 
   export type CandidateProfileOrderByWithAggregationInput = {
@@ -31423,340 +22723,12 @@ export namespace Prisma {
     archivedAt?: DateTimeNullableWithAggregatesFilter<"CandidateProfile"> | Date | string | null
   }
 
-  export type CandidateChunkWhereInput = {
-    AND?: CandidateChunkWhereInput | CandidateChunkWhereInput[]
-    OR?: CandidateChunkWhereInput[]
-    NOT?: CandidateChunkWhereInput | CandidateChunkWhereInput[]
-    id?: StringFilter<"CandidateChunk"> | string
-    anonymousSessionId?: StringNullableFilter<"CandidateChunk"> | string | null
-    userId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceApplicationId?: StringNullableFilter<"CandidateChunk"> | string | null
-    candidateProfileId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceType?: EnumSourceTypeFilter<"CandidateChunk"> | $Enums.SourceType
-    sourceId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceKey?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceHash?: StringNullableFilter<"CandidateChunk"> | string | null
-    contentHash?: StringNullableFilter<"CandidateChunk"> | string | null
-    chunkType?: EnumChunkTypeFilter<"CandidateChunk"> | $Enums.ChunkType
-    content?: StringFilter<"CandidateChunk"> | string
-    tagsJson?: JsonFilter<"CandidateChunk">
-    metadataJson?: JsonFilter<"CandidateChunk">
-    createdAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    updatedAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    embeddedAt?: DateTimeNullableFilter<"CandidateChunk"> | Date | string | null
-    lastSeenAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    archivedAt?: DateTimeNullableFilter<"CandidateChunk"> | Date | string | null
-    anonymousSession?: XOR<AnonymousSessionNullableScalarRelationFilter, AnonymousSessionWhereInput> | null
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    sourceApplication?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
-    candidateProfile?: XOR<CandidateProfileNullableScalarRelationFilter, CandidateProfileWhereInput> | null
-    evidenceMatches?: EvidenceMatchListRelationFilter
-    bestFitScores?: RequirementFitScoreListRelationFilter
-  }
-
-  export type CandidateChunkOrderByWithRelationInput = {
-    id?: SortOrder
-    anonymousSessionId?: SortOrderInput | SortOrder
-    userId?: SortOrderInput | SortOrder
-    sourceApplicationId?: SortOrderInput | SortOrder
-    candidateProfileId?: SortOrderInput | SortOrder
-    sourceType?: SortOrder
-    sourceId?: SortOrderInput | SortOrder
-    sourceKey?: SortOrderInput | SortOrder
-    sourceHash?: SortOrderInput | SortOrder
-    contentHash?: SortOrderInput | SortOrder
-    chunkType?: SortOrder
-    content?: SortOrder
-    tagsJson?: SortOrder
-    metadataJson?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    embeddedAt?: SortOrderInput | SortOrder
-    lastSeenAt?: SortOrder
-    archivedAt?: SortOrderInput | SortOrder
-    anonymousSession?: AnonymousSessionOrderByWithRelationInput
-    user?: UserOrderByWithRelationInput
-    sourceApplication?: ApplicationOrderByWithRelationInput
-    candidateProfile?: CandidateProfileOrderByWithRelationInput
-    evidenceMatches?: EvidenceMatchOrderByRelationAggregateInput
-    bestFitScores?: RequirementFitScoreOrderByRelationAggregateInput
-  }
-
-  export type CandidateChunkWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: CandidateChunkWhereInput | CandidateChunkWhereInput[]
-    OR?: CandidateChunkWhereInput[]
-    NOT?: CandidateChunkWhereInput | CandidateChunkWhereInput[]
-    anonymousSessionId?: StringNullableFilter<"CandidateChunk"> | string | null
-    userId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceApplicationId?: StringNullableFilter<"CandidateChunk"> | string | null
-    candidateProfileId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceType?: EnumSourceTypeFilter<"CandidateChunk"> | $Enums.SourceType
-    sourceId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceKey?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceHash?: StringNullableFilter<"CandidateChunk"> | string | null
-    contentHash?: StringNullableFilter<"CandidateChunk"> | string | null
-    chunkType?: EnumChunkTypeFilter<"CandidateChunk"> | $Enums.ChunkType
-    content?: StringFilter<"CandidateChunk"> | string
-    tagsJson?: JsonFilter<"CandidateChunk">
-    metadataJson?: JsonFilter<"CandidateChunk">
-    createdAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    updatedAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    embeddedAt?: DateTimeNullableFilter<"CandidateChunk"> | Date | string | null
-    lastSeenAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    archivedAt?: DateTimeNullableFilter<"CandidateChunk"> | Date | string | null
-    anonymousSession?: XOR<AnonymousSessionNullableScalarRelationFilter, AnonymousSessionWhereInput> | null
-    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-    sourceApplication?: XOR<ApplicationNullableScalarRelationFilter, ApplicationWhereInput> | null
-    candidateProfile?: XOR<CandidateProfileNullableScalarRelationFilter, CandidateProfileWhereInput> | null
-    evidenceMatches?: EvidenceMatchListRelationFilter
-    bestFitScores?: RequirementFitScoreListRelationFilter
-  }, "id">
-
-  export type CandidateChunkOrderByWithAggregationInput = {
-    id?: SortOrder
-    anonymousSessionId?: SortOrderInput | SortOrder
-    userId?: SortOrderInput | SortOrder
-    sourceApplicationId?: SortOrderInput | SortOrder
-    candidateProfileId?: SortOrderInput | SortOrder
-    sourceType?: SortOrder
-    sourceId?: SortOrderInput | SortOrder
-    sourceKey?: SortOrderInput | SortOrder
-    sourceHash?: SortOrderInput | SortOrder
-    contentHash?: SortOrderInput | SortOrder
-    chunkType?: SortOrder
-    content?: SortOrder
-    tagsJson?: SortOrder
-    metadataJson?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    embeddedAt?: SortOrderInput | SortOrder
-    lastSeenAt?: SortOrder
-    archivedAt?: SortOrderInput | SortOrder
-    _count?: CandidateChunkCountOrderByAggregateInput
-    _max?: CandidateChunkMaxOrderByAggregateInput
-    _min?: CandidateChunkMinOrderByAggregateInput
-  }
-
-  export type CandidateChunkScalarWhereWithAggregatesInput = {
-    AND?: CandidateChunkScalarWhereWithAggregatesInput | CandidateChunkScalarWhereWithAggregatesInput[]
-    OR?: CandidateChunkScalarWhereWithAggregatesInput[]
-    NOT?: CandidateChunkScalarWhereWithAggregatesInput | CandidateChunkScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CandidateChunk"> | string
-    anonymousSessionId?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    userId?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    sourceApplicationId?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    candidateProfileId?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    sourceType?: EnumSourceTypeWithAggregatesFilter<"CandidateChunk"> | $Enums.SourceType
-    sourceId?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    sourceKey?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    sourceHash?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    contentHash?: StringNullableWithAggregatesFilter<"CandidateChunk"> | string | null
-    chunkType?: EnumChunkTypeWithAggregatesFilter<"CandidateChunk"> | $Enums.ChunkType
-    content?: StringWithAggregatesFilter<"CandidateChunk"> | string
-    tagsJson?: JsonWithAggregatesFilter<"CandidateChunk">
-    metadataJson?: JsonWithAggregatesFilter<"CandidateChunk">
-    createdAt?: DateTimeWithAggregatesFilter<"CandidateChunk"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"CandidateChunk"> | Date | string
-    embeddedAt?: DateTimeNullableWithAggregatesFilter<"CandidateChunk"> | Date | string | null
-    lastSeenAt?: DateTimeWithAggregatesFilter<"CandidateChunk"> | Date | string
-    archivedAt?: DateTimeNullableWithAggregatesFilter<"CandidateChunk"> | Date | string | null
-  }
-
-  export type EvidenceMatchWhereInput = {
-    AND?: EvidenceMatchWhereInput | EvidenceMatchWhereInput[]
-    OR?: EvidenceMatchWhereInput[]
-    NOT?: EvidenceMatchWhereInput | EvidenceMatchWhereInput[]
-    id?: StringFilter<"EvidenceMatch"> | string
-    applicationId?: StringFilter<"EvidenceMatch"> | string
-    jobRequirementId?: StringFilter<"EvidenceMatch"> | string
-    candidateChunkId?: StringNullableFilter<"EvidenceMatch"> | string | null
-    similarityScore?: FloatNullableFilter<"EvidenceMatch"> | number | null
-    confidence?: EnumEvidenceConfidenceFilter<"EvidenceMatch"> | $Enums.EvidenceConfidence
-    cvUsefulness?: StringNullableFilter<"EvidenceMatch"> | string | null
-    claimRisk?: StringNullableFilter<"EvidenceMatch"> | string | null
-    reason?: StringFilter<"EvidenceMatch"> | string
-    createdAt?: DateTimeFilter<"EvidenceMatch"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    jobRequirement?: XOR<JobRequirementScalarRelationFilter, JobRequirementWhereInput>
-    candidateChunk?: XOR<CandidateChunkNullableScalarRelationFilter, CandidateChunkWhereInput> | null
-  }
-
-  export type EvidenceMatchOrderByWithRelationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    candidateChunkId?: SortOrderInput | SortOrder
-    similarityScore?: SortOrderInput | SortOrder
-    confidence?: SortOrder
-    cvUsefulness?: SortOrderInput | SortOrder
-    claimRisk?: SortOrderInput | SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-    application?: ApplicationOrderByWithRelationInput
-    jobRequirement?: JobRequirementOrderByWithRelationInput
-    candidateChunk?: CandidateChunkOrderByWithRelationInput
-  }
-
-  export type EvidenceMatchWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: EvidenceMatchWhereInput | EvidenceMatchWhereInput[]
-    OR?: EvidenceMatchWhereInput[]
-    NOT?: EvidenceMatchWhereInput | EvidenceMatchWhereInput[]
-    applicationId?: StringFilter<"EvidenceMatch"> | string
-    jobRequirementId?: StringFilter<"EvidenceMatch"> | string
-    candidateChunkId?: StringNullableFilter<"EvidenceMatch"> | string | null
-    similarityScore?: FloatNullableFilter<"EvidenceMatch"> | number | null
-    confidence?: EnumEvidenceConfidenceFilter<"EvidenceMatch"> | $Enums.EvidenceConfidence
-    cvUsefulness?: StringNullableFilter<"EvidenceMatch"> | string | null
-    claimRisk?: StringNullableFilter<"EvidenceMatch"> | string | null
-    reason?: StringFilter<"EvidenceMatch"> | string
-    createdAt?: DateTimeFilter<"EvidenceMatch"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    jobRequirement?: XOR<JobRequirementScalarRelationFilter, JobRequirementWhereInput>
-    candidateChunk?: XOR<CandidateChunkNullableScalarRelationFilter, CandidateChunkWhereInput> | null
-  }, "id">
-
-  export type EvidenceMatchOrderByWithAggregationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    candidateChunkId?: SortOrderInput | SortOrder
-    similarityScore?: SortOrderInput | SortOrder
-    confidence?: SortOrder
-    cvUsefulness?: SortOrderInput | SortOrder
-    claimRisk?: SortOrderInput | SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-    _count?: EvidenceMatchCountOrderByAggregateInput
-    _avg?: EvidenceMatchAvgOrderByAggregateInput
-    _max?: EvidenceMatchMaxOrderByAggregateInput
-    _min?: EvidenceMatchMinOrderByAggregateInput
-    _sum?: EvidenceMatchSumOrderByAggregateInput
-  }
-
-  export type EvidenceMatchScalarWhereWithAggregatesInput = {
-    AND?: EvidenceMatchScalarWhereWithAggregatesInput | EvidenceMatchScalarWhereWithAggregatesInput[]
-    OR?: EvidenceMatchScalarWhereWithAggregatesInput[]
-    NOT?: EvidenceMatchScalarWhereWithAggregatesInput | EvidenceMatchScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"EvidenceMatch"> | string
-    applicationId?: StringWithAggregatesFilter<"EvidenceMatch"> | string
-    jobRequirementId?: StringWithAggregatesFilter<"EvidenceMatch"> | string
-    candidateChunkId?: StringNullableWithAggregatesFilter<"EvidenceMatch"> | string | null
-    similarityScore?: FloatNullableWithAggregatesFilter<"EvidenceMatch"> | number | null
-    confidence?: EnumEvidenceConfidenceWithAggregatesFilter<"EvidenceMatch"> | $Enums.EvidenceConfidence
-    cvUsefulness?: StringNullableWithAggregatesFilter<"EvidenceMatch"> | string | null
-    claimRisk?: StringNullableWithAggregatesFilter<"EvidenceMatch"> | string | null
-    reason?: StringWithAggregatesFilter<"EvidenceMatch"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"EvidenceMatch"> | Date | string
-  }
-
-  export type RequirementFitScoreWhereInput = {
-    AND?: RequirementFitScoreWhereInput | RequirementFitScoreWhereInput[]
-    OR?: RequirementFitScoreWhereInput[]
-    NOT?: RequirementFitScoreWhereInput | RequirementFitScoreWhereInput[]
-    id?: StringFilter<"RequirementFitScore"> | string
-    applicationId?: StringFilter<"RequirementFitScore"> | string
-    jobRequirementId?: StringFilter<"RequirementFitScore"> | string
-    finalConfidence?: EnumEvidenceConfidenceFilter<"RequirementFitScore"> | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: StringNullableFilter<"RequirementFitScore"> | string | null
-    reason?: StringFilter<"RequirementFitScore"> | string
-    importanceWeight?: FloatFilter<"RequirementFitScore"> | number
-    confidenceValue?: FloatFilter<"RequirementFitScore"> | number
-    earnedPoints?: FloatFilter<"RequirementFitScore"> | number
-    possiblePoints?: FloatFilter<"RequirementFitScore"> | number
-    createdAt?: DateTimeFilter<"RequirementFitScore"> | Date | string
-    updatedAt?: DateTimeFilter<"RequirementFitScore"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    jobRequirement?: XOR<JobRequirementScalarRelationFilter, JobRequirementWhereInput>
-    bestCandidateChunk?: XOR<CandidateChunkNullableScalarRelationFilter, CandidateChunkWhereInput> | null
-  }
-
-  export type RequirementFitScoreOrderByWithRelationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    finalConfidence?: SortOrder
-    bestCandidateChunkId?: SortOrderInput | SortOrder
-    reason?: SortOrder
-    importanceWeight?: SortOrder
-    confidenceValue?: SortOrder
-    earnedPoints?: SortOrder
-    possiblePoints?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    application?: ApplicationOrderByWithRelationInput
-    jobRequirement?: JobRequirementOrderByWithRelationInput
-    bestCandidateChunk?: CandidateChunkOrderByWithRelationInput
-  }
-
-  export type RequirementFitScoreWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    applicationId_jobRequirementId?: RequirementFitScoreApplicationIdJobRequirementIdCompoundUniqueInput
-    AND?: RequirementFitScoreWhereInput | RequirementFitScoreWhereInput[]
-    OR?: RequirementFitScoreWhereInput[]
-    NOT?: RequirementFitScoreWhereInput | RequirementFitScoreWhereInput[]
-    applicationId?: StringFilter<"RequirementFitScore"> | string
-    jobRequirementId?: StringFilter<"RequirementFitScore"> | string
-    finalConfidence?: EnumEvidenceConfidenceFilter<"RequirementFitScore"> | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: StringNullableFilter<"RequirementFitScore"> | string | null
-    reason?: StringFilter<"RequirementFitScore"> | string
-    importanceWeight?: FloatFilter<"RequirementFitScore"> | number
-    confidenceValue?: FloatFilter<"RequirementFitScore"> | number
-    earnedPoints?: FloatFilter<"RequirementFitScore"> | number
-    possiblePoints?: FloatFilter<"RequirementFitScore"> | number
-    createdAt?: DateTimeFilter<"RequirementFitScore"> | Date | string
-    updatedAt?: DateTimeFilter<"RequirementFitScore"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    jobRequirement?: XOR<JobRequirementScalarRelationFilter, JobRequirementWhereInput>
-    bestCandidateChunk?: XOR<CandidateChunkNullableScalarRelationFilter, CandidateChunkWhereInput> | null
-  }, "id" | "applicationId_jobRequirementId">
-
-  export type RequirementFitScoreOrderByWithAggregationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    finalConfidence?: SortOrder
-    bestCandidateChunkId?: SortOrderInput | SortOrder
-    reason?: SortOrder
-    importanceWeight?: SortOrder
-    confidenceValue?: SortOrder
-    earnedPoints?: SortOrder
-    possiblePoints?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: RequirementFitScoreCountOrderByAggregateInput
-    _avg?: RequirementFitScoreAvgOrderByAggregateInput
-    _max?: RequirementFitScoreMaxOrderByAggregateInput
-    _min?: RequirementFitScoreMinOrderByAggregateInput
-    _sum?: RequirementFitScoreSumOrderByAggregateInput
-  }
-
-  export type RequirementFitScoreScalarWhereWithAggregatesInput = {
-    AND?: RequirementFitScoreScalarWhereWithAggregatesInput | RequirementFitScoreScalarWhereWithAggregatesInput[]
-    OR?: RequirementFitScoreScalarWhereWithAggregatesInput[]
-    NOT?: RequirementFitScoreScalarWhereWithAggregatesInput | RequirementFitScoreScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"RequirementFitScore"> | string
-    applicationId?: StringWithAggregatesFilter<"RequirementFitScore"> | string
-    jobRequirementId?: StringWithAggregatesFilter<"RequirementFitScore"> | string
-    finalConfidence?: EnumEvidenceConfidenceWithAggregatesFilter<"RequirementFitScore"> | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: StringNullableWithAggregatesFilter<"RequirementFitScore"> | string | null
-    reason?: StringWithAggregatesFilter<"RequirementFitScore"> | string
-    importanceWeight?: FloatWithAggregatesFilter<"RequirementFitScore"> | number
-    confidenceValue?: FloatWithAggregatesFilter<"RequirementFitScore"> | number
-    earnedPoints?: FloatWithAggregatesFilter<"RequirementFitScore"> | number
-    possiblePoints?: FloatWithAggregatesFilter<"RequirementFitScore"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"RequirementFitScore"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"RequirementFitScore"> | Date | string
-  }
-
   export type GapQuestionWhereInput = {
     AND?: GapQuestionWhereInput | GapQuestionWhereInput[]
     OR?: GapQuestionWhereInput[]
     NOT?: GapQuestionWhereInput | GapQuestionWhereInput[]
     id?: StringFilter<"GapQuestion"> | string
     applicationId?: StringFilter<"GapQuestion"> | string
-    targetRequirementId?: StringNullableFilter<"GapQuestion"> | string | null
     question?: StringFilter<"GapQuestion"> | string
     reason?: StringFilter<"GapQuestion"> | string
     whyItMatters?: StringNullableFilter<"GapQuestion"> | string | null
@@ -31766,14 +22738,12 @@ export namespace Prisma {
     status?: EnumGapQuestionStatusFilter<"GapQuestion"> | $Enums.GapQuestionStatus
     createdAt?: DateTimeFilter<"GapQuestion"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    targetRequirement?: XOR<JobRequirementNullableScalarRelationFilter, JobRequirementWhereInput> | null
     answers?: GapAnswerListRelationFilter
   }
 
   export type GapQuestionOrderByWithRelationInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    targetRequirementId?: SortOrderInput | SortOrder
     question?: SortOrder
     reason?: SortOrder
     whyItMatters?: SortOrderInput | SortOrder
@@ -31783,7 +22753,6 @@ export namespace Prisma {
     status?: SortOrder
     createdAt?: SortOrder
     application?: ApplicationOrderByWithRelationInput
-    targetRequirement?: JobRequirementOrderByWithRelationInput
     answers?: GapAnswerOrderByRelationAggregateInput
   }
 
@@ -31793,7 +22762,6 @@ export namespace Prisma {
     OR?: GapQuestionWhereInput[]
     NOT?: GapQuestionWhereInput | GapQuestionWhereInput[]
     applicationId?: StringFilter<"GapQuestion"> | string
-    targetRequirementId?: StringNullableFilter<"GapQuestion"> | string | null
     question?: StringFilter<"GapQuestion"> | string
     reason?: StringFilter<"GapQuestion"> | string
     whyItMatters?: StringNullableFilter<"GapQuestion"> | string | null
@@ -31803,14 +22771,12 @@ export namespace Prisma {
     status?: EnumGapQuestionStatusFilter<"GapQuestion"> | $Enums.GapQuestionStatus
     createdAt?: DateTimeFilter<"GapQuestion"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    targetRequirement?: XOR<JobRequirementNullableScalarRelationFilter, JobRequirementWhereInput> | null
     answers?: GapAnswerListRelationFilter
   }, "id">
 
   export type GapQuestionOrderByWithAggregationInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    targetRequirementId?: SortOrderInput | SortOrder
     question?: SortOrder
     reason?: SortOrder
     whyItMatters?: SortOrderInput | SortOrder
@@ -31830,7 +22796,6 @@ export namespace Prisma {
     NOT?: GapQuestionScalarWhereWithAggregatesInput | GapQuestionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"GapQuestion"> | string
     applicationId?: StringWithAggregatesFilter<"GapQuestion"> | string
-    targetRequirementId?: StringNullableWithAggregatesFilter<"GapQuestion"> | string | null
     question?: StringWithAggregatesFilter<"GapQuestion"> | string
     reason?: StringWithAggregatesFilter<"GapQuestion"> | string
     whyItMatters?: StringNullableWithAggregatesFilter<"GapQuestion"> | string | null
@@ -31841,76 +22806,6 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"GapQuestion"> | Date | string
   }
 
-  export type GapCoachInsightWhereInput = {
-    AND?: GapCoachInsightWhereInput | GapCoachInsightWhereInput[]
-    OR?: GapCoachInsightWhereInput[]
-    NOT?: GapCoachInsightWhereInput | GapCoachInsightWhereInput[]
-    id?: StringFilter<"GapCoachInsight"> | string
-    applicationId?: StringFilter<"GapCoachInsight"> | string
-    openingMessage?: StringFilter<"GapCoachInsight"> | string
-    jobWants?: StringFilter<"GapCoachInsight"> | string
-    candidateStrengthsJson?: JsonFilter<"GapCoachInsight">
-    candidateConcernsJson?: JsonFilter<"GapCoachInsight">
-    createdAt?: DateTimeFilter<"GapCoachInsight"> | Date | string
-    updatedAt?: DateTimeFilter<"GapCoachInsight"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-  }
-
-  export type GapCoachInsightOrderByWithRelationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    openingMessage?: SortOrder
-    jobWants?: SortOrder
-    candidateStrengthsJson?: SortOrder
-    candidateConcernsJson?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    application?: ApplicationOrderByWithRelationInput
-  }
-
-  export type GapCoachInsightWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    applicationId?: string
-    AND?: GapCoachInsightWhereInput | GapCoachInsightWhereInput[]
-    OR?: GapCoachInsightWhereInput[]
-    NOT?: GapCoachInsightWhereInput | GapCoachInsightWhereInput[]
-    openingMessage?: StringFilter<"GapCoachInsight"> | string
-    jobWants?: StringFilter<"GapCoachInsight"> | string
-    candidateStrengthsJson?: JsonFilter<"GapCoachInsight">
-    candidateConcernsJson?: JsonFilter<"GapCoachInsight">
-    createdAt?: DateTimeFilter<"GapCoachInsight"> | Date | string
-    updatedAt?: DateTimeFilter<"GapCoachInsight"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-  }, "id" | "applicationId">
-
-  export type GapCoachInsightOrderByWithAggregationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    openingMessage?: SortOrder
-    jobWants?: SortOrder
-    candidateStrengthsJson?: SortOrder
-    candidateConcernsJson?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: GapCoachInsightCountOrderByAggregateInput
-    _max?: GapCoachInsightMaxOrderByAggregateInput
-    _min?: GapCoachInsightMinOrderByAggregateInput
-  }
-
-  export type GapCoachInsightScalarWhereWithAggregatesInput = {
-    AND?: GapCoachInsightScalarWhereWithAggregatesInput | GapCoachInsightScalarWhereWithAggregatesInput[]
-    OR?: GapCoachInsightScalarWhereWithAggregatesInput[]
-    NOT?: GapCoachInsightScalarWhereWithAggregatesInput | GapCoachInsightScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"GapCoachInsight"> | string
-    applicationId?: StringWithAggregatesFilter<"GapCoachInsight"> | string
-    openingMessage?: StringWithAggregatesFilter<"GapCoachInsight"> | string
-    jobWants?: StringWithAggregatesFilter<"GapCoachInsight"> | string
-    candidateStrengthsJson?: JsonWithAggregatesFilter<"GapCoachInsight">
-    candidateConcernsJson?: JsonWithAggregatesFilter<"GapCoachInsight">
-    createdAt?: DateTimeWithAggregatesFilter<"GapCoachInsight"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"GapCoachInsight"> | Date | string
-  }
-
   export type GapAnswerWhereInput = {
     AND?: GapAnswerWhereInput | GapAnswerWhereInput[]
     OR?: GapAnswerWhereInput[]
@@ -31919,7 +22814,6 @@ export namespace Prisma {
     gapQuestionId?: StringFilter<"GapAnswer"> | string
     applicationId?: StringFilter<"GapAnswer"> | string
     userId?: StringNullableFilter<"GapAnswer"> | string | null
-    targetRequirementId?: StringNullableFilter<"GapAnswer"> | string | null
     buttonAnswer?: EnumButtonAnswerFilter<"GapAnswer"> | $Enums.ButtonAnswer
     elaboration?: StringNullableFilter<"GapAnswer"> | string | null
     selectedOption?: StringNullableFilter<"GapAnswer"> | string | null
@@ -31943,7 +22837,6 @@ export namespace Prisma {
     gapQuestionId?: SortOrder
     applicationId?: SortOrder
     userId?: SortOrderInput | SortOrder
-    targetRequirementId?: SortOrderInput | SortOrder
     buttonAnswer?: SortOrder
     elaboration?: SortOrderInput | SortOrder
     selectedOption?: SortOrderInput | SortOrder
@@ -31970,7 +22863,6 @@ export namespace Prisma {
     gapQuestionId?: StringFilter<"GapAnswer"> | string
     applicationId?: StringFilter<"GapAnswer"> | string
     userId?: StringNullableFilter<"GapAnswer"> | string | null
-    targetRequirementId?: StringNullableFilter<"GapAnswer"> | string | null
     buttonAnswer?: EnumButtonAnswerFilter<"GapAnswer"> | $Enums.ButtonAnswer
     elaboration?: StringNullableFilter<"GapAnswer"> | string | null
     selectedOption?: StringNullableFilter<"GapAnswer"> | string | null
@@ -31994,7 +22886,6 @@ export namespace Prisma {
     gapQuestionId?: SortOrder
     applicationId?: SortOrder
     userId?: SortOrderInput | SortOrder
-    targetRequirementId?: SortOrderInput | SortOrder
     buttonAnswer?: SortOrder
     elaboration?: SortOrderInput | SortOrder
     selectedOption?: SortOrderInput | SortOrder
@@ -32024,7 +22915,6 @@ export namespace Prisma {
     gapQuestionId?: StringWithAggregatesFilter<"GapAnswer"> | string
     applicationId?: StringWithAggregatesFilter<"GapAnswer"> | string
     userId?: StringNullableWithAggregatesFilter<"GapAnswer"> | string | null
-    targetRequirementId?: StringNullableWithAggregatesFilter<"GapAnswer"> | string | null
     buttonAnswer?: EnumButtonAnswerWithAggregatesFilter<"GapAnswer"> | $Enums.ButtonAnswer
     elaboration?: StringNullableWithAggregatesFilter<"GapAnswer"> | string | null
     selectedOption?: StringNullableWithAggregatesFilter<"GapAnswer"> | string | null
@@ -32041,101 +22931,12 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"GapAnswer"> | Date | string
   }
 
-  export type CvStrategyWhereInput = {
-    AND?: CvStrategyWhereInput | CvStrategyWhereInput[]
-    OR?: CvStrategyWhereInput[]
-    NOT?: CvStrategyWhereInput | CvStrategyWhereInput[]
-    id?: StringFilter<"CvStrategy"> | string
-    applicationId?: StringFilter<"CvStrategy"> | string
-    strategySummary?: StringFilter<"CvStrategy"> | string
-    targetPositioning?: StringFilter<"CvStrategy"> | string
-    sectionOrderJson?: JsonFilter<"CvStrategy">
-    emphasisJson?: JsonFilter<"CvStrategy">
-    deEmphasisJson?: JsonFilter<"CvStrategy">
-    evidenceToUseJson?: JsonFilter<"CvStrategy">
-    warningsJson?: JsonFilter<"CvStrategy">
-    strategyJson?: JsonNullableFilter<"CvStrategy">
-    createdAt?: DateTimeFilter<"CvStrategy"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    cvDrafts?: CvDraftListRelationFilter
-  }
-
-  export type CvStrategyOrderByWithRelationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    strategySummary?: SortOrder
-    targetPositioning?: SortOrder
-    sectionOrderJson?: SortOrder
-    emphasisJson?: SortOrder
-    deEmphasisJson?: SortOrder
-    evidenceToUseJson?: SortOrder
-    warningsJson?: SortOrder
-    strategyJson?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    application?: ApplicationOrderByWithRelationInput
-    cvDrafts?: CvDraftOrderByRelationAggregateInput
-  }
-
-  export type CvStrategyWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: CvStrategyWhereInput | CvStrategyWhereInput[]
-    OR?: CvStrategyWhereInput[]
-    NOT?: CvStrategyWhereInput | CvStrategyWhereInput[]
-    applicationId?: StringFilter<"CvStrategy"> | string
-    strategySummary?: StringFilter<"CvStrategy"> | string
-    targetPositioning?: StringFilter<"CvStrategy"> | string
-    sectionOrderJson?: JsonFilter<"CvStrategy">
-    emphasisJson?: JsonFilter<"CvStrategy">
-    deEmphasisJson?: JsonFilter<"CvStrategy">
-    evidenceToUseJson?: JsonFilter<"CvStrategy">
-    warningsJson?: JsonFilter<"CvStrategy">
-    strategyJson?: JsonNullableFilter<"CvStrategy">
-    createdAt?: DateTimeFilter<"CvStrategy"> | Date | string
-    application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    cvDrafts?: CvDraftListRelationFilter
-  }, "id">
-
-  export type CvStrategyOrderByWithAggregationInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    strategySummary?: SortOrder
-    targetPositioning?: SortOrder
-    sectionOrderJson?: SortOrder
-    emphasisJson?: SortOrder
-    deEmphasisJson?: SortOrder
-    evidenceToUseJson?: SortOrder
-    warningsJson?: SortOrder
-    strategyJson?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    _count?: CvStrategyCountOrderByAggregateInput
-    _max?: CvStrategyMaxOrderByAggregateInput
-    _min?: CvStrategyMinOrderByAggregateInput
-  }
-
-  export type CvStrategyScalarWhereWithAggregatesInput = {
-    AND?: CvStrategyScalarWhereWithAggregatesInput | CvStrategyScalarWhereWithAggregatesInput[]
-    OR?: CvStrategyScalarWhereWithAggregatesInput[]
-    NOT?: CvStrategyScalarWhereWithAggregatesInput | CvStrategyScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"CvStrategy"> | string
-    applicationId?: StringWithAggregatesFilter<"CvStrategy"> | string
-    strategySummary?: StringWithAggregatesFilter<"CvStrategy"> | string
-    targetPositioning?: StringWithAggregatesFilter<"CvStrategy"> | string
-    sectionOrderJson?: JsonWithAggregatesFilter<"CvStrategy">
-    emphasisJson?: JsonWithAggregatesFilter<"CvStrategy">
-    deEmphasisJson?: JsonWithAggregatesFilter<"CvStrategy">
-    evidenceToUseJson?: JsonWithAggregatesFilter<"CvStrategy">
-    warningsJson?: JsonWithAggregatesFilter<"CvStrategy">
-    strategyJson?: JsonNullableWithAggregatesFilter<"CvStrategy">
-    createdAt?: DateTimeWithAggregatesFilter<"CvStrategy"> | Date | string
-  }
-
   export type CvDraftWhereInput = {
     AND?: CvDraftWhereInput | CvDraftWhereInput[]
     OR?: CvDraftWhereInput[]
     NOT?: CvDraftWhereInput | CvDraftWhereInput[]
     id?: StringFilter<"CvDraft"> | string
     applicationId?: StringFilter<"CvDraft"> | string
-    strategyId?: StringNullableFilter<"CvDraft"> | string | null
     version?: IntFilter<"CvDraft"> | number
     cvJson?: JsonFilter<"CvDraft">
     cvText?: StringFilter<"CvDraft"> | string
@@ -32144,14 +22945,12 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CvDraft"> | Date | string
     updatedAt?: DateTimeFilter<"CvDraft"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    strategy?: XOR<CvStrategyNullableScalarRelationFilter, CvStrategyWhereInput> | null
     usage?: CvGenerationUsageListRelationFilter
   }
 
   export type CvDraftOrderByWithRelationInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    strategyId?: SortOrderInput | SortOrder
     version?: SortOrder
     cvJson?: SortOrder
     cvText?: SortOrder
@@ -32160,7 +22959,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     application?: ApplicationOrderByWithRelationInput
-    strategy?: CvStrategyOrderByWithRelationInput
     usage?: CvGenerationUsageOrderByRelationAggregateInput
   }
 
@@ -32170,7 +22968,6 @@ export namespace Prisma {
     OR?: CvDraftWhereInput[]
     NOT?: CvDraftWhereInput | CvDraftWhereInput[]
     applicationId?: StringFilter<"CvDraft"> | string
-    strategyId?: StringNullableFilter<"CvDraft"> | string | null
     version?: IntFilter<"CvDraft"> | number
     cvJson?: JsonFilter<"CvDraft">
     cvText?: StringFilter<"CvDraft"> | string
@@ -32179,14 +22976,12 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CvDraft"> | Date | string
     updatedAt?: DateTimeFilter<"CvDraft"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
-    strategy?: XOR<CvStrategyNullableScalarRelationFilter, CvStrategyWhereInput> | null
     usage?: CvGenerationUsageListRelationFilter
   }, "id">
 
   export type CvDraftOrderByWithAggregationInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    strategyId?: SortOrderInput | SortOrder
     version?: SortOrder
     cvJson?: SortOrder
     cvText?: SortOrder
@@ -32207,7 +23002,6 @@ export namespace Prisma {
     NOT?: CvDraftScalarWhereWithAggregatesInput | CvDraftScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"CvDraft"> | string
     applicationId?: StringWithAggregatesFilter<"CvDraft"> | string
-    strategyId?: StringNullableWithAggregatesFilter<"CvDraft"> | string | null
     version?: IntWithAggregatesFilter<"CvDraft"> | number
     cvJson?: JsonWithAggregatesFilter<"CvDraft">
     cvText?: StringWithAggregatesFilter<"CvDraft"> | string
@@ -32645,7 +23439,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     applications?: ApplicationCreateNestedManyWithoutAnonymousSessionInput
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutAnonymousSessionInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutAnonymousSessionInput
   }
 
   export type AnonymousSessionUncheckedCreateInput = {
@@ -32654,7 +23447,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     applications?: ApplicationUncheckedCreateNestedManyWithoutAnonymousSessionInput
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutAnonymousSessionInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutAnonymousSessionInput
   }
 
   export type AnonymousSessionUpdateInput = {
@@ -32663,7 +23455,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     applications?: ApplicationUpdateManyWithoutAnonymousSessionNestedInput
     candidateProfiles?: CandidateProfileUpdateManyWithoutAnonymousSessionNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutAnonymousSessionNestedInput
   }
 
   export type AnonymousSessionUncheckedUpdateInput = {
@@ -32672,7 +23463,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     applications?: ApplicationUncheckedUpdateManyWithoutAnonymousSessionNestedInput
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutAnonymousSessionNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutAnonymousSessionNestedInput
   }
 
   export type AnonymousSessionCreateManyInput = {
@@ -32707,7 +23497,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutUserInput
     applications?: ApplicationCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -32724,7 +23513,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutUserInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -32741,7 +23529,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutUserNestedInput
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -32758,7 +23545,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutUserNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -33058,13 +23844,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
@@ -33087,13 +23868,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
@@ -33116,13 +23892,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
@@ -33145,13 +23916,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
@@ -33217,7 +23983,6 @@ export namespace Prisma {
     archetypeHint?: string | null
     createdAt?: Date | string
     application: ApplicationCreateNestedOneWithoutJobInput
-    requirements?: JobRequirementCreateNestedManyWithoutJobInput
   }
 
   export type JobUncheckedCreateInput = {
@@ -33231,7 +23996,6 @@ export namespace Prisma {
     roleDomain?: string | null
     archetypeHint?: string | null
     createdAt?: Date | string
-    requirements?: JobRequirementUncheckedCreateNestedManyWithoutJobInput
   }
 
   export type JobUpdateInput = {
@@ -33245,7 +24009,6 @@ export namespace Prisma {
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     application?: ApplicationUpdateOneRequiredWithoutJobNestedInput
-    requirements?: JobRequirementUpdateManyWithoutJobNestedInput
   }
 
   export type JobUncheckedUpdateInput = {
@@ -33259,7 +24022,6 @@ export namespace Prisma {
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    requirements?: JobRequirementUncheckedUpdateManyWithoutJobNestedInput
   }
 
   export type JobCreateManyInput = {
@@ -33300,101 +24062,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobRequirementCreateInput = {
-    id?: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    job: JobCreateNestedOneWithoutRequirementsInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutJobRequirementInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementUncheckedCreateInput = {
-    id?: string
-    jobId: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutJobRequirementInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    job?: JobUpdateOneRequiredWithoutRequirementsNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutJobRequirementNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type JobRequirementUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobId?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutJobRequirementNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type JobRequirementCreateManyInput = {
-    id?: string
-    jobId: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-  }
-
-  export type JobRequirementUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type JobRequirementUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobId?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
   export type CandidateProfileCreateInput = {
     id?: string
     rawCvText?: string | null
@@ -33429,7 +24096,6 @@ export namespace Prisma {
     anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateProfilesInput
     user?: UserCreateNestedOneWithoutCandidateProfilesInput
     sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateProfilesInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileUncheckedCreateInput = {
@@ -33466,7 +24132,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     lastSeenAt?: Date | string
     archivedAt?: Date | string | null
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileUpdateInput = {
@@ -33503,7 +24168,6 @@ export namespace Prisma {
     anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateProfilesNestedInput
     user?: UserUpdateOneWithoutCandidateProfilesNestedInput
     sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateProfilesNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileUncheckedUpdateInput = {
@@ -33540,7 +24204,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileCreateManyInput = {
@@ -33648,354 +24311,6 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type CandidateChunkCreateInput = {
-    id?: string
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateChunksInput
-    user?: UserCreateNestedOneWithoutCandidateChunksInput
-    sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateChunksInput
-    candidateProfile?: CandidateProfileCreateNestedOneWithoutCandidateChunksInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkUncheckedCreateInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateChunksNestedInput
-    user?: UserUpdateOneWithoutCandidateChunksNestedInput
-    sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateChunksNestedInput
-    candidateProfile?: CandidateProfileUpdateOneWithoutCandidateChunksNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkCreateManyInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-  }
-
-  export type CandidateChunkUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type CandidateChunkUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type EvidenceMatchCreateInput = {
-    id?: string
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutEvidenceMatchesInput
-    jobRequirement: JobRequirementCreateNestedOneWithoutEvidenceMatchesInput
-    candidateChunk?: CandidateChunkCreateNestedOneWithoutEvidenceMatchesInput
-  }
-
-  export type EvidenceMatchUncheckedCreateInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    candidateChunkId?: string | null
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type EvidenceMatchUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutEvidenceMatchesNestedInput
-    jobRequirement?: JobRequirementUpdateOneRequiredWithoutEvidenceMatchesNestedInput
-    candidateChunk?: CandidateChunkUpdateOneWithoutEvidenceMatchesNestedInput
-  }
-
-  export type EvidenceMatchUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    candidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EvidenceMatchCreateManyInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    candidateChunkId?: string | null
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type EvidenceMatchUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EvidenceMatchUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    candidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreCreateInput = {
-    id?: string
-    finalConfidence: $Enums.EvidenceConfidence
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutRequirementFitScoresInput
-    jobRequirement: JobRequirementCreateNestedOneWithoutRequirementFitScoresInput
-    bestCandidateChunk?: CandidateChunkCreateNestedOneWithoutBestFitScoresInput
-  }
-
-  export type RequirementFitScoreUncheckedCreateInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    bestCandidateChunkId?: string | null
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type RequirementFitScoreUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutRequirementFitScoresNestedInput
-    jobRequirement?: JobRequirementUpdateOneRequiredWithoutRequirementFitScoresNestedInput
-    bestCandidateChunk?: CandidateChunkUpdateOneWithoutBestFitScoresNestedInput
-  }
-
-  export type RequirementFitScoreUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreCreateManyInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    bestCandidateChunkId?: string | null
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type RequirementFitScoreUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type GapQuestionCreateInput = {
     id?: string
     question: string
@@ -34007,14 +24322,12 @@ export namespace Prisma {
     status?: $Enums.GapQuestionStatus
     createdAt?: Date | string
     application: ApplicationCreateNestedOneWithoutGapQuestionsInput
-    targetRequirement?: JobRequirementCreateNestedOneWithoutGapQuestionsInput
     answers?: GapAnswerCreateNestedManyWithoutGapQuestionInput
   }
 
   export type GapQuestionUncheckedCreateInput = {
     id?: string
     applicationId: string
-    targetRequirementId?: string | null
     question: string
     reason: string
     whyItMatters?: string | null
@@ -34037,14 +24350,12 @@ export namespace Prisma {
     status?: EnumGapQuestionStatusFieldUpdateOperationsInput | $Enums.GapQuestionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     application?: ApplicationUpdateOneRequiredWithoutGapQuestionsNestedInput
-    targetRequirement?: JobRequirementUpdateOneWithoutGapQuestionsNestedInput
     answers?: GapAnswerUpdateManyWithoutGapQuestionNestedInput
   }
 
   export type GapQuestionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     question?: StringFieldUpdateOperationsInput | string
     reason?: StringFieldUpdateOperationsInput | string
     whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34059,7 +24370,6 @@ export namespace Prisma {
   export type GapQuestionCreateManyInput = {
     id?: string
     applicationId: string
-    targetRequirementId?: string | null
     question: string
     reason: string
     whyItMatters?: string | null
@@ -34085,7 +24395,6 @@ export namespace Prisma {
   export type GapQuestionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     question?: StringFieldUpdateOperationsInput | string
     reason?: StringFieldUpdateOperationsInput | string
     whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34096,86 +24405,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type GapCoachInsightCreateInput = {
-    id?: string
-    openingMessage: string
-    jobWants: string
-    candidateStrengthsJson: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutGapCoachInsightInput
-  }
-
-  export type GapCoachInsightUncheckedCreateInput = {
-    id?: string
-    applicationId: string
-    openingMessage: string
-    jobWants: string
-    candidateStrengthsJson: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type GapCoachInsightUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    openingMessage?: StringFieldUpdateOperationsInput | string
-    jobWants?: StringFieldUpdateOperationsInput | string
-    candidateStrengthsJson?: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutGapCoachInsightNestedInput
-  }
-
-  export type GapCoachInsightUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    openingMessage?: StringFieldUpdateOperationsInput | string
-    jobWants?: StringFieldUpdateOperationsInput | string
-    candidateStrengthsJson?: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GapCoachInsightCreateManyInput = {
-    id?: string
-    applicationId: string
-    openingMessage: string
-    jobWants: string
-    candidateStrengthsJson: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type GapCoachInsightUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    openingMessage?: StringFieldUpdateOperationsInput | string
-    jobWants?: StringFieldUpdateOperationsInput | string
-    candidateStrengthsJson?: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GapCoachInsightUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    openingMessage?: StringFieldUpdateOperationsInput | string
-    jobWants?: StringFieldUpdateOperationsInput | string
-    candidateStrengthsJson?: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type GapAnswerCreateInput = {
     id?: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -34199,7 +24431,6 @@ export namespace Prisma {
     gapQuestionId: string
     applicationId: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -34219,7 +24450,6 @@ export namespace Prisma {
   export type GapAnswerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34243,7 +24473,6 @@ export namespace Prisma {
     gapQuestionId?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34265,7 +24494,6 @@ export namespace Prisma {
     gapQuestionId: string
     applicationId: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -34285,7 +24513,6 @@ export namespace Prisma {
   export type GapAnswerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34307,7 +24534,6 @@ export namespace Prisma {
     gapQuestionId?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34324,107 +24550,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CvStrategyCreateInput = {
-    id?: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutCvStrategiesInput
-    cvDrafts?: CvDraftCreateNestedManyWithoutStrategyInput
-  }
-
-  export type CvStrategyUncheckedCreateInput = {
-    id?: string
-    applicationId: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutStrategyInput
-  }
-
-  export type CvStrategyUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutCvStrategiesNestedInput
-    cvDrafts?: CvDraftUpdateManyWithoutStrategyNestedInput
-  }
-
-  export type CvStrategyUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cvDrafts?: CvDraftUncheckedUpdateManyWithoutStrategyNestedInput
-  }
-
-  export type CvStrategyCreateManyInput = {
-    id?: string
-    applicationId: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-  }
-
-  export type CvStrategyUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CvStrategyUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type CvDraftCreateInput = {
     id?: string
     version?: number
@@ -34435,14 +24560,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     application: ApplicationCreateNestedOneWithoutCvDraftsInput
-    strategy?: CvStrategyCreateNestedOneWithoutCvDraftsInput
     usage?: CvGenerationUsageCreateNestedManyWithoutCvDraftInput
   }
 
   export type CvDraftUncheckedCreateInput = {
     id?: string
     applicationId: string
-    strategyId?: string | null
     version?: number
     cvJson: JsonNullValueInput | InputJsonValue
     cvText: string
@@ -34463,14 +24586,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     application?: ApplicationUpdateOneRequiredWithoutCvDraftsNestedInput
-    strategy?: CvStrategyUpdateOneWithoutCvDraftsNestedInput
     usage?: CvGenerationUsageUpdateManyWithoutCvDraftNestedInput
   }
 
   export type CvDraftUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
-    strategyId?: NullableStringFieldUpdateOperationsInput | string | null
     version?: IntFieldUpdateOperationsInput | number
     cvJson?: JsonNullValueInput | InputJsonValue
     cvText?: StringFieldUpdateOperationsInput | string
@@ -34484,7 +24605,6 @@ export namespace Prisma {
   export type CvDraftCreateManyInput = {
     id?: string
     applicationId: string
-    strategyId?: string | null
     version?: number
     cvJson: JsonNullValueInput | InputJsonValue
     cvText: string
@@ -34508,7 +24628,6 @@ export namespace Prisma {
   export type CvDraftUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
-    strategyId?: NullableStringFieldUpdateOperationsInput | string | null
     version?: IntFieldUpdateOperationsInput | number
     cvJson?: JsonNullValueInput | InputJsonValue
     cvText?: StringFieldUpdateOperationsInput | string
@@ -35034,21 +25153,11 @@ export namespace Prisma {
     none?: CandidateProfileWhereInput
   }
 
-  export type CandidateChunkListRelationFilter = {
-    every?: CandidateChunkWhereInput
-    some?: CandidateChunkWhereInput
-    none?: CandidateChunkWhereInput
-  }
-
   export type ApplicationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type CandidateProfileOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CandidateChunkOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -35412,18 +25521,6 @@ export namespace Prisma {
     isNot?: JobWhereInput | null
   }
 
-  export type EvidenceMatchListRelationFilter = {
-    every?: EvidenceMatchWhereInput
-    some?: EvidenceMatchWhereInput
-    none?: EvidenceMatchWhereInput
-  }
-
-  export type RequirementFitScoreListRelationFilter = {
-    every?: RequirementFitScoreWhereInput
-    some?: RequirementFitScoreWhereInput
-    none?: RequirementFitScoreWhereInput
-  }
-
   export type GapQuestionListRelationFilter = {
     every?: GapQuestionWhereInput
     some?: GapQuestionWhereInput
@@ -35434,17 +25531,6 @@ export namespace Prisma {
     every?: GapAnswerWhereInput
     some?: GapAnswerWhereInput
     none?: GapAnswerWhereInput
-  }
-
-  export type GapCoachInsightNullableScalarRelationFilter = {
-    is?: GapCoachInsightWhereInput | null
-    isNot?: GapCoachInsightWhereInput | null
-  }
-
-  export type CvStrategyListRelationFilter = {
-    every?: CvStrategyWhereInput
-    some?: CvStrategyWhereInput
-    none?: CvStrategyWhereInput
   }
 
   export type CvDraftListRelationFilter = {
@@ -35459,23 +25545,11 @@ export namespace Prisma {
     none?: AgentRunWhereInput
   }
 
-  export type EvidenceMatchOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type RequirementFitScoreOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type GapQuestionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type GapAnswerOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CvStrategyOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -35603,16 +25677,6 @@ export namespace Prisma {
     isNot?: ApplicationWhereInput
   }
 
-  export type JobRequirementListRelationFilter = {
-    every?: JobRequirementWhereInput
-    some?: JobRequirementWhereInput
-    none?: JobRequirementWhereInput
-  }
-
-  export type JobRequirementOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type JobCountOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
@@ -35650,81 +25714,6 @@ export namespace Prisma {
     roleDomain?: SortOrder
     archetypeHint?: SortOrder
     createdAt?: SortOrder
-  }
-
-  export type EnumRequirementTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.RequirementType | EnumRequirementTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRequirementTypeFilter<$PrismaModel> | $Enums.RequirementType
-  }
-
-  export type EnumImportanceFilter<$PrismaModel = never> = {
-    equals?: $Enums.Importance | EnumImportanceFieldRefInput<$PrismaModel>
-    in?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumImportanceFilter<$PrismaModel> | $Enums.Importance
-  }
-
-  export type JobScalarRelationFilter = {
-    is?: JobWhereInput
-    isNot?: JobWhereInput
-  }
-
-  export type JobRequirementCountOrderByAggregateInput = {
-    id?: SortOrder
-    jobId?: SortOrder
-    type?: SortOrder
-    label?: SortOrder
-    description?: SortOrder
-    importance?: SortOrder
-    queryEmbeddingModel?: SortOrder
-    queryEmbeddingInputHash?: SortOrder
-    queryEmbeddedAt?: SortOrder
-  }
-
-  export type JobRequirementMaxOrderByAggregateInput = {
-    id?: SortOrder
-    jobId?: SortOrder
-    type?: SortOrder
-    label?: SortOrder
-    description?: SortOrder
-    importance?: SortOrder
-    queryEmbeddingModel?: SortOrder
-    queryEmbeddingInputHash?: SortOrder
-    queryEmbeddedAt?: SortOrder
-  }
-
-  export type JobRequirementMinOrderByAggregateInput = {
-    id?: SortOrder
-    jobId?: SortOrder
-    type?: SortOrder
-    label?: SortOrder
-    description?: SortOrder
-    importance?: SortOrder
-    queryEmbeddingModel?: SortOrder
-    queryEmbeddingInputHash?: SortOrder
-    queryEmbeddedAt?: SortOrder
-  }
-
-  export type EnumRequirementTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RequirementType | EnumRequirementTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRequirementTypeWithAggregatesFilter<$PrismaModel> | $Enums.RequirementType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRequirementTypeFilter<$PrismaModel>
-    _max?: NestedEnumRequirementTypeFilter<$PrismaModel>
-  }
-
-  export type EnumImportanceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Importance | EnumImportanceFieldRefInput<$PrismaModel>
-    in?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumImportanceWithAggregatesFilter<$PrismaModel> | $Enums.Importance
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumImportanceFilter<$PrismaModel>
-    _max?: NestedEnumImportanceFilter<$PrismaModel>
   }
 
   export type EnumSourceTypeNullableFilter<$PrismaModel = never> = {
@@ -35883,272 +25872,6 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
-  export type EnumSourceTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.SourceType | EnumSourceTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumSourceTypeFilter<$PrismaModel> | $Enums.SourceType
-  }
-
-  export type EnumChunkTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.ChunkType | EnumChunkTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumChunkTypeFilter<$PrismaModel> | $Enums.ChunkType
-  }
-
-  export type CandidateProfileNullableScalarRelationFilter = {
-    is?: CandidateProfileWhereInput | null
-    isNot?: CandidateProfileWhereInput | null
-  }
-
-  export type CandidateChunkCountOrderByAggregateInput = {
-    id?: SortOrder
-    anonymousSessionId?: SortOrder
-    userId?: SortOrder
-    sourceApplicationId?: SortOrder
-    candidateProfileId?: SortOrder
-    sourceType?: SortOrder
-    sourceId?: SortOrder
-    sourceKey?: SortOrder
-    sourceHash?: SortOrder
-    contentHash?: SortOrder
-    chunkType?: SortOrder
-    content?: SortOrder
-    tagsJson?: SortOrder
-    metadataJson?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    embeddedAt?: SortOrder
-    lastSeenAt?: SortOrder
-    archivedAt?: SortOrder
-  }
-
-  export type CandidateChunkMaxOrderByAggregateInput = {
-    id?: SortOrder
-    anonymousSessionId?: SortOrder
-    userId?: SortOrder
-    sourceApplicationId?: SortOrder
-    candidateProfileId?: SortOrder
-    sourceType?: SortOrder
-    sourceId?: SortOrder
-    sourceKey?: SortOrder
-    sourceHash?: SortOrder
-    contentHash?: SortOrder
-    chunkType?: SortOrder
-    content?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    embeddedAt?: SortOrder
-    lastSeenAt?: SortOrder
-    archivedAt?: SortOrder
-  }
-
-  export type CandidateChunkMinOrderByAggregateInput = {
-    id?: SortOrder
-    anonymousSessionId?: SortOrder
-    userId?: SortOrder
-    sourceApplicationId?: SortOrder
-    candidateProfileId?: SortOrder
-    sourceType?: SortOrder
-    sourceId?: SortOrder
-    sourceKey?: SortOrder
-    sourceHash?: SortOrder
-    contentHash?: SortOrder
-    chunkType?: SortOrder
-    content?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    embeddedAt?: SortOrder
-    lastSeenAt?: SortOrder
-    archivedAt?: SortOrder
-  }
-
-  export type EnumSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SourceType | EnumSourceTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.SourceType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSourceTypeFilter<$PrismaModel>
-    _max?: NestedEnumSourceTypeFilter<$PrismaModel>
-  }
-
-  export type EnumChunkTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ChunkType | EnumChunkTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumChunkTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChunkType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumChunkTypeFilter<$PrismaModel>
-    _max?: NestedEnumChunkTypeFilter<$PrismaModel>
-  }
-
-  export type EnumEvidenceConfidenceFilter<$PrismaModel = never> = {
-    equals?: $Enums.EvidenceConfidence | EnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    in?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumEvidenceConfidenceFilter<$PrismaModel> | $Enums.EvidenceConfidence
-  }
-
-  export type JobRequirementScalarRelationFilter = {
-    is?: JobRequirementWhereInput
-    isNot?: JobRequirementWhereInput
-  }
-
-  export type CandidateChunkNullableScalarRelationFilter = {
-    is?: CandidateChunkWhereInput | null
-    isNot?: CandidateChunkWhereInput | null
-  }
-
-  export type EvidenceMatchCountOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    candidateChunkId?: SortOrder
-    similarityScore?: SortOrder
-    confidence?: SortOrder
-    cvUsefulness?: SortOrder
-    claimRisk?: SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type EvidenceMatchAvgOrderByAggregateInput = {
-    similarityScore?: SortOrder
-  }
-
-  export type EvidenceMatchMaxOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    candidateChunkId?: SortOrder
-    similarityScore?: SortOrder
-    confidence?: SortOrder
-    cvUsefulness?: SortOrder
-    claimRisk?: SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type EvidenceMatchMinOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    candidateChunkId?: SortOrder
-    similarityScore?: SortOrder
-    confidence?: SortOrder
-    cvUsefulness?: SortOrder
-    claimRisk?: SortOrder
-    reason?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type EvidenceMatchSumOrderByAggregateInput = {
-    similarityScore?: SortOrder
-  }
-
-  export type EnumEvidenceConfidenceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.EvidenceConfidence | EnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    in?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumEvidenceConfidenceWithAggregatesFilter<$PrismaModel> | $Enums.EvidenceConfidence
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEvidenceConfidenceFilter<$PrismaModel>
-    _max?: NestedEnumEvidenceConfidenceFilter<$PrismaModel>
-  }
-
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type RequirementFitScoreApplicationIdJobRequirementIdCompoundUniqueInput = {
-    applicationId: string
-    jobRequirementId: string
-  }
-
-  export type RequirementFitScoreCountOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    finalConfidence?: SortOrder
-    bestCandidateChunkId?: SortOrder
-    reason?: SortOrder
-    importanceWeight?: SortOrder
-    confidenceValue?: SortOrder
-    earnedPoints?: SortOrder
-    possiblePoints?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type RequirementFitScoreAvgOrderByAggregateInput = {
-    importanceWeight?: SortOrder
-    confidenceValue?: SortOrder
-    earnedPoints?: SortOrder
-    possiblePoints?: SortOrder
-  }
-
-  export type RequirementFitScoreMaxOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    finalConfidence?: SortOrder
-    bestCandidateChunkId?: SortOrder
-    reason?: SortOrder
-    importanceWeight?: SortOrder
-    confidenceValue?: SortOrder
-    earnedPoints?: SortOrder
-    possiblePoints?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type RequirementFitScoreMinOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    jobRequirementId?: SortOrder
-    finalConfidence?: SortOrder
-    bestCandidateChunkId?: SortOrder
-    reason?: SortOrder
-    importanceWeight?: SortOrder
-    confidenceValue?: SortOrder
-    earnedPoints?: SortOrder
-    possiblePoints?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type RequirementFitScoreSumOrderByAggregateInput = {
-    importanceWeight?: SortOrder
-    confidenceValue?: SortOrder
-    earnedPoints?: SortOrder
-    possiblePoints?: SortOrder
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
-  }
-
   export type EnumGapQuestionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.GapQuestionStatus | EnumGapQuestionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.GapQuestionStatus[] | ListEnumGapQuestionStatusFieldRefInput<$PrismaModel>
@@ -36156,15 +25879,9 @@ export namespace Prisma {
     not?: NestedEnumGapQuestionStatusFilter<$PrismaModel> | $Enums.GapQuestionStatus
   }
 
-  export type JobRequirementNullableScalarRelationFilter = {
-    is?: JobRequirementWhereInput | null
-    isNot?: JobRequirementWhereInput | null
-  }
-
   export type GapQuestionCountOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    targetRequirementId?: SortOrder
     question?: SortOrder
     reason?: SortOrder
     whyItMatters?: SortOrder
@@ -36178,7 +25895,6 @@ export namespace Prisma {
   export type GapQuestionMaxOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    targetRequirementId?: SortOrder
     question?: SortOrder
     reason?: SortOrder
     whyItMatters?: SortOrder
@@ -36190,7 +25906,6 @@ export namespace Prisma {
   export type GapQuestionMinOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    targetRequirementId?: SortOrder
     question?: SortOrder
     reason?: SortOrder
     whyItMatters?: SortOrder
@@ -36207,35 +25922,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumGapQuestionStatusFilter<$PrismaModel>
     _max?: NestedEnumGapQuestionStatusFilter<$PrismaModel>
-  }
-
-  export type GapCoachInsightCountOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    openingMessage?: SortOrder
-    jobWants?: SortOrder
-    candidateStrengthsJson?: SortOrder
-    candidateConcernsJson?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type GapCoachInsightMaxOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    openingMessage?: SortOrder
-    jobWants?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type GapCoachInsightMinOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    openingMessage?: SortOrder
-    jobWants?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
   }
 
   export type EnumButtonAnswerFilter<$PrismaModel = never> = {
@@ -36266,7 +25952,6 @@ export namespace Prisma {
     gapQuestionId?: SortOrder
     applicationId?: SortOrder
     userId?: SortOrder
-    targetRequirementId?: SortOrder
     buttonAnswer?: SortOrder
     elaboration?: SortOrder
     selectedOption?: SortOrder
@@ -36292,7 +25977,6 @@ export namespace Prisma {
     gapQuestionId?: SortOrder
     applicationId?: SortOrder
     userId?: SortOrder
-    targetRequirementId?: SortOrder
     buttonAnswer?: SortOrder
     elaboration?: SortOrder
     selectedOption?: SortOrder
@@ -36314,7 +25998,6 @@ export namespace Prisma {
     gapQuestionId?: SortOrder
     applicationId?: SortOrder
     userId?: SortOrder
-    targetRequirementId?: SortOrder
     buttonAnswer?: SortOrder
     elaboration?: SortOrder
     selectedOption?: SortOrder
@@ -36361,36 +26044,6 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type CvStrategyCountOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    strategySummary?: SortOrder
-    targetPositioning?: SortOrder
-    sectionOrderJson?: SortOrder
-    emphasisJson?: SortOrder
-    deEmphasisJson?: SortOrder
-    evidenceToUseJson?: SortOrder
-    warningsJson?: SortOrder
-    strategyJson?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CvStrategyMaxOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    strategySummary?: SortOrder
-    targetPositioning?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type CvStrategyMinOrderByAggregateInput = {
-    id?: SortOrder
-    applicationId?: SortOrder
-    strategySummary?: SortOrder
-    targetPositioning?: SortOrder
-    createdAt?: SortOrder
-  }
-
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -36402,15 +26055,9 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type CvStrategyNullableScalarRelationFilter = {
-    is?: CvStrategyWhereInput | null
-    isNot?: CvStrategyWhereInput | null
-  }
-
   export type CvDraftCountOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    strategyId?: SortOrder
     version?: SortOrder
     cvJson?: SortOrder
     cvText?: SortOrder
@@ -36427,7 +26074,6 @@ export namespace Prisma {
   export type CvDraftMaxOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    strategyId?: SortOrder
     version?: SortOrder
     cvText?: SortOrder
     createdAt?: SortOrder
@@ -36437,7 +26083,6 @@ export namespace Prisma {
   export type CvDraftMinOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
-    strategyId?: SortOrder
     version?: SortOrder
     cvText?: SortOrder
     createdAt?: SortOrder
@@ -36815,13 +26460,6 @@ export namespace Prisma {
     connect?: CandidateProfileWhereUniqueInput | CandidateProfileWhereUniqueInput[]
   }
 
-  export type CandidateChunkCreateNestedManyWithoutAnonymousSessionInput = {
-    create?: XOR<CandidateChunkCreateWithoutAnonymousSessionInput, CandidateChunkUncheckedCreateWithoutAnonymousSessionInput> | CandidateChunkCreateWithoutAnonymousSessionInput[] | CandidateChunkUncheckedCreateWithoutAnonymousSessionInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutAnonymousSessionInput | CandidateChunkCreateOrConnectWithoutAnonymousSessionInput[]
-    createMany?: CandidateChunkCreateManyAnonymousSessionInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-  }
-
   export type ApplicationUncheckedCreateNestedManyWithoutAnonymousSessionInput = {
     create?: XOR<ApplicationCreateWithoutAnonymousSessionInput, ApplicationUncheckedCreateWithoutAnonymousSessionInput> | ApplicationCreateWithoutAnonymousSessionInput[] | ApplicationUncheckedCreateWithoutAnonymousSessionInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutAnonymousSessionInput | ApplicationCreateOrConnectWithoutAnonymousSessionInput[]
@@ -36834,13 +26472,6 @@ export namespace Prisma {
     connectOrCreate?: CandidateProfileCreateOrConnectWithoutAnonymousSessionInput | CandidateProfileCreateOrConnectWithoutAnonymousSessionInput[]
     createMany?: CandidateProfileCreateManyAnonymousSessionInputEnvelope
     connect?: CandidateProfileWhereUniqueInput | CandidateProfileWhereUniqueInput[]
-  }
-
-  export type CandidateChunkUncheckedCreateNestedManyWithoutAnonymousSessionInput = {
-    create?: XOR<CandidateChunkCreateWithoutAnonymousSessionInput, CandidateChunkUncheckedCreateWithoutAnonymousSessionInput> | CandidateChunkCreateWithoutAnonymousSessionInput[] | CandidateChunkUncheckedCreateWithoutAnonymousSessionInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutAnonymousSessionInput | CandidateChunkCreateOrConnectWithoutAnonymousSessionInput[]
-    createMany?: CandidateChunkCreateManyAnonymousSessionInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -36879,20 +26510,6 @@ export namespace Prisma {
     deleteMany?: CandidateProfileScalarWhereInput | CandidateProfileScalarWhereInput[]
   }
 
-  export type CandidateChunkUpdateManyWithoutAnonymousSessionNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutAnonymousSessionInput, CandidateChunkUncheckedCreateWithoutAnonymousSessionInput> | CandidateChunkCreateWithoutAnonymousSessionInput[] | CandidateChunkUncheckedCreateWithoutAnonymousSessionInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutAnonymousSessionInput | CandidateChunkCreateOrConnectWithoutAnonymousSessionInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutAnonymousSessionInput | CandidateChunkUpsertWithWhereUniqueWithoutAnonymousSessionInput[]
-    createMany?: CandidateChunkCreateManyAnonymousSessionInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutAnonymousSessionInput | CandidateChunkUpdateWithWhereUniqueWithoutAnonymousSessionInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutAnonymousSessionInput | CandidateChunkUpdateManyWithWhereWithoutAnonymousSessionInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-  }
-
   export type ApplicationUncheckedUpdateManyWithoutAnonymousSessionNestedInput = {
     create?: XOR<ApplicationCreateWithoutAnonymousSessionInput, ApplicationUncheckedCreateWithoutAnonymousSessionInput> | ApplicationCreateWithoutAnonymousSessionInput[] | ApplicationUncheckedCreateWithoutAnonymousSessionInput[]
     connectOrCreate?: ApplicationCreateOrConnectWithoutAnonymousSessionInput | ApplicationCreateOrConnectWithoutAnonymousSessionInput[]
@@ -36919,20 +26536,6 @@ export namespace Prisma {
     update?: CandidateProfileUpdateWithWhereUniqueWithoutAnonymousSessionInput | CandidateProfileUpdateWithWhereUniqueWithoutAnonymousSessionInput[]
     updateMany?: CandidateProfileUpdateManyWithWhereWithoutAnonymousSessionInput | CandidateProfileUpdateManyWithWhereWithoutAnonymousSessionInput[]
     deleteMany?: CandidateProfileScalarWhereInput | CandidateProfileScalarWhereInput[]
-  }
-
-  export type CandidateChunkUncheckedUpdateManyWithoutAnonymousSessionNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutAnonymousSessionInput, CandidateChunkUncheckedCreateWithoutAnonymousSessionInput> | CandidateChunkCreateWithoutAnonymousSessionInput[] | CandidateChunkUncheckedCreateWithoutAnonymousSessionInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutAnonymousSessionInput | CandidateChunkCreateOrConnectWithoutAnonymousSessionInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutAnonymousSessionInput | CandidateChunkUpsertWithWhereUniqueWithoutAnonymousSessionInput[]
-    createMany?: CandidateChunkCreateManyAnonymousSessionInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutAnonymousSessionInput | CandidateChunkUpdateWithWhereUniqueWithoutAnonymousSessionInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutAnonymousSessionInput | CandidateChunkUpdateManyWithWhereWithoutAnonymousSessionInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
   }
 
   export type SessionCreateNestedManyWithoutUserInput = {
@@ -36976,13 +26579,6 @@ export namespace Prisma {
     connect?: CandidateProfileWhereUniqueInput | CandidateProfileWhereUniqueInput[]
   }
 
-  export type CandidateChunkCreateNestedManyWithoutUserInput = {
-    create?: XOR<CandidateChunkCreateWithoutUserInput, CandidateChunkUncheckedCreateWithoutUserInput> | CandidateChunkCreateWithoutUserInput[] | CandidateChunkUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutUserInput | CandidateChunkCreateOrConnectWithoutUserInput[]
-    createMany?: CandidateChunkCreateManyUserInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-  }
-
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -37022,13 +26618,6 @@ export namespace Prisma {
     connectOrCreate?: CandidateProfileCreateOrConnectWithoutUserInput | CandidateProfileCreateOrConnectWithoutUserInput[]
     createMany?: CandidateProfileCreateManyUserInputEnvelope
     connect?: CandidateProfileWhereUniqueInput | CandidateProfileWhereUniqueInput[]
-  }
-
-  export type CandidateChunkUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<CandidateChunkCreateWithoutUserInput, CandidateChunkUncheckedCreateWithoutUserInput> | CandidateChunkCreateWithoutUserInput[] | CandidateChunkUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutUserInput | CandidateChunkCreateOrConnectWithoutUserInput[]
-    createMany?: CandidateChunkCreateManyUserInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -37119,20 +26708,6 @@ export namespace Prisma {
     deleteMany?: CandidateProfileScalarWhereInput | CandidateProfileScalarWhereInput[]
   }
 
-  export type CandidateChunkUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutUserInput, CandidateChunkUncheckedCreateWithoutUserInput> | CandidateChunkCreateWithoutUserInput[] | CandidateChunkUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutUserInput | CandidateChunkCreateOrConnectWithoutUserInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutUserInput | CandidateChunkUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CandidateChunkCreateManyUserInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutUserInput | CandidateChunkUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutUserInput | CandidateChunkUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-  }
-
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -37213,20 +26788,6 @@ export namespace Prisma {
     deleteMany?: CandidateProfileScalarWhereInput | CandidateProfileScalarWhereInput[]
   }
 
-  export type CandidateChunkUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutUserInput, CandidateChunkUncheckedCreateWithoutUserInput> | CandidateChunkCreateWithoutUserInput[] | CandidateChunkUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutUserInput | CandidateChunkCreateOrConnectWithoutUserInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutUserInput | CandidateChunkUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CandidateChunkCreateManyUserInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutUserInput | CandidateChunkUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutUserInput | CandidateChunkUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-  }
-
   export type UserCreateNestedOneWithoutSessionsInput = {
     create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
@@ -37284,27 +26845,6 @@ export namespace Prisma {
     connect?: CandidateProfileWhereUniqueInput | CandidateProfileWhereUniqueInput[]
   }
 
-  export type CandidateChunkCreateNestedManyWithoutSourceApplicationInput = {
-    create?: XOR<CandidateChunkCreateWithoutSourceApplicationInput, CandidateChunkUncheckedCreateWithoutSourceApplicationInput> | CandidateChunkCreateWithoutSourceApplicationInput[] | CandidateChunkUncheckedCreateWithoutSourceApplicationInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutSourceApplicationInput | CandidateChunkCreateOrConnectWithoutSourceApplicationInput[]
-    createMany?: CandidateChunkCreateManySourceApplicationInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-  }
-
-  export type EvidenceMatchCreateNestedManyWithoutApplicationInput = {
-    create?: XOR<EvidenceMatchCreateWithoutApplicationInput, EvidenceMatchUncheckedCreateWithoutApplicationInput> | EvidenceMatchCreateWithoutApplicationInput[] | EvidenceMatchUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutApplicationInput | EvidenceMatchCreateOrConnectWithoutApplicationInput[]
-    createMany?: EvidenceMatchCreateManyApplicationInputEnvelope
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-  }
-
-  export type RequirementFitScoreCreateNestedManyWithoutApplicationInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutApplicationInput, RequirementFitScoreUncheckedCreateWithoutApplicationInput> | RequirementFitScoreCreateWithoutApplicationInput[] | RequirementFitScoreUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutApplicationInput | RequirementFitScoreCreateOrConnectWithoutApplicationInput[]
-    createMany?: RequirementFitScoreCreateManyApplicationInputEnvelope
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-  }
-
   export type GapQuestionCreateNestedManyWithoutApplicationInput = {
     create?: XOR<GapQuestionCreateWithoutApplicationInput, GapQuestionUncheckedCreateWithoutApplicationInput> | GapQuestionCreateWithoutApplicationInput[] | GapQuestionUncheckedCreateWithoutApplicationInput[]
     connectOrCreate?: GapQuestionCreateOrConnectWithoutApplicationInput | GapQuestionCreateOrConnectWithoutApplicationInput[]
@@ -37317,19 +26857,6 @@ export namespace Prisma {
     connectOrCreate?: GapAnswerCreateOrConnectWithoutApplicationInput | GapAnswerCreateOrConnectWithoutApplicationInput[]
     createMany?: GapAnswerCreateManyApplicationInputEnvelope
     connect?: GapAnswerWhereUniqueInput | GapAnswerWhereUniqueInput[]
-  }
-
-  export type GapCoachInsightCreateNestedOneWithoutApplicationInput = {
-    create?: XOR<GapCoachInsightCreateWithoutApplicationInput, GapCoachInsightUncheckedCreateWithoutApplicationInput>
-    connectOrCreate?: GapCoachInsightCreateOrConnectWithoutApplicationInput
-    connect?: GapCoachInsightWhereUniqueInput
-  }
-
-  export type CvStrategyCreateNestedManyWithoutApplicationInput = {
-    create?: XOR<CvStrategyCreateWithoutApplicationInput, CvStrategyUncheckedCreateWithoutApplicationInput> | CvStrategyCreateWithoutApplicationInput[] | CvStrategyUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: CvStrategyCreateOrConnectWithoutApplicationInput | CvStrategyCreateOrConnectWithoutApplicationInput[]
-    createMany?: CvStrategyCreateManyApplicationInputEnvelope
-    connect?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
   }
 
   export type CvDraftCreateNestedManyWithoutApplicationInput = {
@@ -37366,27 +26893,6 @@ export namespace Prisma {
     connect?: CandidateProfileWhereUniqueInput | CandidateProfileWhereUniqueInput[]
   }
 
-  export type CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput = {
-    create?: XOR<CandidateChunkCreateWithoutSourceApplicationInput, CandidateChunkUncheckedCreateWithoutSourceApplicationInput> | CandidateChunkCreateWithoutSourceApplicationInput[] | CandidateChunkUncheckedCreateWithoutSourceApplicationInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutSourceApplicationInput | CandidateChunkCreateOrConnectWithoutSourceApplicationInput[]
-    createMany?: CandidateChunkCreateManySourceApplicationInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-  }
-
-  export type EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput = {
-    create?: XOR<EvidenceMatchCreateWithoutApplicationInput, EvidenceMatchUncheckedCreateWithoutApplicationInput> | EvidenceMatchCreateWithoutApplicationInput[] | EvidenceMatchUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutApplicationInput | EvidenceMatchCreateOrConnectWithoutApplicationInput[]
-    createMany?: EvidenceMatchCreateManyApplicationInputEnvelope
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-  }
-
-  export type RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutApplicationInput, RequirementFitScoreUncheckedCreateWithoutApplicationInput> | RequirementFitScoreCreateWithoutApplicationInput[] | RequirementFitScoreUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutApplicationInput | RequirementFitScoreCreateOrConnectWithoutApplicationInput[]
-    createMany?: RequirementFitScoreCreateManyApplicationInputEnvelope
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-  }
-
   export type GapQuestionUncheckedCreateNestedManyWithoutApplicationInput = {
     create?: XOR<GapQuestionCreateWithoutApplicationInput, GapQuestionUncheckedCreateWithoutApplicationInput> | GapQuestionCreateWithoutApplicationInput[] | GapQuestionUncheckedCreateWithoutApplicationInput[]
     connectOrCreate?: GapQuestionCreateOrConnectWithoutApplicationInput | GapQuestionCreateOrConnectWithoutApplicationInput[]
@@ -37399,19 +26905,6 @@ export namespace Prisma {
     connectOrCreate?: GapAnswerCreateOrConnectWithoutApplicationInput | GapAnswerCreateOrConnectWithoutApplicationInput[]
     createMany?: GapAnswerCreateManyApplicationInputEnvelope
     connect?: GapAnswerWhereUniqueInput | GapAnswerWhereUniqueInput[]
-  }
-
-  export type GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput = {
-    create?: XOR<GapCoachInsightCreateWithoutApplicationInput, GapCoachInsightUncheckedCreateWithoutApplicationInput>
-    connectOrCreate?: GapCoachInsightCreateOrConnectWithoutApplicationInput
-    connect?: GapCoachInsightWhereUniqueInput
-  }
-
-  export type CvStrategyUncheckedCreateNestedManyWithoutApplicationInput = {
-    create?: XOR<CvStrategyCreateWithoutApplicationInput, CvStrategyUncheckedCreateWithoutApplicationInput> | CvStrategyCreateWithoutApplicationInput[] | CvStrategyUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: CvStrategyCreateOrConnectWithoutApplicationInput | CvStrategyCreateOrConnectWithoutApplicationInput[]
-    createMany?: CvStrategyCreateManyApplicationInputEnvelope
-    connect?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
   }
 
   export type CvDraftUncheckedCreateNestedManyWithoutApplicationInput = {
@@ -37489,48 +26982,6 @@ export namespace Prisma {
     deleteMany?: CandidateProfileScalarWhereInput | CandidateProfileScalarWhereInput[]
   }
 
-  export type CandidateChunkUpdateManyWithoutSourceApplicationNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutSourceApplicationInput, CandidateChunkUncheckedCreateWithoutSourceApplicationInput> | CandidateChunkCreateWithoutSourceApplicationInput[] | CandidateChunkUncheckedCreateWithoutSourceApplicationInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutSourceApplicationInput | CandidateChunkCreateOrConnectWithoutSourceApplicationInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutSourceApplicationInput | CandidateChunkUpsertWithWhereUniqueWithoutSourceApplicationInput[]
-    createMany?: CandidateChunkCreateManySourceApplicationInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutSourceApplicationInput | CandidateChunkUpdateWithWhereUniqueWithoutSourceApplicationInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutSourceApplicationInput | CandidateChunkUpdateManyWithWhereWithoutSourceApplicationInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-  }
-
-  export type EvidenceMatchUpdateManyWithoutApplicationNestedInput = {
-    create?: XOR<EvidenceMatchCreateWithoutApplicationInput, EvidenceMatchUncheckedCreateWithoutApplicationInput> | EvidenceMatchCreateWithoutApplicationInput[] | EvidenceMatchUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutApplicationInput | EvidenceMatchCreateOrConnectWithoutApplicationInput[]
-    upsert?: EvidenceMatchUpsertWithWhereUniqueWithoutApplicationInput | EvidenceMatchUpsertWithWhereUniqueWithoutApplicationInput[]
-    createMany?: EvidenceMatchCreateManyApplicationInputEnvelope
-    set?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    disconnect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    delete?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    update?: EvidenceMatchUpdateWithWhereUniqueWithoutApplicationInput | EvidenceMatchUpdateWithWhereUniqueWithoutApplicationInput[]
-    updateMany?: EvidenceMatchUpdateManyWithWhereWithoutApplicationInput | EvidenceMatchUpdateManyWithWhereWithoutApplicationInput[]
-    deleteMany?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-  }
-
-  export type RequirementFitScoreUpdateManyWithoutApplicationNestedInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutApplicationInput, RequirementFitScoreUncheckedCreateWithoutApplicationInput> | RequirementFitScoreCreateWithoutApplicationInput[] | RequirementFitScoreUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutApplicationInput | RequirementFitScoreCreateOrConnectWithoutApplicationInput[]
-    upsert?: RequirementFitScoreUpsertWithWhereUniqueWithoutApplicationInput | RequirementFitScoreUpsertWithWhereUniqueWithoutApplicationInput[]
-    createMany?: RequirementFitScoreCreateManyApplicationInputEnvelope
-    set?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    disconnect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    delete?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    update?: RequirementFitScoreUpdateWithWhereUniqueWithoutApplicationInput | RequirementFitScoreUpdateWithWhereUniqueWithoutApplicationInput[]
-    updateMany?: RequirementFitScoreUpdateManyWithWhereWithoutApplicationInput | RequirementFitScoreUpdateManyWithWhereWithoutApplicationInput[]
-    deleteMany?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-  }
-
   export type GapQuestionUpdateManyWithoutApplicationNestedInput = {
     create?: XOR<GapQuestionCreateWithoutApplicationInput, GapQuestionUncheckedCreateWithoutApplicationInput> | GapQuestionCreateWithoutApplicationInput[] | GapQuestionUncheckedCreateWithoutApplicationInput[]
     connectOrCreate?: GapQuestionCreateOrConnectWithoutApplicationInput | GapQuestionCreateOrConnectWithoutApplicationInput[]
@@ -37557,30 +27008,6 @@ export namespace Prisma {
     update?: GapAnswerUpdateWithWhereUniqueWithoutApplicationInput | GapAnswerUpdateWithWhereUniqueWithoutApplicationInput[]
     updateMany?: GapAnswerUpdateManyWithWhereWithoutApplicationInput | GapAnswerUpdateManyWithWhereWithoutApplicationInput[]
     deleteMany?: GapAnswerScalarWhereInput | GapAnswerScalarWhereInput[]
-  }
-
-  export type GapCoachInsightUpdateOneWithoutApplicationNestedInput = {
-    create?: XOR<GapCoachInsightCreateWithoutApplicationInput, GapCoachInsightUncheckedCreateWithoutApplicationInput>
-    connectOrCreate?: GapCoachInsightCreateOrConnectWithoutApplicationInput
-    upsert?: GapCoachInsightUpsertWithoutApplicationInput
-    disconnect?: GapCoachInsightWhereInput | boolean
-    delete?: GapCoachInsightWhereInput | boolean
-    connect?: GapCoachInsightWhereUniqueInput
-    update?: XOR<XOR<GapCoachInsightUpdateToOneWithWhereWithoutApplicationInput, GapCoachInsightUpdateWithoutApplicationInput>, GapCoachInsightUncheckedUpdateWithoutApplicationInput>
-  }
-
-  export type CvStrategyUpdateManyWithoutApplicationNestedInput = {
-    create?: XOR<CvStrategyCreateWithoutApplicationInput, CvStrategyUncheckedCreateWithoutApplicationInput> | CvStrategyCreateWithoutApplicationInput[] | CvStrategyUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: CvStrategyCreateOrConnectWithoutApplicationInput | CvStrategyCreateOrConnectWithoutApplicationInput[]
-    upsert?: CvStrategyUpsertWithWhereUniqueWithoutApplicationInput | CvStrategyUpsertWithWhereUniqueWithoutApplicationInput[]
-    createMany?: CvStrategyCreateManyApplicationInputEnvelope
-    set?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    disconnect?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    delete?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    connect?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    update?: CvStrategyUpdateWithWhereUniqueWithoutApplicationInput | CvStrategyUpdateWithWhereUniqueWithoutApplicationInput[]
-    updateMany?: CvStrategyUpdateManyWithWhereWithoutApplicationInput | CvStrategyUpdateManyWithWhereWithoutApplicationInput[]
-    deleteMany?: CvStrategyScalarWhereInput | CvStrategyScalarWhereInput[]
   }
 
   export type CvDraftUpdateManyWithoutApplicationNestedInput = {
@@ -37649,48 +27076,6 @@ export namespace Prisma {
     deleteMany?: CandidateProfileScalarWhereInput | CandidateProfileScalarWhereInput[]
   }
 
-  export type CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutSourceApplicationInput, CandidateChunkUncheckedCreateWithoutSourceApplicationInput> | CandidateChunkCreateWithoutSourceApplicationInput[] | CandidateChunkUncheckedCreateWithoutSourceApplicationInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutSourceApplicationInput | CandidateChunkCreateOrConnectWithoutSourceApplicationInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutSourceApplicationInput | CandidateChunkUpsertWithWhereUniqueWithoutSourceApplicationInput[]
-    createMany?: CandidateChunkCreateManySourceApplicationInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutSourceApplicationInput | CandidateChunkUpdateWithWhereUniqueWithoutSourceApplicationInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutSourceApplicationInput | CandidateChunkUpdateManyWithWhereWithoutSourceApplicationInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-  }
-
-  export type EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput = {
-    create?: XOR<EvidenceMatchCreateWithoutApplicationInput, EvidenceMatchUncheckedCreateWithoutApplicationInput> | EvidenceMatchCreateWithoutApplicationInput[] | EvidenceMatchUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutApplicationInput | EvidenceMatchCreateOrConnectWithoutApplicationInput[]
-    upsert?: EvidenceMatchUpsertWithWhereUniqueWithoutApplicationInput | EvidenceMatchUpsertWithWhereUniqueWithoutApplicationInput[]
-    createMany?: EvidenceMatchCreateManyApplicationInputEnvelope
-    set?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    disconnect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    delete?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    update?: EvidenceMatchUpdateWithWhereUniqueWithoutApplicationInput | EvidenceMatchUpdateWithWhereUniqueWithoutApplicationInput[]
-    updateMany?: EvidenceMatchUpdateManyWithWhereWithoutApplicationInput | EvidenceMatchUpdateManyWithWhereWithoutApplicationInput[]
-    deleteMany?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-  }
-
-  export type RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutApplicationInput, RequirementFitScoreUncheckedCreateWithoutApplicationInput> | RequirementFitScoreCreateWithoutApplicationInput[] | RequirementFitScoreUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutApplicationInput | RequirementFitScoreCreateOrConnectWithoutApplicationInput[]
-    upsert?: RequirementFitScoreUpsertWithWhereUniqueWithoutApplicationInput | RequirementFitScoreUpsertWithWhereUniqueWithoutApplicationInput[]
-    createMany?: RequirementFitScoreCreateManyApplicationInputEnvelope
-    set?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    disconnect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    delete?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    update?: RequirementFitScoreUpdateWithWhereUniqueWithoutApplicationInput | RequirementFitScoreUpdateWithWhereUniqueWithoutApplicationInput[]
-    updateMany?: RequirementFitScoreUpdateManyWithWhereWithoutApplicationInput | RequirementFitScoreUpdateManyWithWhereWithoutApplicationInput[]
-    deleteMany?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-  }
-
   export type GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput = {
     create?: XOR<GapQuestionCreateWithoutApplicationInput, GapQuestionUncheckedCreateWithoutApplicationInput> | GapQuestionCreateWithoutApplicationInput[] | GapQuestionUncheckedCreateWithoutApplicationInput[]
     connectOrCreate?: GapQuestionCreateOrConnectWithoutApplicationInput | GapQuestionCreateOrConnectWithoutApplicationInput[]
@@ -37717,30 +27102,6 @@ export namespace Prisma {
     update?: GapAnswerUpdateWithWhereUniqueWithoutApplicationInput | GapAnswerUpdateWithWhereUniqueWithoutApplicationInput[]
     updateMany?: GapAnswerUpdateManyWithWhereWithoutApplicationInput | GapAnswerUpdateManyWithWhereWithoutApplicationInput[]
     deleteMany?: GapAnswerScalarWhereInput | GapAnswerScalarWhereInput[]
-  }
-
-  export type GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput = {
-    create?: XOR<GapCoachInsightCreateWithoutApplicationInput, GapCoachInsightUncheckedCreateWithoutApplicationInput>
-    connectOrCreate?: GapCoachInsightCreateOrConnectWithoutApplicationInput
-    upsert?: GapCoachInsightUpsertWithoutApplicationInput
-    disconnect?: GapCoachInsightWhereInput | boolean
-    delete?: GapCoachInsightWhereInput | boolean
-    connect?: GapCoachInsightWhereUniqueInput
-    update?: XOR<XOR<GapCoachInsightUpdateToOneWithWhereWithoutApplicationInput, GapCoachInsightUpdateWithoutApplicationInput>, GapCoachInsightUncheckedUpdateWithoutApplicationInput>
-  }
-
-  export type CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput = {
-    create?: XOR<CvStrategyCreateWithoutApplicationInput, CvStrategyUncheckedCreateWithoutApplicationInput> | CvStrategyCreateWithoutApplicationInput[] | CvStrategyUncheckedCreateWithoutApplicationInput[]
-    connectOrCreate?: CvStrategyCreateOrConnectWithoutApplicationInput | CvStrategyCreateOrConnectWithoutApplicationInput[]
-    upsert?: CvStrategyUpsertWithWhereUniqueWithoutApplicationInput | CvStrategyUpsertWithWhereUniqueWithoutApplicationInput[]
-    createMany?: CvStrategyCreateManyApplicationInputEnvelope
-    set?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    disconnect?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    delete?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    connect?: CvStrategyWhereUniqueInput | CvStrategyWhereUniqueInput[]
-    update?: CvStrategyUpdateWithWhereUniqueWithoutApplicationInput | CvStrategyUpdateWithWhereUniqueWithoutApplicationInput[]
-    updateMany?: CvStrategyUpdateManyWithWhereWithoutApplicationInput | CvStrategyUpdateManyWithWhereWithoutApplicationInput[]
-    deleteMany?: CvStrategyScalarWhereInput | CvStrategyScalarWhereInput[]
   }
 
   export type CvDraftUncheckedUpdateManyWithoutApplicationNestedInput = {
@@ -37791,202 +27152,12 @@ export namespace Prisma {
     connect?: ApplicationWhereUniqueInput
   }
 
-  export type JobRequirementCreateNestedManyWithoutJobInput = {
-    create?: XOR<JobRequirementCreateWithoutJobInput, JobRequirementUncheckedCreateWithoutJobInput> | JobRequirementCreateWithoutJobInput[] | JobRequirementUncheckedCreateWithoutJobInput[]
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutJobInput | JobRequirementCreateOrConnectWithoutJobInput[]
-    createMany?: JobRequirementCreateManyJobInputEnvelope
-    connect?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-  }
-
-  export type JobRequirementUncheckedCreateNestedManyWithoutJobInput = {
-    create?: XOR<JobRequirementCreateWithoutJobInput, JobRequirementUncheckedCreateWithoutJobInput> | JobRequirementCreateWithoutJobInput[] | JobRequirementUncheckedCreateWithoutJobInput[]
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutJobInput | JobRequirementCreateOrConnectWithoutJobInput[]
-    createMany?: JobRequirementCreateManyJobInputEnvelope
-    connect?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-  }
-
   export type ApplicationUpdateOneRequiredWithoutJobNestedInput = {
     create?: XOR<ApplicationCreateWithoutJobInput, ApplicationUncheckedCreateWithoutJobInput>
     connectOrCreate?: ApplicationCreateOrConnectWithoutJobInput
     upsert?: ApplicationUpsertWithoutJobInput
     connect?: ApplicationWhereUniqueInput
     update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutJobInput, ApplicationUpdateWithoutJobInput>, ApplicationUncheckedUpdateWithoutJobInput>
-  }
-
-  export type JobRequirementUpdateManyWithoutJobNestedInput = {
-    create?: XOR<JobRequirementCreateWithoutJobInput, JobRequirementUncheckedCreateWithoutJobInput> | JobRequirementCreateWithoutJobInput[] | JobRequirementUncheckedCreateWithoutJobInput[]
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutJobInput | JobRequirementCreateOrConnectWithoutJobInput[]
-    upsert?: JobRequirementUpsertWithWhereUniqueWithoutJobInput | JobRequirementUpsertWithWhereUniqueWithoutJobInput[]
-    createMany?: JobRequirementCreateManyJobInputEnvelope
-    set?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    disconnect?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    delete?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    connect?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    update?: JobRequirementUpdateWithWhereUniqueWithoutJobInput | JobRequirementUpdateWithWhereUniqueWithoutJobInput[]
-    updateMany?: JobRequirementUpdateManyWithWhereWithoutJobInput | JobRequirementUpdateManyWithWhereWithoutJobInput[]
-    deleteMany?: JobRequirementScalarWhereInput | JobRequirementScalarWhereInput[]
-  }
-
-  export type JobRequirementUncheckedUpdateManyWithoutJobNestedInput = {
-    create?: XOR<JobRequirementCreateWithoutJobInput, JobRequirementUncheckedCreateWithoutJobInput> | JobRequirementCreateWithoutJobInput[] | JobRequirementUncheckedCreateWithoutJobInput[]
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutJobInput | JobRequirementCreateOrConnectWithoutJobInput[]
-    upsert?: JobRequirementUpsertWithWhereUniqueWithoutJobInput | JobRequirementUpsertWithWhereUniqueWithoutJobInput[]
-    createMany?: JobRequirementCreateManyJobInputEnvelope
-    set?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    disconnect?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    delete?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    connect?: JobRequirementWhereUniqueInput | JobRequirementWhereUniqueInput[]
-    update?: JobRequirementUpdateWithWhereUniqueWithoutJobInput | JobRequirementUpdateWithWhereUniqueWithoutJobInput[]
-    updateMany?: JobRequirementUpdateManyWithWhereWithoutJobInput | JobRequirementUpdateManyWithWhereWithoutJobInput[]
-    deleteMany?: JobRequirementScalarWhereInput | JobRequirementScalarWhereInput[]
-  }
-
-  export type JobCreateNestedOneWithoutRequirementsInput = {
-    create?: XOR<JobCreateWithoutRequirementsInput, JobUncheckedCreateWithoutRequirementsInput>
-    connectOrCreate?: JobCreateOrConnectWithoutRequirementsInput
-    connect?: JobWhereUniqueInput
-  }
-
-  export type EvidenceMatchCreateNestedManyWithoutJobRequirementInput = {
-    create?: XOR<EvidenceMatchCreateWithoutJobRequirementInput, EvidenceMatchUncheckedCreateWithoutJobRequirementInput> | EvidenceMatchCreateWithoutJobRequirementInput[] | EvidenceMatchUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutJobRequirementInput | EvidenceMatchCreateOrConnectWithoutJobRequirementInput[]
-    createMany?: EvidenceMatchCreateManyJobRequirementInputEnvelope
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-  }
-
-  export type RequirementFitScoreCreateNestedManyWithoutJobRequirementInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutJobRequirementInput, RequirementFitScoreUncheckedCreateWithoutJobRequirementInput> | RequirementFitScoreCreateWithoutJobRequirementInput[] | RequirementFitScoreUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutJobRequirementInput | RequirementFitScoreCreateOrConnectWithoutJobRequirementInput[]
-    createMany?: RequirementFitScoreCreateManyJobRequirementInputEnvelope
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-  }
-
-  export type GapQuestionCreateNestedManyWithoutTargetRequirementInput = {
-    create?: XOR<GapQuestionCreateWithoutTargetRequirementInput, GapQuestionUncheckedCreateWithoutTargetRequirementInput> | GapQuestionCreateWithoutTargetRequirementInput[] | GapQuestionUncheckedCreateWithoutTargetRequirementInput[]
-    connectOrCreate?: GapQuestionCreateOrConnectWithoutTargetRequirementInput | GapQuestionCreateOrConnectWithoutTargetRequirementInput[]
-    createMany?: GapQuestionCreateManyTargetRequirementInputEnvelope
-    connect?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-  }
-
-  export type EvidenceMatchUncheckedCreateNestedManyWithoutJobRequirementInput = {
-    create?: XOR<EvidenceMatchCreateWithoutJobRequirementInput, EvidenceMatchUncheckedCreateWithoutJobRequirementInput> | EvidenceMatchCreateWithoutJobRequirementInput[] | EvidenceMatchUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutJobRequirementInput | EvidenceMatchCreateOrConnectWithoutJobRequirementInput[]
-    createMany?: EvidenceMatchCreateManyJobRequirementInputEnvelope
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-  }
-
-  export type RequirementFitScoreUncheckedCreateNestedManyWithoutJobRequirementInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutJobRequirementInput, RequirementFitScoreUncheckedCreateWithoutJobRequirementInput> | RequirementFitScoreCreateWithoutJobRequirementInput[] | RequirementFitScoreUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutJobRequirementInput | RequirementFitScoreCreateOrConnectWithoutJobRequirementInput[]
-    createMany?: RequirementFitScoreCreateManyJobRequirementInputEnvelope
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-  }
-
-  export type GapQuestionUncheckedCreateNestedManyWithoutTargetRequirementInput = {
-    create?: XOR<GapQuestionCreateWithoutTargetRequirementInput, GapQuestionUncheckedCreateWithoutTargetRequirementInput> | GapQuestionCreateWithoutTargetRequirementInput[] | GapQuestionUncheckedCreateWithoutTargetRequirementInput[]
-    connectOrCreate?: GapQuestionCreateOrConnectWithoutTargetRequirementInput | GapQuestionCreateOrConnectWithoutTargetRequirementInput[]
-    createMany?: GapQuestionCreateManyTargetRequirementInputEnvelope
-    connect?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-  }
-
-  export type EnumRequirementTypeFieldUpdateOperationsInput = {
-    set?: $Enums.RequirementType
-  }
-
-  export type EnumImportanceFieldUpdateOperationsInput = {
-    set?: $Enums.Importance
-  }
-
-  export type JobUpdateOneRequiredWithoutRequirementsNestedInput = {
-    create?: XOR<JobCreateWithoutRequirementsInput, JobUncheckedCreateWithoutRequirementsInput>
-    connectOrCreate?: JobCreateOrConnectWithoutRequirementsInput
-    upsert?: JobUpsertWithoutRequirementsInput
-    connect?: JobWhereUniqueInput
-    update?: XOR<XOR<JobUpdateToOneWithWhereWithoutRequirementsInput, JobUpdateWithoutRequirementsInput>, JobUncheckedUpdateWithoutRequirementsInput>
-  }
-
-  export type EvidenceMatchUpdateManyWithoutJobRequirementNestedInput = {
-    create?: XOR<EvidenceMatchCreateWithoutJobRequirementInput, EvidenceMatchUncheckedCreateWithoutJobRequirementInput> | EvidenceMatchCreateWithoutJobRequirementInput[] | EvidenceMatchUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutJobRequirementInput | EvidenceMatchCreateOrConnectWithoutJobRequirementInput[]
-    upsert?: EvidenceMatchUpsertWithWhereUniqueWithoutJobRequirementInput | EvidenceMatchUpsertWithWhereUniqueWithoutJobRequirementInput[]
-    createMany?: EvidenceMatchCreateManyJobRequirementInputEnvelope
-    set?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    disconnect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    delete?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    update?: EvidenceMatchUpdateWithWhereUniqueWithoutJobRequirementInput | EvidenceMatchUpdateWithWhereUniqueWithoutJobRequirementInput[]
-    updateMany?: EvidenceMatchUpdateManyWithWhereWithoutJobRequirementInput | EvidenceMatchUpdateManyWithWhereWithoutJobRequirementInput[]
-    deleteMany?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-  }
-
-  export type RequirementFitScoreUpdateManyWithoutJobRequirementNestedInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutJobRequirementInput, RequirementFitScoreUncheckedCreateWithoutJobRequirementInput> | RequirementFitScoreCreateWithoutJobRequirementInput[] | RequirementFitScoreUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutJobRequirementInput | RequirementFitScoreCreateOrConnectWithoutJobRequirementInput[]
-    upsert?: RequirementFitScoreUpsertWithWhereUniqueWithoutJobRequirementInput | RequirementFitScoreUpsertWithWhereUniqueWithoutJobRequirementInput[]
-    createMany?: RequirementFitScoreCreateManyJobRequirementInputEnvelope
-    set?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    disconnect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    delete?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    update?: RequirementFitScoreUpdateWithWhereUniqueWithoutJobRequirementInput | RequirementFitScoreUpdateWithWhereUniqueWithoutJobRequirementInput[]
-    updateMany?: RequirementFitScoreUpdateManyWithWhereWithoutJobRequirementInput | RequirementFitScoreUpdateManyWithWhereWithoutJobRequirementInput[]
-    deleteMany?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-  }
-
-  export type GapQuestionUpdateManyWithoutTargetRequirementNestedInput = {
-    create?: XOR<GapQuestionCreateWithoutTargetRequirementInput, GapQuestionUncheckedCreateWithoutTargetRequirementInput> | GapQuestionCreateWithoutTargetRequirementInput[] | GapQuestionUncheckedCreateWithoutTargetRequirementInput[]
-    connectOrCreate?: GapQuestionCreateOrConnectWithoutTargetRequirementInput | GapQuestionCreateOrConnectWithoutTargetRequirementInput[]
-    upsert?: GapQuestionUpsertWithWhereUniqueWithoutTargetRequirementInput | GapQuestionUpsertWithWhereUniqueWithoutTargetRequirementInput[]
-    createMany?: GapQuestionCreateManyTargetRequirementInputEnvelope
-    set?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    disconnect?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    delete?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    connect?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    update?: GapQuestionUpdateWithWhereUniqueWithoutTargetRequirementInput | GapQuestionUpdateWithWhereUniqueWithoutTargetRequirementInput[]
-    updateMany?: GapQuestionUpdateManyWithWhereWithoutTargetRequirementInput | GapQuestionUpdateManyWithWhereWithoutTargetRequirementInput[]
-    deleteMany?: GapQuestionScalarWhereInput | GapQuestionScalarWhereInput[]
-  }
-
-  export type EvidenceMatchUncheckedUpdateManyWithoutJobRequirementNestedInput = {
-    create?: XOR<EvidenceMatchCreateWithoutJobRequirementInput, EvidenceMatchUncheckedCreateWithoutJobRequirementInput> | EvidenceMatchCreateWithoutJobRequirementInput[] | EvidenceMatchUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutJobRequirementInput | EvidenceMatchCreateOrConnectWithoutJobRequirementInput[]
-    upsert?: EvidenceMatchUpsertWithWhereUniqueWithoutJobRequirementInput | EvidenceMatchUpsertWithWhereUniqueWithoutJobRequirementInput[]
-    createMany?: EvidenceMatchCreateManyJobRequirementInputEnvelope
-    set?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    disconnect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    delete?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    update?: EvidenceMatchUpdateWithWhereUniqueWithoutJobRequirementInput | EvidenceMatchUpdateWithWhereUniqueWithoutJobRequirementInput[]
-    updateMany?: EvidenceMatchUpdateManyWithWhereWithoutJobRequirementInput | EvidenceMatchUpdateManyWithWhereWithoutJobRequirementInput[]
-    deleteMany?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-  }
-
-  export type RequirementFitScoreUncheckedUpdateManyWithoutJobRequirementNestedInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutJobRequirementInput, RequirementFitScoreUncheckedCreateWithoutJobRequirementInput> | RequirementFitScoreCreateWithoutJobRequirementInput[] | RequirementFitScoreUncheckedCreateWithoutJobRequirementInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutJobRequirementInput | RequirementFitScoreCreateOrConnectWithoutJobRequirementInput[]
-    upsert?: RequirementFitScoreUpsertWithWhereUniqueWithoutJobRequirementInput | RequirementFitScoreUpsertWithWhereUniqueWithoutJobRequirementInput[]
-    createMany?: RequirementFitScoreCreateManyJobRequirementInputEnvelope
-    set?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    disconnect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    delete?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    update?: RequirementFitScoreUpdateWithWhereUniqueWithoutJobRequirementInput | RequirementFitScoreUpdateWithWhereUniqueWithoutJobRequirementInput[]
-    updateMany?: RequirementFitScoreUpdateManyWithWhereWithoutJobRequirementInput | RequirementFitScoreUpdateManyWithWhereWithoutJobRequirementInput[]
-    deleteMany?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-  }
-
-  export type GapQuestionUncheckedUpdateManyWithoutTargetRequirementNestedInput = {
-    create?: XOR<GapQuestionCreateWithoutTargetRequirementInput, GapQuestionUncheckedCreateWithoutTargetRequirementInput> | GapQuestionCreateWithoutTargetRequirementInput[] | GapQuestionUncheckedCreateWithoutTargetRequirementInput[]
-    connectOrCreate?: GapQuestionCreateOrConnectWithoutTargetRequirementInput | GapQuestionCreateOrConnectWithoutTargetRequirementInput[]
-    upsert?: GapQuestionUpsertWithWhereUniqueWithoutTargetRequirementInput | GapQuestionUpsertWithWhereUniqueWithoutTargetRequirementInput[]
-    createMany?: GapQuestionCreateManyTargetRequirementInputEnvelope
-    set?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    disconnect?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    delete?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    connect?: GapQuestionWhereUniqueInput | GapQuestionWhereUniqueInput[]
-    update?: GapQuestionUpdateWithWhereUniqueWithoutTargetRequirementInput | GapQuestionUpdateWithWhereUniqueWithoutTargetRequirementInput[]
-    updateMany?: GapQuestionUpdateManyWithWhereWithoutTargetRequirementInput | GapQuestionUpdateManyWithWhereWithoutTargetRequirementInput[]
-    deleteMany?: GapQuestionScalarWhereInput | GapQuestionScalarWhereInput[]
   }
 
   export type AnonymousSessionCreateNestedOneWithoutCandidateProfilesInput = {
@@ -38005,20 +27176,6 @@ export namespace Prisma {
     create?: XOR<ApplicationCreateWithoutSourceCandidateProfilesInput, ApplicationUncheckedCreateWithoutSourceCandidateProfilesInput>
     connectOrCreate?: ApplicationCreateOrConnectWithoutSourceCandidateProfilesInput
     connect?: ApplicationWhereUniqueInput
-  }
-
-  export type CandidateChunkCreateNestedManyWithoutCandidateProfileInput = {
-    create?: XOR<CandidateChunkCreateWithoutCandidateProfileInput, CandidateChunkUncheckedCreateWithoutCandidateProfileInput> | CandidateChunkCreateWithoutCandidateProfileInput[] | CandidateChunkUncheckedCreateWithoutCandidateProfileInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutCandidateProfileInput | CandidateChunkCreateOrConnectWithoutCandidateProfileInput[]
-    createMany?: CandidateChunkCreateManyCandidateProfileInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-  }
-
-  export type CandidateChunkUncheckedCreateNestedManyWithoutCandidateProfileInput = {
-    create?: XOR<CandidateChunkCreateWithoutCandidateProfileInput, CandidateChunkUncheckedCreateWithoutCandidateProfileInput> | CandidateChunkCreateWithoutCandidateProfileInput[] | CandidateChunkUncheckedCreateWithoutCandidateProfileInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutCandidateProfileInput | CandidateChunkCreateOrConnectWithoutCandidateProfileInput[]
-    createMany?: CandidateChunkCreateManyCandidateProfileInputEnvelope
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
   }
 
   export type NullableEnumSourceTypeFieldUpdateOperationsInput = {
@@ -38055,300 +27212,10 @@ export namespace Prisma {
     update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutSourceCandidateProfilesInput, ApplicationUpdateWithoutSourceCandidateProfilesInput>, ApplicationUncheckedUpdateWithoutSourceCandidateProfilesInput>
   }
 
-  export type CandidateChunkUpdateManyWithoutCandidateProfileNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutCandidateProfileInput, CandidateChunkUncheckedCreateWithoutCandidateProfileInput> | CandidateChunkCreateWithoutCandidateProfileInput[] | CandidateChunkUncheckedCreateWithoutCandidateProfileInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutCandidateProfileInput | CandidateChunkCreateOrConnectWithoutCandidateProfileInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutCandidateProfileInput | CandidateChunkUpsertWithWhereUniqueWithoutCandidateProfileInput[]
-    createMany?: CandidateChunkCreateManyCandidateProfileInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutCandidateProfileInput | CandidateChunkUpdateWithWhereUniqueWithoutCandidateProfileInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutCandidateProfileInput | CandidateChunkUpdateManyWithWhereWithoutCandidateProfileInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-  }
-
-  export type CandidateChunkUncheckedUpdateManyWithoutCandidateProfileNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutCandidateProfileInput, CandidateChunkUncheckedCreateWithoutCandidateProfileInput> | CandidateChunkCreateWithoutCandidateProfileInput[] | CandidateChunkUncheckedCreateWithoutCandidateProfileInput[]
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutCandidateProfileInput | CandidateChunkCreateOrConnectWithoutCandidateProfileInput[]
-    upsert?: CandidateChunkUpsertWithWhereUniqueWithoutCandidateProfileInput | CandidateChunkUpsertWithWhereUniqueWithoutCandidateProfileInput[]
-    createMany?: CandidateChunkCreateManyCandidateProfileInputEnvelope
-    set?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    disconnect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    delete?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    connect?: CandidateChunkWhereUniqueInput | CandidateChunkWhereUniqueInput[]
-    update?: CandidateChunkUpdateWithWhereUniqueWithoutCandidateProfileInput | CandidateChunkUpdateWithWhereUniqueWithoutCandidateProfileInput[]
-    updateMany?: CandidateChunkUpdateManyWithWhereWithoutCandidateProfileInput | CandidateChunkUpdateManyWithWhereWithoutCandidateProfileInput[]
-    deleteMany?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-  }
-
-  export type AnonymousSessionCreateNestedOneWithoutCandidateChunksInput = {
-    create?: XOR<AnonymousSessionCreateWithoutCandidateChunksInput, AnonymousSessionUncheckedCreateWithoutCandidateChunksInput>
-    connectOrCreate?: AnonymousSessionCreateOrConnectWithoutCandidateChunksInput
-    connect?: AnonymousSessionWhereUniqueInput
-  }
-
-  export type UserCreateNestedOneWithoutCandidateChunksInput = {
-    create?: XOR<UserCreateWithoutCandidateChunksInput, UserUncheckedCreateWithoutCandidateChunksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCandidateChunksInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type ApplicationCreateNestedOneWithoutSourceCandidateChunksInput = {
-    create?: XOR<ApplicationCreateWithoutSourceCandidateChunksInput, ApplicationUncheckedCreateWithoutSourceCandidateChunksInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutSourceCandidateChunksInput
-    connect?: ApplicationWhereUniqueInput
-  }
-
-  export type CandidateProfileCreateNestedOneWithoutCandidateChunksInput = {
-    create?: XOR<CandidateProfileCreateWithoutCandidateChunksInput, CandidateProfileUncheckedCreateWithoutCandidateChunksInput>
-    connectOrCreate?: CandidateProfileCreateOrConnectWithoutCandidateChunksInput
-    connect?: CandidateProfileWhereUniqueInput
-  }
-
-  export type EvidenceMatchCreateNestedManyWithoutCandidateChunkInput = {
-    create?: XOR<EvidenceMatchCreateWithoutCandidateChunkInput, EvidenceMatchUncheckedCreateWithoutCandidateChunkInput> | EvidenceMatchCreateWithoutCandidateChunkInput[] | EvidenceMatchUncheckedCreateWithoutCandidateChunkInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutCandidateChunkInput | EvidenceMatchCreateOrConnectWithoutCandidateChunkInput[]
-    createMany?: EvidenceMatchCreateManyCandidateChunkInputEnvelope
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-  }
-
-  export type RequirementFitScoreCreateNestedManyWithoutBestCandidateChunkInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput> | RequirementFitScoreCreateWithoutBestCandidateChunkInput[] | RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput | RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput[]
-    createMany?: RequirementFitScoreCreateManyBestCandidateChunkInputEnvelope
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-  }
-
-  export type EvidenceMatchUncheckedCreateNestedManyWithoutCandidateChunkInput = {
-    create?: XOR<EvidenceMatchCreateWithoutCandidateChunkInput, EvidenceMatchUncheckedCreateWithoutCandidateChunkInput> | EvidenceMatchCreateWithoutCandidateChunkInput[] | EvidenceMatchUncheckedCreateWithoutCandidateChunkInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutCandidateChunkInput | EvidenceMatchCreateOrConnectWithoutCandidateChunkInput[]
-    createMany?: EvidenceMatchCreateManyCandidateChunkInputEnvelope
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-  }
-
-  export type RequirementFitScoreUncheckedCreateNestedManyWithoutBestCandidateChunkInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput> | RequirementFitScoreCreateWithoutBestCandidateChunkInput[] | RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput | RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput[]
-    createMany?: RequirementFitScoreCreateManyBestCandidateChunkInputEnvelope
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-  }
-
-  export type EnumSourceTypeFieldUpdateOperationsInput = {
-    set?: $Enums.SourceType
-  }
-
-  export type EnumChunkTypeFieldUpdateOperationsInput = {
-    set?: $Enums.ChunkType
-  }
-
-  export type AnonymousSessionUpdateOneWithoutCandidateChunksNestedInput = {
-    create?: XOR<AnonymousSessionCreateWithoutCandidateChunksInput, AnonymousSessionUncheckedCreateWithoutCandidateChunksInput>
-    connectOrCreate?: AnonymousSessionCreateOrConnectWithoutCandidateChunksInput
-    upsert?: AnonymousSessionUpsertWithoutCandidateChunksInput
-    disconnect?: AnonymousSessionWhereInput | boolean
-    delete?: AnonymousSessionWhereInput | boolean
-    connect?: AnonymousSessionWhereUniqueInput
-    update?: XOR<XOR<AnonymousSessionUpdateToOneWithWhereWithoutCandidateChunksInput, AnonymousSessionUpdateWithoutCandidateChunksInput>, AnonymousSessionUncheckedUpdateWithoutCandidateChunksInput>
-  }
-
-  export type UserUpdateOneWithoutCandidateChunksNestedInput = {
-    create?: XOR<UserCreateWithoutCandidateChunksInput, UserUncheckedCreateWithoutCandidateChunksInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCandidateChunksInput
-    upsert?: UserUpsertWithoutCandidateChunksInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCandidateChunksInput, UserUpdateWithoutCandidateChunksInput>, UserUncheckedUpdateWithoutCandidateChunksInput>
-  }
-
-  export type ApplicationUpdateOneWithoutSourceCandidateChunksNestedInput = {
-    create?: XOR<ApplicationCreateWithoutSourceCandidateChunksInput, ApplicationUncheckedCreateWithoutSourceCandidateChunksInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutSourceCandidateChunksInput
-    upsert?: ApplicationUpsertWithoutSourceCandidateChunksInput
-    disconnect?: ApplicationWhereInput | boolean
-    delete?: ApplicationWhereInput | boolean
-    connect?: ApplicationWhereUniqueInput
-    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutSourceCandidateChunksInput, ApplicationUpdateWithoutSourceCandidateChunksInput>, ApplicationUncheckedUpdateWithoutSourceCandidateChunksInput>
-  }
-
-  export type CandidateProfileUpdateOneWithoutCandidateChunksNestedInput = {
-    create?: XOR<CandidateProfileCreateWithoutCandidateChunksInput, CandidateProfileUncheckedCreateWithoutCandidateChunksInput>
-    connectOrCreate?: CandidateProfileCreateOrConnectWithoutCandidateChunksInput
-    upsert?: CandidateProfileUpsertWithoutCandidateChunksInput
-    disconnect?: CandidateProfileWhereInput | boolean
-    delete?: CandidateProfileWhereInput | boolean
-    connect?: CandidateProfileWhereUniqueInput
-    update?: XOR<XOR<CandidateProfileUpdateToOneWithWhereWithoutCandidateChunksInput, CandidateProfileUpdateWithoutCandidateChunksInput>, CandidateProfileUncheckedUpdateWithoutCandidateChunksInput>
-  }
-
-  export type EvidenceMatchUpdateManyWithoutCandidateChunkNestedInput = {
-    create?: XOR<EvidenceMatchCreateWithoutCandidateChunkInput, EvidenceMatchUncheckedCreateWithoutCandidateChunkInput> | EvidenceMatchCreateWithoutCandidateChunkInput[] | EvidenceMatchUncheckedCreateWithoutCandidateChunkInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutCandidateChunkInput | EvidenceMatchCreateOrConnectWithoutCandidateChunkInput[]
-    upsert?: EvidenceMatchUpsertWithWhereUniqueWithoutCandidateChunkInput | EvidenceMatchUpsertWithWhereUniqueWithoutCandidateChunkInput[]
-    createMany?: EvidenceMatchCreateManyCandidateChunkInputEnvelope
-    set?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    disconnect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    delete?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    update?: EvidenceMatchUpdateWithWhereUniqueWithoutCandidateChunkInput | EvidenceMatchUpdateWithWhereUniqueWithoutCandidateChunkInput[]
-    updateMany?: EvidenceMatchUpdateManyWithWhereWithoutCandidateChunkInput | EvidenceMatchUpdateManyWithWhereWithoutCandidateChunkInput[]
-    deleteMany?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-  }
-
-  export type RequirementFitScoreUpdateManyWithoutBestCandidateChunkNestedInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput> | RequirementFitScoreCreateWithoutBestCandidateChunkInput[] | RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput | RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput[]
-    upsert?: RequirementFitScoreUpsertWithWhereUniqueWithoutBestCandidateChunkInput | RequirementFitScoreUpsertWithWhereUniqueWithoutBestCandidateChunkInput[]
-    createMany?: RequirementFitScoreCreateManyBestCandidateChunkInputEnvelope
-    set?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    disconnect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    delete?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    update?: RequirementFitScoreUpdateWithWhereUniqueWithoutBestCandidateChunkInput | RequirementFitScoreUpdateWithWhereUniqueWithoutBestCandidateChunkInput[]
-    updateMany?: RequirementFitScoreUpdateManyWithWhereWithoutBestCandidateChunkInput | RequirementFitScoreUpdateManyWithWhereWithoutBestCandidateChunkInput[]
-    deleteMany?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-  }
-
-  export type EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkNestedInput = {
-    create?: XOR<EvidenceMatchCreateWithoutCandidateChunkInput, EvidenceMatchUncheckedCreateWithoutCandidateChunkInput> | EvidenceMatchCreateWithoutCandidateChunkInput[] | EvidenceMatchUncheckedCreateWithoutCandidateChunkInput[]
-    connectOrCreate?: EvidenceMatchCreateOrConnectWithoutCandidateChunkInput | EvidenceMatchCreateOrConnectWithoutCandidateChunkInput[]
-    upsert?: EvidenceMatchUpsertWithWhereUniqueWithoutCandidateChunkInput | EvidenceMatchUpsertWithWhereUniqueWithoutCandidateChunkInput[]
-    createMany?: EvidenceMatchCreateManyCandidateChunkInputEnvelope
-    set?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    disconnect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    delete?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    connect?: EvidenceMatchWhereUniqueInput | EvidenceMatchWhereUniqueInput[]
-    update?: EvidenceMatchUpdateWithWhereUniqueWithoutCandidateChunkInput | EvidenceMatchUpdateWithWhereUniqueWithoutCandidateChunkInput[]
-    updateMany?: EvidenceMatchUpdateManyWithWhereWithoutCandidateChunkInput | EvidenceMatchUpdateManyWithWhereWithoutCandidateChunkInput[]
-    deleteMany?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-  }
-
-  export type RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkNestedInput = {
-    create?: XOR<RequirementFitScoreCreateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput> | RequirementFitScoreCreateWithoutBestCandidateChunkInput[] | RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput[]
-    connectOrCreate?: RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput | RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput[]
-    upsert?: RequirementFitScoreUpsertWithWhereUniqueWithoutBestCandidateChunkInput | RequirementFitScoreUpsertWithWhereUniqueWithoutBestCandidateChunkInput[]
-    createMany?: RequirementFitScoreCreateManyBestCandidateChunkInputEnvelope
-    set?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    disconnect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    delete?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    connect?: RequirementFitScoreWhereUniqueInput | RequirementFitScoreWhereUniqueInput[]
-    update?: RequirementFitScoreUpdateWithWhereUniqueWithoutBestCandidateChunkInput | RequirementFitScoreUpdateWithWhereUniqueWithoutBestCandidateChunkInput[]
-    updateMany?: RequirementFitScoreUpdateManyWithWhereWithoutBestCandidateChunkInput | RequirementFitScoreUpdateManyWithWhereWithoutBestCandidateChunkInput[]
-    deleteMany?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-  }
-
-  export type ApplicationCreateNestedOneWithoutEvidenceMatchesInput = {
-    create?: XOR<ApplicationCreateWithoutEvidenceMatchesInput, ApplicationUncheckedCreateWithoutEvidenceMatchesInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutEvidenceMatchesInput
-    connect?: ApplicationWhereUniqueInput
-  }
-
-  export type JobRequirementCreateNestedOneWithoutEvidenceMatchesInput = {
-    create?: XOR<JobRequirementCreateWithoutEvidenceMatchesInput, JobRequirementUncheckedCreateWithoutEvidenceMatchesInput>
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutEvidenceMatchesInput
-    connect?: JobRequirementWhereUniqueInput
-  }
-
-  export type CandidateChunkCreateNestedOneWithoutEvidenceMatchesInput = {
-    create?: XOR<CandidateChunkCreateWithoutEvidenceMatchesInput, CandidateChunkUncheckedCreateWithoutEvidenceMatchesInput>
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutEvidenceMatchesInput
-    connect?: CandidateChunkWhereUniqueInput
-  }
-
-  export type EnumEvidenceConfidenceFieldUpdateOperationsInput = {
-    set?: $Enums.EvidenceConfidence
-  }
-
-  export type ApplicationUpdateOneRequiredWithoutEvidenceMatchesNestedInput = {
-    create?: XOR<ApplicationCreateWithoutEvidenceMatchesInput, ApplicationUncheckedCreateWithoutEvidenceMatchesInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutEvidenceMatchesInput
-    upsert?: ApplicationUpsertWithoutEvidenceMatchesInput
-    connect?: ApplicationWhereUniqueInput
-    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutEvidenceMatchesInput, ApplicationUpdateWithoutEvidenceMatchesInput>, ApplicationUncheckedUpdateWithoutEvidenceMatchesInput>
-  }
-
-  export type JobRequirementUpdateOneRequiredWithoutEvidenceMatchesNestedInput = {
-    create?: XOR<JobRequirementCreateWithoutEvidenceMatchesInput, JobRequirementUncheckedCreateWithoutEvidenceMatchesInput>
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutEvidenceMatchesInput
-    upsert?: JobRequirementUpsertWithoutEvidenceMatchesInput
-    connect?: JobRequirementWhereUniqueInput
-    update?: XOR<XOR<JobRequirementUpdateToOneWithWhereWithoutEvidenceMatchesInput, JobRequirementUpdateWithoutEvidenceMatchesInput>, JobRequirementUncheckedUpdateWithoutEvidenceMatchesInput>
-  }
-
-  export type CandidateChunkUpdateOneWithoutEvidenceMatchesNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutEvidenceMatchesInput, CandidateChunkUncheckedCreateWithoutEvidenceMatchesInput>
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutEvidenceMatchesInput
-    upsert?: CandidateChunkUpsertWithoutEvidenceMatchesInput
-    disconnect?: CandidateChunkWhereInput | boolean
-    delete?: CandidateChunkWhereInput | boolean
-    connect?: CandidateChunkWhereUniqueInput
-    update?: XOR<XOR<CandidateChunkUpdateToOneWithWhereWithoutEvidenceMatchesInput, CandidateChunkUpdateWithoutEvidenceMatchesInput>, CandidateChunkUncheckedUpdateWithoutEvidenceMatchesInput>
-  }
-
-  export type ApplicationCreateNestedOneWithoutRequirementFitScoresInput = {
-    create?: XOR<ApplicationCreateWithoutRequirementFitScoresInput, ApplicationUncheckedCreateWithoutRequirementFitScoresInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutRequirementFitScoresInput
-    connect?: ApplicationWhereUniqueInput
-  }
-
-  export type JobRequirementCreateNestedOneWithoutRequirementFitScoresInput = {
-    create?: XOR<JobRequirementCreateWithoutRequirementFitScoresInput, JobRequirementUncheckedCreateWithoutRequirementFitScoresInput>
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutRequirementFitScoresInput
-    connect?: JobRequirementWhereUniqueInput
-  }
-
-  export type CandidateChunkCreateNestedOneWithoutBestFitScoresInput = {
-    create?: XOR<CandidateChunkCreateWithoutBestFitScoresInput, CandidateChunkUncheckedCreateWithoutBestFitScoresInput>
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutBestFitScoresInput
-    connect?: CandidateChunkWhereUniqueInput
-  }
-
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type ApplicationUpdateOneRequiredWithoutRequirementFitScoresNestedInput = {
-    create?: XOR<ApplicationCreateWithoutRequirementFitScoresInput, ApplicationUncheckedCreateWithoutRequirementFitScoresInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutRequirementFitScoresInput
-    upsert?: ApplicationUpsertWithoutRequirementFitScoresInput
-    connect?: ApplicationWhereUniqueInput
-    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutRequirementFitScoresInput, ApplicationUpdateWithoutRequirementFitScoresInput>, ApplicationUncheckedUpdateWithoutRequirementFitScoresInput>
-  }
-
-  export type JobRequirementUpdateOneRequiredWithoutRequirementFitScoresNestedInput = {
-    create?: XOR<JobRequirementCreateWithoutRequirementFitScoresInput, JobRequirementUncheckedCreateWithoutRequirementFitScoresInput>
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutRequirementFitScoresInput
-    upsert?: JobRequirementUpsertWithoutRequirementFitScoresInput
-    connect?: JobRequirementWhereUniqueInput
-    update?: XOR<XOR<JobRequirementUpdateToOneWithWhereWithoutRequirementFitScoresInput, JobRequirementUpdateWithoutRequirementFitScoresInput>, JobRequirementUncheckedUpdateWithoutRequirementFitScoresInput>
-  }
-
-  export type CandidateChunkUpdateOneWithoutBestFitScoresNestedInput = {
-    create?: XOR<CandidateChunkCreateWithoutBestFitScoresInput, CandidateChunkUncheckedCreateWithoutBestFitScoresInput>
-    connectOrCreate?: CandidateChunkCreateOrConnectWithoutBestFitScoresInput
-    upsert?: CandidateChunkUpsertWithoutBestFitScoresInput
-    disconnect?: CandidateChunkWhereInput | boolean
-    delete?: CandidateChunkWhereInput | boolean
-    connect?: CandidateChunkWhereUniqueInput
-    update?: XOR<XOR<CandidateChunkUpdateToOneWithWhereWithoutBestFitScoresInput, CandidateChunkUpdateWithoutBestFitScoresInput>, CandidateChunkUncheckedUpdateWithoutBestFitScoresInput>
-  }
-
   export type ApplicationCreateNestedOneWithoutGapQuestionsInput = {
     create?: XOR<ApplicationCreateWithoutGapQuestionsInput, ApplicationUncheckedCreateWithoutGapQuestionsInput>
     connectOrCreate?: ApplicationCreateOrConnectWithoutGapQuestionsInput
     connect?: ApplicationWhereUniqueInput
-  }
-
-  export type JobRequirementCreateNestedOneWithoutGapQuestionsInput = {
-    create?: XOR<JobRequirementCreateWithoutGapQuestionsInput, JobRequirementUncheckedCreateWithoutGapQuestionsInput>
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutGapQuestionsInput
-    connect?: JobRequirementWhereUniqueInput
   }
 
   export type GapAnswerCreateNestedManyWithoutGapQuestionInput = {
@@ -38377,16 +27244,6 @@ export namespace Prisma {
     update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutGapQuestionsInput, ApplicationUpdateWithoutGapQuestionsInput>, ApplicationUncheckedUpdateWithoutGapQuestionsInput>
   }
 
-  export type JobRequirementUpdateOneWithoutGapQuestionsNestedInput = {
-    create?: XOR<JobRequirementCreateWithoutGapQuestionsInput, JobRequirementUncheckedCreateWithoutGapQuestionsInput>
-    connectOrCreate?: JobRequirementCreateOrConnectWithoutGapQuestionsInput
-    upsert?: JobRequirementUpsertWithoutGapQuestionsInput
-    disconnect?: JobRequirementWhereInput | boolean
-    delete?: JobRequirementWhereInput | boolean
-    connect?: JobRequirementWhereUniqueInput
-    update?: XOR<XOR<JobRequirementUpdateToOneWithWhereWithoutGapQuestionsInput, JobRequirementUpdateWithoutGapQuestionsInput>, JobRequirementUncheckedUpdateWithoutGapQuestionsInput>
-  }
-
   export type GapAnswerUpdateManyWithoutGapQuestionNestedInput = {
     create?: XOR<GapAnswerCreateWithoutGapQuestionInput, GapAnswerUncheckedCreateWithoutGapQuestionInput> | GapAnswerCreateWithoutGapQuestionInput[] | GapAnswerUncheckedCreateWithoutGapQuestionInput[]
     connectOrCreate?: GapAnswerCreateOrConnectWithoutGapQuestionInput | GapAnswerCreateOrConnectWithoutGapQuestionInput[]
@@ -38413,20 +27270,6 @@ export namespace Prisma {
     update?: GapAnswerUpdateWithWhereUniqueWithoutGapQuestionInput | GapAnswerUpdateWithWhereUniqueWithoutGapQuestionInput[]
     updateMany?: GapAnswerUpdateManyWithWhereWithoutGapQuestionInput | GapAnswerUpdateManyWithWhereWithoutGapQuestionInput[]
     deleteMany?: GapAnswerScalarWhereInput | GapAnswerScalarWhereInput[]
-  }
-
-  export type ApplicationCreateNestedOneWithoutGapCoachInsightInput = {
-    create?: XOR<ApplicationCreateWithoutGapCoachInsightInput, ApplicationUncheckedCreateWithoutGapCoachInsightInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutGapCoachInsightInput
-    connect?: ApplicationWhereUniqueInput
-  }
-
-  export type ApplicationUpdateOneRequiredWithoutGapCoachInsightNestedInput = {
-    create?: XOR<ApplicationCreateWithoutGapCoachInsightInput, ApplicationUncheckedCreateWithoutGapCoachInsightInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutGapCoachInsightInput
-    upsert?: ApplicationUpsertWithoutGapCoachInsightInput
-    connect?: ApplicationWhereUniqueInput
-    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutGapCoachInsightInput, ApplicationUpdateWithoutGapCoachInsightInput>, ApplicationUncheckedUpdateWithoutGapCoachInsightInput>
   }
 
   export type GapQuestionCreateNestedOneWithoutAnswersInput = {
@@ -38469,72 +27312,10 @@ export namespace Prisma {
     update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutGapAnswersInput, ApplicationUpdateWithoutGapAnswersInput>, ApplicationUncheckedUpdateWithoutGapAnswersInput>
   }
 
-  export type ApplicationCreateNestedOneWithoutCvStrategiesInput = {
-    create?: XOR<ApplicationCreateWithoutCvStrategiesInput, ApplicationUncheckedCreateWithoutCvStrategiesInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutCvStrategiesInput
-    connect?: ApplicationWhereUniqueInput
-  }
-
-  export type CvDraftCreateNestedManyWithoutStrategyInput = {
-    create?: XOR<CvDraftCreateWithoutStrategyInput, CvDraftUncheckedCreateWithoutStrategyInput> | CvDraftCreateWithoutStrategyInput[] | CvDraftUncheckedCreateWithoutStrategyInput[]
-    connectOrCreate?: CvDraftCreateOrConnectWithoutStrategyInput | CvDraftCreateOrConnectWithoutStrategyInput[]
-    createMany?: CvDraftCreateManyStrategyInputEnvelope
-    connect?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-  }
-
-  export type CvDraftUncheckedCreateNestedManyWithoutStrategyInput = {
-    create?: XOR<CvDraftCreateWithoutStrategyInput, CvDraftUncheckedCreateWithoutStrategyInput> | CvDraftCreateWithoutStrategyInput[] | CvDraftUncheckedCreateWithoutStrategyInput[]
-    connectOrCreate?: CvDraftCreateOrConnectWithoutStrategyInput | CvDraftCreateOrConnectWithoutStrategyInput[]
-    createMany?: CvDraftCreateManyStrategyInputEnvelope
-    connect?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-  }
-
-  export type ApplicationUpdateOneRequiredWithoutCvStrategiesNestedInput = {
-    create?: XOR<ApplicationCreateWithoutCvStrategiesInput, ApplicationUncheckedCreateWithoutCvStrategiesInput>
-    connectOrCreate?: ApplicationCreateOrConnectWithoutCvStrategiesInput
-    upsert?: ApplicationUpsertWithoutCvStrategiesInput
-    connect?: ApplicationWhereUniqueInput
-    update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutCvStrategiesInput, ApplicationUpdateWithoutCvStrategiesInput>, ApplicationUncheckedUpdateWithoutCvStrategiesInput>
-  }
-
-  export type CvDraftUpdateManyWithoutStrategyNestedInput = {
-    create?: XOR<CvDraftCreateWithoutStrategyInput, CvDraftUncheckedCreateWithoutStrategyInput> | CvDraftCreateWithoutStrategyInput[] | CvDraftUncheckedCreateWithoutStrategyInput[]
-    connectOrCreate?: CvDraftCreateOrConnectWithoutStrategyInput | CvDraftCreateOrConnectWithoutStrategyInput[]
-    upsert?: CvDraftUpsertWithWhereUniqueWithoutStrategyInput | CvDraftUpsertWithWhereUniqueWithoutStrategyInput[]
-    createMany?: CvDraftCreateManyStrategyInputEnvelope
-    set?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    disconnect?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    delete?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    connect?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    update?: CvDraftUpdateWithWhereUniqueWithoutStrategyInput | CvDraftUpdateWithWhereUniqueWithoutStrategyInput[]
-    updateMany?: CvDraftUpdateManyWithWhereWithoutStrategyInput | CvDraftUpdateManyWithWhereWithoutStrategyInput[]
-    deleteMany?: CvDraftScalarWhereInput | CvDraftScalarWhereInput[]
-  }
-
-  export type CvDraftUncheckedUpdateManyWithoutStrategyNestedInput = {
-    create?: XOR<CvDraftCreateWithoutStrategyInput, CvDraftUncheckedCreateWithoutStrategyInput> | CvDraftCreateWithoutStrategyInput[] | CvDraftUncheckedCreateWithoutStrategyInput[]
-    connectOrCreate?: CvDraftCreateOrConnectWithoutStrategyInput | CvDraftCreateOrConnectWithoutStrategyInput[]
-    upsert?: CvDraftUpsertWithWhereUniqueWithoutStrategyInput | CvDraftUpsertWithWhereUniqueWithoutStrategyInput[]
-    createMany?: CvDraftCreateManyStrategyInputEnvelope
-    set?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    disconnect?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    delete?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    connect?: CvDraftWhereUniqueInput | CvDraftWhereUniqueInput[]
-    update?: CvDraftUpdateWithWhereUniqueWithoutStrategyInput | CvDraftUpdateWithWhereUniqueWithoutStrategyInput[]
-    updateMany?: CvDraftUpdateManyWithWhereWithoutStrategyInput | CvDraftUpdateManyWithWhereWithoutStrategyInput[]
-    deleteMany?: CvDraftScalarWhereInput | CvDraftScalarWhereInput[]
-  }
-
   export type ApplicationCreateNestedOneWithoutCvDraftsInput = {
     create?: XOR<ApplicationCreateWithoutCvDraftsInput, ApplicationUncheckedCreateWithoutCvDraftsInput>
     connectOrCreate?: ApplicationCreateOrConnectWithoutCvDraftsInput
     connect?: ApplicationWhereUniqueInput
-  }
-
-  export type CvStrategyCreateNestedOneWithoutCvDraftsInput = {
-    create?: XOR<CvStrategyCreateWithoutCvDraftsInput, CvStrategyUncheckedCreateWithoutCvDraftsInput>
-    connectOrCreate?: CvStrategyCreateOrConnectWithoutCvDraftsInput
-    connect?: CvStrategyWhereUniqueInput
   }
 
   export type CvGenerationUsageCreateNestedManyWithoutCvDraftInput = {
@@ -38565,16 +27346,6 @@ export namespace Prisma {
     upsert?: ApplicationUpsertWithoutCvDraftsInput
     connect?: ApplicationWhereUniqueInput
     update?: XOR<XOR<ApplicationUpdateToOneWithWhereWithoutCvDraftsInput, ApplicationUpdateWithoutCvDraftsInput>, ApplicationUncheckedUpdateWithoutCvDraftsInput>
-  }
-
-  export type CvStrategyUpdateOneWithoutCvDraftsNestedInput = {
-    create?: XOR<CvStrategyCreateWithoutCvDraftsInput, CvStrategyUncheckedCreateWithoutCvDraftsInput>
-    connectOrCreate?: CvStrategyCreateOrConnectWithoutCvDraftsInput
-    upsert?: CvStrategyUpsertWithoutCvDraftsInput
-    disconnect?: CvStrategyWhereInput | boolean
-    delete?: CvStrategyWhereInput | boolean
-    connect?: CvStrategyWhereUniqueInput
-    update?: XOR<XOR<CvStrategyUpdateToOneWithWhereWithoutCvDraftsInput, CvStrategyUpdateWithoutCvDraftsInput>, CvStrategyUncheckedUpdateWithoutCvDraftsInput>
   }
 
   export type CvGenerationUsageUpdateManyWithoutCvDraftNestedInput = {
@@ -38919,40 +27690,6 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type NestedEnumRequirementTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.RequirementType | EnumRequirementTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRequirementTypeFilter<$PrismaModel> | $Enums.RequirementType
-  }
-
-  export type NestedEnumImportanceFilter<$PrismaModel = never> = {
-    equals?: $Enums.Importance | EnumImportanceFieldRefInput<$PrismaModel>
-    in?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumImportanceFilter<$PrismaModel> | $Enums.Importance
-  }
-
-  export type NestedEnumRequirementTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.RequirementType | EnumRequirementTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.RequirementType[] | ListEnumRequirementTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumRequirementTypeWithAggregatesFilter<$PrismaModel> | $Enums.RequirementType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumRequirementTypeFilter<$PrismaModel>
-    _max?: NestedEnumRequirementTypeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumImportanceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Importance | EnumImportanceFieldRefInput<$PrismaModel>
-    in?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Importance[] | ListEnumImportanceFieldRefInput<$PrismaModel>
-    not?: NestedEnumImportanceWithAggregatesFilter<$PrismaModel> | $Enums.Importance
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumImportanceFilter<$PrismaModel>
-    _max?: NestedEnumImportanceFilter<$PrismaModel>
-  }
-
   export type NestedEnumSourceTypeNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.SourceType | EnumSourceTypeFieldRefInput<$PrismaModel> | null
     in?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel> | null
@@ -38991,84 +27728,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedEnumSourceTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.SourceType | EnumSourceTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumSourceTypeFilter<$PrismaModel> | $Enums.SourceType
-  }
-
-  export type NestedEnumChunkTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.ChunkType | EnumChunkTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumChunkTypeFilter<$PrismaModel> | $Enums.ChunkType
-  }
-
-  export type NestedEnumSourceTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SourceType | EnumSourceTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SourceType[] | ListEnumSourceTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumSourceTypeWithAggregatesFilter<$PrismaModel> | $Enums.SourceType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSourceTypeFilter<$PrismaModel>
-    _max?: NestedEnumSourceTypeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumChunkTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ChunkType | EnumChunkTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ChunkType[] | ListEnumChunkTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumChunkTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChunkType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumChunkTypeFilter<$PrismaModel>
-    _max?: NestedEnumChunkTypeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumEvidenceConfidenceFilter<$PrismaModel = never> = {
-    equals?: $Enums.EvidenceConfidence | EnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    in?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumEvidenceConfidenceFilter<$PrismaModel> | $Enums.EvidenceConfidence
-  }
-
-  export type NestedEnumEvidenceConfidenceWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.EvidenceConfidence | EnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    in?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    notIn?: $Enums.EvidenceConfidence[] | ListEnumEvidenceConfidenceFieldRefInput<$PrismaModel>
-    not?: NestedEnumEvidenceConfidenceWithAggregatesFilter<$PrismaModel> | $Enums.EvidenceConfidence
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumEvidenceConfidenceFilter<$PrismaModel>
-    _max?: NestedEnumEvidenceConfidenceFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedEnumGapQuestionStatusFilter<$PrismaModel = never> = {
@@ -39135,6 +27794,17 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumPlanFamilyFilter<$PrismaModel = never> = {
@@ -39272,13 +27942,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
@@ -39300,13 +27965,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
@@ -39355,7 +28015,6 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     user?: UserCreateNestedOneWithoutCandidateProfilesInput
     sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateProfilesInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileUncheckedCreateWithoutAnonymousSessionInput = {
@@ -39391,7 +28050,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     lastSeenAt?: Date | string
     archivedAt?: Date | string | null
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileCreateOrConnectWithoutAnonymousSessionInput = {
@@ -39401,62 +28059,6 @@ export namespace Prisma {
 
   export type CandidateProfileCreateManyAnonymousSessionInputEnvelope = {
     data: CandidateProfileCreateManyAnonymousSessionInput | CandidateProfileCreateManyAnonymousSessionInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CandidateChunkCreateWithoutAnonymousSessionInput = {
-    id?: string
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    user?: UserCreateNestedOneWithoutCandidateChunksInput
-    sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateChunksInput
-    candidateProfile?: CandidateProfileCreateNestedOneWithoutCandidateChunksInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkUncheckedCreateWithoutAnonymousSessionInput = {
-    id?: string
-    userId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkCreateOrConnectWithoutAnonymousSessionInput = {
-    where: CandidateChunkWhereUniqueInput
-    create: XOR<CandidateChunkCreateWithoutAnonymousSessionInput, CandidateChunkUncheckedCreateWithoutAnonymousSessionInput>
-  }
-
-  export type CandidateChunkCreateManyAnonymousSessionInputEnvelope = {
-    data: CandidateChunkCreateManyAnonymousSessionInput | CandidateChunkCreateManyAnonymousSessionInput[]
     skipDuplicates?: boolean
   }
 
@@ -39549,47 +28151,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     lastSeenAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     archivedAt?: DateTimeNullableFilter<"CandidateProfile"> | Date | string | null
-  }
-
-  export type CandidateChunkUpsertWithWhereUniqueWithoutAnonymousSessionInput = {
-    where: CandidateChunkWhereUniqueInput
-    update: XOR<CandidateChunkUpdateWithoutAnonymousSessionInput, CandidateChunkUncheckedUpdateWithoutAnonymousSessionInput>
-    create: XOR<CandidateChunkCreateWithoutAnonymousSessionInput, CandidateChunkUncheckedCreateWithoutAnonymousSessionInput>
-  }
-
-  export type CandidateChunkUpdateWithWhereUniqueWithoutAnonymousSessionInput = {
-    where: CandidateChunkWhereUniqueInput
-    data: XOR<CandidateChunkUpdateWithoutAnonymousSessionInput, CandidateChunkUncheckedUpdateWithoutAnonymousSessionInput>
-  }
-
-  export type CandidateChunkUpdateManyWithWhereWithoutAnonymousSessionInput = {
-    where: CandidateChunkScalarWhereInput
-    data: XOR<CandidateChunkUpdateManyMutationInput, CandidateChunkUncheckedUpdateManyWithoutAnonymousSessionInput>
-  }
-
-  export type CandidateChunkScalarWhereInput = {
-    AND?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-    OR?: CandidateChunkScalarWhereInput[]
-    NOT?: CandidateChunkScalarWhereInput | CandidateChunkScalarWhereInput[]
-    id?: StringFilter<"CandidateChunk"> | string
-    anonymousSessionId?: StringNullableFilter<"CandidateChunk"> | string | null
-    userId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceApplicationId?: StringNullableFilter<"CandidateChunk"> | string | null
-    candidateProfileId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceType?: EnumSourceTypeFilter<"CandidateChunk"> | $Enums.SourceType
-    sourceId?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceKey?: StringNullableFilter<"CandidateChunk"> | string | null
-    sourceHash?: StringNullableFilter<"CandidateChunk"> | string | null
-    contentHash?: StringNullableFilter<"CandidateChunk"> | string | null
-    chunkType?: EnumChunkTypeFilter<"CandidateChunk"> | $Enums.ChunkType
-    content?: StringFilter<"CandidateChunk"> | string
-    tagsJson?: JsonFilter<"CandidateChunk">
-    metadataJson?: JsonFilter<"CandidateChunk">
-    createdAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    updatedAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    embeddedAt?: DateTimeNullableFilter<"CandidateChunk"> | Date | string | null
-    lastSeenAt?: DateTimeFilter<"CandidateChunk"> | Date | string
-    archivedAt?: DateTimeNullableFilter<"CandidateChunk"> | Date | string | null
   }
 
   export type SessionCreateWithoutUserInput = {
@@ -39757,13 +28318,8 @@ export namespace Prisma {
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
@@ -39785,13 +28341,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
@@ -39840,7 +28391,6 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateProfilesInput
     sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateProfilesInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileUncheckedCreateWithoutUserInput = {
@@ -39876,7 +28426,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     lastSeenAt?: Date | string
     archivedAt?: Date | string | null
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileCreateOrConnectWithoutUserInput = {
@@ -39886,62 +28435,6 @@ export namespace Prisma {
 
   export type CandidateProfileCreateManyUserInputEnvelope = {
     data: CandidateProfileCreateManyUserInput | CandidateProfileCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CandidateChunkCreateWithoutUserInput = {
-    id?: string
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateChunksInput
-    sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateChunksInput
-    candidateProfile?: CandidateProfileCreateNestedOneWithoutCandidateChunksInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkUncheckedCreateWithoutUserInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkCreateOrConnectWithoutUserInput = {
-    where: CandidateChunkWhereUniqueInput
-    create: XOR<CandidateChunkCreateWithoutUserInput, CandidateChunkUncheckedCreateWithoutUserInput>
-  }
-
-  export type CandidateChunkCreateManyUserInputEnvelope = {
-    data: CandidateChunkCreateManyUserInput | CandidateChunkCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -40127,22 +28620,6 @@ export namespace Prisma {
     data: XOR<CandidateProfileUpdateManyMutationInput, CandidateProfileUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type CandidateChunkUpsertWithWhereUniqueWithoutUserInput = {
-    where: CandidateChunkWhereUniqueInput
-    update: XOR<CandidateChunkUpdateWithoutUserInput, CandidateChunkUncheckedUpdateWithoutUserInput>
-    create: XOR<CandidateChunkCreateWithoutUserInput, CandidateChunkUncheckedCreateWithoutUserInput>
-  }
-
-  export type CandidateChunkUpdateWithWhereUniqueWithoutUserInput = {
-    where: CandidateChunkWhereUniqueInput
-    data: XOR<CandidateChunkUpdateWithoutUserInput, CandidateChunkUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CandidateChunkUpdateManyWithWhereWithoutUserInput = {
-    where: CandidateChunkScalarWhereInput
-    data: XOR<CandidateChunkUpdateManyMutationInput, CandidateChunkUncheckedUpdateManyWithoutUserInput>
-  }
-
   export type UserCreateWithoutSessionsInput = {
     id?: string
     email: string
@@ -40156,7 +28633,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutUserInput
     applications?: ApplicationCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -40172,7 +28648,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutUserInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -40204,7 +28679,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutUserNestedInput
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -40220,7 +28694,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutUserNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -40236,7 +28709,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutUserInput
     applications?: ApplicationCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -40252,7 +28724,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutUserInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -40284,7 +28755,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutUserNestedInput
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -40300,7 +28770,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutUserNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnonymousSessionCreateWithoutApplicationsInput = {
@@ -40308,7 +28777,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutAnonymousSessionInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutAnonymousSessionInput
   }
 
   export type AnonymousSessionUncheckedCreateWithoutApplicationsInput = {
@@ -40316,7 +28784,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutAnonymousSessionInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutAnonymousSessionInput
   }
 
   export type AnonymousSessionCreateOrConnectWithoutApplicationsInput = {
@@ -40337,7 +28804,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountCreateNestedOneWithoutUserInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApplicationsInput = {
@@ -40353,7 +28819,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUncheckedCreateNestedOneWithoutUserInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -40371,7 +28836,6 @@ export namespace Prisma {
     roleDomain?: string | null
     archetypeHint?: string | null
     createdAt?: Date | string
-    requirements?: JobRequirementCreateNestedManyWithoutJobInput
   }
 
   export type JobUncheckedCreateWithoutApplicationInput = {
@@ -40384,7 +28848,6 @@ export namespace Prisma {
     roleDomain?: string | null
     archetypeHint?: string | null
     createdAt?: Date | string
-    requirements?: JobRequirementUncheckedCreateNestedManyWithoutJobInput
   }
 
   export type JobCreateOrConnectWithoutApplicationInput = {
@@ -40425,7 +28888,6 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateProfilesInput
     user?: UserCreateNestedOneWithoutCandidateProfilesInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileUncheckedCreateWithoutSourceApplicationInput = {
@@ -40461,7 +28923,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     lastSeenAt?: Date | string
     archivedAt?: Date | string | null
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutCandidateProfileInput
   }
 
   export type CandidateProfileCreateOrConnectWithoutSourceApplicationInput = {
@@ -40471,134 +28932,6 @@ export namespace Prisma {
 
   export type CandidateProfileCreateManySourceApplicationInputEnvelope = {
     data: CandidateProfileCreateManySourceApplicationInput | CandidateProfileCreateManySourceApplicationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CandidateChunkCreateWithoutSourceApplicationInput = {
-    id?: string
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateChunksInput
-    user?: UserCreateNestedOneWithoutCandidateChunksInput
-    candidateProfile?: CandidateProfileCreateNestedOneWithoutCandidateChunksInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkUncheckedCreateWithoutSourceApplicationInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkCreateOrConnectWithoutSourceApplicationInput = {
-    where: CandidateChunkWhereUniqueInput
-    create: XOR<CandidateChunkCreateWithoutSourceApplicationInput, CandidateChunkUncheckedCreateWithoutSourceApplicationInput>
-  }
-
-  export type CandidateChunkCreateManySourceApplicationInputEnvelope = {
-    data: CandidateChunkCreateManySourceApplicationInput | CandidateChunkCreateManySourceApplicationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type EvidenceMatchCreateWithoutApplicationInput = {
-    id?: string
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-    jobRequirement: JobRequirementCreateNestedOneWithoutEvidenceMatchesInput
-    candidateChunk?: CandidateChunkCreateNestedOneWithoutEvidenceMatchesInput
-  }
-
-  export type EvidenceMatchUncheckedCreateWithoutApplicationInput = {
-    id?: string
-    jobRequirementId: string
-    candidateChunkId?: string | null
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type EvidenceMatchCreateOrConnectWithoutApplicationInput = {
-    where: EvidenceMatchWhereUniqueInput
-    create: XOR<EvidenceMatchCreateWithoutApplicationInput, EvidenceMatchUncheckedCreateWithoutApplicationInput>
-  }
-
-  export type EvidenceMatchCreateManyApplicationInputEnvelope = {
-    data: EvidenceMatchCreateManyApplicationInput | EvidenceMatchCreateManyApplicationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type RequirementFitScoreCreateWithoutApplicationInput = {
-    id?: string
-    finalConfidence: $Enums.EvidenceConfidence
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobRequirement: JobRequirementCreateNestedOneWithoutRequirementFitScoresInput
-    bestCandidateChunk?: CandidateChunkCreateNestedOneWithoutBestFitScoresInput
-  }
-
-  export type RequirementFitScoreUncheckedCreateWithoutApplicationInput = {
-    id?: string
-    jobRequirementId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    bestCandidateChunkId?: string | null
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type RequirementFitScoreCreateOrConnectWithoutApplicationInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    create: XOR<RequirementFitScoreCreateWithoutApplicationInput, RequirementFitScoreUncheckedCreateWithoutApplicationInput>
-  }
-
-  export type RequirementFitScoreCreateManyApplicationInputEnvelope = {
-    data: RequirementFitScoreCreateManyApplicationInput | RequirementFitScoreCreateManyApplicationInput[]
     skipDuplicates?: boolean
   }
 
@@ -40612,13 +28945,11 @@ export namespace Prisma {
     questionJson?: NullableJsonNullValueInput | InputJsonValue
     status?: $Enums.GapQuestionStatus
     createdAt?: Date | string
-    targetRequirement?: JobRequirementCreateNestedOneWithoutGapQuestionsInput
     answers?: GapAnswerCreateNestedManyWithoutGapQuestionInput
   }
 
   export type GapQuestionUncheckedCreateWithoutApplicationInput = {
     id?: string
-    targetRequirementId?: string | null
     question: string
     reason: string
     whyItMatters?: string | null
@@ -40643,7 +28974,6 @@ export namespace Prisma {
   export type GapAnswerCreateWithoutApplicationInput = {
     id?: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -40665,7 +28995,6 @@ export namespace Prisma {
     id?: string
     gapQuestionId: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -40692,69 +29021,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type GapCoachInsightCreateWithoutApplicationInput = {
-    id?: string
-    openingMessage: string
-    jobWants: string
-    candidateStrengthsJson: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type GapCoachInsightUncheckedCreateWithoutApplicationInput = {
-    id?: string
-    openingMessage: string
-    jobWants: string
-    candidateStrengthsJson: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type GapCoachInsightCreateOrConnectWithoutApplicationInput = {
-    where: GapCoachInsightWhereUniqueInput
-    create: XOR<GapCoachInsightCreateWithoutApplicationInput, GapCoachInsightUncheckedCreateWithoutApplicationInput>
-  }
-
-  export type CvStrategyCreateWithoutApplicationInput = {
-    id?: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    cvDrafts?: CvDraftCreateNestedManyWithoutStrategyInput
-  }
-
-  export type CvStrategyUncheckedCreateWithoutApplicationInput = {
-    id?: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutStrategyInput
-  }
-
-  export type CvStrategyCreateOrConnectWithoutApplicationInput = {
-    where: CvStrategyWhereUniqueInput
-    create: XOR<CvStrategyCreateWithoutApplicationInput, CvStrategyUncheckedCreateWithoutApplicationInput>
-  }
-
-  export type CvStrategyCreateManyApplicationInputEnvelope = {
-    data: CvStrategyCreateManyApplicationInput | CvStrategyCreateManyApplicationInput[]
-    skipDuplicates?: boolean
-  }
-
   export type CvDraftCreateWithoutApplicationInput = {
     id?: string
     version?: number
@@ -40764,13 +29030,11 @@ export namespace Prisma {
     builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    strategy?: CvStrategyCreateNestedOneWithoutCvDraftsInput
     usage?: CvGenerationUsageCreateNestedManyWithoutCvDraftInput
   }
 
   export type CvDraftUncheckedCreateWithoutApplicationInput = {
     id?: string
-    strategyId?: string | null
     version?: number
     cvJson: JsonNullValueInput | InputJsonValue
     cvText: string
@@ -40867,7 +29131,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     candidateProfiles?: CandidateProfileUpdateManyWithoutAnonymousSessionNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutAnonymousSessionNestedInput
   }
 
   export type AnonymousSessionUncheckedUpdateWithoutApplicationsInput = {
@@ -40875,7 +29138,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutAnonymousSessionNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutAnonymousSessionNestedInput
   }
 
   export type UserUpsertWithoutApplicationsInput = {
@@ -40902,7 +29164,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUpdateOneWithoutUserNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApplicationsInput = {
@@ -40918,7 +29179,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUncheckedUpdateOneWithoutUserNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type JobUpsertWithoutApplicationInput = {
@@ -40942,7 +29202,6 @@ export namespace Prisma {
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    requirements?: JobRequirementUpdateManyWithoutJobNestedInput
   }
 
   export type JobUncheckedUpdateWithoutApplicationInput = {
@@ -40955,7 +29214,6 @@ export namespace Prisma {
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    requirements?: JobRequirementUncheckedUpdateManyWithoutJobNestedInput
   }
 
   export type CandidateProfileUpsertWithWhereUniqueWithoutSourceApplicationInput = {
@@ -40972,88 +29230,6 @@ export namespace Prisma {
   export type CandidateProfileUpdateManyWithWhereWithoutSourceApplicationInput = {
     where: CandidateProfileScalarWhereInput
     data: XOR<CandidateProfileUpdateManyMutationInput, CandidateProfileUncheckedUpdateManyWithoutSourceApplicationInput>
-  }
-
-  export type CandidateChunkUpsertWithWhereUniqueWithoutSourceApplicationInput = {
-    where: CandidateChunkWhereUniqueInput
-    update: XOR<CandidateChunkUpdateWithoutSourceApplicationInput, CandidateChunkUncheckedUpdateWithoutSourceApplicationInput>
-    create: XOR<CandidateChunkCreateWithoutSourceApplicationInput, CandidateChunkUncheckedCreateWithoutSourceApplicationInput>
-  }
-
-  export type CandidateChunkUpdateWithWhereUniqueWithoutSourceApplicationInput = {
-    where: CandidateChunkWhereUniqueInput
-    data: XOR<CandidateChunkUpdateWithoutSourceApplicationInput, CandidateChunkUncheckedUpdateWithoutSourceApplicationInput>
-  }
-
-  export type CandidateChunkUpdateManyWithWhereWithoutSourceApplicationInput = {
-    where: CandidateChunkScalarWhereInput
-    data: XOR<CandidateChunkUpdateManyMutationInput, CandidateChunkUncheckedUpdateManyWithoutSourceApplicationInput>
-  }
-
-  export type EvidenceMatchUpsertWithWhereUniqueWithoutApplicationInput = {
-    where: EvidenceMatchWhereUniqueInput
-    update: XOR<EvidenceMatchUpdateWithoutApplicationInput, EvidenceMatchUncheckedUpdateWithoutApplicationInput>
-    create: XOR<EvidenceMatchCreateWithoutApplicationInput, EvidenceMatchUncheckedCreateWithoutApplicationInput>
-  }
-
-  export type EvidenceMatchUpdateWithWhereUniqueWithoutApplicationInput = {
-    where: EvidenceMatchWhereUniqueInput
-    data: XOR<EvidenceMatchUpdateWithoutApplicationInput, EvidenceMatchUncheckedUpdateWithoutApplicationInput>
-  }
-
-  export type EvidenceMatchUpdateManyWithWhereWithoutApplicationInput = {
-    where: EvidenceMatchScalarWhereInput
-    data: XOR<EvidenceMatchUpdateManyMutationInput, EvidenceMatchUncheckedUpdateManyWithoutApplicationInput>
-  }
-
-  export type EvidenceMatchScalarWhereInput = {
-    AND?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-    OR?: EvidenceMatchScalarWhereInput[]
-    NOT?: EvidenceMatchScalarWhereInput | EvidenceMatchScalarWhereInput[]
-    id?: StringFilter<"EvidenceMatch"> | string
-    applicationId?: StringFilter<"EvidenceMatch"> | string
-    jobRequirementId?: StringFilter<"EvidenceMatch"> | string
-    candidateChunkId?: StringNullableFilter<"EvidenceMatch"> | string | null
-    similarityScore?: FloatNullableFilter<"EvidenceMatch"> | number | null
-    confidence?: EnumEvidenceConfidenceFilter<"EvidenceMatch"> | $Enums.EvidenceConfidence
-    cvUsefulness?: StringNullableFilter<"EvidenceMatch"> | string | null
-    claimRisk?: StringNullableFilter<"EvidenceMatch"> | string | null
-    reason?: StringFilter<"EvidenceMatch"> | string
-    createdAt?: DateTimeFilter<"EvidenceMatch"> | Date | string
-  }
-
-  export type RequirementFitScoreUpsertWithWhereUniqueWithoutApplicationInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    update: XOR<RequirementFitScoreUpdateWithoutApplicationInput, RequirementFitScoreUncheckedUpdateWithoutApplicationInput>
-    create: XOR<RequirementFitScoreCreateWithoutApplicationInput, RequirementFitScoreUncheckedCreateWithoutApplicationInput>
-  }
-
-  export type RequirementFitScoreUpdateWithWhereUniqueWithoutApplicationInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    data: XOR<RequirementFitScoreUpdateWithoutApplicationInput, RequirementFitScoreUncheckedUpdateWithoutApplicationInput>
-  }
-
-  export type RequirementFitScoreUpdateManyWithWhereWithoutApplicationInput = {
-    where: RequirementFitScoreScalarWhereInput
-    data: XOR<RequirementFitScoreUpdateManyMutationInput, RequirementFitScoreUncheckedUpdateManyWithoutApplicationInput>
-  }
-
-  export type RequirementFitScoreScalarWhereInput = {
-    AND?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-    OR?: RequirementFitScoreScalarWhereInput[]
-    NOT?: RequirementFitScoreScalarWhereInput | RequirementFitScoreScalarWhereInput[]
-    id?: StringFilter<"RequirementFitScore"> | string
-    applicationId?: StringFilter<"RequirementFitScore"> | string
-    jobRequirementId?: StringFilter<"RequirementFitScore"> | string
-    finalConfidence?: EnumEvidenceConfidenceFilter<"RequirementFitScore"> | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: StringNullableFilter<"RequirementFitScore"> | string | null
-    reason?: StringFilter<"RequirementFitScore"> | string
-    importanceWeight?: FloatFilter<"RequirementFitScore"> | number
-    confidenceValue?: FloatFilter<"RequirementFitScore"> | number
-    earnedPoints?: FloatFilter<"RequirementFitScore"> | number
-    possiblePoints?: FloatFilter<"RequirementFitScore"> | number
-    createdAt?: DateTimeFilter<"RequirementFitScore"> | Date | string
-    updatedAt?: DateTimeFilter<"RequirementFitScore"> | Date | string
   }
 
   export type GapQuestionUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -41078,7 +29254,6 @@ export namespace Prisma {
     NOT?: GapQuestionScalarWhereInput | GapQuestionScalarWhereInput[]
     id?: StringFilter<"GapQuestion"> | string
     applicationId?: StringFilter<"GapQuestion"> | string
-    targetRequirementId?: StringNullableFilter<"GapQuestion"> | string | null
     question?: StringFilter<"GapQuestion"> | string
     reason?: StringFilter<"GapQuestion"> | string
     whyItMatters?: StringNullableFilter<"GapQuestion"> | string | null
@@ -41113,7 +29288,6 @@ export namespace Prisma {
     gapQuestionId?: StringFilter<"GapAnswer"> | string
     applicationId?: StringFilter<"GapAnswer"> | string
     userId?: StringNullableFilter<"GapAnswer"> | string | null
-    targetRequirementId?: StringNullableFilter<"GapAnswer"> | string | null
     buttonAnswer?: EnumButtonAnswerFilter<"GapAnswer"> | $Enums.ButtonAnswer
     elaboration?: StringNullableFilter<"GapAnswer"> | string | null
     selectedOption?: StringNullableFilter<"GapAnswer"> | string | null
@@ -41128,70 +29302,6 @@ export namespace Prisma {
     source?: StringNullableFilter<"GapAnswer"> | string | null
     skipped?: BoolFilter<"GapAnswer"> | boolean
     createdAt?: DateTimeFilter<"GapAnswer"> | Date | string
-  }
-
-  export type GapCoachInsightUpsertWithoutApplicationInput = {
-    update: XOR<GapCoachInsightUpdateWithoutApplicationInput, GapCoachInsightUncheckedUpdateWithoutApplicationInput>
-    create: XOR<GapCoachInsightCreateWithoutApplicationInput, GapCoachInsightUncheckedCreateWithoutApplicationInput>
-    where?: GapCoachInsightWhereInput
-  }
-
-  export type GapCoachInsightUpdateToOneWithWhereWithoutApplicationInput = {
-    where?: GapCoachInsightWhereInput
-    data: XOR<GapCoachInsightUpdateWithoutApplicationInput, GapCoachInsightUncheckedUpdateWithoutApplicationInput>
-  }
-
-  export type GapCoachInsightUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    openingMessage?: StringFieldUpdateOperationsInput | string
-    jobWants?: StringFieldUpdateOperationsInput | string
-    candidateStrengthsJson?: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GapCoachInsightUncheckedUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    openingMessage?: StringFieldUpdateOperationsInput | string
-    jobWants?: StringFieldUpdateOperationsInput | string
-    candidateStrengthsJson?: JsonNullValueInput | InputJsonValue
-    candidateConcernsJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CvStrategyUpsertWithWhereUniqueWithoutApplicationInput = {
-    where: CvStrategyWhereUniqueInput
-    update: XOR<CvStrategyUpdateWithoutApplicationInput, CvStrategyUncheckedUpdateWithoutApplicationInput>
-    create: XOR<CvStrategyCreateWithoutApplicationInput, CvStrategyUncheckedCreateWithoutApplicationInput>
-  }
-
-  export type CvStrategyUpdateWithWhereUniqueWithoutApplicationInput = {
-    where: CvStrategyWhereUniqueInput
-    data: XOR<CvStrategyUpdateWithoutApplicationInput, CvStrategyUncheckedUpdateWithoutApplicationInput>
-  }
-
-  export type CvStrategyUpdateManyWithWhereWithoutApplicationInput = {
-    where: CvStrategyScalarWhereInput
-    data: XOR<CvStrategyUpdateManyMutationInput, CvStrategyUncheckedUpdateManyWithoutApplicationInput>
-  }
-
-  export type CvStrategyScalarWhereInput = {
-    AND?: CvStrategyScalarWhereInput | CvStrategyScalarWhereInput[]
-    OR?: CvStrategyScalarWhereInput[]
-    NOT?: CvStrategyScalarWhereInput | CvStrategyScalarWhereInput[]
-    id?: StringFilter<"CvStrategy"> | string
-    applicationId?: StringFilter<"CvStrategy"> | string
-    strategySummary?: StringFilter<"CvStrategy"> | string
-    targetPositioning?: StringFilter<"CvStrategy"> | string
-    sectionOrderJson?: JsonFilter<"CvStrategy">
-    emphasisJson?: JsonFilter<"CvStrategy">
-    deEmphasisJson?: JsonFilter<"CvStrategy">
-    evidenceToUseJson?: JsonFilter<"CvStrategy">
-    warningsJson?: JsonFilter<"CvStrategy">
-    strategyJson?: JsonNullableFilter<"CvStrategy">
-    createdAt?: DateTimeFilter<"CvStrategy"> | Date | string
   }
 
   export type CvDraftUpsertWithWhereUniqueWithoutApplicationInput = {
@@ -41216,7 +29326,6 @@ export namespace Prisma {
     NOT?: CvDraftScalarWhereInput | CvDraftScalarWhereInput[]
     id?: StringFilter<"CvDraft"> | string
     applicationId?: StringFilter<"CvDraft"> | string
-    strategyId?: StringNullableFilter<"CvDraft"> | string | null
     version?: IntFilter<"CvDraft"> | number
     cvJson?: JsonFilter<"CvDraft">
     cvText?: StringFilter<"CvDraft"> | string
@@ -41288,13 +29397,8 @@ export namespace Prisma {
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
     user?: UserCreateNestedOneWithoutApplicationsInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
@@ -41316,13 +29420,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
@@ -41331,44 +29430,6 @@ export namespace Prisma {
   export type ApplicationCreateOrConnectWithoutJobInput = {
     where: ApplicationWhereUniqueInput
     create: XOR<ApplicationCreateWithoutJobInput, ApplicationUncheckedCreateWithoutJobInput>
-  }
-
-  export type JobRequirementCreateWithoutJobInput = {
-    id?: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutJobRequirementInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementUncheckedCreateWithoutJobInput = {
-    id?: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutJobRequirementInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementCreateOrConnectWithoutJobInput = {
-    where: JobRequirementWhereUniqueInput
-    create: XOR<JobRequirementCreateWithoutJobInput, JobRequirementUncheckedCreateWithoutJobInput>
-  }
-
-  export type JobRequirementCreateManyJobInputEnvelope = {
-    data: JobRequirementCreateManyJobInput | JobRequirementCreateManyJobInput[]
-    skipDuplicates?: boolean
   }
 
   export type ApplicationUpsertWithoutJobInput = {
@@ -41398,13 +29459,8 @@ export namespace Prisma {
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
     user?: UserUpdateOneWithoutApplicationsNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
@@ -41426,273 +29482,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type JobRequirementUpsertWithWhereUniqueWithoutJobInput = {
-    where: JobRequirementWhereUniqueInput
-    update: XOR<JobRequirementUpdateWithoutJobInput, JobRequirementUncheckedUpdateWithoutJobInput>
-    create: XOR<JobRequirementCreateWithoutJobInput, JobRequirementUncheckedCreateWithoutJobInput>
-  }
-
-  export type JobRequirementUpdateWithWhereUniqueWithoutJobInput = {
-    where: JobRequirementWhereUniqueInput
-    data: XOR<JobRequirementUpdateWithoutJobInput, JobRequirementUncheckedUpdateWithoutJobInput>
-  }
-
-  export type JobRequirementUpdateManyWithWhereWithoutJobInput = {
-    where: JobRequirementScalarWhereInput
-    data: XOR<JobRequirementUpdateManyMutationInput, JobRequirementUncheckedUpdateManyWithoutJobInput>
-  }
-
-  export type JobRequirementScalarWhereInput = {
-    AND?: JobRequirementScalarWhereInput | JobRequirementScalarWhereInput[]
-    OR?: JobRequirementScalarWhereInput[]
-    NOT?: JobRequirementScalarWhereInput | JobRequirementScalarWhereInput[]
-    id?: StringFilter<"JobRequirement"> | string
-    jobId?: StringFilter<"JobRequirement"> | string
-    type?: EnumRequirementTypeFilter<"JobRequirement"> | $Enums.RequirementType
-    label?: StringFilter<"JobRequirement"> | string
-    description?: StringFilter<"JobRequirement"> | string
-    importance?: EnumImportanceFilter<"JobRequirement"> | $Enums.Importance
-    queryEmbeddingModel?: StringNullableFilter<"JobRequirement"> | string | null
-    queryEmbeddingInputHash?: StringNullableFilter<"JobRequirement"> | string | null
-    queryEmbeddedAt?: DateTimeNullableFilter<"JobRequirement"> | Date | string | null
-  }
-
-  export type JobCreateWithoutRequirementsInput = {
-    id?: string
-    rawText: string
-    title: string
-    company?: string | null
-    seniority?: string | null
-    summary: string
-    roleDomain?: string | null
-    archetypeHint?: string | null
-    createdAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutJobInput
-  }
-
-  export type JobUncheckedCreateWithoutRequirementsInput = {
-    id?: string
-    applicationId: string
-    rawText: string
-    title: string
-    company?: string | null
-    seniority?: string | null
-    summary: string
-    roleDomain?: string | null
-    archetypeHint?: string | null
-    createdAt?: Date | string
-  }
-
-  export type JobCreateOrConnectWithoutRequirementsInput = {
-    where: JobWhereUniqueInput
-    create: XOR<JobCreateWithoutRequirementsInput, JobUncheckedCreateWithoutRequirementsInput>
-  }
-
-  export type EvidenceMatchCreateWithoutJobRequirementInput = {
-    id?: string
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutEvidenceMatchesInput
-    candidateChunk?: CandidateChunkCreateNestedOneWithoutEvidenceMatchesInput
-  }
-
-  export type EvidenceMatchUncheckedCreateWithoutJobRequirementInput = {
-    id?: string
-    applicationId: string
-    candidateChunkId?: string | null
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type EvidenceMatchCreateOrConnectWithoutJobRequirementInput = {
-    where: EvidenceMatchWhereUniqueInput
-    create: XOR<EvidenceMatchCreateWithoutJobRequirementInput, EvidenceMatchUncheckedCreateWithoutJobRequirementInput>
-  }
-
-  export type EvidenceMatchCreateManyJobRequirementInputEnvelope = {
-    data: EvidenceMatchCreateManyJobRequirementInput | EvidenceMatchCreateManyJobRequirementInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type RequirementFitScoreCreateWithoutJobRequirementInput = {
-    id?: string
-    finalConfidence: $Enums.EvidenceConfidence
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutRequirementFitScoresInput
-    bestCandidateChunk?: CandidateChunkCreateNestedOneWithoutBestFitScoresInput
-  }
-
-  export type RequirementFitScoreUncheckedCreateWithoutJobRequirementInput = {
-    id?: string
-    applicationId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    bestCandidateChunkId?: string | null
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type RequirementFitScoreCreateOrConnectWithoutJobRequirementInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    create: XOR<RequirementFitScoreCreateWithoutJobRequirementInput, RequirementFitScoreUncheckedCreateWithoutJobRequirementInput>
-  }
-
-  export type RequirementFitScoreCreateManyJobRequirementInputEnvelope = {
-    data: RequirementFitScoreCreateManyJobRequirementInput | RequirementFitScoreCreateManyJobRequirementInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type GapQuestionCreateWithoutTargetRequirementInput = {
-    id?: string
-    question: string
-    reason: string
-    whyItMatters?: string | null
-    answerGuidance?: string | null
-    exampleAnglesJson?: NullableJsonNullValueInput | InputJsonValue
-    questionJson?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.GapQuestionStatus
-    createdAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutGapQuestionsInput
-    answers?: GapAnswerCreateNestedManyWithoutGapQuestionInput
-  }
-
-  export type GapQuestionUncheckedCreateWithoutTargetRequirementInput = {
-    id?: string
-    applicationId: string
-    question: string
-    reason: string
-    whyItMatters?: string | null
-    answerGuidance?: string | null
-    exampleAnglesJson?: NullableJsonNullValueInput | InputJsonValue
-    questionJson?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.GapQuestionStatus
-    createdAt?: Date | string
-    answers?: GapAnswerUncheckedCreateNestedManyWithoutGapQuestionInput
-  }
-
-  export type GapQuestionCreateOrConnectWithoutTargetRequirementInput = {
-    where: GapQuestionWhereUniqueInput
-    create: XOR<GapQuestionCreateWithoutTargetRequirementInput, GapQuestionUncheckedCreateWithoutTargetRequirementInput>
-  }
-
-  export type GapQuestionCreateManyTargetRequirementInputEnvelope = {
-    data: GapQuestionCreateManyTargetRequirementInput | GapQuestionCreateManyTargetRequirementInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type JobUpsertWithoutRequirementsInput = {
-    update: XOR<JobUpdateWithoutRequirementsInput, JobUncheckedUpdateWithoutRequirementsInput>
-    create: XOR<JobCreateWithoutRequirementsInput, JobUncheckedCreateWithoutRequirementsInput>
-    where?: JobWhereInput
-  }
-
-  export type JobUpdateToOneWithWhereWithoutRequirementsInput = {
-    where?: JobWhereInput
-    data: XOR<JobUpdateWithoutRequirementsInput, JobUncheckedUpdateWithoutRequirementsInput>
-  }
-
-  export type JobUpdateWithoutRequirementsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rawText?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    company?: NullableStringFieldUpdateOperationsInput | string | null
-    seniority?: NullableStringFieldUpdateOperationsInput | string | null
-    summary?: StringFieldUpdateOperationsInput | string
-    roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
-    archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutJobNestedInput
-  }
-
-  export type JobUncheckedUpdateWithoutRequirementsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    rawText?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    company?: NullableStringFieldUpdateOperationsInput | string | null
-    seniority?: NullableStringFieldUpdateOperationsInput | string | null
-    summary?: StringFieldUpdateOperationsInput | string
-    roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
-    archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EvidenceMatchUpsertWithWhereUniqueWithoutJobRequirementInput = {
-    where: EvidenceMatchWhereUniqueInput
-    update: XOR<EvidenceMatchUpdateWithoutJobRequirementInput, EvidenceMatchUncheckedUpdateWithoutJobRequirementInput>
-    create: XOR<EvidenceMatchCreateWithoutJobRequirementInput, EvidenceMatchUncheckedCreateWithoutJobRequirementInput>
-  }
-
-  export type EvidenceMatchUpdateWithWhereUniqueWithoutJobRequirementInput = {
-    where: EvidenceMatchWhereUniqueInput
-    data: XOR<EvidenceMatchUpdateWithoutJobRequirementInput, EvidenceMatchUncheckedUpdateWithoutJobRequirementInput>
-  }
-
-  export type EvidenceMatchUpdateManyWithWhereWithoutJobRequirementInput = {
-    where: EvidenceMatchScalarWhereInput
-    data: XOR<EvidenceMatchUpdateManyMutationInput, EvidenceMatchUncheckedUpdateManyWithoutJobRequirementInput>
-  }
-
-  export type RequirementFitScoreUpsertWithWhereUniqueWithoutJobRequirementInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    update: XOR<RequirementFitScoreUpdateWithoutJobRequirementInput, RequirementFitScoreUncheckedUpdateWithoutJobRequirementInput>
-    create: XOR<RequirementFitScoreCreateWithoutJobRequirementInput, RequirementFitScoreUncheckedCreateWithoutJobRequirementInput>
-  }
-
-  export type RequirementFitScoreUpdateWithWhereUniqueWithoutJobRequirementInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    data: XOR<RequirementFitScoreUpdateWithoutJobRequirementInput, RequirementFitScoreUncheckedUpdateWithoutJobRequirementInput>
-  }
-
-  export type RequirementFitScoreUpdateManyWithWhereWithoutJobRequirementInput = {
-    where: RequirementFitScoreScalarWhereInput
-    data: XOR<RequirementFitScoreUpdateManyMutationInput, RequirementFitScoreUncheckedUpdateManyWithoutJobRequirementInput>
-  }
-
-  export type GapQuestionUpsertWithWhereUniqueWithoutTargetRequirementInput = {
-    where: GapQuestionWhereUniqueInput
-    update: XOR<GapQuestionUpdateWithoutTargetRequirementInput, GapQuestionUncheckedUpdateWithoutTargetRequirementInput>
-    create: XOR<GapQuestionCreateWithoutTargetRequirementInput, GapQuestionUncheckedCreateWithoutTargetRequirementInput>
-  }
-
-  export type GapQuestionUpdateWithWhereUniqueWithoutTargetRequirementInput = {
-    where: GapQuestionWhereUniqueInput
-    data: XOR<GapQuestionUpdateWithoutTargetRequirementInput, GapQuestionUncheckedUpdateWithoutTargetRequirementInput>
-  }
-
-  export type GapQuestionUpdateManyWithWhereWithoutTargetRequirementInput = {
-    where: GapQuestionScalarWhereInput
-    data: XOR<GapQuestionUpdateManyMutationInput, GapQuestionUncheckedUpdateManyWithoutTargetRequirementInput>
   }
 
   export type AnonymousSessionCreateWithoutCandidateProfilesInput = {
@@ -41700,7 +29494,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     applications?: ApplicationCreateNestedManyWithoutAnonymousSessionInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutAnonymousSessionInput
   }
 
   export type AnonymousSessionUncheckedCreateWithoutCandidateProfilesInput = {
@@ -41708,7 +29501,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     applications?: ApplicationUncheckedCreateNestedManyWithoutAnonymousSessionInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutAnonymousSessionInput
   }
 
   export type AnonymousSessionCreateOrConnectWithoutCandidateProfilesInput = {
@@ -41729,7 +29521,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountCreateNestedOneWithoutUserInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutUserInput
     applications?: ApplicationCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCandidateProfilesInput = {
@@ -41745,7 +29536,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUncheckedCreateNestedOneWithoutUserInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutUserInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCandidateProfilesInput = {
@@ -41769,13 +29559,8 @@ export namespace Prisma {
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
@@ -41797,13 +29582,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
@@ -41812,62 +29592,6 @@ export namespace Prisma {
   export type ApplicationCreateOrConnectWithoutSourceCandidateProfilesInput = {
     where: ApplicationWhereUniqueInput
     create: XOR<ApplicationCreateWithoutSourceCandidateProfilesInput, ApplicationUncheckedCreateWithoutSourceCandidateProfilesInput>
-  }
-
-  export type CandidateChunkCreateWithoutCandidateProfileInput = {
-    id?: string
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateChunksInput
-    user?: UserCreateNestedOneWithoutCandidateChunksInput
-    sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateChunksInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkUncheckedCreateWithoutCandidateProfileInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    sourceApplicationId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutCandidateChunkInput
-    bestFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkCreateOrConnectWithoutCandidateProfileInput = {
-    where: CandidateChunkWhereUniqueInput
-    create: XOR<CandidateChunkCreateWithoutCandidateProfileInput, CandidateChunkUncheckedCreateWithoutCandidateProfileInput>
-  }
-
-  export type CandidateChunkCreateManyCandidateProfileInputEnvelope = {
-    data: CandidateChunkCreateManyCandidateProfileInput | CandidateChunkCreateManyCandidateProfileInput[]
-    skipDuplicates?: boolean
   }
 
   export type AnonymousSessionUpsertWithoutCandidateProfilesInput = {
@@ -41886,7 +29610,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     applications?: ApplicationUpdateManyWithoutAnonymousSessionNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutAnonymousSessionNestedInput
   }
 
   export type AnonymousSessionUncheckedUpdateWithoutCandidateProfilesInput = {
@@ -41894,7 +29617,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     applications?: ApplicationUncheckedUpdateManyWithoutAnonymousSessionNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutAnonymousSessionNestedInput
   }
 
   export type UserUpsertWithoutCandidateProfilesInput = {
@@ -41921,7 +29643,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUpdateOneWithoutUserNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutUserNestedInput
     applications?: ApplicationUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCandidateProfilesInput = {
@@ -41937,7 +29658,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUncheckedUpdateOneWithoutUserNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutUserNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ApplicationUpsertWithoutSourceCandidateProfilesInput = {
@@ -41967,13 +29687,8 @@ export namespace Prisma {
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
@@ -41995,1168 +29710,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type CandidateChunkUpsertWithWhereUniqueWithoutCandidateProfileInput = {
-    where: CandidateChunkWhereUniqueInput
-    update: XOR<CandidateChunkUpdateWithoutCandidateProfileInput, CandidateChunkUncheckedUpdateWithoutCandidateProfileInput>
-    create: XOR<CandidateChunkCreateWithoutCandidateProfileInput, CandidateChunkUncheckedCreateWithoutCandidateProfileInput>
-  }
-
-  export type CandidateChunkUpdateWithWhereUniqueWithoutCandidateProfileInput = {
-    where: CandidateChunkWhereUniqueInput
-    data: XOR<CandidateChunkUpdateWithoutCandidateProfileInput, CandidateChunkUncheckedUpdateWithoutCandidateProfileInput>
-  }
-
-  export type CandidateChunkUpdateManyWithWhereWithoutCandidateProfileInput = {
-    where: CandidateChunkScalarWhereInput
-    data: XOR<CandidateChunkUpdateManyMutationInput, CandidateChunkUncheckedUpdateManyWithoutCandidateProfileInput>
-  }
-
-  export type AnonymousSessionCreateWithoutCandidateChunksInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    applications?: ApplicationCreateNestedManyWithoutAnonymousSessionInput
-    candidateProfiles?: CandidateProfileCreateNestedManyWithoutAnonymousSessionInput
-  }
-
-  export type AnonymousSessionUncheckedCreateWithoutCandidateChunksInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    applications?: ApplicationUncheckedCreateNestedManyWithoutAnonymousSessionInput
-    candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutAnonymousSessionInput
-  }
-
-  export type AnonymousSessionCreateOrConnectWithoutCandidateChunksInput = {
-    where: AnonymousSessionWhereUniqueInput
-    create: XOR<AnonymousSessionCreateWithoutCandidateChunksInput, AnonymousSessionUncheckedCreateWithoutCandidateChunksInput>
-  }
-
-  export type UserCreateWithoutCandidateChunksInput = {
-    id?: string
-    email: string
-    emailVerified?: boolean
-    name?: string
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    billingAccount?: BillingAccountCreateNestedOneWithoutUserInput
-    cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutUserInput
-    applications?: ApplicationCreateNestedManyWithoutUserInput
-    candidateProfiles?: CandidateProfileCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutCandidateChunksInput = {
-    id?: string
-    email: string
-    emailVerified?: boolean
-    name?: string
-    image?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    billingAccount?: BillingAccountUncheckedCreateNestedOneWithoutUserInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutUserInput
-    applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
-    candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutCandidateChunksInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCandidateChunksInput, UserUncheckedCreateWithoutCandidateChunksInput>
-  }
-
-  export type ApplicationCreateWithoutSourceCandidateChunksInput = {
-    id?: string
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
-    user?: UserCreateNestedOneWithoutApplicationsInput
-    job?: JobCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationUncheckedCreateWithoutSourceCandidateChunksInput = {
-    id?: string
-    anonymousSessionId: string
-    userId?: string | null
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    job?: JobUncheckedCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationCreateOrConnectWithoutSourceCandidateChunksInput = {
-    where: ApplicationWhereUniqueInput
-    create: XOR<ApplicationCreateWithoutSourceCandidateChunksInput, ApplicationUncheckedCreateWithoutSourceCandidateChunksInput>
-  }
-
-  export type CandidateProfileCreateWithoutCandidateChunksInput = {
-    id?: string
-    rawCvText?: string | null
-    rawBackgroundText?: string | null
-    contactInfoJson?: NullableJsonNullValueInput | InputJsonValue
-    linksJson?: NullableJsonNullValueInput | InputJsonValue
-    sourceType?: $Enums.SourceType | null
-    profileSource?: string | null
-    sourceSummary?: string | null
-    sourceUrl?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    profileConfirmedAt?: Date | string | null
-    summary: string
-    skillsJson: JsonNullValueInput | InputJsonValue
-    projectsJson: JsonNullValueInput | InputJsonValue
-    educationJson: JsonNullValueInput | InputJsonValue
-    certificationsJson: JsonNullValueInput | InputJsonValue
-    experienceJson: JsonNullValueInput | InputJsonValue
-    toolsJson: JsonNullValueInput | InputJsonValue
-    achievementsJson: JsonNullValueInput | InputJsonValue
-    cautionNotesJson?: NullableJsonNullValueInput | InputJsonValue
-    metricOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
-    scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateProfilesInput
-    user?: UserCreateNestedOneWithoutCandidateProfilesInput
-    sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateProfilesInput
-  }
-
-  export type CandidateProfileUncheckedCreateWithoutCandidateChunksInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    sourceApplicationId?: string | null
-    rawCvText?: string | null
-    rawBackgroundText?: string | null
-    contactInfoJson?: NullableJsonNullValueInput | InputJsonValue
-    linksJson?: NullableJsonNullValueInput | InputJsonValue
-    sourceType?: $Enums.SourceType | null
-    profileSource?: string | null
-    sourceSummary?: string | null
-    sourceUrl?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    profileConfirmedAt?: Date | string | null
-    summary: string
-    skillsJson: JsonNullValueInput | InputJsonValue
-    projectsJson: JsonNullValueInput | InputJsonValue
-    educationJson: JsonNullValueInput | InputJsonValue
-    certificationsJson: JsonNullValueInput | InputJsonValue
-    experienceJson: JsonNullValueInput | InputJsonValue
-    toolsJson: JsonNullValueInput | InputJsonValue
-    achievementsJson: JsonNullValueInput | InputJsonValue
-    cautionNotesJson?: NullableJsonNullValueInput | InputJsonValue
-    metricOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
-    scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-  }
-
-  export type CandidateProfileCreateOrConnectWithoutCandidateChunksInput = {
-    where: CandidateProfileWhereUniqueInput
-    create: XOR<CandidateProfileCreateWithoutCandidateChunksInput, CandidateProfileUncheckedCreateWithoutCandidateChunksInput>
-  }
-
-  export type EvidenceMatchCreateWithoutCandidateChunkInput = {
-    id?: string
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutEvidenceMatchesInput
-    jobRequirement: JobRequirementCreateNestedOneWithoutEvidenceMatchesInput
-  }
-
-  export type EvidenceMatchUncheckedCreateWithoutCandidateChunkInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type EvidenceMatchCreateOrConnectWithoutCandidateChunkInput = {
-    where: EvidenceMatchWhereUniqueInput
-    create: XOR<EvidenceMatchCreateWithoutCandidateChunkInput, EvidenceMatchUncheckedCreateWithoutCandidateChunkInput>
-  }
-
-  export type EvidenceMatchCreateManyCandidateChunkInputEnvelope = {
-    data: EvidenceMatchCreateManyCandidateChunkInput | EvidenceMatchCreateManyCandidateChunkInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type RequirementFitScoreCreateWithoutBestCandidateChunkInput = {
-    id?: string
-    finalConfidence: $Enums.EvidenceConfidence
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutRequirementFitScoresInput
-    jobRequirement: JobRequirementCreateNestedOneWithoutRequirementFitScoresInput
-  }
-
-  export type RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type RequirementFitScoreCreateOrConnectWithoutBestCandidateChunkInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    create: XOR<RequirementFitScoreCreateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput>
-  }
-
-  export type RequirementFitScoreCreateManyBestCandidateChunkInputEnvelope = {
-    data: RequirementFitScoreCreateManyBestCandidateChunkInput | RequirementFitScoreCreateManyBestCandidateChunkInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AnonymousSessionUpsertWithoutCandidateChunksInput = {
-    update: XOR<AnonymousSessionUpdateWithoutCandidateChunksInput, AnonymousSessionUncheckedUpdateWithoutCandidateChunksInput>
-    create: XOR<AnonymousSessionCreateWithoutCandidateChunksInput, AnonymousSessionUncheckedCreateWithoutCandidateChunksInput>
-    where?: AnonymousSessionWhereInput
-  }
-
-  export type AnonymousSessionUpdateToOneWithWhereWithoutCandidateChunksInput = {
-    where?: AnonymousSessionWhereInput
-    data: XOR<AnonymousSessionUpdateWithoutCandidateChunksInput, AnonymousSessionUncheckedUpdateWithoutCandidateChunksInput>
-  }
-
-  export type AnonymousSessionUpdateWithoutCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    applications?: ApplicationUpdateManyWithoutAnonymousSessionNestedInput
-    candidateProfiles?: CandidateProfileUpdateManyWithoutAnonymousSessionNestedInput
-  }
-
-  export type AnonymousSessionUncheckedUpdateWithoutCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    applications?: ApplicationUncheckedUpdateManyWithoutAnonymousSessionNestedInput
-    candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutAnonymousSessionNestedInput
-  }
-
-  export type UserUpsertWithoutCandidateChunksInput = {
-    update: XOR<UserUpdateWithoutCandidateChunksInput, UserUncheckedUpdateWithoutCandidateChunksInput>
-    create: XOR<UserCreateWithoutCandidateChunksInput, UserUncheckedCreateWithoutCandidateChunksInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCandidateChunksInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCandidateChunksInput, UserUncheckedUpdateWithoutCandidateChunksInput>
-  }
-
-  export type UserUpdateWithoutCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    name?: StringFieldUpdateOperationsInput | string
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    billingAccount?: BillingAccountUpdateOneWithoutUserNestedInput
-    cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutUserNestedInput
-    applications?: ApplicationUpdateManyWithoutUserNestedInput
-    candidateProfiles?: CandidateProfileUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    name?: StringFieldUpdateOperationsInput | string
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    billingAccount?: BillingAccountUncheckedUpdateOneWithoutUserNestedInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutUserNestedInput
-    applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
-    candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ApplicationUpsertWithoutSourceCandidateChunksInput = {
-    update: XOR<ApplicationUpdateWithoutSourceCandidateChunksInput, ApplicationUncheckedUpdateWithoutSourceCandidateChunksInput>
-    create: XOR<ApplicationCreateWithoutSourceCandidateChunksInput, ApplicationUncheckedCreateWithoutSourceCandidateChunksInput>
-    where?: ApplicationWhereInput
-  }
-
-  export type ApplicationUpdateToOneWithWhereWithoutSourceCandidateChunksInput = {
-    where?: ApplicationWhereInput
-    data: XOR<ApplicationUpdateWithoutSourceCandidateChunksInput, ApplicationUncheckedUpdateWithoutSourceCandidateChunksInput>
-  }
-
-  export type ApplicationUpdateWithoutSourceCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
-    user?: UserUpdateOneWithoutApplicationsNestedInput
-    job?: JobUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type ApplicationUncheckedUpdateWithoutSourceCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type CandidateProfileUpsertWithoutCandidateChunksInput = {
-    update: XOR<CandidateProfileUpdateWithoutCandidateChunksInput, CandidateProfileUncheckedUpdateWithoutCandidateChunksInput>
-    create: XOR<CandidateProfileCreateWithoutCandidateChunksInput, CandidateProfileUncheckedCreateWithoutCandidateChunksInput>
-    where?: CandidateProfileWhereInput
-  }
-
-  export type CandidateProfileUpdateToOneWithWhereWithoutCandidateChunksInput = {
-    where?: CandidateProfileWhereInput
-    data: XOR<CandidateProfileUpdateWithoutCandidateChunksInput, CandidateProfileUncheckedUpdateWithoutCandidateChunksInput>
-  }
-
-  export type CandidateProfileUpdateWithoutCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    rawCvText?: NullableStringFieldUpdateOperationsInput | string | null
-    rawBackgroundText?: NullableStringFieldUpdateOperationsInput | string | null
-    contactInfoJson?: NullableJsonNullValueInput | InputJsonValue
-    linksJson?: NullableJsonNullValueInput | InputJsonValue
-    sourceType?: NullableEnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType | null
-    profileSource?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceSummary?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    profileConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    summary?: StringFieldUpdateOperationsInput | string
-    skillsJson?: JsonNullValueInput | InputJsonValue
-    projectsJson?: JsonNullValueInput | InputJsonValue
-    educationJson?: JsonNullValueInput | InputJsonValue
-    certificationsJson?: JsonNullValueInput | InputJsonValue
-    experienceJson?: JsonNullValueInput | InputJsonValue
-    toolsJson?: JsonNullValueInput | InputJsonValue
-    achievementsJson?: JsonNullValueInput | InputJsonValue
-    cautionNotesJson?: NullableJsonNullValueInput | InputJsonValue
-    metricOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
-    scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateProfilesNestedInput
-    user?: UserUpdateOneWithoutCandidateProfilesNestedInput
-    sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateProfilesNestedInput
-  }
-
-  export type CandidateProfileUncheckedUpdateWithoutCandidateChunksInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    rawCvText?: NullableStringFieldUpdateOperationsInput | string | null
-    rawBackgroundText?: NullableStringFieldUpdateOperationsInput | string | null
-    contactInfoJson?: NullableJsonNullValueInput | InputJsonValue
-    linksJson?: NullableJsonNullValueInput | InputJsonValue
-    sourceType?: NullableEnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType | null
-    profileSource?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceSummary?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    profileConfirmedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    summary?: StringFieldUpdateOperationsInput | string
-    skillsJson?: JsonNullValueInput | InputJsonValue
-    projectsJson?: JsonNullValueInput | InputJsonValue
-    educationJson?: JsonNullValueInput | InputJsonValue
-    certificationsJson?: JsonNullValueInput | InputJsonValue
-    experienceJson?: JsonNullValueInput | InputJsonValue
-    toolsJson?: JsonNullValueInput | InputJsonValue
-    achievementsJson?: JsonNullValueInput | InputJsonValue
-    cautionNotesJson?: NullableJsonNullValueInput | InputJsonValue
-    metricOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
-    scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
-    likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type EvidenceMatchUpsertWithWhereUniqueWithoutCandidateChunkInput = {
-    where: EvidenceMatchWhereUniqueInput
-    update: XOR<EvidenceMatchUpdateWithoutCandidateChunkInput, EvidenceMatchUncheckedUpdateWithoutCandidateChunkInput>
-    create: XOR<EvidenceMatchCreateWithoutCandidateChunkInput, EvidenceMatchUncheckedCreateWithoutCandidateChunkInput>
-  }
-
-  export type EvidenceMatchUpdateWithWhereUniqueWithoutCandidateChunkInput = {
-    where: EvidenceMatchWhereUniqueInput
-    data: XOR<EvidenceMatchUpdateWithoutCandidateChunkInput, EvidenceMatchUncheckedUpdateWithoutCandidateChunkInput>
-  }
-
-  export type EvidenceMatchUpdateManyWithWhereWithoutCandidateChunkInput = {
-    where: EvidenceMatchScalarWhereInput
-    data: XOR<EvidenceMatchUpdateManyMutationInput, EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkInput>
-  }
-
-  export type RequirementFitScoreUpsertWithWhereUniqueWithoutBestCandidateChunkInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    update: XOR<RequirementFitScoreUpdateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedUpdateWithoutBestCandidateChunkInput>
-    create: XOR<RequirementFitScoreCreateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedCreateWithoutBestCandidateChunkInput>
-  }
-
-  export type RequirementFitScoreUpdateWithWhereUniqueWithoutBestCandidateChunkInput = {
-    where: RequirementFitScoreWhereUniqueInput
-    data: XOR<RequirementFitScoreUpdateWithoutBestCandidateChunkInput, RequirementFitScoreUncheckedUpdateWithoutBestCandidateChunkInput>
-  }
-
-  export type RequirementFitScoreUpdateManyWithWhereWithoutBestCandidateChunkInput = {
-    where: RequirementFitScoreScalarWhereInput
-    data: XOR<RequirementFitScoreUpdateManyMutationInput, RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkInput>
-  }
-
-  export type ApplicationCreateWithoutEvidenceMatchesInput = {
-    id?: string
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
-    user?: UserCreateNestedOneWithoutApplicationsInput
-    job?: JobCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationUncheckedCreateWithoutEvidenceMatchesInput = {
-    id?: string
-    anonymousSessionId: string
-    userId?: string | null
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    job?: JobUncheckedCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationCreateOrConnectWithoutEvidenceMatchesInput = {
-    where: ApplicationWhereUniqueInput
-    create: XOR<ApplicationCreateWithoutEvidenceMatchesInput, ApplicationUncheckedCreateWithoutEvidenceMatchesInput>
-  }
-
-  export type JobRequirementCreateWithoutEvidenceMatchesInput = {
-    id?: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    job: JobCreateNestedOneWithoutRequirementsInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementUncheckedCreateWithoutEvidenceMatchesInput = {
-    id?: string
-    jobId: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementCreateOrConnectWithoutEvidenceMatchesInput = {
-    where: JobRequirementWhereUniqueInput
-    create: XOR<JobRequirementCreateWithoutEvidenceMatchesInput, JobRequirementUncheckedCreateWithoutEvidenceMatchesInput>
-  }
-
-  export type CandidateChunkCreateWithoutEvidenceMatchesInput = {
-    id?: string
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateChunksInput
-    user?: UserCreateNestedOneWithoutCandidateChunksInput
-    sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateChunksInput
-    candidateProfile?: CandidateProfileCreateNestedOneWithoutCandidateChunksInput
-    bestFitScores?: RequirementFitScoreCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkUncheckedCreateWithoutEvidenceMatchesInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    bestFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutBestCandidateChunkInput
-  }
-
-  export type CandidateChunkCreateOrConnectWithoutEvidenceMatchesInput = {
-    where: CandidateChunkWhereUniqueInput
-    create: XOR<CandidateChunkCreateWithoutEvidenceMatchesInput, CandidateChunkUncheckedCreateWithoutEvidenceMatchesInput>
-  }
-
-  export type ApplicationUpsertWithoutEvidenceMatchesInput = {
-    update: XOR<ApplicationUpdateWithoutEvidenceMatchesInput, ApplicationUncheckedUpdateWithoutEvidenceMatchesInput>
-    create: XOR<ApplicationCreateWithoutEvidenceMatchesInput, ApplicationUncheckedCreateWithoutEvidenceMatchesInput>
-    where?: ApplicationWhereInput
-  }
-
-  export type ApplicationUpdateToOneWithWhereWithoutEvidenceMatchesInput = {
-    where?: ApplicationWhereInput
-    data: XOR<ApplicationUpdateWithoutEvidenceMatchesInput, ApplicationUncheckedUpdateWithoutEvidenceMatchesInput>
-  }
-
-  export type ApplicationUpdateWithoutEvidenceMatchesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
-    user?: UserUpdateOneWithoutApplicationsNestedInput
-    job?: JobUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type ApplicationUncheckedUpdateWithoutEvidenceMatchesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type JobRequirementUpsertWithoutEvidenceMatchesInput = {
-    update: XOR<JobRequirementUpdateWithoutEvidenceMatchesInput, JobRequirementUncheckedUpdateWithoutEvidenceMatchesInput>
-    create: XOR<JobRequirementCreateWithoutEvidenceMatchesInput, JobRequirementUncheckedCreateWithoutEvidenceMatchesInput>
-    where?: JobRequirementWhereInput
-  }
-
-  export type JobRequirementUpdateToOneWithWhereWithoutEvidenceMatchesInput = {
-    where?: JobRequirementWhereInput
-    data: XOR<JobRequirementUpdateWithoutEvidenceMatchesInput, JobRequirementUncheckedUpdateWithoutEvidenceMatchesInput>
-  }
-
-  export type JobRequirementUpdateWithoutEvidenceMatchesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    job?: JobUpdateOneRequiredWithoutRequirementsNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type JobRequirementUncheckedUpdateWithoutEvidenceMatchesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobId?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type CandidateChunkUpsertWithoutEvidenceMatchesInput = {
-    update: XOR<CandidateChunkUpdateWithoutEvidenceMatchesInput, CandidateChunkUncheckedUpdateWithoutEvidenceMatchesInput>
-    create: XOR<CandidateChunkCreateWithoutEvidenceMatchesInput, CandidateChunkUncheckedCreateWithoutEvidenceMatchesInput>
-    where?: CandidateChunkWhereInput
-  }
-
-  export type CandidateChunkUpdateToOneWithWhereWithoutEvidenceMatchesInput = {
-    where?: CandidateChunkWhereInput
-    data: XOR<CandidateChunkUpdateWithoutEvidenceMatchesInput, CandidateChunkUncheckedUpdateWithoutEvidenceMatchesInput>
-  }
-
-  export type CandidateChunkUpdateWithoutEvidenceMatchesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateChunksNestedInput
-    user?: UserUpdateOneWithoutCandidateChunksNestedInput
-    sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateChunksNestedInput
-    candidateProfile?: CandidateProfileUpdateOneWithoutCandidateChunksNestedInput
-    bestFitScores?: RequirementFitScoreUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateWithoutEvidenceMatchesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    bestFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type ApplicationCreateWithoutRequirementFitScoresInput = {
-    id?: string
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
-    user?: UserCreateNestedOneWithoutApplicationsInput
-    job?: JobCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationUncheckedCreateWithoutRequirementFitScoresInput = {
-    id?: string
-    anonymousSessionId: string
-    userId?: string | null
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    job?: JobUncheckedCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationCreateOrConnectWithoutRequirementFitScoresInput = {
-    where: ApplicationWhereUniqueInput
-    create: XOR<ApplicationCreateWithoutRequirementFitScoresInput, ApplicationUncheckedCreateWithoutRequirementFitScoresInput>
-  }
-
-  export type JobRequirementCreateWithoutRequirementFitScoresInput = {
-    id?: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    job: JobCreateNestedOneWithoutRequirementsInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementUncheckedCreateWithoutRequirementFitScoresInput = {
-    id?: string
-    jobId: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutJobRequirementInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutTargetRequirementInput
-  }
-
-  export type JobRequirementCreateOrConnectWithoutRequirementFitScoresInput = {
-    where: JobRequirementWhereUniqueInput
-    create: XOR<JobRequirementCreateWithoutRequirementFitScoresInput, JobRequirementUncheckedCreateWithoutRequirementFitScoresInput>
-  }
-
-  export type CandidateChunkCreateWithoutBestFitScoresInput = {
-    id?: string
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    anonymousSession?: AnonymousSessionCreateNestedOneWithoutCandidateChunksInput
-    user?: UserCreateNestedOneWithoutCandidateChunksInput
-    sourceApplication?: ApplicationCreateNestedOneWithoutSourceCandidateChunksInput
-    candidateProfile?: CandidateProfileCreateNestedOneWithoutCandidateChunksInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutCandidateChunkInput
-  }
-
-  export type CandidateChunkUncheckedCreateWithoutBestFitScoresInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutCandidateChunkInput
-  }
-
-  export type CandidateChunkCreateOrConnectWithoutBestFitScoresInput = {
-    where: CandidateChunkWhereUniqueInput
-    create: XOR<CandidateChunkCreateWithoutBestFitScoresInput, CandidateChunkUncheckedCreateWithoutBestFitScoresInput>
-  }
-
-  export type ApplicationUpsertWithoutRequirementFitScoresInput = {
-    update: XOR<ApplicationUpdateWithoutRequirementFitScoresInput, ApplicationUncheckedUpdateWithoutRequirementFitScoresInput>
-    create: XOR<ApplicationCreateWithoutRequirementFitScoresInput, ApplicationUncheckedCreateWithoutRequirementFitScoresInput>
-    where?: ApplicationWhereInput
-  }
-
-  export type ApplicationUpdateToOneWithWhereWithoutRequirementFitScoresInput = {
-    where?: ApplicationWhereInput
-    data: XOR<ApplicationUpdateWithoutRequirementFitScoresInput, ApplicationUncheckedUpdateWithoutRequirementFitScoresInput>
-  }
-
-  export type ApplicationUpdateWithoutRequirementFitScoresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
-    user?: UserUpdateOneWithoutApplicationsNestedInput
-    job?: JobUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type ApplicationUncheckedUpdateWithoutRequirementFitScoresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type JobRequirementUpsertWithoutRequirementFitScoresInput = {
-    update: XOR<JobRequirementUpdateWithoutRequirementFitScoresInput, JobRequirementUncheckedUpdateWithoutRequirementFitScoresInput>
-    create: XOR<JobRequirementCreateWithoutRequirementFitScoresInput, JobRequirementUncheckedCreateWithoutRequirementFitScoresInput>
-    where?: JobRequirementWhereInput
-  }
-
-  export type JobRequirementUpdateToOneWithWhereWithoutRequirementFitScoresInput = {
-    where?: JobRequirementWhereInput
-    data: XOR<JobRequirementUpdateWithoutRequirementFitScoresInput, JobRequirementUncheckedUpdateWithoutRequirementFitScoresInput>
-  }
-
-  export type JobRequirementUpdateWithoutRequirementFitScoresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    job?: JobUpdateOneRequiredWithoutRequirementsNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type JobRequirementUncheckedUpdateWithoutRequirementFitScoresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobId?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type CandidateChunkUpsertWithoutBestFitScoresInput = {
-    update: XOR<CandidateChunkUpdateWithoutBestFitScoresInput, CandidateChunkUncheckedUpdateWithoutBestFitScoresInput>
-    create: XOR<CandidateChunkCreateWithoutBestFitScoresInput, CandidateChunkUncheckedCreateWithoutBestFitScoresInput>
-    where?: CandidateChunkWhereInput
-  }
-
-  export type CandidateChunkUpdateToOneWithWhereWithoutBestFitScoresInput = {
-    where?: CandidateChunkWhereInput
-    data: XOR<CandidateChunkUpdateWithoutBestFitScoresInput, CandidateChunkUncheckedUpdateWithoutBestFitScoresInput>
-  }
-
-  export type CandidateChunkUpdateWithoutBestFitScoresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateChunksNestedInput
-    user?: UserUpdateOneWithoutCandidateChunksNestedInput
-    sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateChunksNestedInput
-    candidateProfile?: CandidateProfileUpdateOneWithoutCandidateChunksNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateWithoutBestFitScoresInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkNestedInput
   }
 
   export type ApplicationCreateWithoutGapQuestionsInput = {
@@ -43176,12 +29734,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
@@ -43204,12 +29757,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
@@ -43220,43 +29768,9 @@ export namespace Prisma {
     create: XOR<ApplicationCreateWithoutGapQuestionsInput, ApplicationUncheckedCreateWithoutGapQuestionsInput>
   }
 
-  export type JobRequirementCreateWithoutGapQuestionsInput = {
-    id?: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    job: JobCreateNestedOneWithoutRequirementsInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutJobRequirementInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutJobRequirementInput
-  }
-
-  export type JobRequirementUncheckedCreateWithoutGapQuestionsInput = {
-    id?: string
-    jobId: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutJobRequirementInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutJobRequirementInput
-  }
-
-  export type JobRequirementCreateOrConnectWithoutGapQuestionsInput = {
-    where: JobRequirementWhereUniqueInput
-    create: XOR<JobRequirementCreateWithoutGapQuestionsInput, JobRequirementUncheckedCreateWithoutGapQuestionsInput>
-  }
-
   export type GapAnswerCreateWithoutGapQuestionInput = {
     id?: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -43278,7 +29792,6 @@ export namespace Prisma {
     id?: string
     applicationId: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -43333,12 +29846,7 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
@@ -43361,54 +29869,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type JobRequirementUpsertWithoutGapQuestionsInput = {
-    update: XOR<JobRequirementUpdateWithoutGapQuestionsInput, JobRequirementUncheckedUpdateWithoutGapQuestionsInput>
-    create: XOR<JobRequirementCreateWithoutGapQuestionsInput, JobRequirementUncheckedCreateWithoutGapQuestionsInput>
-    where?: JobRequirementWhereInput
-  }
-
-  export type JobRequirementUpdateToOneWithWhereWithoutGapQuestionsInput = {
-    where?: JobRequirementWhereInput
-    data: XOR<JobRequirementUpdateWithoutGapQuestionsInput, JobRequirementUncheckedUpdateWithoutGapQuestionsInput>
-  }
-
-  export type JobRequirementUpdateWithoutGapQuestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    job?: JobUpdateOneRequiredWithoutRequirementsNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutJobRequirementNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutJobRequirementNestedInput
-  }
-
-  export type JobRequirementUncheckedUpdateWithoutGapQuestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobId?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutJobRequirementNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutJobRequirementNestedInput
   }
 
   export type GapAnswerUpsertWithWhereUniqueWithoutGapQuestionInput = {
@@ -43427,134 +29891,6 @@ export namespace Prisma {
     data: XOR<GapAnswerUpdateManyMutationInput, GapAnswerUncheckedUpdateManyWithoutGapQuestionInput>
   }
 
-  export type ApplicationCreateWithoutGapCoachInsightInput = {
-    id?: string
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
-    user?: UserCreateNestedOneWithoutApplicationsInput
-    job?: JobCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationUncheckedCreateWithoutGapCoachInsightInput = {
-    id?: string
-    anonymousSessionId: string
-    userId?: string | null
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    job?: JobUncheckedCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
-    cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationCreateOrConnectWithoutGapCoachInsightInput = {
-    where: ApplicationWhereUniqueInput
-    create: XOR<ApplicationCreateWithoutGapCoachInsightInput, ApplicationUncheckedCreateWithoutGapCoachInsightInput>
-  }
-
-  export type ApplicationUpsertWithoutGapCoachInsightInput = {
-    update: XOR<ApplicationUpdateWithoutGapCoachInsightInput, ApplicationUncheckedUpdateWithoutGapCoachInsightInput>
-    create: XOR<ApplicationCreateWithoutGapCoachInsightInput, ApplicationUncheckedCreateWithoutGapCoachInsightInput>
-    where?: ApplicationWhereInput
-  }
-
-  export type ApplicationUpdateToOneWithWhereWithoutGapCoachInsightInput = {
-    where?: ApplicationWhereInput
-    data: XOR<ApplicationUpdateWithoutGapCoachInsightInput, ApplicationUncheckedUpdateWithoutGapCoachInsightInput>
-  }
-
-  export type ApplicationUpdateWithoutGapCoachInsightInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
-    user?: UserUpdateOneWithoutApplicationsNestedInput
-    job?: JobUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type ApplicationUncheckedUpdateWithoutGapCoachInsightInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
   export type GapQuestionCreateWithoutAnswersInput = {
     id?: string
     question: string
@@ -43566,13 +29902,11 @@ export namespace Prisma {
     status?: $Enums.GapQuestionStatus
     createdAt?: Date | string
     application: ApplicationCreateNestedOneWithoutGapQuestionsInput
-    targetRequirement?: JobRequirementCreateNestedOneWithoutGapQuestionsInput
   }
 
   export type GapQuestionUncheckedCreateWithoutAnswersInput = {
     id?: string
     applicationId: string
-    targetRequirementId?: string | null
     question: string
     reason: string
     whyItMatters?: string | null
@@ -43605,12 +29939,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
@@ -43633,12 +29962,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
@@ -43671,13 +29995,11 @@ export namespace Prisma {
     status?: EnumGapQuestionStatusFieldUpdateOperationsInput | $Enums.GapQuestionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     application?: ApplicationUpdateOneRequiredWithoutGapQuestionsNestedInput
-    targetRequirement?: JobRequirementUpdateOneWithoutGapQuestionsNestedInput
   }
 
   export type GapQuestionUncheckedUpdateWithoutAnswersInput = {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     question?: StringFieldUpdateOperationsInput | string
     reason?: StringFieldUpdateOperationsInput | string
     whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
@@ -43716,12 +30038,7 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
@@ -43744,195 +30061,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type ApplicationCreateWithoutCvStrategiesInput = {
-    id?: string
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
-    user?: UserCreateNestedOneWithoutApplicationsInput
-    job?: JobCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationUncheckedCreateWithoutCvStrategiesInput = {
-    id?: string
-    anonymousSessionId: string
-    userId?: string | null
-    status?: $Enums.ApplicationStatus
-    currentStep?: string
-    dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
-    roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    job?: JobUncheckedCreateNestedOneWithoutApplicationInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
-    gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
-    gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
-    agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
-  }
-
-  export type ApplicationCreateOrConnectWithoutCvStrategiesInput = {
-    where: ApplicationWhereUniqueInput
-    create: XOR<ApplicationCreateWithoutCvStrategiesInput, ApplicationUncheckedCreateWithoutCvStrategiesInput>
-  }
-
-  export type CvDraftCreateWithoutStrategyInput = {
-    id?: string
-    version?: number
-    cvJson: JsonNullValueInput | InputJsonValue
-    cvText: string
-    presentationJson?: NullableJsonNullValueInput | InputJsonValue
-    builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutCvDraftsInput
-    usage?: CvGenerationUsageCreateNestedManyWithoutCvDraftInput
-  }
-
-  export type CvDraftUncheckedCreateWithoutStrategyInput = {
-    id?: string
-    applicationId: string
-    version?: number
-    cvJson: JsonNullValueInput | InputJsonValue
-    cvText: string
-    presentationJson?: NullableJsonNullValueInput | InputJsonValue
-    builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    usage?: CvGenerationUsageUncheckedCreateNestedManyWithoutCvDraftInput
-  }
-
-  export type CvDraftCreateOrConnectWithoutStrategyInput = {
-    where: CvDraftWhereUniqueInput
-    create: XOR<CvDraftCreateWithoutStrategyInput, CvDraftUncheckedCreateWithoutStrategyInput>
-  }
-
-  export type CvDraftCreateManyStrategyInputEnvelope = {
-    data: CvDraftCreateManyStrategyInput | CvDraftCreateManyStrategyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ApplicationUpsertWithoutCvStrategiesInput = {
-    update: XOR<ApplicationUpdateWithoutCvStrategiesInput, ApplicationUncheckedUpdateWithoutCvStrategiesInput>
-    create: XOR<ApplicationCreateWithoutCvStrategiesInput, ApplicationUncheckedCreateWithoutCvStrategiesInput>
-    where?: ApplicationWhereInput
-  }
-
-  export type ApplicationUpdateToOneWithWhereWithoutCvStrategiesInput = {
-    where?: ApplicationWhereInput
-    data: XOR<ApplicationUpdateWithoutCvStrategiesInput, ApplicationUncheckedUpdateWithoutCvStrategiesInput>
-  }
-
-  export type ApplicationUpdateWithoutCvStrategiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
-    user?: UserUpdateOneWithoutApplicationsNestedInput
-    job?: JobUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type ApplicationUncheckedUpdateWithoutCvStrategiesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
-    currentStep?: StringFieldUpdateOperationsInput | string
-    dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
-    roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
-    sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
-    gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
-    cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
-    agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type CvDraftUpsertWithWhereUniqueWithoutStrategyInput = {
-    where: CvDraftWhereUniqueInput
-    update: XOR<CvDraftUpdateWithoutStrategyInput, CvDraftUncheckedUpdateWithoutStrategyInput>
-    create: XOR<CvDraftCreateWithoutStrategyInput, CvDraftUncheckedCreateWithoutStrategyInput>
-  }
-
-  export type CvDraftUpdateWithWhereUniqueWithoutStrategyInput = {
-    where: CvDraftWhereUniqueInput
-    data: XOR<CvDraftUpdateWithoutStrategyInput, CvDraftUncheckedUpdateWithoutStrategyInput>
-  }
-
-  export type CvDraftUpdateManyWithWhereWithoutStrategyInput = {
-    where: CvDraftScalarWhereInput
-    data: XOR<CvDraftUpdateManyMutationInput, CvDraftUncheckedUpdateManyWithoutStrategyInput>
   }
 
   export type ApplicationCreateWithoutCvDraftsInput = {
@@ -43952,13 +30084,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
   }
@@ -43980,13 +30107,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
   }
@@ -43994,39 +30116,6 @@ export namespace Prisma {
   export type ApplicationCreateOrConnectWithoutCvDraftsInput = {
     where: ApplicationWhereUniqueInput
     create: XOR<ApplicationCreateWithoutCvDraftsInput, ApplicationUncheckedCreateWithoutCvDraftsInput>
-  }
-
-  export type CvStrategyCreateWithoutCvDraftsInput = {
-    id?: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    application: ApplicationCreateNestedOneWithoutCvStrategiesInput
-  }
-
-  export type CvStrategyUncheckedCreateWithoutCvDraftsInput = {
-    id?: string
-    applicationId: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-  }
-
-  export type CvStrategyCreateOrConnectWithoutCvDraftsInput = {
-    where: CvStrategyWhereUniqueInput
-    create: XOR<CvStrategyCreateWithoutCvDraftsInput, CvStrategyUncheckedCreateWithoutCvDraftsInput>
   }
 
   export type CvGenerationUsageCreateWithoutCvDraftInput = {
@@ -44087,13 +30176,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
   }
@@ -44115,54 +30199,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
-  }
-
-  export type CvStrategyUpsertWithoutCvDraftsInput = {
-    update: XOR<CvStrategyUpdateWithoutCvDraftsInput, CvStrategyUncheckedUpdateWithoutCvDraftsInput>
-    create: XOR<CvStrategyCreateWithoutCvDraftsInput, CvStrategyUncheckedCreateWithoutCvDraftsInput>
-    where?: CvStrategyWhereInput
-  }
-
-  export type CvStrategyUpdateToOneWithWhereWithoutCvDraftsInput = {
-    where?: CvStrategyWhereInput
-    data: XOR<CvStrategyUpdateWithoutCvDraftsInput, CvStrategyUncheckedUpdateWithoutCvDraftsInput>
-  }
-
-  export type CvStrategyUpdateWithoutCvDraftsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutCvStrategiesNestedInput
-  }
-
-  export type CvStrategyUncheckedUpdateWithoutCvDraftsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CvGenerationUsageUpsertWithWhereUniqueWithoutCvDraftInput = {
@@ -44194,7 +30234,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutUserInput
     applications?: ApplicationCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBillingAccountInput = {
@@ -44210,7 +30249,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutUserInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBillingAccountInput = {
@@ -44242,7 +30280,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutUserNestedInput
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBillingAccountInput = {
@@ -44258,7 +30295,6 @@ export namespace Prisma {
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutUserNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCvGenerationUsageInput = {
@@ -44274,7 +30310,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountCreateNestedOneWithoutUserInput
     applications?: ApplicationCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCvGenerationUsageInput = {
@@ -44290,7 +30325,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUncheckedCreateNestedOneWithoutUserInput
     applications?: ApplicationUncheckedCreateNestedManyWithoutUserInput
     candidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutUserInput
-    candidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCvGenerationUsageInput = {
@@ -44315,13 +30349,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunCreateNestedManyWithoutApplicationInput
   }
@@ -44343,13 +30372,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     agentRuns?: AgentRunUncheckedCreateNestedManyWithoutApplicationInput
   }
@@ -44369,13 +30393,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     application: ApplicationCreateNestedOneWithoutCvDraftsInput
-    strategy?: CvStrategyCreateNestedOneWithoutCvDraftsInput
   }
 
   export type CvDraftUncheckedCreateWithoutUsageInput = {
     id?: string
     applicationId: string
-    strategyId?: string | null
     version?: number
     cvJson: JsonNullValueInput | InputJsonValue
     cvText: string
@@ -44414,7 +30436,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUpdateOneWithoutUserNestedInput
     applications?: ApplicationUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCvGenerationUsageInput = {
@@ -44430,7 +30451,6 @@ export namespace Prisma {
     billingAccount?: BillingAccountUncheckedUpdateOneWithoutUserNestedInput
     applications?: ApplicationUncheckedUpdateManyWithoutUserNestedInput
     candidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutUserNestedInput
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ApplicationUpsertWithoutCvGenerationUsageInput = {
@@ -44461,13 +30481,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
   }
@@ -44489,13 +30504,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
   }
@@ -44521,13 +30531,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     application?: ApplicationUpdateOneRequiredWithoutCvDraftsNestedInput
-    strategy?: CvStrategyUpdateOneWithoutCvDraftsNestedInput
   }
 
   export type CvDraftUncheckedUpdateWithoutUsageInput = {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
-    strategyId?: NullableStringFieldUpdateOperationsInput | string | null
     version?: IntFieldUpdateOperationsInput | number
     cvJson?: JsonNullValueInput | InputJsonValue
     cvText?: StringFieldUpdateOperationsInput | string
@@ -44554,13 +30562,8 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutApplicationsInput
     job?: JobCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageCreateNestedManyWithoutApplicationInput
   }
@@ -44582,13 +30585,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
-    sourceCandidateChunks?: CandidateChunkUncheckedCreateNestedManyWithoutSourceApplicationInput
-    evidenceMatches?: EvidenceMatchUncheckedCreateNestedManyWithoutApplicationInput
-    requirementFitScores?: RequirementFitScoreUncheckedCreateNestedManyWithoutApplicationInput
     gapQuestions?: GapQuestionUncheckedCreateNestedManyWithoutApplicationInput
     gapAnswers?: GapAnswerUncheckedCreateNestedManyWithoutApplicationInput
-    gapCoachInsight?: GapCoachInsightUncheckedCreateNestedOneWithoutApplicationInput
-    cvStrategies?: CvStrategyUncheckedCreateNestedManyWithoutApplicationInput
     cvDrafts?: CvDraftUncheckedCreateNestedManyWithoutApplicationInput
     cvGenerationUsage?: CvGenerationUsageUncheckedCreateNestedManyWithoutApplicationInput
   }
@@ -44626,13 +30624,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
   }
@@ -44654,13 +30647,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
   }
@@ -44716,27 +30704,6 @@ export namespace Prisma {
     archivedAt?: Date | string | null
   }
 
-  export type CandidateChunkCreateManyAnonymousSessionInput = {
-    id?: string
-    userId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-  }
-
   export type ApplicationUpdateWithoutAnonymousSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
@@ -44753,13 +30720,8 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
@@ -44781,13 +30743,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
@@ -44842,7 +30799,6 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneWithoutCandidateProfilesNestedInput
     sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateProfilesNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileUncheckedUpdateWithoutAnonymousSessionInput = {
@@ -44878,7 +30834,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileUncheckedUpdateManyWithoutAnonymousSessionInput = {
@@ -44912,73 +30867,6 @@ export namespace Prisma {
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type CandidateChunkUpdateWithoutAnonymousSessionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneWithoutCandidateChunksNestedInput
-    sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateChunksNestedInput
-    candidateProfile?: CandidateProfileUpdateOneWithoutCandidateChunksNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateWithoutAnonymousSessionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateManyWithoutAnonymousSessionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -45065,27 +30953,6 @@ export namespace Prisma {
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-  }
-
-  export type CandidateChunkCreateManyUserInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    sourceApplicationId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
     lastSeenAt?: Date | string
     archivedAt?: Date | string | null
   }
@@ -45211,13 +31078,8 @@ export namespace Prisma {
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
     job?: JobUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUpdateManyWithoutApplicationNestedInput
@@ -45239,13 +31101,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    sourceCandidateChunks?: CandidateChunkUncheckedUpdateManyWithoutSourceApplicationNestedInput
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutApplicationNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutApplicationNestedInput
     gapQuestions?: GapQuestionUncheckedUpdateManyWithoutApplicationNestedInput
     gapAnswers?: GapAnswerUncheckedUpdateManyWithoutApplicationNestedInput
-    gapCoachInsight?: GapCoachInsightUncheckedUpdateOneWithoutApplicationNestedInput
-    cvStrategies?: CvStrategyUncheckedUpdateManyWithoutApplicationNestedInput
     cvDrafts?: CvDraftUncheckedUpdateManyWithoutApplicationNestedInput
     cvGenerationUsage?: CvGenerationUsageUncheckedUpdateManyWithoutApplicationNestedInput
     agentRuns?: AgentRunUncheckedUpdateManyWithoutApplicationNestedInput
@@ -45300,7 +31157,6 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateProfilesNestedInput
     sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateProfilesNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileUncheckedUpdateWithoutUserInput = {
@@ -45336,7 +31192,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileUncheckedUpdateManyWithoutUserInput = {
@@ -45370,73 +31225,6 @@ export namespace Prisma {
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type CandidateChunkUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateChunksNestedInput
-    sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateChunksNestedInput
-    candidateProfile?: CandidateProfileUpdateOneWithoutCandidateChunksNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
@@ -45476,56 +31264,8 @@ export namespace Prisma {
     archivedAt?: Date | string | null
   }
 
-  export type CandidateChunkCreateManySourceApplicationInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    candidateProfileId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-  }
-
-  export type EvidenceMatchCreateManyApplicationInput = {
-    id?: string
-    jobRequirementId: string
-    candidateChunkId?: string | null
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type RequirementFitScoreCreateManyApplicationInput = {
-    id?: string
-    jobRequirementId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    bestCandidateChunkId?: string | null
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type GapQuestionCreateManyApplicationInput = {
     id?: string
-    targetRequirementId?: string | null
     question: string
     reason: string
     whyItMatters?: string | null
@@ -45540,7 +31280,6 @@ export namespace Prisma {
     id?: string
     gapQuestionId: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -45557,22 +31296,8 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type CvStrategyCreateManyApplicationInput = {
-    id?: string
-    strategySummary: string
-    targetPositioning: string
-    sectionOrderJson: JsonNullValueInput | InputJsonValue
-    emphasisJson: JsonNullValueInput | InputJsonValue
-    deEmphasisJson: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson: JsonNullValueInput | InputJsonValue
-    warningsJson: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-  }
-
   export type CvDraftCreateManyApplicationInput = {
     id?: string
-    strategyId?: string | null
     version?: number
     cvJson: JsonNullValueInput | InputJsonValue
     cvText: string
@@ -45635,7 +31360,6 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateProfilesNestedInput
     user?: UserUpdateOneWithoutCandidateProfilesNestedInput
-    candidateChunks?: CandidateChunkUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileUncheckedUpdateWithoutSourceApplicationInput = {
@@ -45671,7 +31395,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    candidateChunks?: CandidateChunkUncheckedUpdateManyWithoutCandidateProfileNestedInput
   }
 
   export type CandidateProfileUncheckedUpdateManyWithoutSourceApplicationInput = {
@@ -45709,151 +31432,6 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type CandidateChunkUpdateWithoutSourceApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateChunksNestedInput
-    user?: UserUpdateOneWithoutCandidateChunksNestedInput
-    candidateProfile?: CandidateProfileUpdateOneWithoutCandidateChunksNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateWithoutSourceApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateManyWithoutSourceApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    candidateProfileId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type EvidenceMatchUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobRequirement?: JobRequirementUpdateOneRequiredWithoutEvidenceMatchesNestedInput
-    candidateChunk?: CandidateChunkUpdateOneWithoutEvidenceMatchesNestedInput
-  }
-
-  export type EvidenceMatchUncheckedUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    candidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EvidenceMatchUncheckedUpdateManyWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    candidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobRequirement?: JobRequirementUpdateOneRequiredWithoutRequirementFitScoresNestedInput
-    bestCandidateChunk?: CandidateChunkUpdateOneWithoutBestFitScoresNestedInput
-  }
-
-  export type RequirementFitScoreUncheckedUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreUncheckedUpdateManyWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type GapQuestionUpdateWithoutApplicationInput = {
     id?: StringFieldUpdateOperationsInput | string
     question?: StringFieldUpdateOperationsInput | string
@@ -45864,13 +31442,11 @@ export namespace Prisma {
     questionJson?: NullableJsonNullValueInput | InputJsonValue
     status?: EnumGapQuestionStatusFieldUpdateOperationsInput | $Enums.GapQuestionStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    targetRequirement?: JobRequirementUpdateOneWithoutGapQuestionsNestedInput
     answers?: GapAnswerUpdateManyWithoutGapQuestionNestedInput
   }
 
   export type GapQuestionUncheckedUpdateWithoutApplicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     question?: StringFieldUpdateOperationsInput | string
     reason?: StringFieldUpdateOperationsInput | string
     whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45884,7 +31460,6 @@ export namespace Prisma {
 
   export type GapQuestionUncheckedUpdateManyWithoutApplicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     question?: StringFieldUpdateOperationsInput | string
     reason?: StringFieldUpdateOperationsInput | string
     whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45898,7 +31473,6 @@ export namespace Prisma {
   export type GapAnswerUpdateWithoutApplicationInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45920,7 +31494,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     gapQuestionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45941,7 +31514,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     gapQuestionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45958,47 +31530,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CvStrategyUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cvDrafts?: CvDraftUpdateManyWithoutStrategyNestedInput
-  }
-
-  export type CvStrategyUncheckedUpdateWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    cvDrafts?: CvDraftUncheckedUpdateManyWithoutStrategyNestedInput
-  }
-
-  export type CvStrategyUncheckedUpdateManyWithoutApplicationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    strategySummary?: StringFieldUpdateOperationsInput | string
-    targetPositioning?: StringFieldUpdateOperationsInput | string
-    sectionOrderJson?: JsonNullValueInput | InputJsonValue
-    emphasisJson?: JsonNullValueInput | InputJsonValue
-    deEmphasisJson?: JsonNullValueInput | InputJsonValue
-    evidenceToUseJson?: JsonNullValueInput | InputJsonValue
-    warningsJson?: JsonNullValueInput | InputJsonValue
-    strategyJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type CvDraftUpdateWithoutApplicationInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
@@ -46008,13 +31539,11 @@ export namespace Prisma {
     builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    strategy?: CvStrategyUpdateOneWithoutCvDraftsNestedInput
     usage?: CvGenerationUsageUpdateManyWithoutCvDraftNestedInput
   }
 
   export type CvDraftUncheckedUpdateWithoutApplicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    strategyId?: NullableStringFieldUpdateOperationsInput | string | null
     version?: IntFieldUpdateOperationsInput | number
     cvJson?: JsonNullValueInput | InputJsonValue
     cvText?: StringFieldUpdateOperationsInput | string
@@ -46027,7 +31556,6 @@ export namespace Prisma {
 
   export type CvDraftUncheckedUpdateManyWithoutApplicationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    strategyId?: NullableStringFieldUpdateOperationsInput | string | null
     version?: IntFieldUpdateOperationsInput | number
     cvJson?: JsonNullValueInput | InputJsonValue
     cvText?: StringFieldUpdateOperationsInput | string
@@ -46097,411 +31625,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type JobRequirementCreateManyJobInput = {
-    id?: string
-    type: $Enums.RequirementType
-    label: string
-    description: string
-    importance: $Enums.Importance
-    queryEmbeddingModel?: string | null
-    queryEmbeddingInputHash?: string | null
-    queryEmbeddedAt?: Date | string | null
-  }
-
-  export type JobRequirementUpdateWithoutJobInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutJobRequirementNestedInput
-    requirementFitScores?: RequirementFitScoreUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type JobRequirementUncheckedUpdateWithoutJobInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutJobRequirementNestedInput
-    requirementFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutJobRequirementNestedInput
-    gapQuestions?: GapQuestionUncheckedUpdateManyWithoutTargetRequirementNestedInput
-  }
-
-  export type JobRequirementUncheckedUpdateManyWithoutJobInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumRequirementTypeFieldUpdateOperationsInput | $Enums.RequirementType
-    label?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    importance?: EnumImportanceFieldUpdateOperationsInput | $Enums.Importance
-    queryEmbeddingModel?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddingInputHash?: NullableStringFieldUpdateOperationsInput | string | null
-    queryEmbeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type EvidenceMatchCreateManyJobRequirementInput = {
-    id?: string
-    applicationId: string
-    candidateChunkId?: string | null
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type RequirementFitScoreCreateManyJobRequirementInput = {
-    id?: string
-    applicationId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    bestCandidateChunkId?: string | null
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type GapQuestionCreateManyTargetRequirementInput = {
-    id?: string
-    applicationId: string
-    question: string
-    reason: string
-    whyItMatters?: string | null
-    answerGuidance?: string | null
-    exampleAnglesJson?: NullableJsonNullValueInput | InputJsonValue
-    questionJson?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.GapQuestionStatus
-    createdAt?: Date | string
-  }
-
-  export type EvidenceMatchUpdateWithoutJobRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutEvidenceMatchesNestedInput
-    candidateChunk?: CandidateChunkUpdateOneWithoutEvidenceMatchesNestedInput
-  }
-
-  export type EvidenceMatchUncheckedUpdateWithoutJobRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    candidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EvidenceMatchUncheckedUpdateManyWithoutJobRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    candidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreUpdateWithoutJobRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutRequirementFitScoresNestedInput
-    bestCandidateChunk?: CandidateChunkUpdateOneWithoutBestFitScoresNestedInput
-  }
-
-  export type RequirementFitScoreUncheckedUpdateWithoutJobRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreUncheckedUpdateManyWithoutJobRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    bestCandidateChunkId?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type GapQuestionUpdateWithoutTargetRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    reason?: StringFieldUpdateOperationsInput | string
-    whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
-    answerGuidance?: NullableStringFieldUpdateOperationsInput | string | null
-    exampleAnglesJson?: NullableJsonNullValueInput | InputJsonValue
-    questionJson?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumGapQuestionStatusFieldUpdateOperationsInput | $Enums.GapQuestionStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutGapQuestionsNestedInput
-    answers?: GapAnswerUpdateManyWithoutGapQuestionNestedInput
-  }
-
-  export type GapQuestionUncheckedUpdateWithoutTargetRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    reason?: StringFieldUpdateOperationsInput | string
-    whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
-    answerGuidance?: NullableStringFieldUpdateOperationsInput | string | null
-    exampleAnglesJson?: NullableJsonNullValueInput | InputJsonValue
-    questionJson?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumGapQuestionStatusFieldUpdateOperationsInput | $Enums.GapQuestionStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    answers?: GapAnswerUncheckedUpdateManyWithoutGapQuestionNestedInput
-  }
-
-  export type GapQuestionUncheckedUpdateManyWithoutTargetRequirementInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    reason?: StringFieldUpdateOperationsInput | string
-    whyItMatters?: NullableStringFieldUpdateOperationsInput | string | null
-    answerGuidance?: NullableStringFieldUpdateOperationsInput | string | null
-    exampleAnglesJson?: NullableJsonNullValueInput | InputJsonValue
-    questionJson?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumGapQuestionStatusFieldUpdateOperationsInput | $Enums.GapQuestionStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CandidateChunkCreateManyCandidateProfileInput = {
-    id?: string
-    anonymousSessionId?: string | null
-    userId?: string | null
-    sourceApplicationId?: string | null
-    sourceType: $Enums.SourceType
-    sourceId?: string | null
-    sourceKey?: string | null
-    sourceHash?: string | null
-    contentHash?: string | null
-    chunkType: $Enums.ChunkType
-    content: string
-    tagsJson: JsonNullValueInput | InputJsonValue
-    metadataJson: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    embeddedAt?: Date | string | null
-    lastSeenAt?: Date | string
-    archivedAt?: Date | string | null
-  }
-
-  export type CandidateChunkUpdateWithoutCandidateProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    anonymousSession?: AnonymousSessionUpdateOneWithoutCandidateChunksNestedInput
-    user?: UserUpdateOneWithoutCandidateChunksNestedInput
-    sourceApplication?: ApplicationUpdateOneWithoutSourceCandidateChunksNestedInput
-    evidenceMatches?: EvidenceMatchUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateWithoutCandidateProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    evidenceMatches?: EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkNestedInput
-    bestFitScores?: RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkNestedInput
-  }
-
-  export type CandidateChunkUncheckedUpdateManyWithoutCandidateProfileInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    anonymousSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceApplicationId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceType?: EnumSourceTypeFieldUpdateOperationsInput | $Enums.SourceType
-    sourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceKey?: NullableStringFieldUpdateOperationsInput | string | null
-    sourceHash?: NullableStringFieldUpdateOperationsInput | string | null
-    contentHash?: NullableStringFieldUpdateOperationsInput | string | null
-    chunkType?: EnumChunkTypeFieldUpdateOperationsInput | $Enums.ChunkType
-    content?: StringFieldUpdateOperationsInput | string
-    tagsJson?: JsonNullValueInput | InputJsonValue
-    metadataJson?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    embeddedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type EvidenceMatchCreateManyCandidateChunkInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    similarityScore?: number | null
-    confidence: $Enums.EvidenceConfidence
-    cvUsefulness?: string | null
-    claimRisk?: string | null
-    reason: string
-    createdAt?: Date | string
-  }
-
-  export type RequirementFitScoreCreateManyBestCandidateChunkInput = {
-    id?: string
-    applicationId: string
-    jobRequirementId: string
-    finalConfidence: $Enums.EvidenceConfidence
-    reason: string
-    importanceWeight: number
-    confidenceValue: number
-    earnedPoints: number
-    possiblePoints: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type EvidenceMatchUpdateWithoutCandidateChunkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutEvidenceMatchesNestedInput
-    jobRequirement?: JobRequirementUpdateOneRequiredWithoutEvidenceMatchesNestedInput
-  }
-
-  export type EvidenceMatchUncheckedUpdateWithoutCandidateChunkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type EvidenceMatchUncheckedUpdateManyWithoutCandidateChunkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    similarityScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    confidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    cvUsefulness?: NullableStringFieldUpdateOperationsInput | string | null
-    claimRisk?: NullableStringFieldUpdateOperationsInput | string | null
-    reason?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreUpdateWithoutBestCandidateChunkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutRequirementFitScoresNestedInput
-    jobRequirement?: JobRequirementUpdateOneRequiredWithoutRequirementFitScoresNestedInput
-  }
-
-  export type RequirementFitScoreUncheckedUpdateWithoutBestCandidateChunkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type RequirementFitScoreUncheckedUpdateManyWithoutBestCandidateChunkInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    jobRequirementId?: StringFieldUpdateOperationsInput | string
-    finalConfidence?: EnumEvidenceConfidenceFieldUpdateOperationsInput | $Enums.EvidenceConfidence
-    reason?: StringFieldUpdateOperationsInput | string
-    importanceWeight?: FloatFieldUpdateOperationsInput | number
-    confidenceValue?: FloatFieldUpdateOperationsInput | number
-    earnedPoints?: FloatFieldUpdateOperationsInput | number
-    possiblePoints?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type GapAnswerCreateManyGapQuestionInput = {
     id?: string
     applicationId: string
     userId?: string | null
-    targetRequirementId?: string | null
     buttonAnswer: $Enums.ButtonAnswer
     elaboration?: string | null
     selectedOption?: string | null
@@ -46521,7 +31648,6 @@ export namespace Prisma {
   export type GapAnswerUpdateWithoutGapQuestionInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46543,7 +31669,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46564,7 +31689,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     applicationId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
-    targetRequirementId?: NullableStringFieldUpdateOperationsInput | string | null
     buttonAnswer?: EnumButtonAnswerFieldUpdateOperationsInput | $Enums.ButtonAnswer
     elaboration?: NullableStringFieldUpdateOperationsInput | string | null
     selectedOption?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46579,56 +31703,6 @@ export namespace Prisma {
     source?: NullableStringFieldUpdateOperationsInput | string | null
     skipped?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CvDraftCreateManyStrategyInput = {
-    id?: string
-    applicationId: string
-    version?: number
-    cvJson: JsonNullValueInput | InputJsonValue
-    cvText: string
-    presentationJson?: NullableJsonNullValueInput | InputJsonValue
-    builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CvDraftUpdateWithoutStrategyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    version?: IntFieldUpdateOperationsInput | number
-    cvJson?: JsonNullValueInput | InputJsonValue
-    cvText?: StringFieldUpdateOperationsInput | string
-    presentationJson?: NullableJsonNullValueInput | InputJsonValue
-    builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    application?: ApplicationUpdateOneRequiredWithoutCvDraftsNestedInput
-    usage?: CvGenerationUsageUpdateManyWithoutCvDraftNestedInput
-  }
-
-  export type CvDraftUncheckedUpdateWithoutStrategyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    version?: IntFieldUpdateOperationsInput | number
-    cvJson?: JsonNullValueInput | InputJsonValue
-    cvText?: StringFieldUpdateOperationsInput | string
-    presentationJson?: NullableJsonNullValueInput | InputJsonValue
-    builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usage?: CvGenerationUsageUncheckedUpdateManyWithoutCvDraftNestedInput
-  }
-
-  export type CvDraftUncheckedUpdateManyWithoutStrategyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    applicationId?: StringFieldUpdateOperationsInput | string
-    version?: IntFieldUpdateOperationsInput | number
-    cvJson?: JsonNullValueInput | InputJsonValue
-    cvText?: StringFieldUpdateOperationsInput | string
-    presentationJson?: NullableJsonNullValueInput | InputJsonValue
-    builderOutputJson?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CvGenerationUsageCreateManyCvDraftInput = {

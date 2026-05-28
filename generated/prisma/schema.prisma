@@ -22,21 +22,6 @@ enum ApplicationStatus {
   cv_ready
 }
 
-enum RequirementType {
-  skill
-  tool
-  responsibility
-  soft_skill
-  domain
-  keyword
-}
-
-enum Importance {
-  high
-  medium
-  low
-}
-
 enum SourceType {
   profile
   cv_upload
@@ -44,23 +29,6 @@ enum SourceType {
   background
   gap_answer
   manual
-}
-
-enum ChunkType {
-  project
-  skill
-  certification
-  education
-  experience
-  gap_answer
-  achievement
-}
-
-enum EvidenceConfidence {
-  high
-  medium
-  low
-  missing
 }
 
 enum GapQuestionStatus {
@@ -135,7 +103,6 @@ model AnonymousSession {
   updatedAt         DateTime           @default(now()) @updatedAt @map("updated_at")
   applications      Application[]
   candidateProfiles CandidateProfile[]
-  candidateChunks   CandidateChunk[]
 
   @@map("anonymous_sessions")
 }
@@ -154,7 +121,6 @@ model User {
   cvGenerationUsage CvGenerationUsage[]
   applications      Application[]
   candidateProfiles CandidateProfile[]
-  candidateChunks   CandidateChunk[]
 
   @@map("users")
 }
@@ -222,17 +188,12 @@ model Application {
   createdAt                  DateTime          @default(now()) @map("created_at")
   updatedAt                  DateTime          @default(now()) @updatedAt @map("updated_at")
 
-  anonymousSession        AnonymousSession      @relation(fields: [anonymousSessionId], references: [id], onDelete: Cascade)
-  user                    User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  anonymousSession        AnonymousSession    @relation(fields: [anonymousSessionId], references: [id], onDelete: Cascade)
+  user                    User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
   job                     Job?
-  sourceCandidateProfiles CandidateProfile[]    @relation("SourceApplicationCandidateProfiles")
-  sourceCandidateChunks   CandidateChunk[]      @relation("SourceApplicationCandidateChunks")
-  evidenceMatches         EvidenceMatch[]
-  requirementFitScores    RequirementFitScore[]
+  sourceCandidateProfiles CandidateProfile[]  @relation("SourceApplicationCandidateProfiles")
   gapQuestions            GapQuestion[]
   gapAnswers              GapAnswer[]
-  gapCoachInsight         GapCoachInsight?
-  cvStrategies            CvStrategy[]
   cvDrafts                CvDraft[]
   cvGenerationUsage       CvGenerationUsage[]
   agentRuns               AgentRun[]
@@ -243,41 +204,19 @@ model Application {
 }
 
 model Job {
-  id            String           @id @default(cuid())
-  applicationId String           @unique @map("application_id")
-  rawText       String           @map("raw_text") @db.Text
+  id            String      @id @default(cuid())
+  applicationId String      @unique @map("application_id")
+  rawText       String      @map("raw_text") @db.Text
   title         String
   company       String?
   seniority     String?
-  summary       String           @db.Text
-  roleDomain    String?          @map("role_domain")
-  archetypeHint String?          @map("archetype_hint")
-  createdAt     DateTime         @default(now()) @map("created_at")
-  application   Application      @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  requirements  JobRequirement[]
+  summary       String      @db.Text
+  roleDomain    String?     @map("role_domain")
+  archetypeHint String?     @map("archetype_hint")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   @@map("jobs")
-}
-
-model JobRequirement {
-  id                      String                       @id @default(cuid())
-  jobId                   String                       @map("job_id")
-  type                    RequirementType
-  label                   String
-  description             String                       @db.Text
-  importance              Importance
-  queryEmbedding          Unsupported("vector(1536)")? @map("query_embedding")
-  queryEmbeddingModel     String?                      @map("query_embedding_model")
-  queryEmbeddingInputHash String?                      @map("query_embedding_input_hash")
-  queryEmbeddedAt         DateTime?                    @map("query_embedded_at")
-  job                     Job                          @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  evidenceMatches         EvidenceMatch[]
-  requirementFitScores    RequirementFitScore[]
-  gapQuestions            GapQuestion[]
-
-  @@index([jobId])
-  @@index([queryEmbeddingModel, queryEmbeddingInputHash])
-  @@map("job_requirements")
 }
 
 model CandidateProfile {
@@ -317,7 +256,6 @@ model CandidateProfile {
   anonymousSession          AnonymousSession? @relation(fields: [anonymousSessionId], references: [id], onDelete: SetNull)
   user                      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
   sourceApplication         Application?      @relation("SourceApplicationCandidateProfiles", fields: [sourceApplicationId], references: [id], onDelete: SetNull)
-  candidateChunks           CandidateChunk[]
 
   @@index([anonymousSessionId])
   @@index([userId])
@@ -327,122 +265,22 @@ model CandidateProfile {
   @@map("candidate_profiles")
 }
 
-model CandidateChunk {
-  id                  String                       @id @default(cuid())
-  anonymousSessionId  String?                      @map("anonymous_session_id")
-  userId              String?                      @map("user_id")
-  sourceApplicationId String?                      @map("source_application_id")
-  candidateProfileId  String?                      @map("candidate_profile_id")
-  sourceType          SourceType                   @map("source_type")
-  sourceId            String?                      @map("source_id")
-  sourceKey           String?                      @map("source_key")
-  sourceHash          String?                      @map("source_hash")
-  contentHash         String?                      @map("content_hash")
-  chunkType           ChunkType                    @map("chunk_type")
-  content             String                       @db.Text
-  embedding           Unsupported("vector(1536)")?
-  tagsJson            Json                         @map("tags_json")
-  metadataJson        Json                         @map("metadata_json")
-  createdAt           DateTime                     @default(now()) @map("created_at")
-  updatedAt           DateTime                     @default(now()) @updatedAt @map("updated_at")
-  embeddedAt          DateTime?                    @map("embedded_at")
-  lastSeenAt          DateTime                     @default(now()) @map("last_seen_at")
-  archivedAt          DateTime?                    @map("archived_at")
-  anonymousSession    AnonymousSession?            @relation(fields: [anonymousSessionId], references: [id], onDelete: SetNull)
-  user                User?                        @relation(fields: [userId], references: [id], onDelete: SetNull)
-  sourceApplication   Application?                 @relation("SourceApplicationCandidateChunks", fields: [sourceApplicationId], references: [id], onDelete: SetNull)
-  candidateProfile    CandidateProfile?            @relation(fields: [candidateProfileId], references: [id], onDelete: SetNull)
-  evidenceMatches     EvidenceMatch[]
-  bestFitScores       RequirementFitScore[]
-
-  @@index([anonymousSessionId])
-  @@index([userId])
-  @@index([sourceApplicationId])
-  @@index([candidateProfileId])
-  @@index([sourceKey])
-  @@index([contentHash])
-  @@map("candidate_chunks")
-}
-
-model EvidenceMatch {
-  id               String             @id @default(cuid())
-  applicationId    String             @map("application_id")
-  jobRequirementId String             @map("job_requirement_id")
-  candidateChunkId String?            @map("candidate_chunk_id")
-  similarityScore  Float?             @map("similarity_score")
-  confidence       EvidenceConfidence
-  cvUsefulness     String?            @map("cv_usefulness")
-  claimRisk        String?            @map("claim_risk")
-  reason           String             @db.Text
-  createdAt        DateTime           @default(now()) @map("created_at")
-  application      Application        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  jobRequirement   JobRequirement     @relation(fields: [jobRequirementId], references: [id], onDelete: Cascade)
-  candidateChunk   CandidateChunk?    @relation(fields: [candidateChunkId], references: [id], onDelete: SetNull)
-
-  @@index([applicationId])
-  @@index([jobRequirementId])
-  @@index([candidateChunkId])
-  @@map("evidence_matches")
-}
-
-model RequirementFitScore {
-  id                   String             @id @default(cuid())
-  applicationId        String             @map("application_id")
-  jobRequirementId     String             @map("job_requirement_id")
-  finalConfidence      EvidenceConfidence @map("final_confidence")
-  bestCandidateChunkId String?            @map("best_candidate_chunk_id")
-  reason               String             @db.Text
-  importanceWeight     Float              @map("importance_weight")
-  confidenceValue      Float              @map("confidence_value")
-  earnedPoints         Float              @map("earned_points")
-  possiblePoints       Float              @map("possible_points")
-  createdAt            DateTime           @default(now()) @map("created_at")
-  updatedAt            DateTime           @updatedAt @map("updated_at")
-  application          Application        @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  jobRequirement       JobRequirement     @relation(fields: [jobRequirementId], references: [id], onDelete: Cascade)
-  bestCandidateChunk   CandidateChunk?    @relation(fields: [bestCandidateChunkId], references: [id], onDelete: SetNull)
-
-  @@unique([applicationId, jobRequirementId])
-  @@index([applicationId])
-  @@index([jobRequirementId])
-  @@index([bestCandidateChunkId])
-  @@map("requirement_fit_scores")
-}
-
 model GapQuestion {
-  id                  String            @id @default(cuid())
-  applicationId       String            @map("application_id")
-  targetRequirementId String?           @map("target_requirement_id")
-  question            String            @db.Text
-  reason              String            @db.Text
-  whyItMatters        String?           @map("why_it_matters") @db.Text
-  answerGuidance      String?           @map("answer_guidance") @db.Text
-  exampleAnglesJson   Json?             @map("example_angles_json")
-  questionJson        Json?             @map("question_json")
-  status              GapQuestionStatus @default(unanswered)
-  createdAt           DateTime          @default(now()) @map("created_at")
-  application         Application       @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  targetRequirement   JobRequirement?   @relation(fields: [targetRequirementId], references: [id], onDelete: SetNull)
-  answers             GapAnswer[]
+  id                String            @id @default(cuid())
+  applicationId     String            @map("application_id")
+  question          String            @db.Text
+  reason            String            @db.Text
+  whyItMatters      String?           @map("why_it_matters") @db.Text
+  answerGuidance    String?           @map("answer_guidance") @db.Text
+  exampleAnglesJson Json?             @map("example_angles_json")
+  questionJson      Json?             @map("question_json")
+  status            GapQuestionStatus @default(unanswered)
+  createdAt         DateTime          @default(now()) @map("created_at")
+  application       Application       @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  answers           GapAnswer[]
 
   @@index([applicationId])
-  @@index([targetRequirementId])
   @@map("gap_questions")
-}
-
-model GapCoachInsight {
-  id                     String      @id @default(cuid())
-  applicationId          String      @unique @map("application_id")
-  openingMessage         String      @map("opening_message") @db.Text
-  jobWants               String      @map("job_wants") @db.Text
-  candidateStrengthsJson Json        @map("candidate_strengths_json")
-  candidateConcernsJson  Json        @map("candidate_concerns_json")
-  createdAt              DateTime    @default(now()) @map("created_at")
-  updatedAt              DateTime    @updatedAt @map("updated_at")
-  application            Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-
-  @@index([applicationId])
-  @@map("gap_coach_insights")
 }
 
 model GapAnswer {
@@ -450,7 +288,6 @@ model GapAnswer {
   gapQuestionId            String       @map("gap_question_id")
   applicationId            String       @map("application_id")
   userId                   String?      @map("user_id")
-  targetRequirementId      String?      @map("target_requirement_id")
   buttonAnswer             ButtonAnswer @map("button_answer")
   elaboration              String?      @db.Text
   selectedOption           String?      @map("selected_option")
@@ -470,34 +307,13 @@ model GapAnswer {
 
   @@index([applicationId])
   @@index([gapQuestionId])
-  @@index([targetRequirementId])
   @@index([userId])
   @@map("gap_answers")
-}
-
-model CvStrategy {
-  id                String      @id @default(cuid())
-  applicationId     String      @map("application_id")
-  strategySummary   String      @map("strategy_summary") @db.Text
-  targetPositioning String      @map("target_positioning") @db.Text
-  sectionOrderJson  Json        @map("section_order_json")
-  emphasisJson      Json        @map("emphasis_json")
-  deEmphasisJson    Json        @map("de_emphasis_json")
-  evidenceToUseJson Json        @map("evidence_to_use_json")
-  warningsJson      Json        @map("warnings_json")
-  strategyJson      Json?       @map("strategy_json")
-  createdAt         DateTime    @default(now()) @map("created_at")
-  application       Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  cvDrafts          CvDraft[]
-
-  @@index([applicationId])
-  @@map("cv_strategies")
 }
 
 model CvDraft {
   id                String              @id @default(cuid())
   applicationId     String              @map("application_id")
-  strategyId        String?             @map("strategy_id")
   version           Int                 @default(1)
   cvJson            Json                @map("cv_json")
   cvText            String              @map("cv_text") @db.Text
@@ -506,11 +322,9 @@ model CvDraft {
   createdAt         DateTime            @default(now()) @map("created_at")
   updatedAt         DateTime            @default(now()) @updatedAt @map("updated_at")
   application       Application         @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  strategy          CvStrategy?         @relation(fields: [strategyId], references: [id], onDelete: SetNull)
   usage             CvGenerationUsage[]
 
   @@index([applicationId])
-  @@index([strategyId])
   @@map("cv_drafts")
 }
 

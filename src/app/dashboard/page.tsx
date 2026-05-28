@@ -106,10 +106,10 @@ export default function DashboardPage() {
     setError(null);
     try {
       const data = await exportData.mutateAsync({ applicationId });
-      const cv = parseStructuredCv(data.cvDraft.cvJson);
+      const cv = parseStructuredCv(data.cvJson);
       if (!cv) throw new Error("CV data is not ready for export.");
-      if (type === "pdf") await exportCvPdf(cv, data.cvDraft.presentationJson);
-      else await exportCvDocx(cv, data.cvDraft.presentationJson);
+      if (type === "pdf") await exportCvPdf(cv, data.presentationJson);
+      else await exportCvDocx(cv, data.presentationJson);
     } catch (exportError) {
       setError(
         exportError instanceof Error
@@ -240,10 +240,10 @@ export default function DashboardPage() {
                     >
                       <div className="min-w-0">
                         <p className="truncate text-lg font-semibold text-white">
-                          {application.jobTitle}
+                          {application.dreamRole ?? application.roleArchetype ?? "Application"}
                         </p>
                         <p className="mt-1 text-sm text-zinc-400">
-                          {application.company ?? "Company not specified"}
+                          {application.cvAngle ?? "CV in progress"}
                         </p>
                       </div>
                       <div>
@@ -251,9 +251,9 @@ export default function DashboardPage() {
                           Match score
                         </p>
                         <p className="mt-1 text-sm text-zinc-200">
-                          {application.evidenceMatchScore !== null &&
-                          application.evidenceMatchScore !== undefined
-                            ? `${application.evidenceMatchScore}%`
+                          {application.originalEvidenceMatchScore !== null &&
+                          application.originalEvidenceMatchScore !== undefined
+                            ? `${Math.round(application.originalEvidenceMatchScore)}%`
                             : "Not scored"}
                         </p>
                       </div>
@@ -278,7 +278,7 @@ export default function DashboardPage() {
                           Open CV
                         </DashboardButton>
                         <DashboardButton
-                          disabled={!application.hasCv || exportingId === application.id}
+                          disabled={application.status !== "cv_ready" || exportingId === application.id}
                           onClick={() => void exportApplication(application.id, "pdf")}
                           type="button"
                         >
@@ -286,7 +286,7 @@ export default function DashboardPage() {
                           PDF
                         </DashboardButton>
                         <DashboardButton
-                          disabled={!application.hasCv || exportingId === application.id}
+                          disabled={application.status !== "cv_ready" || exportingId === application.id}
                           onClick={() => void exportApplication(application.id, "docx")}
                           type="button"
                         >

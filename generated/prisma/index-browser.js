@@ -203,18 +203,6 @@ exports.Prisma.JobScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.JobRequirementScalarFieldEnum = {
-  id: 'id',
-  jobId: 'jobId',
-  type: 'type',
-  label: 'label',
-  description: 'description',
-  importance: 'importance',
-  queryEmbeddingModel: 'queryEmbeddingModel',
-  queryEmbeddingInputHash: 'queryEmbeddingInputHash',
-  queryEmbeddedAt: 'queryEmbeddedAt'
-};
-
 exports.Prisma.CandidateProfileScalarFieldEnum = {
   id: 'id',
   anonymousSessionId: 'anonymousSessionId',
@@ -251,60 +239,9 @@ exports.Prisma.CandidateProfileScalarFieldEnum = {
   archivedAt: 'archivedAt'
 };
 
-exports.Prisma.CandidateChunkScalarFieldEnum = {
-  id: 'id',
-  anonymousSessionId: 'anonymousSessionId',
-  userId: 'userId',
-  sourceApplicationId: 'sourceApplicationId',
-  candidateProfileId: 'candidateProfileId',
-  sourceType: 'sourceType',
-  sourceId: 'sourceId',
-  sourceKey: 'sourceKey',
-  sourceHash: 'sourceHash',
-  contentHash: 'contentHash',
-  chunkType: 'chunkType',
-  content: 'content',
-  tagsJson: 'tagsJson',
-  metadataJson: 'metadataJson',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  embeddedAt: 'embeddedAt',
-  lastSeenAt: 'lastSeenAt',
-  archivedAt: 'archivedAt'
-};
-
-exports.Prisma.EvidenceMatchScalarFieldEnum = {
-  id: 'id',
-  applicationId: 'applicationId',
-  jobRequirementId: 'jobRequirementId',
-  candidateChunkId: 'candidateChunkId',
-  similarityScore: 'similarityScore',
-  confidence: 'confidence',
-  cvUsefulness: 'cvUsefulness',
-  claimRisk: 'claimRisk',
-  reason: 'reason',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.RequirementFitScoreScalarFieldEnum = {
-  id: 'id',
-  applicationId: 'applicationId',
-  jobRequirementId: 'jobRequirementId',
-  finalConfidence: 'finalConfidence',
-  bestCandidateChunkId: 'bestCandidateChunkId',
-  reason: 'reason',
-  importanceWeight: 'importanceWeight',
-  confidenceValue: 'confidenceValue',
-  earnedPoints: 'earnedPoints',
-  possiblePoints: 'possiblePoints',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.GapQuestionScalarFieldEnum = {
   id: 'id',
   applicationId: 'applicationId',
-  targetRequirementId: 'targetRequirementId',
   question: 'question',
   reason: 'reason',
   whyItMatters: 'whyItMatters',
@@ -315,23 +252,11 @@ exports.Prisma.GapQuestionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.GapCoachInsightScalarFieldEnum = {
-  id: 'id',
-  applicationId: 'applicationId',
-  openingMessage: 'openingMessage',
-  jobWants: 'jobWants',
-  candidateStrengthsJson: 'candidateStrengthsJson',
-  candidateConcernsJson: 'candidateConcernsJson',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.GapAnswerScalarFieldEnum = {
   id: 'id',
   gapQuestionId: 'gapQuestionId',
   applicationId: 'applicationId',
   userId: 'userId',
-  targetRequirementId: 'targetRequirementId',
   buttonAnswer: 'buttonAnswer',
   elaboration: 'elaboration',
   selectedOption: 'selectedOption',
@@ -348,24 +273,9 @@ exports.Prisma.GapAnswerScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.CvStrategyScalarFieldEnum = {
-  id: 'id',
-  applicationId: 'applicationId',
-  strategySummary: 'strategySummary',
-  targetPositioning: 'targetPositioning',
-  sectionOrderJson: 'sectionOrderJson',
-  emphasisJson: 'emphasisJson',
-  deEmphasisJson: 'deEmphasisJson',
-  evidenceToUseJson: 'evidenceToUseJson',
-  warningsJson: 'warningsJson',
-  strategyJson: 'strategyJson',
-  createdAt: 'createdAt'
-};
-
 exports.Prisma.CvDraftScalarFieldEnum = {
   id: 'id',
   applicationId: 'applicationId',
-  strategyId: 'strategyId',
   version: 'version',
   cvJson: 'cvJson',
   cvText: 'cvText',
@@ -487,21 +397,6 @@ exports.ApplicationStatus = exports.$Enums.ApplicationStatus = {
   cv_ready: 'cv_ready'
 };
 
-exports.RequirementType = exports.$Enums.RequirementType = {
-  skill: 'skill',
-  tool: 'tool',
-  responsibility: 'responsibility',
-  soft_skill: 'soft_skill',
-  domain: 'domain',
-  keyword: 'keyword'
-};
-
-exports.Importance = exports.$Enums.Importance = {
-  high: 'high',
-  medium: 'medium',
-  low: 'low'
-};
-
 exports.SourceType = exports.$Enums.SourceType = {
   profile: 'profile',
   cv_upload: 'cv_upload',
@@ -509,23 +404,6 @@ exports.SourceType = exports.$Enums.SourceType = {
   background: 'background',
   gap_answer: 'gap_answer',
   manual: 'manual'
-};
-
-exports.ChunkType = exports.$Enums.ChunkType = {
-  project: 'project',
-  skill: 'skill',
-  certification: 'certification',
-  education: 'education',
-  experience: 'experience',
-  gap_answer: 'gap_answer',
-  achievement: 'achievement'
-};
-
-exports.EvidenceConfidence = exports.$Enums.EvidenceConfidence = {
-  high: 'high',
-  medium: 'medium',
-  low: 'low',
-  missing: 'missing'
 };
 
 exports.GapQuestionStatus = exports.$Enums.GapQuestionStatus = {
@@ -602,15 +480,9 @@ exports.Prisma.ModelName = {
   Verification: 'Verification',
   Application: 'Application',
   Job: 'Job',
-  JobRequirement: 'JobRequirement',
   CandidateProfile: 'CandidateProfile',
-  CandidateChunk: 'CandidateChunk',
-  EvidenceMatch: 'EvidenceMatch',
-  RequirementFitScore: 'RequirementFitScore',
   GapQuestion: 'GapQuestion',
-  GapCoachInsight: 'GapCoachInsight',
   GapAnswer: 'GapAnswer',
-  CvStrategy: 'CvStrategy',
   CvDraft: 'CvDraft',
   BillingAccount: 'BillingAccount',
   CvGenerationUsage: 'CvGenerationUsage',

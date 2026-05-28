@@ -1,194 +1,313 @@
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import {
-  answerGapQuestions,
-  claimApplication,
-  createApplication,
-  generateCv,
-  getLandingActivity,
-  getApplicationExportData,
-  getApplicationState,
-  listUserApplications,
-  resetApplication,
-  skipGapQuestion,
-  submitCandidateProfileSource,
-  submitJob,
-  useSavedCandidateMemory,
-} from "~/server/services/applicationWorkflow.service";
+import { db } from "~/server/db";
 
 const applicationIdSchema = z.object({
   applicationId: z.string().min(1),
 });
 
-export const applicationRouter = createTRPCRouter({
-  getLandingActivity: publicProcedure.query(() => getLandingActivity()),
+async function assertApplicationOwnership(args: {
+  applicationId: string;
+  anonymousSessionId: string;
+  userId?: string | null;
+}) {
+  const application = await db.application.findFirst({
+    where: {
+      id: args.applicationId,
+      OR: [
+        { anonymousSessionId: args.anonymousSessionId },
+        ...(args.userId ? [{ userId: args.userId }] : []),
+      ],
+    },
+  });
 
-  createApplication: publicProcedure.mutation(({ ctx }) =>
-    createApplication({
-      anonymousSessionId: ctx.anonymousSessionId,
-      userId: ctx.userId,
-    })
-  ),
+  if (!application) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Application does not belong to this session",
+    });
+  }
+
+  return application;
+}
+
+export const applicationRouter = createTRPCRouter({
+  getLandingActivity: publicProcedure.query(async () => {
+    const count = await db.application.count({
+      where: {
+        createdAt: {
+          gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+        },
+      },
+    });
+    return { count };
+  }),
+
+  createApplication: publicProcedure.mutation(async ({ ctx }) => {
+    const application = await db.application.create({
+      data: {
+        anonymousSessionId: ctx.anonymousSessionId,
+        userId: ctx.userId ?? null,
+        status: "started",
+        currentStep: "started",
+      },
+    });
+    return { applicationId: application.id };
+  }),
 
   resetApplication: publicProcedure
     .input(applicationIdSchema)
-    .mutation(({ ctx, input }) =>
-      resetApplication({
-        anonymousSessionId: ctx.anonymousSessionId,
+    .mutation(async ({ ctx, input }) => {
+      await assertApplicationOwnership({
         applicationId: input.applicationId,
+        anonymousSessionId: ctx.anonymousSessionId,
         userId: ctx.userId,
-      })
-    ),
+      });
 
-  submitJob: publicProcedure
+      const newApplication = await db.application.create({
+        data: {
+          anonymousSessionId: ctx.anonymousSessionId,
+          userId: ctx.userId ?? null,
+          status: "started",
+          currentStep: "started",
+        },
+      });
+
+      return { applicationId: newApplication.id };
+    }),
+
+  submitJobV2: publicProcedure
     .input(
       applicationIdSchema.extend({
         rawJobText: z.string().min(1).max(20_000),
       })
     )
-    .mutation(({ ctx, input }) =>
-      submitJob({
-        anonymousSessionId: ctx.anonymousSessionId,
+    .mutation(async ({ ctx, input }) => {
+      await assertApplicationOwnership({
         applicationId: input.applicationId,
+        anonymousSessionId: ctx.anonymousSessionId,
         userId: ctx.userId,
-        headers: ctx.headers,
-        resHeaders: ctx.resHeaders,
-        rawJobText: input.rawJobText,
-      })
-    ),
+      });
 
-  submitCandidateProfileSource: publicProcedure
+      throw new TRPCError({
+        code: "NOT_IMPLEMENTED",
+        message: "CV workflow is being rebuilt. Job submission not available yet.",
+      });
+    }),
+
+  submitCandidateV2: publicProcedure
     .input(
-      applicationIdSchema
-        .extend({
-          source: z.enum(["cv_upload", "linkedin_url"]),
-          rawCvText: z.string().nullable().optional(),
-          rawBackgroundText: z.string().nullable().optional(),
-          sourceUrl: z.string().nullable().optional(),
-        })
-        .refine(
-          (input) =>
-            (input.rawCvText?.length ?? 0) +
-              (input.rawBackgroundText?.length ?? 0) <=
-            30_000,
-          "Candidate background must be 30,000 characters or fewer"
-        )
+      applicationIdSchema.extend({
+        rawCvText: z.string().min(1).max(30_000),
+      })
     )
-    .mutation(({ ctx, input }) =>
-      submitCandidateProfileSource({
-        anonymousSessionId: ctx.anonymousSessionId,
+    .mutation(async ({ ctx, input }) => {
+      await assertApplicationOwnership({
         applicationId: input.applicationId,
-        userId: ctx.userId,
-        headers: ctx.headers,
-        resHeaders: ctx.resHeaders,
-        source: input.source,
-        rawCvText: input.rawCvText,
-        rawBackgroundText: input.rawBackgroundText,
-        sourceUrl: input.sourceUrl,
-      })
-    ),
-
-  useSavedCandidateMemory: publicProcedure
-    .input(applicationIdSchema)
-    .mutation(({ ctx, input }) =>
-      useSavedCandidateMemory({
         anonymousSessionId: ctx.anonymousSessionId,
-        applicationId: input.applicationId,
         userId: ctx.userId,
-      })
-    ),
+      });
 
-  answerGapQuestions: publicProcedure
+      throw new TRPCError({
+        code: "NOT_IMPLEMENTED",
+        message: "CV workflow is being rebuilt. Candidate submission not available yet.",
+      });
+    }),
+
+  submitGapAnswersV2: publicProcedure
     .input(
       applicationIdSchema.extend({
         answers: z.array(
           z.object({
             gapQuestionId: z.string().min(1),
-            answerText: z.string().nullable().optional(),
-            selectedOption: z.string().nullable().optional(),
-            followUpText: z.string().nullable().optional(),
-            metricText: z.string().nullable().optional(),
-            skipped: z.boolean().nullable().optional(),
+            answerText: z.string().nullable(),
+            skipped: z.boolean(),
           })
         ),
       })
     )
-    .mutation(({ ctx, input }) =>
-      answerGapQuestions({
-        anonymousSessionId: ctx.anonymousSessionId,
+    .mutation(async ({ ctx, input }) => {
+      await assertApplicationOwnership({
         applicationId: input.applicationId,
-        userId: ctx.userId,
-        answers: input.answers,
-      })
-    ),
-
-  skipGapQuestion: publicProcedure
-    .input(
-      applicationIdSchema.extend({
-        gapQuestionId: z.string().min(1),
-      })
-    )
-    .mutation(({ ctx, input }) =>
-      skipGapQuestion({
         anonymousSessionId: ctx.anonymousSessionId,
-        applicationId: input.applicationId,
         userId: ctx.userId,
-        gapQuestionId: input.gapQuestionId,
-      })
-    ),
+      });
 
-  generateCv: publicProcedure
-    .input(
-      applicationIdSchema.extend({
-        strategyId: z.string().min(1).nullable().optional(),
-      })
-    )
-    .mutation(({ ctx, input }) =>
-      generateCv({
-        anonymousSessionId: ctx.anonymousSessionId,
-        applicationId: input.applicationId,
-        userId: ctx.userId,
-        headers: ctx.headers,
-        resHeaders: ctx.resHeaders,
-        strategyId: input.strategyId,
-      })
-    ),
+      throw new TRPCError({
+        code: "NOT_IMPLEMENTED",
+        message: "CV workflow is being rebuilt. Gap answers not available yet.",
+      });
+    }),
 
-  getApplicationState: publicProcedure
+  generateCvV2: publicProcedure
     .input(applicationIdSchema)
-    .query(({ ctx, input }) =>
-      getApplicationState({
-        anonymousSessionId: ctx.anonymousSessionId,
+    .mutation(async ({ ctx, input }) => {
+      await assertApplicationOwnership({
         applicationId: input.applicationId,
+        anonymousSessionId: ctx.anonymousSessionId,
         userId: ctx.userId,
+      });
+
+      throw new TRPCError({
+        code: "NOT_IMPLEMENTED",
+        message: "CV workflow is being rebuilt. CV generation not available yet.",
+      });
+    }),
+
+  getV2ApplicationState: publicProcedure
+    .input(applicationIdSchema)
+    .query(async ({ ctx, input }) => {
+      const application = await assertApplicationOwnership({
+        applicationId: input.applicationId,
+        anonymousSessionId: ctx.anonymousSessionId,
+        userId: ctx.userId,
+      });
+
+      const [job, candidateProfileRow, gapQuestions, gapAnswers, cvDraft] = await Promise.all([
+        db.job.findUnique({ where: { applicationId: input.applicationId } }),
+        db.candidateProfile.findFirst({
+          where: { sourceApplicationId: input.applicationId },
+          orderBy: { createdAt: "desc" },
+        }),
+        db.gapQuestion.findMany({
+          where: { applicationId: input.applicationId },
+          orderBy: { createdAt: "asc" },
+        }),
+        db.gapAnswer.findMany({
+          where: { applicationId: input.applicationId },
+          orderBy: { createdAt: "asc" },
+        }),
+        db.cvDraft.findFirst({
+          where: { applicationId: input.applicationId },
+          orderBy: { version: "desc" },
+        }),
+      ]);
+
+      return {
+        application,
+        job,
+        jobBrief: null,
+        candidateProfile: null,
+        enhancedCandidateProfile: null,
+        candidateProfileRow,
+        fitGapStrategy: null,
+        profileEnhancementSummary: null,
+        cvCompositionBlueprint: null,
+        qualityEditorResult: null,
+        normalizedGapAnswerFacts: [],
+        qa: null,
+        gapQuestions,
+        gapAnswers,
+        cvDraft,
+        cvJson: cvDraft?.cvJson ?? null,
+        cvText: cvDraft?.cvText ?? null,
+        agentRuns: [],
+      };
+    }),
+
+  authorizeV2Export: publicProcedure
+    .input(
+      applicationIdSchema.extend({
+        cvDraftId: z.string().min(1),
       })
-    ),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await assertApplicationOwnership({
+        applicationId: input.applicationId,
+        anonymousSessionId: ctx.anonymousSessionId,
+        userId: ctx.userId,
+      });
+
+      throw new TRPCError({
+        code: "NOT_IMPLEMENTED",
+        message: "CV workflow is being rebuilt. Export authorization not available yet.",
+      });
+    }),
 
   claimApplication: protectedProcedure
     .input(applicationIdSchema)
-    .mutation(({ ctx, input }) =>
-      claimApplication({
-        anonymousSessionId: ctx.anonymousSessionId,
+    .mutation(async ({ ctx, input }) => {
+      const application = await assertApplicationOwnership({
         applicationId: input.applicationId,
+        anonymousSessionId: ctx.anonymousSessionId,
         userId: ctx.userId,
-      })
-    ),
+      });
 
-  listUserApplications: protectedProcedure.query(({ ctx }) =>
-    listUserApplications({ userId: ctx.userId })
-  ),
+      if (!ctx.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Must be signed in to claim an application",
+        });
+      }
+
+      await db.application.update({
+        where: { id: input.applicationId },
+        data: { userId: ctx.userId },
+      });
+
+      return { success: true };
+    }),
+
+  listUserApplications: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.userId) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Must be signed in",
+      });
+    }
+
+    const applications = await db.application.findMany({
+      where: { userId: ctx.userId },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+    });
+
+    return { applications };
+  }),
 
   getApplicationExportData: protectedProcedure
     .input(applicationIdSchema)
-    .mutation(({ ctx, input }) =>
-      getApplicationExportData({
-        userId: ctx.userId,
-        applicationId: input.applicationId,
-      })
-    ),
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Must be signed in",
+        });
+      }
+
+      const application = await db.application.findFirst({
+        where: {
+          id: input.applicationId,
+          userId: ctx.userId,
+        },
+        include: {
+          cvDrafts: {
+            orderBy: { version: "desc" },
+            take: 1,
+          },
+        },
+      });
+
+      if (!application) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Application not found",
+        });
+      }
+
+      const cvDraft = application.cvDrafts[0];
+
+      return {
+        applicationId: application.id,
+        cvJson: cvDraft?.cvJson ?? null,
+        cvText: cvDraft?.cvText ?? null,
+        presentationJson: cvDraft?.presentationJson ?? null,
+      };
+    }),
 });
