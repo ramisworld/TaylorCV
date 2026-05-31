@@ -11,31 +11,27 @@ interface GlassSmileyOrbProps {
 export function GlassSmileyOrb({ className }: GlassSmileyOrbProps) {
   return (
     <div className={cn(styles.orbRoot, className)}>
-      {/* Outer translucent ring */}
-      <div className={styles.orbOuterRing} />
+      <span className={styles.orbHalo} />
+      <span className={styles.orbRingLarge} />
+      <span className={styles.orbRingMedium} />
 
-      {/* Middle glass ring */}
-      <div className={styles.orbMiddleRing}>
-        <span className={styles.orbCoreHighlight} aria-hidden="true" />
-      </div>
-
-      {/* Inner core with face */}
       <div className={styles.orbCore}>
         <span className={styles.orbCoreHighlight} aria-hidden="true" />
+        <span className={styles.orbCoreCaustic} aria-hidden="true" />
 
         <svg
           aria-hidden="true"
           className={styles.orbFace}
-          viewBox="0 0 54 54"
+          viewBox="0 0 72 72"
           fill="none"
         >
-          <circle cx="19" cy="21" r="3.5" fill="currentColor" />
-          <circle cx="35" cy="21" r="3.5" fill="currentColor" />
+          <circle cx="23.5" cy="27" r="5.1" fill="currentColor" />
+          <circle cx="48.5" cy="27" r="5.1" fill="currentColor" />
           <path
-            d="M16.6 32.5c4.8 5.5 16 5.5 20.8 0"
+            d="M21.5 43.5c6.1 8.2 22.9 8.2 29 0"
             stroke="currentColor"
             strokeLinecap="round"
-            strokeWidth="3.4"
+            strokeWidth="4.7"
           />
         </svg>
       </div>
