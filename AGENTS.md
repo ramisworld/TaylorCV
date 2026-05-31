@@ -1,161 +1,300 @@
-# TaylorCV Codex Instructions
+# TaylorCV Agent Instructions
 
-## Product identity
+TaylorCV is a fast, structured CV generation app.
 
-TaylorCV is an AI career agent for the New Zealand job market. It turns a job description into a tailored, polished, one-page CV by extracting role requirements, matching them to the candidate’s background, asking smart gap questions, and generating a stronger CV.
+The app turns a job description, a candidate profile, and a few useful user answers into a polished, recruiter-readable, role-aware CV.
 
-TaylorCV must feel like a premium, trustworthy, enterprise-grade SaaS product. It must not feel like a generic AI wrapper, template generator, or low-effort resume tool.
+This repository should stay simple, efficient, and predictable.
 
-## Core UI standard
+## Core Product
 
-Every UI change must aim for:
+TaylorCV helps users create better CVs by:
 
-- Clear hierarchy
-- Premium spacing
-- Calm motion
-- Strong conversion intent
-- Accessible contrast
-- Responsive desktop and mobile behavior
-- Polished empty, loading, error, hover, focus, and disabled states
-- Real product clarity over decorative noise
+1. Understanding the target job.
+2. Extracting useful candidate facts.
+3. Asking only a few high-value missing-detail questions.
+4. Writing a tailored structured CV.
+5. Rendering the final CV through the existing preview/export system.
 
-Avoid:
+TaylorCV is not a candidate-ranking tool.
 
-- Generic AI SaaS visuals
-- Overused “AI sparkle” visuals
-- Repetitive Lucide icon choices
-- Excessive gradients
-- Emoji unless the brand already uses them
-- Random glassmorphism
-- Left-border accent cards
-- Filler sections
-- Decorative icons that do not explain the product
-- Large unverified UI rewrites
+TaylorCV is not a general document generator.
 
-## Design workflow for UI tasks
+TaylorCV is not a workflow with many competing AI agents.
 
-For any meaningful UI task, follow this loop:
+## Core Architecture
 
-1. Understand the target screen and user goal.
-2. Inspect existing components, routes, styles, tokens, and nearby UI before changing code.
-3. State the visual system you are applying.
-4. Implement the smallest high-quality change that satisfies the request.
-5. Run the app.
-6. Inspect the rendered UI in a browser.
-7. Critique the actual result, not just the code.
-8. Fix spacing, alignment, hierarchy, contrast, awkward copy, responsiveness, and motion.
-9. Run lint, typecheck, or build where appropriate.
-10. Summarize exactly what changed and what remains.
+TaylorCV has one main workflow:
 
-Do not stop after the first implementation if the screen still looks average.
+submitJob
+→ Job Intake Agent
+→ save structured job analysis
 
-## TaylorCV visual direction
+submitCandidate
+→ Candidate Profile + Gap Questions Agent
+→ save structured candidate profile and gap questions
 
-Default direction:
+submitGapAnswers
+→ save answers only
+→ no AI call
 
-- Premium dark navy / blue / teal base for marketing surfaces
-- Clean white CV previews
-- Blue accents used sparingly for active states, section headers, progress, and dividers
-- Dark body text on document-like surfaces
-- Soft shadows, subtle glow, precise borders
-- Large confident headings
-- Calm, modern SaaS density
-- No fake enterprise trust signals
+generateCv
+→ CV Composer Agent
+→ save structured CV draft
+→ renderer/export handles preview, PDF and DOCX
 
-CV layout direction:
+## Allowed AI Agents
 
-- Always prioritize one-page clarity
-- Use accent color for section headers, dividers, selected labels, and links
-- Keep main body text black or dark gray
-- Preserve ATS-safe structure
-- Keep LinkedIn/contact lines tidy and non-wrapping where possible
+Only these CV agents should exist:
 
-## Product copy rules
+1. Job Intake Agent
+2. Candidate Profile + Gap Questions Agent
+3. CV Composer Agent
 
-Copy must be direct, believable, and conversion-focused.
+Do not add more AI agents unless the user explicitly asks.
 
-Prefer:
+Do not add a separate answer-merging agent.
+Do not add a separate strategy agent.
+Do not add a separate quality-review agent.
+Do not add a separate layout agent.
+Do not add a scoring or ranking agent.
 
-- “Built for New Zealand job seekers”
-- “One-page tailored CV”
-- “ATS-safe formatting”
-- “Match your CV to the role”
-- “Find missing evidence before you apply”
-- “Designed for students, graduates, tradespeople, and professionals”
+## Agent Responsibilities
 
-Avoid:
+### Job Intake Agent
 
-- “Revolutionary”
-- “Guaranteed interviews”
-- “10x your career”
-- Fake interview uplift stats
-- Fake company trust logos
-- Vague AI claims
+Purpose:
 
-## Codebase rules
+Understand the hiring context from the job description.
 
-Before editing:
+It should produce:
 
-- Find the actual component and route.
-- Prefer modifying existing components over creating parallel duplicates.
-- Preserve existing backend behavior unless explicitly asked.
-- Do not touch auth, billing, database schema, environment variables, or API contracts unless the task asks for it.
-- Avoid adding new production dependencies without explaining why.
-- Prefer existing design tokens, utility classes, and component patterns.
-- Keep files focused and maintainable.
+- target role title
+- company name if available
+- market/location if available
+- seniority
+- role archetype
+- role summary
+- must-have requirements
+- nice-to-have requirements
+- keywords
+- recruiter priorities
+- expected proof types
+- recommended section emphasis
+- risks or ambiguities
 
-## Interaction and motion rules
+It should not:
 
-Every interactive surface should have:
+- judge the candidate
+- write CV text
+- ask user questions
+- create final CV content
 
-- Hover state
-- Focus-visible state
-- Disabled state where relevant
-- Loading state where relevant
-- Smooth but restrained transitions
+### Candidate Profile + Gap Questions Agent
 
-Use motion to clarify state, progress, hierarchy, or flow. Do not add motion only for decoration.
+Purpose:
 
-Respect reduced-motion preferences.
+Turn candidate text into a structured profile and ask only the most useful missing-detail questions.
 
-## Visual QA rules
+It should produce:
 
-For serious UI changes:
+- identity/contact information
+- headline options
+- summary facts
+- experience facts
+- project facts
+- skills grouped by category
+- education
+- certifications
+- useful links
+- proof notes
+- warnings
+- 0 to 3 gap questions
 
-- Run the page.
-- Inspect the rendered screen.
-- Compare against the brief.
-- Check desktop and mobile.
-- Fix obvious visual issues before final response.
+Gap questions must be specific and useful.
 
-Look specifically for:
+Good gap questions ask for:
 
-- Uneven spacing
-- Weak hierarchy
-- Overcrowding
-- Misaligned cards
-- Low contrast
-- Generic icons
-- Unclear CTA
-- Text wrapping issues
-- Fake-looking proof
-- Motion that feels cheap
-- UI that works in code but looks wrong in browser
+- metrics
+- scope
+- tools
+- outcomes
+- users/customers/stakeholders
+- deployment or delivery details
+- credentials
+- leadership/context
 
-## When to use skills
+It should not:
 
-Use these skills when relevant:
+- write final CV text
+- ask generic “tell me more” questions
+- ask questions irrelevant to the role
+- create any ranking or score
 
-- `enterprise-ui-director` for any premium UI, layout, design-system, or visual polish task.
-- `landing-page-conversion-designer` for landing pages, pricing, hero sections, CTAs, proof, and marketing sections.
-- `motion-polish` for animation, transitions, loading states, progress states, and microinteractions.
-- `visual-qa` before finishing any important UI task.
-- `asset-generation-director` when an image, icon set, product visual, or marketing visual is needed.
+### CV Composer Agent
 
-## Final response style
+Purpose:
 
-Be concise.
-Mention files changed.
-Mention commands run.
-Mention any remaining caveats.
-Do not over-explain.
+Create the final structured CV content.
+
+It receives:
+
+- job analysis
+- candidate profile
+- saved gap answers
+- renderer contract
+
+It outputs:
+
+- blueprint
+- cv
+
+Blueprint explains the CV strategy.
+
+CV is the actual structured CV document consumed by the renderer.
+
+The composer must not output markdown, HTML, CSS, or free-form prose.
+
+## Model-Facing CV Shape
+
+CV bullets should use this simple shape:
+
+{
+"text": string,
+"gapAnswerIds": string[]
+}
+
+Use gapAnswerIds only when a bullet uses a saved gap answer.
+
+If a bullet does not use a saved gap answer, use:
+
+{
+"gapAnswerIds": []
+}
+
+Do not add extra source-tracking fields to model-facing CV output.
+
+## Renderer Rule
+
+The CV Composer owns content.
+
+The renderer owns visual layout.
+
+Do not redesign the renderer or export system unless the user specifically asks.
+
+Final CV JSON must be compatible with parseStructuredCv().
+
+## Database Objects
+
+The core workflow should use these objects:
+
+- Application
+- Job
+- CandidateProfile
+- GapQuestion
+- GapAnswer
+- CvDraft
+- AgentRun
+
+Useful JSON fields:
+
+- Job.analysisJson
+- CandidateProfile.profileJson
+- CvDraft.cvJson
+- CvDraft.builderOutputJson
+
+Do not add new workflow tables unless explicitly approved.
+
+## Guardrails
+
+Keep the architecture boring and clean.
+
+Do not introduce:
+
+- candidate ranking
+- match scores
+- confidence scores
+- evidence-matching systems
+- extra retrieval/source-tracking systems
+- unnecessary workflow tables
+- unnecessary AI calls
+- v2/v3 canonical workflow names
+- duplicate agent pipelines
+- speculative future architecture
+
+If a task seems to require a new subsystem, stop and explain the tradeoff before implementing it.
+
+## Performance Rules
+
+Use a fast model for:
+
+- Job Intake Agent
+- Candidate Profile + Gap Questions Agent
+
+Use a stronger model for:
+
+- CV Composer Agent
+
+submitGapAnswers must not call AI.
+
+Every agent run should log:
+
+- agent name
+- model
+- duration
+- status
+- token usage if available
+- estimated cost if available
+
+## Development Rules
+
+Make small, scoped changes.
+
+Do not redesign unrelated UI.
+
+Do not modify auth, billing, Stripe, landing visuals, or export styling unless the task specifically asks.
+
+If changing Prisma schema:
+
+1. create a migration
+2. run prisma generate
+3. restart the dev server if needed
+
+If changing OpenAI structured schemas:
+
+- every nested schema must have a concrete type
+- do not use empty object schemas
+- keep model-facing outputs simple and strict
+
+If changing CV output:
+
+- verify mock output passes schema
+- verify final cvDraft.cvJson parses
+- verify preview renders
+- verify export still works
+
+## Common Commands
+
+Development:
+
+npm run dev
+
+Type check:
+
+npx tsc --noEmit
+
+Build:
+
+npm run build
+
+Prisma generate:
+
+npx prisma generate
+
+Prisma migration:
+
+npx prisma migrate dev --name <clear_name>
+
+Search code:
+
+rg "<term>" .

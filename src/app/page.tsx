@@ -57,6 +57,7 @@ function friendlyError(message: string) {
 function deriveFlowStage(state: ApplicationState | null): FlowStage {
   if (state?.cvDraft) return "final_cv";
   if (state?.gapQuestions.length) return "gap_questions";
+  if (state?.candidateProfileRow) return "gap_questions";
   if (state?.job) return "cv_upload";
   return "job_description";
 }
@@ -245,11 +246,15 @@ export default function Home() {
   });
 
   const submitCandidate = api.application.submitCandidate.useMutation({
-    onSuccess: async (_data, variables) => {
+    onSuccess: async (data, variables) => {
       await utils.application.getApplicationState.invalidate({
         applicationId: variables.applicationId,
       });
-      setStage("gap_questions");
+      if ((data.gapQuestions ?? []).length > 0) {
+        setStage("gap_questions");
+      } else {
+        startCvGeneration(variables.applicationId);
+      }
       setError(null);
     },
     onError: (mutationError) => {
@@ -295,7 +300,11 @@ export default function Home() {
         return;
       }
       setError(friendlyError(mutationError.message));
-      setStage("gap_questions");
+      if (hasOpenQuestions(state)) {
+        setStage("gap_questions");
+      } else {
+        setStage("cv_upload");
+      }
     },
   });
 

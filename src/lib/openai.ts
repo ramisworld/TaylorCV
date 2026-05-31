@@ -110,6 +110,89 @@ export async function createStructuredJsonResponse(args: {
   return parseJsonPayload(outputText, "OpenAI output text");
 }
 
+export type OpenAiUsage = {
+  promptTokens: number | null;
+  completionTokens: number | null;
+  totalTokens: number | null;
+};
+
+export async function createStructuredJsonResponseWithUsage(args: {
+  model: string;
+  systemPrompt: string;
+  userPrompt: string;
+  schemaName: string;
+  jsonSchema: JsonSchema;
+  temperature?: number;
+}): Promise<{ parsed: unknown; usage: OpenAiUsage }> {
+  if (!env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is required when USE_MOCK_AI is false");
+  }
+
+  const body: ResponsesApiBody = {
+    model: args.model,
+    temperature: args.temperature,
+    input: [
+      { role: "system", content: args.systemPrompt },
+      { role: "user", content: args.userPrompt },
+    ],
+    text: {
+      format: {
+        type: "json_schema",
+        name: args.schemaName,
+        strict: true,
+        schema: args.jsonSchema,
+      },
+    },
+  };
+
+  const response = await fetch("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.OPENAI_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  const responseText = await response.text();
+  if (!response.ok) {
+    throw new Error(`OpenAI Responses API failed: ${responseText}`);
+  }
+
+  const data = parseJsonPayload(responseText, "OpenAI Responses API") as {
+    output_text?: string;
+    output?: Array<{
+      content?: Array<{ type?: string; text?: string }>;
+    }>;
+    usage?: {
+      input_tokens?: number;
+      output_tokens?: number;
+      total_tokens?: number;
+    };
+  };
+
+  const outputText =
+    data.output_text ??
+    data.output
+      ?.flatMap((item) => item.content ?? [])
+      .find((content) => content.type === "output_text")?.text;
+
+  if (!outputText) {
+    throw new Error("OpenAI response did not include output text");
+  }
+
+  const usage: OpenAiUsage = {
+    promptTokens: data.usage?.input_tokens ?? null,
+    completionTokens: data.usage?.output_tokens ?? null,
+    totalTokens: data.usage?.total_tokens ?? null,
+  };
+
+  return {
+    parsed: parseJsonPayload(outputText, "OpenAI output text"),
+    usage,
+  };
+}
+
 function sseDataLines(block: string) {
   return block
     .split(/\r?\n/)

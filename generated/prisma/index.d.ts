@@ -102,13 +102,8 @@ export namespace $Enums {
   started: 'started',
   job_added: 'job_added',
   candidate_added: 'candidate_added',
-  evidence_ready: 'evidence_ready',
   questions_ready: 'questions_ready',
   answers_added: 'answers_added',
-  strategy_failed: 'strategy_failed',
-  strategy_ready: 'strategy_ready',
-  draft_failed: 'draft_failed',
-  draft_ready: 'draft_ready',
   cv_ready: 'cv_ready'
 };
 
@@ -8217,20 +8212,8 @@ export namespace Prisma {
 
   export type AggregateApplication = {
     _count: ApplicationCountAggregateOutputType | null
-    _avg: ApplicationAvgAggregateOutputType | null
-    _sum: ApplicationSumAggregateOutputType | null
     _min: ApplicationMinAggregateOutputType | null
     _max: ApplicationMaxAggregateOutputType | null
-  }
-
-  export type ApplicationAvgAggregateOutputType = {
-    originalEvidenceMatchScore: number | null
-    updatedEvidenceMatchScore: number | null
-  }
-
-  export type ApplicationSumAggregateOutputType = {
-    originalEvidenceMatchScore: number | null
-    updatedEvidenceMatchScore: number | null
   }
 
   export type ApplicationMinAggregateOutputType = {
@@ -8240,10 +8223,6 @@ export namespace Prisma {
     status: $Enums.ApplicationStatus | null
     currentStep: string | null
     dreamRole: string | null
-    originalEvidenceMatchScore: number | null
-    updatedEvidenceMatchScore: number | null
-    matchLabel: string | null
-    cvAngle: string | null
     roleArchetype: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8256,10 +8235,6 @@ export namespace Prisma {
     status: $Enums.ApplicationStatus | null
     currentStep: string | null
     dreamRole: string | null
-    originalEvidenceMatchScore: number | null
-    updatedEvidenceMatchScore: number | null
-    matchLabel: string | null
-    cvAngle: string | null
     roleArchetype: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8272,27 +8247,12 @@ export namespace Prisma {
     status: number
     currentStep: number
     dreamRole: number
-    originalEvidenceMatchScore: number
-    updatedEvidenceMatchScore: number
-    matchLabel: number
-    cvAngle: number
     roleArchetype: number
-    matchAnalysisJson: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
-
-  export type ApplicationAvgAggregateInputType = {
-    originalEvidenceMatchScore?: true
-    updatedEvidenceMatchScore?: true
-  }
-
-  export type ApplicationSumAggregateInputType = {
-    originalEvidenceMatchScore?: true
-    updatedEvidenceMatchScore?: true
-  }
 
   export type ApplicationMinAggregateInputType = {
     id?: true
@@ -8301,10 +8261,6 @@ export namespace Prisma {
     status?: true
     currentStep?: true
     dreamRole?: true
-    originalEvidenceMatchScore?: true
-    updatedEvidenceMatchScore?: true
-    matchLabel?: true
-    cvAngle?: true
     roleArchetype?: true
     createdAt?: true
     updatedAt?: true
@@ -8317,10 +8273,6 @@ export namespace Prisma {
     status?: true
     currentStep?: true
     dreamRole?: true
-    originalEvidenceMatchScore?: true
-    updatedEvidenceMatchScore?: true
-    matchLabel?: true
-    cvAngle?: true
     roleArchetype?: true
     createdAt?: true
     updatedAt?: true
@@ -8333,12 +8285,7 @@ export namespace Prisma {
     status?: true
     currentStep?: true
     dreamRole?: true
-    originalEvidenceMatchScore?: true
-    updatedEvidenceMatchScore?: true
-    matchLabel?: true
-    cvAngle?: true
     roleArchetype?: true
-    matchAnalysisJson?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -8382,18 +8329,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: ApplicationAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ApplicationSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: ApplicationMinAggregateInputType
@@ -8424,8 +8359,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ApplicationCountAggregateInputType | true
-    _avg?: ApplicationAvgAggregateInputType
-    _sum?: ApplicationSumAggregateInputType
     _min?: ApplicationMinAggregateInputType
     _max?: ApplicationMaxAggregateInputType
   }
@@ -8437,17 +8370,10 @@ export namespace Prisma {
     status: $Enums.ApplicationStatus
     currentStep: string
     dreamRole: string | null
-    originalEvidenceMatchScore: number | null
-    updatedEvidenceMatchScore: number | null
-    matchLabel: string | null
-    cvAngle: string | null
     roleArchetype: string | null
-    matchAnalysisJson: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: ApplicationCountAggregateOutputType | null
-    _avg: ApplicationAvgAggregateOutputType | null
-    _sum: ApplicationSumAggregateOutputType | null
     _min: ApplicationMinAggregateOutputType | null
     _max: ApplicationMaxAggregateOutputType | null
   }
@@ -8473,12 +8399,7 @@ export namespace Prisma {
     status?: boolean
     currentStep?: boolean
     dreamRole?: boolean
-    originalEvidenceMatchScore?: boolean
-    updatedEvidenceMatchScore?: boolean
-    matchLabel?: boolean
-    cvAngle?: boolean
     roleArchetype?: boolean
-    matchAnalysisJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     anonymousSession?: boolean | AnonymousSessionDefaultArgs<ExtArgs>
@@ -8500,12 +8421,7 @@ export namespace Prisma {
     status?: boolean
     currentStep?: boolean
     dreamRole?: boolean
-    originalEvidenceMatchScore?: boolean
-    updatedEvidenceMatchScore?: boolean
-    matchLabel?: boolean
-    cvAngle?: boolean
     roleArchetype?: boolean
-    matchAnalysisJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     anonymousSession?: boolean | AnonymousSessionDefaultArgs<ExtArgs>
@@ -8519,12 +8435,7 @@ export namespace Prisma {
     status?: boolean
     currentStep?: boolean
     dreamRole?: boolean
-    originalEvidenceMatchScore?: boolean
-    updatedEvidenceMatchScore?: boolean
-    matchLabel?: boolean
-    cvAngle?: boolean
     roleArchetype?: boolean
-    matchAnalysisJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     anonymousSession?: boolean | AnonymousSessionDefaultArgs<ExtArgs>
@@ -8538,17 +8449,12 @@ export namespace Prisma {
     status?: boolean
     currentStep?: boolean
     dreamRole?: boolean
-    originalEvidenceMatchScore?: boolean
-    updatedEvidenceMatchScore?: boolean
-    matchLabel?: boolean
-    cvAngle?: boolean
     roleArchetype?: boolean
-    matchAnalysisJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "anonymousSessionId" | "userId" | "status" | "currentStep" | "dreamRole" | "originalEvidenceMatchScore" | "updatedEvidenceMatchScore" | "matchLabel" | "cvAngle" | "roleArchetype" | "matchAnalysisJson" | "createdAt" | "updatedAt", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "anonymousSessionId" | "userId" | "status" | "currentStep" | "dreamRole" | "roleArchetype" | "createdAt" | "updatedAt", ExtArgs["result"]["application"]>
   export type ApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     anonymousSession?: boolean | AnonymousSessionDefaultArgs<ExtArgs>
     user?: boolean | Application$userArgs<ExtArgs>
@@ -8590,12 +8496,7 @@ export namespace Prisma {
       status: $Enums.ApplicationStatus
       currentStep: string
       dreamRole: string | null
-      originalEvidenceMatchScore: number | null
-      updatedEvidenceMatchScore: number | null
-      matchLabel: string | null
-      cvAngle: string | null
       roleArchetype: string | null
-      matchAnalysisJson: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["application"]>
@@ -9036,12 +8937,7 @@ export namespace Prisma {
     readonly status: FieldRef<"Application", 'ApplicationStatus'>
     readonly currentStep: FieldRef<"Application", 'String'>
     readonly dreamRole: FieldRef<"Application", 'String'>
-    readonly originalEvidenceMatchScore: FieldRef<"Application", 'Float'>
-    readonly updatedEvidenceMatchScore: FieldRef<"Application", 'Float'>
-    readonly matchLabel: FieldRef<"Application", 'String'>
-    readonly cvAngle: FieldRef<"Application", 'String'>
     readonly roleArchetype: FieldRef<"Application", 'String'>
-    readonly matchAnalysisJson: FieldRef<"Application", 'Json'>
     readonly createdAt: FieldRef<"Application", 'DateTime'>
     readonly updatedAt: FieldRef<"Application", 'DateTime'>
   }
@@ -9686,6 +9582,7 @@ export namespace Prisma {
     summary: number
     roleDomain: number
     archetypeHint: number
+    analysisJson: number
     createdAt: number
     _all: number
   }
@@ -9727,6 +9624,7 @@ export namespace Prisma {
     summary?: true
     roleDomain?: true
     archetypeHint?: true
+    analysisJson?: true
     createdAt?: true
     _all?: true
   }
@@ -9813,6 +9711,7 @@ export namespace Prisma {
     summary: string
     roleDomain: string | null
     archetypeHint: string | null
+    analysisJson: JsonValue | null
     createdAt: Date
     _count: JobCountAggregateOutputType | null
     _min: JobMinAggregateOutputType | null
@@ -9843,6 +9742,7 @@ export namespace Prisma {
     summary?: boolean
     roleDomain?: boolean
     archetypeHint?: boolean
+    analysisJson?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["job"]>
@@ -9857,6 +9757,7 @@ export namespace Prisma {
     summary?: boolean
     roleDomain?: boolean
     archetypeHint?: boolean
+    analysisJson?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["job"]>
@@ -9871,6 +9772,7 @@ export namespace Prisma {
     summary?: boolean
     roleDomain?: boolean
     archetypeHint?: boolean
+    analysisJson?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["job"]>
@@ -9885,10 +9787,11 @@ export namespace Prisma {
     summary?: boolean
     roleDomain?: boolean
     archetypeHint?: boolean
+    analysisJson?: boolean
     createdAt?: boolean
   }
 
-  export type JobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "rawText" | "title" | "company" | "seniority" | "summary" | "roleDomain" | "archetypeHint" | "createdAt", ExtArgs["result"]["job"]>
+  export type JobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "rawText" | "title" | "company" | "seniority" | "summary" | "roleDomain" | "archetypeHint" | "analysisJson" | "createdAt", ExtArgs["result"]["job"]>
   export type JobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }
@@ -9914,6 +9817,7 @@ export namespace Prisma {
       summary: string
       roleDomain: string | null
       archetypeHint: string | null
+      analysisJson: Prisma.JsonValue | null
       createdAt: Date
     }, ExtArgs["result"]["job"]>
     composites: {}
@@ -10348,6 +10252,7 @@ export namespace Prisma {
     readonly summary: FieldRef<"Job", 'String'>
     readonly roleDomain: FieldRef<"Job", 'String'>
     readonly archetypeHint: FieldRef<"Job", 'String'>
+    readonly analysisJson: FieldRef<"Job", 'Json'>
     readonly createdAt: FieldRef<"Job", 'DateTime'>
   }
     
@@ -10847,6 +10752,7 @@ export namespace Prisma {
     strongProofCandidatesJson: number
     scopeOpportunitiesJson: number
     likelyTopEvidenceJson: number
+    profileJson: number
     createdAt: number
     updatedAt: number
     lastSeenAt: number
@@ -10929,6 +10835,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: true
     scopeOpportunitiesJson?: true
     likelyTopEvidenceJson?: true
+    profileJson?: true
     createdAt?: true
     updatedAt?: true
     lastSeenAt?: true
@@ -11038,6 +10945,7 @@ export namespace Prisma {
     strongProofCandidatesJson: JsonValue | null
     scopeOpportunitiesJson: JsonValue | null
     likelyTopEvidenceJson: JsonValue | null
+    profileJson: JsonValue | null
     createdAt: Date
     updatedAt: Date
     lastSeenAt: Date
@@ -11091,6 +10999,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: boolean
     scopeOpportunitiesJson?: boolean
     likelyTopEvidenceJson?: boolean
+    profileJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lastSeenAt?: boolean
@@ -11130,6 +11039,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: boolean
     scopeOpportunitiesJson?: boolean
     likelyTopEvidenceJson?: boolean
+    profileJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lastSeenAt?: boolean
@@ -11169,6 +11079,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: boolean
     scopeOpportunitiesJson?: boolean
     likelyTopEvidenceJson?: boolean
+    profileJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lastSeenAt?: boolean
@@ -11208,13 +11119,14 @@ export namespace Prisma {
     strongProofCandidatesJson?: boolean
     scopeOpportunitiesJson?: boolean
     likelyTopEvidenceJson?: boolean
+    profileJson?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     lastSeenAt?: boolean
     archivedAt?: boolean
   }
 
-  export type CandidateProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "anonymousSessionId" | "userId" | "sourceApplicationId" | "rawCvText" | "rawBackgroundText" | "contactInfoJson" | "linksJson" | "sourceType" | "profileSource" | "sourceSummary" | "sourceUrl" | "sourceKey" | "sourceHash" | "contentHash" | "profileConfirmedAt" | "summary" | "skillsJson" | "projectsJson" | "educationJson" | "certificationsJson" | "experienceJson" | "toolsJson" | "achievementsJson" | "cautionNotesJson" | "metricOpportunitiesJson" | "strongProofCandidatesJson" | "scopeOpportunitiesJson" | "likelyTopEvidenceJson" | "createdAt" | "updatedAt" | "lastSeenAt" | "archivedAt", ExtArgs["result"]["candidateProfile"]>
+  export type CandidateProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "anonymousSessionId" | "userId" | "sourceApplicationId" | "rawCvText" | "rawBackgroundText" | "contactInfoJson" | "linksJson" | "sourceType" | "profileSource" | "sourceSummary" | "sourceUrl" | "sourceKey" | "sourceHash" | "contentHash" | "profileConfirmedAt" | "summary" | "skillsJson" | "projectsJson" | "educationJson" | "certificationsJson" | "experienceJson" | "toolsJson" | "achievementsJson" | "cautionNotesJson" | "metricOpportunitiesJson" | "strongProofCandidatesJson" | "scopeOpportunitiesJson" | "likelyTopEvidenceJson" | "profileJson" | "createdAt" | "updatedAt" | "lastSeenAt" | "archivedAt", ExtArgs["result"]["candidateProfile"]>
   export type CandidateProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     anonymousSession?: boolean | CandidateProfile$anonymousSessionArgs<ExtArgs>
     user?: boolean | CandidateProfile$userArgs<ExtArgs>
@@ -11268,6 +11180,7 @@ export namespace Prisma {
       strongProofCandidatesJson: Prisma.JsonValue | null
       scopeOpportunitiesJson: Prisma.JsonValue | null
       likelyTopEvidenceJson: Prisma.JsonValue | null
+      profileJson: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
       lastSeenAt: Date
@@ -11727,6 +11640,7 @@ export namespace Prisma {
     readonly strongProofCandidatesJson: FieldRef<"CandidateProfile", 'Json'>
     readonly scopeOpportunitiesJson: FieldRef<"CandidateProfile", 'Json'>
     readonly likelyTopEvidenceJson: FieldRef<"CandidateProfile", 'Json'>
+    readonly profileJson: FieldRef<"CandidateProfile", 'Json'>
     readonly createdAt: FieldRef<"CandidateProfile", 'DateTime'>
     readonly updatedAt: FieldRef<"CandidateProfile", 'DateTime'>
     readonly lastSeenAt: FieldRef<"CandidateProfile", 'DateTime'>
@@ -20293,8 +20207,26 @@ export namespace Prisma {
 
   export type AggregateAgentRun = {
     _count: AgentRunCountAggregateOutputType | null
+    _avg: AgentRunAvgAggregateOutputType | null
+    _sum: AgentRunSumAggregateOutputType | null
     _min: AgentRunMinAggregateOutputType | null
     _max: AgentRunMaxAggregateOutputType | null
+  }
+
+  export type AgentRunAvgAggregateOutputType = {
+    durationMs: number | null
+    promptTokens: number | null
+    completionTokens: number | null
+    totalTokens: number | null
+    estimatedCostUsd: number | null
+  }
+
+  export type AgentRunSumAggregateOutputType = {
+    durationMs: number | null
+    promptTokens: number | null
+    completionTokens: number | null
+    totalTokens: number | null
+    estimatedCostUsd: number | null
   }
 
   export type AgentRunMinAggregateOutputType = {
@@ -20305,6 +20237,12 @@ export namespace Prisma {
     outputSummary: string | null
     status: $Enums.AgentRunStatus | null
     error: string | null
+    model: string | null
+    durationMs: number | null
+    promptTokens: number | null
+    completionTokens: number | null
+    totalTokens: number | null
+    estimatedCostUsd: number | null
     createdAt: Date | null
   }
 
@@ -20316,6 +20254,12 @@ export namespace Prisma {
     outputSummary: string | null
     status: $Enums.AgentRunStatus | null
     error: string | null
+    model: string | null
+    durationMs: number | null
+    promptTokens: number | null
+    completionTokens: number | null
+    totalTokens: number | null
+    estimatedCostUsd: number | null
     createdAt: Date | null
   }
 
@@ -20327,10 +20271,32 @@ export namespace Prisma {
     outputSummary: number
     status: number
     error: number
+    model: number
+    durationMs: number
+    promptTokens: number
+    completionTokens: number
+    totalTokens: number
+    estimatedCostUsd: number
     createdAt: number
     _all: number
   }
 
+
+  export type AgentRunAvgAggregateInputType = {
+    durationMs?: true
+    promptTokens?: true
+    completionTokens?: true
+    totalTokens?: true
+    estimatedCostUsd?: true
+  }
+
+  export type AgentRunSumAggregateInputType = {
+    durationMs?: true
+    promptTokens?: true
+    completionTokens?: true
+    totalTokens?: true
+    estimatedCostUsd?: true
+  }
 
   export type AgentRunMinAggregateInputType = {
     id?: true
@@ -20340,6 +20306,12 @@ export namespace Prisma {
     outputSummary?: true
     status?: true
     error?: true
+    model?: true
+    durationMs?: true
+    promptTokens?: true
+    completionTokens?: true
+    totalTokens?: true
+    estimatedCostUsd?: true
     createdAt?: true
   }
 
@@ -20351,6 +20323,12 @@ export namespace Prisma {
     outputSummary?: true
     status?: true
     error?: true
+    model?: true
+    durationMs?: true
+    promptTokens?: true
+    completionTokens?: true
+    totalTokens?: true
+    estimatedCostUsd?: true
     createdAt?: true
   }
 
@@ -20362,6 +20340,12 @@ export namespace Prisma {
     outputSummary?: true
     status?: true
     error?: true
+    model?: true
+    durationMs?: true
+    promptTokens?: true
+    completionTokens?: true
+    totalTokens?: true
+    estimatedCostUsd?: true
     createdAt?: true
     _all?: true
   }
@@ -20404,6 +20388,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: AgentRunAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AgentRunSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AgentRunMinAggregateInputType
@@ -20434,6 +20430,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: AgentRunCountAggregateInputType | true
+    _avg?: AgentRunAvgAggregateInputType
+    _sum?: AgentRunSumAggregateInputType
     _min?: AgentRunMinAggregateInputType
     _max?: AgentRunMaxAggregateInputType
   }
@@ -20446,8 +20444,16 @@ export namespace Prisma {
     outputSummary: string
     status: $Enums.AgentRunStatus
     error: string | null
+    model: string | null
+    durationMs: number | null
+    promptTokens: number | null
+    completionTokens: number | null
+    totalTokens: number | null
+    estimatedCostUsd: number | null
     createdAt: Date
     _count: AgentRunCountAggregateOutputType | null
+    _avg: AgentRunAvgAggregateOutputType | null
+    _sum: AgentRunSumAggregateOutputType | null
     _min: AgentRunMinAggregateOutputType | null
     _max: AgentRunMaxAggregateOutputType | null
   }
@@ -20474,6 +20480,12 @@ export namespace Prisma {
     outputSummary?: boolean
     status?: boolean
     error?: boolean
+    model?: boolean
+    durationMs?: boolean
+    promptTokens?: boolean
+    completionTokens?: boolean
+    totalTokens?: boolean
+    estimatedCostUsd?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agentRun"]>
@@ -20486,6 +20498,12 @@ export namespace Prisma {
     outputSummary?: boolean
     status?: boolean
     error?: boolean
+    model?: boolean
+    durationMs?: boolean
+    promptTokens?: boolean
+    completionTokens?: boolean
+    totalTokens?: boolean
+    estimatedCostUsd?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agentRun"]>
@@ -20498,6 +20516,12 @@ export namespace Prisma {
     outputSummary?: boolean
     status?: boolean
     error?: boolean
+    model?: boolean
+    durationMs?: boolean
+    promptTokens?: boolean
+    completionTokens?: boolean
+    totalTokens?: boolean
+    estimatedCostUsd?: boolean
     createdAt?: boolean
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["agentRun"]>
@@ -20510,10 +20534,16 @@ export namespace Prisma {
     outputSummary?: boolean
     status?: boolean
     error?: boolean
+    model?: boolean
+    durationMs?: boolean
+    promptTokens?: boolean
+    completionTokens?: boolean
+    totalTokens?: boolean
+    estimatedCostUsd?: boolean
     createdAt?: boolean
   }
 
-  export type AgentRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "agentName" | "inputSummary" | "outputSummary" | "status" | "error" | "createdAt", ExtArgs["result"]["agentRun"]>
+  export type AgentRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "applicationId" | "agentName" | "inputSummary" | "outputSummary" | "status" | "error" | "model" | "durationMs" | "promptTokens" | "completionTokens" | "totalTokens" | "estimatedCostUsd" | "createdAt", ExtArgs["result"]["agentRun"]>
   export type AgentRunInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     application?: boolean | ApplicationDefaultArgs<ExtArgs>
   }
@@ -20537,6 +20567,12 @@ export namespace Prisma {
       outputSummary: string
       status: $Enums.AgentRunStatus
       error: string | null
+      model: string | null
+      durationMs: number | null
+      promptTokens: number | null
+      completionTokens: number | null
+      totalTokens: number | null
+      estimatedCostUsd: number | null
       createdAt: Date
     }, ExtArgs["result"]["agentRun"]>
     composites: {}
@@ -20969,6 +21005,12 @@ export namespace Prisma {
     readonly outputSummary: FieldRef<"AgentRun", 'String'>
     readonly status: FieldRef<"AgentRun", 'AgentRunStatus'>
     readonly error: FieldRef<"AgentRun", 'String'>
+    readonly model: FieldRef<"AgentRun", 'String'>
+    readonly durationMs: FieldRef<"AgentRun", 'Int'>
+    readonly promptTokens: FieldRef<"AgentRun", 'Int'>
+    readonly completionTokens: FieldRef<"AgentRun", 'Int'>
+    readonly totalTokens: FieldRef<"AgentRun", 'Int'>
+    readonly estimatedCostUsd: FieldRef<"AgentRun", 'Float'>
     readonly createdAt: FieldRef<"AgentRun", 'DateTime'>
   }
     
@@ -21472,12 +21514,7 @@ export namespace Prisma {
     status: 'status',
     currentStep: 'currentStep',
     dreamRole: 'dreamRole',
-    originalEvidenceMatchScore: 'originalEvidenceMatchScore',
-    updatedEvidenceMatchScore: 'updatedEvidenceMatchScore',
-    matchLabel: 'matchLabel',
-    cvAngle: 'cvAngle',
     roleArchetype: 'roleArchetype',
-    matchAnalysisJson: 'matchAnalysisJson',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -21495,6 +21532,7 @@ export namespace Prisma {
     summary: 'summary',
     roleDomain: 'roleDomain',
     archetypeHint: 'archetypeHint',
+    analysisJson: 'analysisJson',
     createdAt: 'createdAt'
   };
 
@@ -21531,6 +21569,7 @@ export namespace Prisma {
     strongProofCandidatesJson: 'strongProofCandidatesJson',
     scopeOpportunitiesJson: 'scopeOpportunitiesJson',
     likelyTopEvidenceJson: 'likelyTopEvidenceJson',
+    profileJson: 'profileJson',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     lastSeenAt: 'lastSeenAt',
@@ -21673,6 +21712,12 @@ export namespace Prisma {
     outputSummary: 'outputSummary',
     status: 'status',
     error: 'error',
+    model: 'model',
+    durationMs: 'durationMs',
+    promptTokens: 'promptTokens',
+    completionTokens: 'completionTokens',
+    totalTokens: 'totalTokens',
+    estimatedCostUsd: 'estimatedCostUsd',
     createdAt: 'createdAt'
   };
 
@@ -21778,20 +21823,6 @@ export namespace Prisma {
    * Reference to a field of type 'ApplicationStatus[]'
    */
   export type ListEnumApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ApplicationStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -21960,6 +21991,20 @@ export namespace Prisma {
    * Reference to a field of type 'AgentRunStatus[]'
    */
   export type ListEnumAgentRunStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AgentRunStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -22326,12 +22371,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     currentStep?: StringFilter<"Application"> | string
     dreamRole?: StringNullableFilter<"Application"> | string | null
-    originalEvidenceMatchScore?: FloatNullableFilter<"Application"> | number | null
-    updatedEvidenceMatchScore?: FloatNullableFilter<"Application"> | number | null
-    matchLabel?: StringNullableFilter<"Application"> | string | null
-    cvAngle?: StringNullableFilter<"Application"> | string | null
     roleArchetype?: StringNullableFilter<"Application"> | string | null
-    matchAnalysisJson?: JsonNullableFilter<"Application">
     createdAt?: DateTimeFilter<"Application"> | Date | string
     updatedAt?: DateTimeFilter<"Application"> | Date | string
     anonymousSession?: XOR<AnonymousSessionScalarRelationFilter, AnonymousSessionWhereInput>
@@ -22352,12 +22392,7 @@ export namespace Prisma {
     status?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrderInput | SortOrder
-    originalEvidenceMatchScore?: SortOrderInput | SortOrder
-    updatedEvidenceMatchScore?: SortOrderInput | SortOrder
-    matchLabel?: SortOrderInput | SortOrder
-    cvAngle?: SortOrderInput | SortOrder
     roleArchetype?: SortOrderInput | SortOrder
-    matchAnalysisJson?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     anonymousSession?: AnonymousSessionOrderByWithRelationInput
@@ -22381,12 +22416,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     currentStep?: StringFilter<"Application"> | string
     dreamRole?: StringNullableFilter<"Application"> | string | null
-    originalEvidenceMatchScore?: FloatNullableFilter<"Application"> | number | null
-    updatedEvidenceMatchScore?: FloatNullableFilter<"Application"> | number | null
-    matchLabel?: StringNullableFilter<"Application"> | string | null
-    cvAngle?: StringNullableFilter<"Application"> | string | null
     roleArchetype?: StringNullableFilter<"Application"> | string | null
-    matchAnalysisJson?: JsonNullableFilter<"Application">
     createdAt?: DateTimeFilter<"Application"> | Date | string
     updatedAt?: DateTimeFilter<"Application"> | Date | string
     anonymousSession?: XOR<AnonymousSessionScalarRelationFilter, AnonymousSessionWhereInput>
@@ -22407,19 +22437,12 @@ export namespace Prisma {
     status?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrderInput | SortOrder
-    originalEvidenceMatchScore?: SortOrderInput | SortOrder
-    updatedEvidenceMatchScore?: SortOrderInput | SortOrder
-    matchLabel?: SortOrderInput | SortOrder
-    cvAngle?: SortOrderInput | SortOrder
     roleArchetype?: SortOrderInput | SortOrder
-    matchAnalysisJson?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ApplicationCountOrderByAggregateInput
-    _avg?: ApplicationAvgOrderByAggregateInput
     _max?: ApplicationMaxOrderByAggregateInput
     _min?: ApplicationMinOrderByAggregateInput
-    _sum?: ApplicationSumOrderByAggregateInput
   }
 
   export type ApplicationScalarWhereWithAggregatesInput = {
@@ -22432,12 +22455,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusWithAggregatesFilter<"Application"> | $Enums.ApplicationStatus
     currentStep?: StringWithAggregatesFilter<"Application"> | string
     dreamRole?: StringNullableWithAggregatesFilter<"Application"> | string | null
-    originalEvidenceMatchScore?: FloatNullableWithAggregatesFilter<"Application"> | number | null
-    updatedEvidenceMatchScore?: FloatNullableWithAggregatesFilter<"Application"> | number | null
-    matchLabel?: StringNullableWithAggregatesFilter<"Application"> | string | null
-    cvAngle?: StringNullableWithAggregatesFilter<"Application"> | string | null
     roleArchetype?: StringNullableWithAggregatesFilter<"Application"> | string | null
-    matchAnalysisJson?: JsonNullableWithAggregatesFilter<"Application">
     createdAt?: DateTimeWithAggregatesFilter<"Application"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Application"> | Date | string
   }
@@ -22455,6 +22473,7 @@ export namespace Prisma {
     summary?: StringFilter<"Job"> | string
     roleDomain?: StringNullableFilter<"Job"> | string | null
     archetypeHint?: StringNullableFilter<"Job"> | string | null
+    analysisJson?: JsonNullableFilter<"Job">
     createdAt?: DateTimeFilter<"Job"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
   }
@@ -22469,6 +22488,7 @@ export namespace Prisma {
     summary?: SortOrder
     roleDomain?: SortOrderInput | SortOrder
     archetypeHint?: SortOrderInput | SortOrder
+    analysisJson?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     application?: ApplicationOrderByWithRelationInput
   }
@@ -22486,6 +22506,7 @@ export namespace Prisma {
     summary?: StringFilter<"Job"> | string
     roleDomain?: StringNullableFilter<"Job"> | string | null
     archetypeHint?: StringNullableFilter<"Job"> | string | null
+    analysisJson?: JsonNullableFilter<"Job">
     createdAt?: DateTimeFilter<"Job"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
   }, "id" | "applicationId">
@@ -22500,6 +22521,7 @@ export namespace Prisma {
     summary?: SortOrder
     roleDomain?: SortOrderInput | SortOrder
     archetypeHint?: SortOrderInput | SortOrder
+    analysisJson?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: JobCountOrderByAggregateInput
     _max?: JobMaxOrderByAggregateInput
@@ -22519,6 +22541,7 @@ export namespace Prisma {
     summary?: StringWithAggregatesFilter<"Job"> | string
     roleDomain?: StringNullableWithAggregatesFilter<"Job"> | string | null
     archetypeHint?: StringNullableWithAggregatesFilter<"Job"> | string | null
+    analysisJson?: JsonNullableWithAggregatesFilter<"Job">
     createdAt?: DateTimeWithAggregatesFilter<"Job"> | Date | string
   }
 
@@ -22555,6 +22578,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: JsonNullableFilter<"CandidateProfile">
     scopeOpportunitiesJson?: JsonNullableFilter<"CandidateProfile">
     likelyTopEvidenceJson?: JsonNullableFilter<"CandidateProfile">
+    profileJson?: JsonNullableFilter<"CandidateProfile">
     createdAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     updatedAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     lastSeenAt?: DateTimeFilter<"CandidateProfile"> | Date | string
@@ -22594,6 +22618,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: SortOrderInput | SortOrder
     scopeOpportunitiesJson?: SortOrderInput | SortOrder
     likelyTopEvidenceJson?: SortOrderInput | SortOrder
+    profileJson?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastSeenAt?: SortOrder
@@ -22636,6 +22661,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: JsonNullableFilter<"CandidateProfile">
     scopeOpportunitiesJson?: JsonNullableFilter<"CandidateProfile">
     likelyTopEvidenceJson?: JsonNullableFilter<"CandidateProfile">
+    profileJson?: JsonNullableFilter<"CandidateProfile">
     createdAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     updatedAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     lastSeenAt?: DateTimeFilter<"CandidateProfile"> | Date | string
@@ -22675,6 +22701,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: SortOrderInput | SortOrder
     scopeOpportunitiesJson?: SortOrderInput | SortOrder
     likelyTopEvidenceJson?: SortOrderInput | SortOrder
+    profileJson?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastSeenAt?: SortOrder
@@ -22717,6 +22744,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: JsonNullableWithAggregatesFilter<"CandidateProfile">
     scopeOpportunitiesJson?: JsonNullableWithAggregatesFilter<"CandidateProfile">
     likelyTopEvidenceJson?: JsonNullableWithAggregatesFilter<"CandidateProfile">
+    profileJson?: JsonNullableWithAggregatesFilter<"CandidateProfile">
     createdAt?: DateTimeWithAggregatesFilter<"CandidateProfile"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"CandidateProfile"> | Date | string
     lastSeenAt?: DateTimeWithAggregatesFilter<"CandidateProfile"> | Date | string
@@ -23374,6 +23402,12 @@ export namespace Prisma {
     outputSummary?: StringFilter<"AgentRun"> | string
     status?: EnumAgentRunStatusFilter<"AgentRun"> | $Enums.AgentRunStatus
     error?: StringNullableFilter<"AgentRun"> | string | null
+    model?: StringNullableFilter<"AgentRun"> | string | null
+    durationMs?: IntNullableFilter<"AgentRun"> | number | null
+    promptTokens?: IntNullableFilter<"AgentRun"> | number | null
+    completionTokens?: IntNullableFilter<"AgentRun"> | number | null
+    totalTokens?: IntNullableFilter<"AgentRun"> | number | null
+    estimatedCostUsd?: FloatNullableFilter<"AgentRun"> | number | null
     createdAt?: DateTimeFilter<"AgentRun"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
   }
@@ -23386,6 +23420,12 @@ export namespace Prisma {
     outputSummary?: SortOrder
     status?: SortOrder
     error?: SortOrderInput | SortOrder
+    model?: SortOrderInput | SortOrder
+    durationMs?: SortOrderInput | SortOrder
+    promptTokens?: SortOrderInput | SortOrder
+    completionTokens?: SortOrderInput | SortOrder
+    totalTokens?: SortOrderInput | SortOrder
+    estimatedCostUsd?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     application?: ApplicationOrderByWithRelationInput
   }
@@ -23401,6 +23441,12 @@ export namespace Prisma {
     outputSummary?: StringFilter<"AgentRun"> | string
     status?: EnumAgentRunStatusFilter<"AgentRun"> | $Enums.AgentRunStatus
     error?: StringNullableFilter<"AgentRun"> | string | null
+    model?: StringNullableFilter<"AgentRun"> | string | null
+    durationMs?: IntNullableFilter<"AgentRun"> | number | null
+    promptTokens?: IntNullableFilter<"AgentRun"> | number | null
+    completionTokens?: IntNullableFilter<"AgentRun"> | number | null
+    totalTokens?: IntNullableFilter<"AgentRun"> | number | null
+    estimatedCostUsd?: FloatNullableFilter<"AgentRun"> | number | null
     createdAt?: DateTimeFilter<"AgentRun"> | Date | string
     application?: XOR<ApplicationScalarRelationFilter, ApplicationWhereInput>
   }, "id">
@@ -23413,10 +23459,18 @@ export namespace Prisma {
     outputSummary?: SortOrder
     status?: SortOrder
     error?: SortOrderInput | SortOrder
+    model?: SortOrderInput | SortOrder
+    durationMs?: SortOrderInput | SortOrder
+    promptTokens?: SortOrderInput | SortOrder
+    completionTokens?: SortOrderInput | SortOrder
+    totalTokens?: SortOrderInput | SortOrder
+    estimatedCostUsd?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: AgentRunCountOrderByAggregateInput
+    _avg?: AgentRunAvgOrderByAggregateInput
     _max?: AgentRunMaxOrderByAggregateInput
     _min?: AgentRunMinOrderByAggregateInput
+    _sum?: AgentRunSumOrderByAggregateInput
   }
 
   export type AgentRunScalarWhereWithAggregatesInput = {
@@ -23430,6 +23484,12 @@ export namespace Prisma {
     outputSummary?: StringWithAggregatesFilter<"AgentRun"> | string
     status?: EnumAgentRunStatusWithAggregatesFilter<"AgentRun"> | $Enums.AgentRunStatus
     error?: StringNullableWithAggregatesFilter<"AgentRun"> | string | null
+    model?: StringNullableWithAggregatesFilter<"AgentRun"> | string | null
+    durationMs?: IntNullableWithAggregatesFilter<"AgentRun"> | number | null
+    promptTokens?: IntNullableWithAggregatesFilter<"AgentRun"> | number | null
+    completionTokens?: IntNullableWithAggregatesFilter<"AgentRun"> | number | null
+    totalTokens?: IntNullableWithAggregatesFilter<"AgentRun"> | number | null
+    estimatedCostUsd?: FloatNullableWithAggregatesFilter<"AgentRun"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"AgentRun"> | Date | string
   }
 
@@ -23832,12 +23892,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -23858,12 +23913,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -23880,12 +23930,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -23906,12 +23951,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -23930,12 +23970,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23945,12 +23980,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23962,12 +23992,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23981,6 +24006,7 @@ export namespace Prisma {
     summary: string
     roleDomain?: string | null
     archetypeHint?: string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     application: ApplicationCreateNestedOneWithoutJobInput
   }
@@ -23995,6 +24021,7 @@ export namespace Prisma {
     summary: string
     roleDomain?: string | null
     archetypeHint?: string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -24007,6 +24034,7 @@ export namespace Prisma {
     summary?: StringFieldUpdateOperationsInput | string
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     application?: ApplicationUpdateOneRequiredWithoutJobNestedInput
   }
@@ -24021,6 +24049,7 @@ export namespace Prisma {
     summary?: StringFieldUpdateOperationsInput | string
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24034,6 +24063,7 @@ export namespace Prisma {
     summary: string
     roleDomain?: string | null
     archetypeHint?: string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -24046,6 +24076,7 @@ export namespace Prisma {
     summary?: StringFieldUpdateOperationsInput | string
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24059,6 +24090,7 @@ export namespace Prisma {
     summary?: StringFieldUpdateOperationsInput | string
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24089,6 +24121,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -24128,6 +24161,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -24161,6 +24195,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24200,6 +24235,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24236,6 +24272,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -24269,6 +24306,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24305,6 +24343,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25046,6 +25085,12 @@ export namespace Prisma {
     outputSummary: string
     status: $Enums.AgentRunStatus
     error?: string | null
+    model?: string | null
+    durationMs?: number | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    estimatedCostUsd?: number | null
     createdAt?: Date | string
     application: ApplicationCreateNestedOneWithoutAgentRunsInput
   }
@@ -25058,6 +25103,12 @@ export namespace Prisma {
     outputSummary: string
     status: $Enums.AgentRunStatus
     error?: string | null
+    model?: string | null
+    durationMs?: number | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    estimatedCostUsd?: number | null
     createdAt?: Date | string
   }
 
@@ -25068,6 +25119,12 @@ export namespace Prisma {
     outputSummary?: StringFieldUpdateOperationsInput | string
     status?: EnumAgentRunStatusFieldUpdateOperationsInput | $Enums.AgentRunStatus
     error?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedCostUsd?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     application?: ApplicationUpdateOneRequiredWithoutAgentRunsNestedInput
   }
@@ -25080,6 +25137,12 @@ export namespace Prisma {
     outputSummary?: StringFieldUpdateOperationsInput | string
     status?: EnumAgentRunStatusFieldUpdateOperationsInput | $Enums.AgentRunStatus
     error?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedCostUsd?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -25091,6 +25154,12 @@ export namespace Prisma {
     outputSummary: string
     status: $Enums.AgentRunStatus
     error?: string | null
+    model?: string | null
+    durationMs?: number | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    estimatedCostUsd?: number | null
     createdAt?: Date | string
   }
 
@@ -25101,6 +25170,12 @@ export namespace Prisma {
     outputSummary?: StringFieldUpdateOperationsInput | string
     status?: EnumAgentRunStatusFieldUpdateOperationsInput | $Enums.AgentRunStatus
     error?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedCostUsd?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -25112,6 +25187,12 @@ export namespace Prisma {
     outputSummary?: StringFieldUpdateOperationsInput | string
     status?: EnumAgentRunStatusFieldUpdateOperationsInput | $Enums.AgentRunStatus
     error?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedCostUsd?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -25472,40 +25553,6 @@ export namespace Prisma {
     not?: NestedEnumApplicationStatusFilter<$PrismaModel> | $Enums.ApplicationStatus
   }
 
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
   export type AnonymousSessionScalarRelationFilter = {
     is?: AnonymousSessionWhereInput
     isNot?: AnonymousSessionWhereInput
@@ -25568,19 +25615,9 @@ export namespace Prisma {
     status?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrder
-    originalEvidenceMatchScore?: SortOrder
-    updatedEvidenceMatchScore?: SortOrder
-    matchLabel?: SortOrder
-    cvAngle?: SortOrder
     roleArchetype?: SortOrder
-    matchAnalysisJson?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type ApplicationAvgOrderByAggregateInput = {
-    originalEvidenceMatchScore?: SortOrder
-    updatedEvidenceMatchScore?: SortOrder
   }
 
   export type ApplicationMaxOrderByAggregateInput = {
@@ -25590,10 +25627,6 @@ export namespace Prisma {
     status?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrder
-    originalEvidenceMatchScore?: SortOrder
-    updatedEvidenceMatchScore?: SortOrder
-    matchLabel?: SortOrder
-    cvAngle?: SortOrder
     roleArchetype?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25606,18 +25639,9 @@ export namespace Prisma {
     status?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrder
-    originalEvidenceMatchScore?: SortOrder
-    updatedEvidenceMatchScore?: SortOrder
-    matchLabel?: SortOrder
-    cvAngle?: SortOrder
     roleArchetype?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type ApplicationSumOrderByAggregateInput = {
-    originalEvidenceMatchScore?: SortOrder
-    updatedEvidenceMatchScore?: SortOrder
   }
 
   export type EnumApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -25629,30 +25653,14 @@ export namespace Prisma {
     _min?: NestedEnumApplicationStatusFilter<$PrismaModel>
     _max?: NestedEnumApplicationStatusFilter<$PrismaModel>
   }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+  export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
       >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
@@ -25667,9 +25675,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type ApplicationScalarRelationFilter = {
@@ -25687,6 +25692,7 @@ export namespace Prisma {
     summary?: SortOrder
     roleDomain?: SortOrder
     archetypeHint?: SortOrder
+    analysisJson?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -25714,6 +25720,32 @@ export namespace Prisma {
     roleDomain?: SortOrder
     archetypeHint?: SortOrder
     createdAt?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type EnumSourceTypeNullableFilter<$PrismaModel = never> = {
@@ -25786,6 +25818,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: SortOrder
     scopeOpportunitiesJson?: SortOrder
     likelyTopEvidenceJson?: SortOrder
+    profileJson?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     lastSeenAt?: SortOrder
@@ -26403,6 +26436,17 @@ export namespace Prisma {
     not?: NestedEnumAgentRunStatusFilter<$PrismaModel> | $Enums.AgentRunStatus
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type AgentRunCountOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
@@ -26411,7 +26455,21 @@ export namespace Prisma {
     outputSummary?: SortOrder
     status?: SortOrder
     error?: SortOrder
+    model?: SortOrder
+    durationMs?: SortOrder
+    promptTokens?: SortOrder
+    completionTokens?: SortOrder
+    totalTokens?: SortOrder
+    estimatedCostUsd?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type AgentRunAvgOrderByAggregateInput = {
+    durationMs?: SortOrder
+    promptTokens?: SortOrder
+    completionTokens?: SortOrder
+    totalTokens?: SortOrder
+    estimatedCostUsd?: SortOrder
   }
 
   export type AgentRunMaxOrderByAggregateInput = {
@@ -26422,6 +26480,12 @@ export namespace Prisma {
     outputSummary?: SortOrder
     status?: SortOrder
     error?: SortOrder
+    model?: SortOrder
+    durationMs?: SortOrder
+    promptTokens?: SortOrder
+    completionTokens?: SortOrder
+    totalTokens?: SortOrder
+    estimatedCostUsd?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -26433,7 +26497,21 @@ export namespace Prisma {
     outputSummary?: SortOrder
     status?: SortOrder
     error?: SortOrder
+    model?: SortOrder
+    durationMs?: SortOrder
+    promptTokens?: SortOrder
+    completionTokens?: SortOrder
+    totalTokens?: SortOrder
+    estimatedCostUsd?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type AgentRunSumOrderByAggregateInput = {
+    durationMs?: SortOrder
+    promptTokens?: SortOrder
+    completionTokens?: SortOrder
+    totalTokens?: SortOrder
+    estimatedCostUsd?: SortOrder
   }
 
   export type EnumAgentRunStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -26444,6 +26522,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAgentRunStatusFilter<$PrismaModel>
     _max?: NestedEnumAgentRunStatusFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type ApplicationCreateNestedManyWithoutAnonymousSessionInput = {
@@ -26930,14 +27024,6 @@ export namespace Prisma {
 
   export type EnumApplicationStatusFieldUpdateOperationsInput = {
     set?: $Enums.ApplicationStatus
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput = {
@@ -27468,6 +27554,14 @@ export namespace Prisma {
     set?: $Enums.AgentRunStatus
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type ApplicationUpdateOneRequiredWithoutAgentRunsNestedInput = {
     create?: XOR<ApplicationCreateWithoutAgentRunsInput, ApplicationUncheckedCreateWithoutAgentRunsInput>
     connectOrCreate?: ApplicationCreateOrConnectWithoutAgentRunsInput
@@ -27630,17 +27724,6 @@ export namespace Prisma {
     not?: NestedEnumApplicationStatusFilter<$PrismaModel> | $Enums.ApplicationStatus
   }
 
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedEnumApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.ApplicationStatus | EnumApplicationStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ApplicationStatus[] | ListEnumApplicationStatusFieldRefInput<$PrismaModel>
@@ -27649,22 +27732,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumApplicationStatusFilter<$PrismaModel>
     _max?: NestedEnumApplicationStatusFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -27778,6 +27845,17 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -27926,17 +28004,28 @@ export namespace Prisma {
     _max?: NestedEnumAgentRunStatusFilter<$PrismaModel>
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type ApplicationCreateWithoutAnonymousSessionInput = {
     id?: string
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutApplicationsInput
@@ -27955,12 +28044,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -28009,6 +28093,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -28046,6 +28131,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -28088,12 +28174,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
     currentStep?: StringFilter<"Application"> | string
     dreamRole?: StringNullableFilter<"Application"> | string | null
-    originalEvidenceMatchScore?: FloatNullableFilter<"Application"> | number | null
-    updatedEvidenceMatchScore?: FloatNullableFilter<"Application"> | number | null
-    matchLabel?: StringNullableFilter<"Application"> | string | null
-    cvAngle?: StringNullableFilter<"Application"> | string | null
     roleArchetype?: StringNullableFilter<"Application"> | string | null
-    matchAnalysisJson?: JsonNullableFilter<"Application">
     createdAt?: DateTimeFilter<"Application"> | Date | string
     updatedAt?: DateTimeFilter<"Application"> | Date | string
   }
@@ -28147,6 +28228,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: JsonNullableFilter<"CandidateProfile">
     scopeOpportunitiesJson?: JsonNullableFilter<"CandidateProfile">
     likelyTopEvidenceJson?: JsonNullableFilter<"CandidateProfile">
+    profileJson?: JsonNullableFilter<"CandidateProfile">
     createdAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     updatedAt?: DateTimeFilter<"CandidateProfile"> | Date | string
     lastSeenAt?: DateTimeFilter<"CandidateProfile"> | Date | string
@@ -28307,12 +28389,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -28331,12 +28408,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -28385,6 +28457,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -28422,6 +28495,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -28835,6 +28909,7 @@ export namespace Prisma {
     summary: string
     roleDomain?: string | null
     archetypeHint?: string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -28847,6 +28922,7 @@ export namespace Prisma {
     summary: string
     roleDomain?: string | null
     archetypeHint?: string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -28882,6 +28958,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -28919,6 +28996,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -29092,6 +29170,12 @@ export namespace Prisma {
     outputSummary: string
     status: $Enums.AgentRunStatus
     error?: string | null
+    model?: string | null
+    durationMs?: number | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    estimatedCostUsd?: number | null
     createdAt?: Date | string
   }
 
@@ -29102,6 +29186,12 @@ export namespace Prisma {
     outputSummary: string
     status: $Enums.AgentRunStatus
     error?: string | null
+    model?: string | null
+    durationMs?: number | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    estimatedCostUsd?: number | null
     createdAt?: Date | string
   }
 
@@ -29201,6 +29291,7 @@ export namespace Prisma {
     summary?: StringFieldUpdateOperationsInput | string
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29213,6 +29304,7 @@ export namespace Prisma {
     summary?: StringFieldUpdateOperationsInput | string
     roleDomain?: NullableStringFieldUpdateOperationsInput | string | null
     archetypeHint?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -29378,6 +29470,12 @@ export namespace Prisma {
     outputSummary?: StringFilter<"AgentRun"> | string
     status?: EnumAgentRunStatusFilter<"AgentRun"> | $Enums.AgentRunStatus
     error?: StringNullableFilter<"AgentRun"> | string | null
+    model?: StringNullableFilter<"AgentRun"> | string | null
+    durationMs?: IntNullableFilter<"AgentRun"> | number | null
+    promptTokens?: IntNullableFilter<"AgentRun"> | number | null
+    completionTokens?: IntNullableFilter<"AgentRun"> | number | null
+    totalTokens?: IntNullableFilter<"AgentRun"> | number | null
+    estimatedCostUsd?: FloatNullableFilter<"AgentRun"> | number | null
     createdAt?: DateTimeFilter<"AgentRun"> | Date | string
   }
 
@@ -29386,12 +29484,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -29411,12 +29504,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     sourceCandidateProfiles?: CandidateProfileUncheckedCreateNestedManyWithoutSourceApplicationInput
@@ -29448,12 +29536,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -29473,12 +29556,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sourceCandidateProfiles?: CandidateProfileUncheckedUpdateManyWithoutSourceApplicationNestedInput
@@ -29548,12 +29626,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -29573,12 +29646,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -29676,12 +29744,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -29701,12 +29764,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -29722,12 +29780,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -29747,12 +29800,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -29834,12 +29882,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -29859,12 +29902,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -29927,12 +29965,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -29952,12 +29985,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -30026,12 +30054,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -30051,12 +30074,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -30072,12 +30090,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -30097,12 +30110,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -30164,12 +30172,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -30189,12 +30192,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -30337,12 +30335,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -30362,12 +30355,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -30469,12 +30457,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -30494,12 +30477,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -30550,12 +30528,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     anonymousSession: AnonymousSessionCreateNestedOneWithoutApplicationsInput
@@ -30575,12 +30548,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     job?: JobUncheckedCreateNestedOneWithoutApplicationInput
@@ -30612,12 +30580,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -30637,12 +30600,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -30659,12 +30617,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30698,6 +30651,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -30709,12 +30663,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutApplicationsNestedInput
@@ -30733,12 +30682,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -30756,12 +30700,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30793,6 +30732,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30830,6 +30770,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30865,6 +30806,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30912,12 +30854,7 @@ export namespace Prisma {
     status?: $Enums.ApplicationStatus
     currentStep?: string
     dreamRole?: string | null
-    originalEvidenceMatchScore?: number | null
-    updatedEvidenceMatchScore?: number | null
-    matchLabel?: string | null
-    cvAngle?: string | null
     roleArchetype?: string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30951,6 +30888,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -31067,12 +31005,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     anonymousSession?: AnonymousSessionUpdateOneRequiredWithoutApplicationsNestedInput
@@ -31091,12 +31024,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     job?: JobUncheckedUpdateOneWithoutApplicationNestedInput
@@ -31114,12 +31042,7 @@ export namespace Prisma {
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
-    originalEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    updatedEvidenceMatchScore?: NullableFloatFieldUpdateOperationsInput | number | null
-    matchLabel?: NullableStringFieldUpdateOperationsInput | string | null
-    cvAngle?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
-    matchAnalysisJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -31151,6 +31074,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31188,6 +31112,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31223,6 +31148,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31258,6 +31184,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     lastSeenAt?: Date | string
@@ -31324,6 +31251,12 @@ export namespace Prisma {
     outputSummary: string
     status: $Enums.AgentRunStatus
     error?: string | null
+    model?: string | null
+    durationMs?: number | null
+    promptTokens?: number | null
+    completionTokens?: number | null
+    totalTokens?: number | null
+    estimatedCostUsd?: number | null
     createdAt?: Date | string
   }
 
@@ -31354,6 +31287,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31391,6 +31325,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31426,6 +31361,7 @@ export namespace Prisma {
     strongProofCandidatesJson?: NullableJsonNullValueInput | InputJsonValue
     scopeOpportunitiesJson?: NullableJsonNullValueInput | InputJsonValue
     likelyTopEvidenceJson?: NullableJsonNullValueInput | InputJsonValue
+    profileJson?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -31602,6 +31538,12 @@ export namespace Prisma {
     outputSummary?: StringFieldUpdateOperationsInput | string
     status?: EnumAgentRunStatusFieldUpdateOperationsInput | $Enums.AgentRunStatus
     error?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedCostUsd?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31612,6 +31554,12 @@ export namespace Prisma {
     outputSummary?: StringFieldUpdateOperationsInput | string
     status?: EnumAgentRunStatusFieldUpdateOperationsInput | $Enums.AgentRunStatus
     error?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedCostUsd?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -31622,6 +31570,12 @@ export namespace Prisma {
     outputSummary?: StringFieldUpdateOperationsInput | string
     status?: EnumAgentRunStatusFieldUpdateOperationsInput | $Enums.AgentRunStatus
     error?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: NullableStringFieldUpdateOperationsInput | string | null
+    durationMs?: NullableIntFieldUpdateOperationsInput | number | null
+    promptTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    completionTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    totalTokens?: NullableIntFieldUpdateOperationsInput | number | null
+    estimatedCostUsd?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

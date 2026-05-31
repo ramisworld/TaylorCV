@@ -1,48 +1,10 @@
-import { randomUUID } from "crypto";
-
 import { PrismaClient } from "../generated/prisma/index.js";
-import { createMockEmbedding } from "../src/server/tools/mockEmbedding.ts";
 
 const prisma = new PrismaClient();
 const seedAnonymousSessionId = "seed-anonymous-session";
 const seedApplicationId = "seed-application";
 const seedJobId = "seed-job";
 const seedProfileId = "seed-candidate-profile";
-
-function toVectorLiteral(embedding) {
-  return `[${embedding.map((value) => value.toFixed(8)).join(",")}]`;
-}
-
-async function insertChunk(chunk) {
-  await prisma.$executeRaw`
-    INSERT INTO candidate_chunks (
-      id,
-      anonymous_session_id,
-      application_id,
-      candidate_profile_id,
-      source_type,
-      source_id,
-      chunk_type,
-      content,
-      embedding,
-      tags_json,
-      metadata_json
-    )
-    VALUES (
-      ${chunk.id},
-      ${seedAnonymousSessionId},
-      ${seedApplicationId},
-      ${seedProfileId},
-      'profile'::"SourceType",
-      ${seedProfileId},
-      ${chunk.chunkType}::"ChunkType",
-      ${chunk.content},
-      ${toVectorLiteral(createMockEmbedding(chunk.content))}::vector,
-      ${JSON.stringify(chunk.tags)}::jsonb,
-      ${JSON.stringify({ seed: true })}::jsonb
-    )
-  `;
-}
 
 async function main() {
   await prisma.anonymousSession.upsert({
@@ -70,145 +32,193 @@ async function main() {
     where: { applicationId: seedApplicationId },
     update: {
       rawText:
-        "Build an AI application using RAG, agents, OpenAI, PostgreSQL, pgvector, Next.js, TypeScript, and deployment workflows.",
+        "Build an AI application using OpenAI, PostgreSQL, Next.js, TypeScript, and deployment workflows.",
       title: "AI Application Engineer",
       company: "Taylor Labs",
       seniority: "Mid-level",
       summary:
-        "A role building end-to-end AI applications with RAG, agents, OpenAI, pgvector, and full-stack TypeScript.",
+        "A role building end-to-end AI applications with OpenAI, PostgreSQL, and full-stack TypeScript.",
+      analysisJson: {
+        targetRoleTitle: "AI Application Engineer",
+        companyName: "Taylor Labs",
+        market: "Auckland",
+        seniority: "mid",
+        archetype: "technical",
+        subArchetype: null,
+        roleSummary: "Build AI applications with OpenAI, PostgreSQL, and full-stack TypeScript.",
+        mustHaveRequirements: ["OpenAI", "TypeScript", "Next.js"],
+        niceToHaveRequirements: ["PostgreSQL", "deployment experience"],
+        keywords: ["AI", "OpenAI", "TypeScript", "Next.js", "PostgreSQL"],
+        recruiterPriorities: ["Technical depth", "Shipped products"],
+        expectedProofTypes: ["Projects", "Technical skills"],
+        recommendedSectionBias: ["projects", "skills", "experience"],
+        risksOrAmbiguities: [],
+      },
     },
     create: {
       id: seedJobId,
       applicationId: seedApplicationId,
       rawText:
-        "Build an AI application using RAG, agents, OpenAI, PostgreSQL, pgvector, Next.js, TypeScript, and deployment workflows.",
+        "Build an AI application using OpenAI, PostgreSQL, Next.js, TypeScript, and deployment workflows.",
       title: "AI Application Engineer",
       company: "Taylor Labs",
       seniority: "Mid-level",
       summary:
-        "A role building end-to-end AI applications with RAG, agents, OpenAI, pgvector, and full-stack TypeScript.",
+        "A role building end-to-end AI applications with OpenAI, PostgreSQL, and full-stack TypeScript.",
+      analysisJson: {
+        targetRoleTitle: "AI Application Engineer",
+        companyName: "Taylor Labs",
+        market: "Auckland",
+        seniority: "mid",
+        archetype: "technical",
+        subArchetype: null,
+        roleSummary: "Build AI applications with OpenAI, PostgreSQL, and full-stack TypeScript.",
+        mustHaveRequirements: ["OpenAI", "TypeScript", "Next.js"],
+        niceToHaveRequirements: ["PostgreSQL", "deployment experience"],
+        keywords: ["AI", "OpenAI", "TypeScript", "Next.js", "PostgreSQL"],
+        recruiterPriorities: ["Technical depth", "Shipped products"],
+        expectedProofTypes: ["Projects", "Technical skills"],
+        recommendedSectionBias: ["projects", "skills", "experience"],
+        risksOrAmbiguities: [],
+      },
     },
   });
 
-  await prisma.jobRequirement.deleteMany({ where: { jobId: seedJobId } });
-  await prisma.jobRequirement.createMany({
-    data: [
-      {
-        id: randomUUID(),
-        jobId: seedJobId,
-        type: "skill",
-        label: "RAG",
-        description: "Build retrieval augmented generation workflows.",
-        importance: "high",
-      },
-      {
-        id: randomUUID(),
-        jobId: seedJobId,
-        type: "skill",
-        label: "Agents",
-        description: "Build agentic workflows with tool orchestration.",
-        importance: "high",
-      },
-      {
-        id: randomUUID(),
-        jobId: seedJobId,
-        type: "tool",
-        label: "PostgreSQL and pgvector",
-        description: "Store embeddings and search vectors in PostgreSQL.",
-        importance: "medium",
-      },
-      {
-        id: randomUUID(),
-        jobId: seedJobId,
-        type: "tool",
-        label: "Next.js and TypeScript",
-        description: "Build full-stack UI and API workflows.",
-        importance: "medium",
-      },
-      {
-        id: randomUUID(),
-        jobId: seedJobId,
-        type: "responsibility",
-        label: "Deployment",
-        description: "Deploy AI apps and connect inference to a frontend.",
-        importance: "medium",
-      },
-    ],
-  });
-
   await prisma.candidateProfile.upsert({
-    where: { applicationId: seedApplicationId },
+    where: { id: seedProfileId },
     update: {
       summary:
-        "Fake candidate with practical RAG, OpenAI, PostgreSQL, pgvector, Next.js, TypeScript, and deployment experience.",
-      skillsJson: ["RAG", "OpenAI", "PostgreSQL", "pgvector", "Next.js"],
-      projectsJson: [],
+        "Full-stack developer with practical OpenAI, PostgreSQL, Next.js, and TypeScript experience.",
+      skillsJson: ["OpenAI", "PostgreSQL", "Next.js", "TypeScript"],
+      projectsJson: [{ name: "RenovAI", tools: ["OpenAI", "Next.js"] }],
       educationJson: [],
       certificationsJson: [],
-      experienceJson: [],
-      toolsJson: ["OpenAI", "PostgreSQL", "pgvector", "Next.js", "TypeScript"],
+      experienceJson: [{ title: "Full-Stack Developer", organization: "TechCo" }],
+      toolsJson: ["OpenAI", "PostgreSQL", "Next.js", "TypeScript"],
       achievementsJson: [],
+      profileJson: {
+        identity: {
+          fullName: "Seed Candidate",
+          currentTitle: "Full-Stack Developer",
+          location: "Auckland",
+          email: "seed@example.com",
+          phone: null,
+          linkedin: null,
+          github: null,
+          portfolio: null,
+        },
+        headlineOptions: ["Full-Stack AI Developer"],
+        summaryFacts: [
+          "3 years building full-stack TypeScript applications",
+          "Experience with OpenAI APIs and PostgreSQL",
+        ],
+        experiences: [
+          {
+            title: "Full-Stack Developer",
+            organization: "TechCo",
+            location: "Auckland",
+            startDate: "2022-01",
+            endDate: null,
+            descriptionFacts: ["Built internal tools and web applications"],
+            achievementFacts: ["Reduced build times by 40%"],
+            tools: ["Next.js", "TypeScript", "PostgreSQL"],
+            metrics: [],
+            proofNotes: [],
+          },
+        ],
+        projects: [
+          {
+            name: "RenovAI",
+            descriptionFacts: ["AI-powered renovation planning tool"],
+            achievementFacts: ["Built end-to-end with OpenAI integration"],
+            tools: ["OpenAI", "Next.js", "TypeScript"],
+            metrics: [],
+            links: [],
+            proofNotes: [],
+          },
+        ],
+        skillsByGroup: [
+          { group: "Languages", skills: ["TypeScript", "JavaScript", "SQL"] },
+          { group: "Frameworks", skills: ["Next.js", "React", "Node.js"] },
+          { group: "AI/ML", skills: ["OpenAI"] },
+        ],
+        education: [],
+        certifications: [],
+        links: [],
+        proofNotes: [],
+        warnings: [],
+      },
     },
     create: {
       id: seedProfileId,
       anonymousSessionId: seedAnonymousSessionId,
-      applicationId: seedApplicationId,
+      sourceApplicationId: seedApplicationId,
+      sourceType: "cv_upload",
       rawCvText: null,
       rawBackgroundText:
-        "Built RenovAI with RAG, OpenAI workflows, pgvector, Next.js, TypeScript, and deployment experience.",
+        "Built RenovAI with OpenAI, Next.js, TypeScript, and PostgreSQL.",
       summary:
-        "Fake candidate with practical RAG, OpenAI, PostgreSQL, pgvector, Next.js, TypeScript, and deployment experience.",
-      skillsJson: ["RAG", "OpenAI", "PostgreSQL", "pgvector", "Next.js"],
-      projectsJson: [],
+        "Full-stack developer with practical OpenAI, PostgreSQL, Next.js, and TypeScript experience.",
+      skillsJson: ["OpenAI", "PostgreSQL", "Next.js", "TypeScript"],
+      projectsJson: [{ name: "RenovAI", tools: ["OpenAI", "Next.js"] }],
       educationJson: [],
       certificationsJson: [],
-      experienceJson: [],
-      toolsJson: ["OpenAI", "PostgreSQL", "pgvector", "Next.js", "TypeScript"],
+      experienceJson: [{ title: "Full-Stack Developer", organization: "TechCo" }],
+      toolsJson: ["OpenAI", "PostgreSQL", "Next.js", "TypeScript"],
       achievementsJson: [],
+      profileJson: {
+        identity: {
+          fullName: "Seed Candidate",
+          currentTitle: "Full-Stack Developer",
+          location: "Auckland",
+          email: "seed@example.com",
+          phone: null,
+          linkedin: null,
+          github: null,
+          portfolio: null,
+        },
+        headlineOptions: ["Full-Stack AI Developer"],
+        summaryFacts: [
+          "3 years building full-stack TypeScript applications",
+          "Experience with OpenAI APIs and PostgreSQL",
+        ],
+        experiences: [
+          {
+            title: "Full-Stack Developer",
+            organization: "TechCo",
+            location: "Auckland",
+            startDate: "2022-01",
+            endDate: null,
+            descriptionFacts: ["Built internal tools and web applications"],
+            achievementFacts: ["Reduced build times by 40%"],
+            tools: ["Next.js", "TypeScript", "PostgreSQL"],
+            metrics: [],
+            proofNotes: [],
+          },
+        ],
+        projects: [
+          {
+            name: "RenovAI",
+            descriptionFacts: ["AI-powered renovation planning tool"],
+            achievementFacts: ["Built end-to-end with OpenAI integration"],
+            tools: ["OpenAI", "Next.js", "TypeScript"],
+            metrics: [],
+            links: [],
+            proofNotes: [],
+          },
+        ],
+        skillsByGroup: [
+          { group: "Languages", skills: ["TypeScript", "JavaScript", "SQL"] },
+          { group: "Frameworks", skills: ["Next.js", "React", "Node.js"] },
+          { group: "AI/ML", skills: ["OpenAI"] },
+        ],
+        education: [],
+        certifications: [],
+        links: [],
+        proofNotes: [],
+        warnings: [],
+      },
     },
-  });
-
-  await prisma.candidateChunk.deleteMany({
-    where: {
-      applicationId: seedApplicationId,
-      anonymousSessionId: seedAnonymousSessionId,
-    },
-  });
-
-  await insertChunk({
-    id: "seed-chunk-rag",
-    chunkType: "project",
-    content:
-      "Built RenovAI, a RAG application using retrieval augmented generation over domain-specific renovation data.",
-    tags: ["RAG", "retrieval", "RenovAI"],
-  });
-  await insertChunk({
-    id: "seed-chunk-agents",
-    chunkType: "project",
-    content:
-      "Built Taylor CV, an agentic workflow that orchestrates job parsing, evidence chunking, retrieval, scoring, strategy, and CV writing.",
-    tags: ["agents", "workflow", "orchestration"],
-  });
-  await insertChunk({
-    id: "seed-chunk-pgvector",
-    chunkType: "skill",
-    content:
-      "Used PostgreSQL and pgvector to store embeddings and run vector search over candidate evidence chunks.",
-    tags: ["PostgreSQL", "pgvector", "embeddings"],
-  });
-  await insertChunk({
-    id: "seed-chunk-next-typescript",
-    chunkType: "experience",
-    content:
-      "Built full-stack applications using Next.js, React, tRPC, Prisma, and TypeScript.",
-    tags: ["Next.js", "React", "tRPC", "Prisma", "TypeScript"],
-  });
-  await insertChunk({
-    id: "seed-chunk-deployment",
-    chunkType: "achievement",
-    content:
-      "Deployed AI application workflows on a hosted server and connected model inference to a frontend.",
-    tags: ["deployment", "server", "AI app"],
   });
 
   console.log("Seed complete");

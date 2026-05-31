@@ -2,21 +2,12 @@ import type { z } from "zod";
 
 import type {
   ButtonAnswerSchema,
-  CandidateProfilerAgentOutputSchema,
-  CandidateProfilerOutputSchema,
-  CvBuilderOutputSchema,
-  CvRewriteOutputSchema,
   CvLayoutStyleOutputSchema,
-  CvQualityReviewOutputSchema,
-  CvStrategyOutputSchema,
-  CvWriterOutputSchema,
-  GapQuestionAgentOutputSchema,
   ImportanceSchema,
   LayoutArchitectureSchema,
   ProofStyleSchema,
   RoleFamilySchema,
   SectionBudgetTreatmentSchema,
-  JobParserOutputSchema,
   RequirementTypeSchema,
 } from "~/lib/schemas";
 
@@ -30,19 +21,4 @@ export type SectionBudgetTreatment = z.infer<
 export type LayoutArchitecture = z.infer<typeof LayoutArchitectureSchema>;
 export type ButtonAnswer = z.infer<typeof ButtonAnswerSchema>;
 
-export type JobParserOutput = z.infer<typeof JobParserOutputSchema>;
-export type CandidateProfilerOutput = z.infer<
-  typeof CandidateProfilerOutputSchema
->;
-export type CandidateProfilerAgentOutput = z.infer<
-  typeof CandidateProfilerAgentOutputSchema
->;
-export type GapQuestionAgentOutput = z.infer<typeof GapQuestionAgentOutputSchema>;
-export type CvBuilderOutput = z.infer<typeof CvBuilderOutputSchema>;
-export type CvStrategyOutput = z.infer<typeof CvStrategyOutputSchema>;
-export type CvWriterOutput = z.infer<typeof CvWriterOutputSchema>;
-export type CvQualityReviewOutput = z.infer<
-  typeof CvQualityReviewOutputSchema
->;
 export type CvLayoutStyleOutput = z.infer<typeof CvLayoutStyleOutputSchema>;
-export type CvRewriteOutput = z.infer<typeof CvRewriteOutputSchema>;

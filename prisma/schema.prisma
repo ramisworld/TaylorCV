@@ -12,13 +12,8 @@ enum ApplicationStatus {
   started
   job_added
   candidate_added
-  evidence_ready
   questions_ready
   answers_added
-  strategy_failed
-  strategy_ready
-  draft_failed
-  draft_ready
   cv_ready
 }
 
@@ -179,12 +174,7 @@ model Application {
   status             ApplicationStatus @default(started)
   currentStep        String            @default("started") @map("current_step")
   dreamRole          String?           @map("dream_role")
-  originalEvidenceMatchScore Float?    @map("original_evidence_match_score")
-  updatedEvidenceMatchScore  Float?    @map("updated_evidence_match_score")
-  matchLabel         String?           @map("match_label")
-  cvAngle            String?           @map("cv_angle")
   roleArchetype      String?           @map("role_archetype")
-  matchAnalysisJson  Json?             @map("match_analysis_json")
   createdAt          DateTime          @default(now()) @map("created_at")
   updatedAt          DateTime          @default(now()) @updatedAt @map("updated_at")
 
@@ -213,6 +203,7 @@ model Job {
   summary       String           @db.Text
   roleDomain    String?          @map("role_domain")
   archetypeHint String?          @map("archetype_hint")
+  analysisJson  Json?            @map("analysis_json")
   createdAt     DateTime         @default(now()) @map("created_at")
   application   Application      @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
@@ -249,6 +240,7 @@ model CandidateProfile {
   strongProofCandidatesJson Json?      @map("strong_proof_candidates_json")
   scopeOpportunitiesJson Json?         @map("scope_opportunities_json")
   likelyTopEvidenceJson Json?          @map("likely_top_evidence_json")
+  profileJson          Json?            @map("profile_json")
   createdAt          DateTime         @default(now()) @map("created_at")
   updatedAt          DateTime         @default(now()) @updatedAt @map("updated_at")
   lastSeenAt         DateTime         @default(now()) @map("last_seen_at")
@@ -413,15 +405,21 @@ model AbuseSignalEvent {
 }
 
 model AgentRun {
-  id            String         @id @default(cuid())
-  applicationId String         @map("application_id")
-  agentName     String         @map("agent_name")
-  inputSummary  String         @map("input_summary") @db.Text
-  outputSummary String         @map("output_summary") @db.Text
-  status        AgentRunStatus
-  error         String?        @db.Text
-  createdAt     DateTime       @default(now()) @map("created_at")
-  application   Application    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  id                 String         @id @default(cuid())
+  applicationId      String         @map("application_id")
+  agentName          String         @map("agent_name")
+  inputSummary       String         @map("input_summary") @db.Text
+  outputSummary      String         @map("output_summary") @db.Text
+  status             AgentRunStatus
+  error              String?        @db.Text
+  model              String?
+  durationMs         Int?           @map("duration_ms")
+  promptTokens       Int?           @map("prompt_tokens")
+  completionTokens   Int?           @map("completion_tokens")
+  totalTokens        Int?           @map("total_tokens")
+  estimatedCostUsd   Float?         @map("estimated_cost_usd")
+  createdAt          DateTime       @default(now()) @map("created_at")
+  application        Application    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   @@index([applicationId])
   @@map("agent_runs")

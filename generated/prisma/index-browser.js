@@ -180,12 +180,7 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   status: 'status',
   currentStep: 'currentStep',
   dreamRole: 'dreamRole',
-  originalEvidenceMatchScore: 'originalEvidenceMatchScore',
-  updatedEvidenceMatchScore: 'updatedEvidenceMatchScore',
-  matchLabel: 'matchLabel',
-  cvAngle: 'cvAngle',
   roleArchetype: 'roleArchetype',
-  matchAnalysisJson: 'matchAnalysisJson',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -200,6 +195,7 @@ exports.Prisma.JobScalarFieldEnum = {
   summary: 'summary',
   roleDomain: 'roleDomain',
   archetypeHint: 'archetypeHint',
+  analysisJson: 'analysisJson',
   createdAt: 'createdAt'
 };
 
@@ -233,6 +229,7 @@ exports.Prisma.CandidateProfileScalarFieldEnum = {
   strongProofCandidatesJson: 'strongProofCandidatesJson',
   scopeOpportunitiesJson: 'scopeOpportunitiesJson',
   likelyTopEvidenceJson: 'likelyTopEvidenceJson',
+  profileJson: 'profileJson',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   lastSeenAt: 'lastSeenAt',
@@ -351,6 +348,12 @@ exports.Prisma.AgentRunScalarFieldEnum = {
   outputSummary: 'outputSummary',
   status: 'status',
   error: 'error',
+  model: 'model',
+  durationMs: 'durationMs',
+  promptTokens: 'promptTokens',
+  completionTokens: 'completionTokens',
+  totalTokens: 'totalTokens',
+  estimatedCostUsd: 'estimatedCostUsd',
   createdAt: 'createdAt'
 };
 
@@ -387,13 +390,8 @@ exports.ApplicationStatus = exports.$Enums.ApplicationStatus = {
   started: 'started',
   job_added: 'job_added',
   candidate_added: 'candidate_added',
-  evidence_ready: 'evidence_ready',
   questions_ready: 'questions_ready',
   answers_added: 'answers_added',
-  strategy_failed: 'strategy_failed',
-  strategy_ready: 'strategy_ready',
-  draft_failed: 'draft_failed',
-  draft_ready: 'draft_ready',
   cv_ready: 'cv_ready'
 };
 

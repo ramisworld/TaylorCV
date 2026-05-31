@@ -7,6 +7,13 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { db } from "~/server/db";
+import {
+  submitJob as submitJobService,
+  submitCandidate as submitCandidateService,
+  submitGapAnswers as submitGapAnswersService,
+  generateCv as generateCvService,
+  authorizeExport as authorizeExportService,
+} from "~/server/cv/cvWorkflow.service";
 
 const applicationIdSchema = z.object({
   applicationId: z.string().min(1),
@@ -95,10 +102,12 @@ export const applicationRouter = createTRPCRouter({
         userId: ctx.userId,
       });
 
-      throw new TRPCError({
-        code: "NOT_IMPLEMENTED",
-        message: "CV workflow is being rebuilt. Job submission not available yet.",
+      const jobAnalysis = await submitJobService({
+        applicationId: input.applicationId,
+        rawJobText: input.rawJobText,
       });
+
+      return { jobAnalysis };
     }),
 
   submitCandidate: publicProcedure
@@ -114,10 +123,15 @@ export const applicationRouter = createTRPCRouter({
         userId: ctx.userId,
       });
 
-      throw new TRPCError({
-        code: "NOT_IMPLEMENTED",
-        message: "CV workflow is being rebuilt. Candidate submission not available yet.",
+      const result = await submitCandidateService({
+        applicationId: input.applicationId,
+        rawCvText: input.rawCvText,
       });
+
+      return {
+        candidateProfile: result.candidateProfile,
+        gapQuestions: result.gapQuestions,
+      };
     }),
 
   submitGapAnswers: publicProcedure
@@ -139,10 +153,12 @@ export const applicationRouter = createTRPCRouter({
         userId: ctx.userId,
       });
 
-      throw new TRPCError({
-        code: "NOT_IMPLEMENTED",
-        message: "CV workflow is being rebuilt. Gap answers not available yet.",
+      await submitGapAnswersService({
+        applicationId: input.applicationId,
+        answers: input.answers,
       });
+
+      return { success: true };
     }),
 
   generateCv: publicProcedure
@@ -154,10 +170,11 @@ export const applicationRouter = createTRPCRouter({
         userId: ctx.userId,
       });
 
-      throw new TRPCError({
-        code: "NOT_IMPLEMENTED",
-        message: "CV workflow is being rebuilt. CV generation not available yet.",
+      const cvDraft = await generateCvService({
+        applicationId: input.applicationId,
       });
+
+      return { cvDraftId: cvDraft.id };
     }),
 
   getApplicationState: publicProcedure
@@ -214,10 +231,12 @@ export const applicationRouter = createTRPCRouter({
         userId: ctx.userId,
       });
 
-      throw new TRPCError({
-        code: "NOT_IMPLEMENTED",
-        message: "CV workflow is being rebuilt. Export authorization not available yet.",
+      const result = await authorizeExportService({
+        applicationId: input.applicationId,
+        cvDraftId: input.cvDraftId,
       });
+
+      return result;
     }),
 
   claimApplication: protectedProcedure

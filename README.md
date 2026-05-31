@@ -58,10 +58,7 @@ Set `USE_MOCK_AI="false"` and provide:
 OPENAI_API_KEY=""
 OPENAI_FAST_MODEL=""
 OPENAI_STRONG_MODEL=""
-OPENAI_EMBEDDING_MODEL="text-embedding-3-small"
 ```
-
-The embedding schema is fixed to `vector(1536)` for `text-embedding-3-small`.
 
 ## Checks
 

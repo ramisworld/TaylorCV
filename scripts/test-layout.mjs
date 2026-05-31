@@ -120,7 +120,6 @@ function cvFixture({ title = "Applied AI Engineer", summary = "Applied AI engine
         dates: null,
         bullets: Array.from({ length: bulletCount }, (_, index) => ({
           text: `Built truthful project evidence bullet ${index + 1} with concrete scope and implementation detail.`,
-          sourceChunkIds: [`chunk-${index + 1}`],
           gapAnswerIds: [],
         })),
       },
@@ -134,7 +133,6 @@ function cvFixture({ title = "Applied AI Engineer", summary = "Applied AI engine
         bullets: [
           {
             text: "Delivered customer-facing work with clear communication.",
-            sourceChunkIds: ["chunk-experience"],
             gapAnswerIds: [],
           },
         ],

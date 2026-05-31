@@ -9,7 +9,6 @@ export type CvHeader = {
 
 export type CvBulletClaim = {
   text: string;
-  sourceChunkIds: string[];
   gapAnswerIds: string[];
 };
 
@@ -45,15 +44,7 @@ export type CvEducationItem = {
 export type DynamicCvSection = {
   id: string;
   label: string;
-  type:
-    | "summary"
-    | "bullets"
-    | "experience"
-    | "projects"
-    | "skills"
-    | "education"
-    | "certifications"
-    | "inline";
+  type: "bullets" | "inline" | "certifications";
   priority: "primary" | "secondary" | "supporting";
   items: unknown[];
 };
@@ -170,7 +161,7 @@ export function claimText(claim: CvBulletClaim) {
 function parseClaim(value: unknown): CvBulletClaim | null {
   if (typeof value === "string") {
     const text = value.trim();
-    return text ? { text, sourceChunkIds: [], gapAnswerIds: [] } : null;
+    return text ? { text, gapAnswerIds: [] } : null;
   }
   if (!isRecord(value)) return null;
   const text = textOrNull(value.text) ?? textOrNull(value.content);
@@ -178,7 +169,6 @@ function parseClaim(value: unknown): CvBulletClaim | null {
 
   return {
     text,
-    sourceChunkIds: textArray(value.sourceChunkIds),
     gapAnswerIds: textArray(value.gapAnswerIds),
   };
 }
@@ -311,16 +301,7 @@ function parseDynamicSections(value: unknown): DynamicCvSection[] {
         !id ||
         !label ||
         !type ||
-        ![
-          "summary",
-          "bullets",
-          "experience",
-          "projects",
-          "skills",
-          "education",
-          "certifications",
-          "inline",
-        ].includes(type) ||
+        !["bullets", "inline", "certifications"].includes(type) ||
         !priority ||
         !["primary", "secondary", "supporting"].includes(priority) ||
         items.length === 0
@@ -570,74 +551,11 @@ function nonEmptyPriority(value: unknown): DynamicCvSection["priority"] {
     : "secondary";
 }
 
-function parseDynamicSkills(items: unknown[]) {
-  return items
-    .filter(isRecord)
-    .map((item) => ({
-      group: textOrNull(item.group) ?? textOrNull(item.label),
-      skills: textArray(item.skills).length
-        ? textArray(item.skills)
-        : textArray(item.items),
-    }))
-    .filter(
-      (item): item is CvSkillGroup =>
-        Boolean(item.group) && item.skills.length > 0
-    );
-}
-
-function parseDynamicExperience(items: unknown[]) {
-  return items
-    .filter(isRecord)
-    .map((item) => {
-      const dates = parseDates(item);
-      return {
-        role: textOrNull(item.role) ?? textOrNull(item.title),
-        company: textOrNull(item.company) ?? textOrNull(item.organization),
-        location: textOrNull(item.location),
-        dates: dates.dates,
-        startDate: dates.startDate,
-        endDate: dates.endDate,
-        bullets: parseClaims(item.bullets),
-      };
-    })
-    .filter((item) => item.bullets.length > 0);
-}
-
-function parseDynamicProjects(items: unknown[]) {
-  return items
-    .filter(isRecord)
-    .map((item) => ({
-      name: textOrNull(item.name) ?? textOrNull(item.title),
-      descriptor: textOrNull(item.descriptor),
-      dates: textOrNull(item.dates),
-      bullets: parseClaims(item.bullets).length
-        ? parseClaims(item.bullets)
-        : parseClaims(item.items),
-    }))
-    .filter((item) => item.bullets.length > 0);
-}
-
-function parseDynamicEducation(items: unknown[]) {
-  return items
-    .filter(isRecord)
-    .map((item) => ({
-      institution: textOrNull(item.institution),
-      degree: textOrNull(item.degree) ?? textOrNull(item.credential),
-      dates: textOrNull(item.dates),
-      details: textArray(item.details).length
-        ? textArray(item.details)
-        : textArray(item.items),
-    }))
-    .filter((item) =>
-      Boolean(item.institution || item.degree || item.dates || item.details.length)
-    );
-}
-
 export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
   const dynamic = cv.sections
     .map((section): NormalizedCvSection | null => {
       const priority = nonEmptyPriority(section.priority);
-      if (section.type === "summary" || section.type === "inline") {
+      if (section.type === "inline") {
         const paragraphs = section.items
           .map((item) =>
             typeof item === "string"
@@ -654,26 +572,6 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
         const bullets = parseClaims(section.items);
         if (!bullets.length) return null;
         return { id: section.id, label: section.label, type: section.type, priority, bullets };
-      }
-      if (section.type === "experience") {
-        const items = parseDynamicExperience(section.items);
-        if (!items.length) return null;
-        return { id: section.id, label: section.label, type: "experience", priority, items };
-      }
-      if (section.type === "projects") {
-        const items = parseDynamicProjects(section.items);
-        if (!items.length) return null;
-        return { id: section.id, label: section.label, type: "projects", priority, items };
-      }
-      if (section.type === "skills") {
-        const groups = parseDynamicSkills(section.items);
-        if (!groups.length) return null;
-        return { id: section.id, label: section.label, type: "skills", priority, groups };
-      }
-      if (section.type === "education") {
-        const items = parseDynamicEducation(section.items);
-        if (!items.length) return null;
-        return { id: section.id, label: section.label, type: "education", priority, items };
       }
       return null;
     })
@@ -734,7 +632,6 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
           priority: "supporting",
           bullets: cv.certifications.map((text) => ({
             text,
-            sourceChunkIds: [],
             gapAnswerIds: [],
           })),
         };
