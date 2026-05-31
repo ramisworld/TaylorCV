@@ -344,7 +344,7 @@ function estimateCvLoad(cv: StructuredCv) {
     summaryWords,
     bulletCount: projectBullets + experienceBullets,
     skillItems,
-    sectionCount: orderedSections(cv.sectionOrder, cv.roleArchetype).length,
+    sectionCount: orderedSections(cv.sectionOrder, cv.roleArchetype).length + cv.sections.length,
     estimatedWords: summaryWords + bulletWords + skillItems * 2,
     supportingItems: educationItems + certificationItems,
   };

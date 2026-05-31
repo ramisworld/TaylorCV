@@ -14,20 +14,20 @@ interface MissingProofScoreGlassCardProps {
 function TrendIcon({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 28 16"
+      viewBox="0 0 30 17"
       fill="none"
       className={className}
       aria-hidden="true"
     >
       <path
-        d="M2.4 12.8L8.2 7.4L12.3 9.7L21.1 2.7"
+        d="M2.5 13.4L8.8 7.8L13.1 10L22.4 2.8"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M17.3 2.5H21.5V6.7"
+        d="M18.3 2.6H22.8V7.1"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
@@ -56,7 +56,7 @@ function InlineRing({
   strokeOpacity?: number;
   labelClassName?: string;
 }) {
-  const radius = (size - strokeWidth) / 2;
+  const radius = (size - strokeWidth - 3) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percent / 100) * circumference;
 
@@ -72,9 +72,38 @@ function InlineRing({
         height={size}
       >
         <defs>
-          <linearGradient id={gradientId} x1="7%" y1="0%" x2="90%" y2="100%">
+          <linearGradient id={gradientId} x1="8%" y1="2%" x2="92%" y2="98%">
             {gradientStops}
           </linearGradient>
+
+          <linearGradient
+            id={`${gradientId}-tube`}
+            x1="12%"
+            y1="0%"
+            x2="88%"
+            y2="100%"
+          >
+            <stop offset="0%" stopColor="rgba(255,255,255,0.88)" />
+            <stop offset="34%" stopColor="rgba(234,240,255,0.48)" />
+            <stop offset="68%" stopColor="rgba(255,255,255,0.62)" />
+            <stop offset="100%" stopColor="rgba(204,215,255,0.36)" />
+          </linearGradient>
+
+          <filter
+            id={`${gradientId}-tube-shadow`}
+            x="-30%"
+            y="-30%"
+            width="160%"
+            height="160%"
+            colorInterpolationFilters="sRGB"
+          >
+            <feDropShadow
+              dx="0"
+              dy="6"
+              stdDeviation="7"
+              floodColor="rgba(76,76,160,0.12)"
+            />
+          </filter>
         </defs>
 
         <circle
@@ -82,8 +111,20 @@ function InlineRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="rgba(232, 237, 255, 0.58)"
-          strokeWidth={strokeWidth}
+          stroke={`url(#${gradientId}-tube)`}
+          strokeWidth={strokeWidth + 5}
+          opacity="0.74"
+          filter={`url(#${gradientId}-tube-shadow)`}
+        />
+
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="rgba(255,255,255,0.56)"
+          strokeWidth={strokeWidth + 1}
+          opacity="0.7"
         />
 
         <circle
@@ -98,6 +139,16 @@ function InlineRing({
           strokeDashoffset={offset}
           transform={`rotate(${rotation} ${size / 2} ${size / 2})`}
           opacity={strokeOpacity}
+        />
+
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="rgba(255,255,255,0.38)"
+          strokeWidth="1.4"
+          opacity="0.72"
         />
       </svg>
 
@@ -114,35 +165,45 @@ function GlassArrowOrb() {
       <span className={styles.orbGlow} />
       <span className={styles.orbHighlight} />
       <span className={styles.orbCaustic} />
+      <span className={styles.orbRimFlash} />
 
-      <svg viewBox="0 0 92 92" fill="none" className={styles.orbSvg}>
+      <svg viewBox="0 0 94 94" fill="none" className={styles.orbSvg}>
         <defs>
-          <radialGradient id="match-orb-body" cx="31%" cy="22%" r="78%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.99)" />
-            <stop offset="20%" stopColor="rgba(255,255,255,0.5)" />
-            <stop offset="55%" stopColor="rgba(222,229,255,0.17)" />
-            <stop offset="100%" stopColor="rgba(113,99,255,0.22)" />
+          <radialGradient id="match-orb-body" cx="30%" cy="21%" r="80%">
+            <stop offset="0%" stopColor="rgba(255,255,255,1)" />
+            <stop offset="18%" stopColor="rgba(255,255,255,0.56)" />
+            <stop offset="52%" stopColor="rgba(225,232,255,0.18)" />
+            <stop offset="100%" stopColor="rgba(107,94,255,0.22)" />
           </radialGradient>
 
-          <linearGradient id="match-orb-rim" x1="10%" y1="6%" x2="88%" y2="92%">
+          <linearGradient id="match-orb-rim" x1="8%" y1="6%" x2="90%" y2="92%">
             <stop offset="0%" stopColor="rgba(255,255,255,1)" />
-            <stop offset="45%" stopColor="rgba(255,255,255,0.44)" />
-            <stop offset="100%" stopColor="rgba(108,93,255,0.23)" />
+            <stop offset="38%" stopColor="rgba(255,255,255,0.48)" />
+            <stop offset="68%" stopColor="rgba(185,196,255,0.24)" />
+            <stop offset="100%" stopColor="rgba(108,93,255,0.24)" />
           </linearGradient>
+
+          <radialGradient id="match-orb-glint" cx="34%" cy="26%" r="34%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.98)" />
+            <stop offset="58%" stopColor="rgba(255,255,255,0.22)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </radialGradient>
         </defs>
 
-        <circle cx="46" cy="46" r="40" fill="url(#match-orb-body)" />
+        <circle cx="47" cy="47" r="40.8" fill="url(#match-orb-body)" />
+        <circle cx="36" cy="31" r="17" fill="url(#match-orb-glint)" />
         <circle
-          cx="46"
-          cy="46"
-          r="40"
+          cx="47"
+          cy="47"
+          r="40.8"
           stroke="url(#match-orb-rim)"
-          strokeWidth="1.6"
+          strokeWidth="1.7"
         />
+
         <path
-          d="M34 46H57M48 37.4L56.8 46L48 54.6"
+          d="M34.5 47H58.5M49.5 38L58.8 47L49.5 56"
           stroke="#5c4dff"
-          strokeWidth="4.1"
+          strokeWidth="4.15"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -175,18 +236,18 @@ export function MissingProofScoreGlassCard({
           <div className={styles.ringBefore}>
             <InlineRing
               percent={58}
-              size={158}
-              strokeWidth={11}
-              rotation={-94}
+              size={150}
+              strokeWidth={11.5}
+              rotation={-96}
               gradientId="missing-proof-ring-58"
-              strokeOpacity={0.82}
+              strokeOpacity={0.76}
               labelClassName={styles.ringLabelWeak}
               gradientStops={
                 <>
-                  <stop offset="0%" stopColor="#d6ccff" />
-                  <stop offset="30%" stopColor="#aa92ff" />
-                  <stop offset="66%" stopColor="#7e86ff" />
-                  <stop offset="100%" stopColor="#72a2ff" />
+                  <stop offset="0%" stopColor="#d9d0ff" />
+                  <stop offset="34%" stopColor="#ad94ff" />
+                  <stop offset="66%" stopColor="#8287ff" />
+                  <stop offset="100%" stopColor="#75a3ff" />
                 </>
               }
             />
@@ -197,17 +258,17 @@ export function MissingProofScoreGlassCard({
           <div className={styles.ringAfter}>
             <InlineRing
               percent={92}
-              size={158}
-              strokeWidth={11}
-              rotation={-94}
+              size={150}
+              strokeWidth={11.5}
+              rotation={-96}
               gradientId="missing-proof-ring-92"
               labelClassName={styles.ringLabelStrong}
               gradientStops={
                 <>
-                  <stop offset="0%" stopColor="#bf8fff" />
-                  <stop offset="27%" stopColor="#8658ff" />
-                  <stop offset="61%" stopColor="#4d5fff" />
-                  <stop offset="100%" stopColor="#2f6dff" />
+                  <stop offset="0%" stopColor="#c193ff" />
+                  <stop offset="29%" stopColor="#8658ff" />
+                  <stop offset="61%" stopColor="#4d62ff" />
+                  <stop offset="100%" stopColor="#2e6dff" />
                 </>
               }
             />

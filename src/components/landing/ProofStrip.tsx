@@ -16,27 +16,27 @@ const proofLogos = [
   {
     name: "Microsoft",
     src: "/assets/company-logos/microsoft-wordmark.svg",
-    className: "h-[23px] w-[112px] translate-y-[1px]",
+    className: "h-[21px] w-auto translate-y-[-3px]",
   },
   {
     name: "Deloitte",
     src: "/assets/company-logos/deloitte.svg",
-    className: "h-[23px] w-[112px] translate-y-[1px]",
+    className: "h-[17px] w-auto translate-y-[-3px]",
   },
   {
     name: "Stripe",
     src: "/assets/company-logos/stripe-wordmark.svg",
-    className: "h-[27px] w-[82px] translate-y-[1px]",
+    className: "h-[22px] w-auto translate-y-[-3px]",
   },
   {
     name: "Amazon",
-    src: "/assets/company-logos/amazon.svg",
-    className: "h-[30px] w-[98px] translate-y-[5px]",
+    src: "/assets/company-logos/amazon-wordmark.png",
+    className: "h-[23px] w-auto translate-x-[1px]",
   },
   {
     name: "PwC",
     src: "/assets/company-logos/pwc.svg",
-    className: "h-[38px] w-[64px] -translate-y-[2px]",
+    className: "h-[35px] w-auto translate-y-[-4px]",
   },
 ] as const;
 
@@ -306,9 +306,9 @@ function LiveProofStat() {
 
 function StarRating() {
   return (
-    <span className="flex items-center gap-[2px] pb-[3px] text-[#08a968]">
+    <span className="flex items-center gap-[1px] pb-[1px] text-[#08a968]">
       {Array.from({ length: 5 }).map((_, index) => (
-        <svg aria-hidden="true" className="h-[16px] w-[16px] fill-current" key={index} viewBox="0 0 20 20">
+        <svg aria-hidden="true" className="h-[22px] w-[22px] fill-current" key={index} viewBox="0 0 20 20">
           <path d="m10 1.9 2.18 4.78 5.2.61-3.86 3.56 1.03 5.15L10 13.42 5.45 16l1.03-5.15-3.86-3.56 5.2-.61L10 1.9Z" />
         </svg>
       ))}
@@ -345,18 +345,22 @@ export function ProofStrip() {
         </div>
         <InsetDivider className="max-lg:hidden" />
       </div>
-      <div className="relative flex min-h-[104px] flex-col items-center justify-center gap-3 px-6 max-md:items-start max-md:border-b max-md:px-5">
+      <div className="relative flex min-h-[104px] flex-col items-center justify-center gap-1.5 px-6 pb-[16px] pt-[10px] max-md:items-start max-md:border-b max-md:px-5">
         <p className="whitespace-nowrap text-[13px] font-medium text-[#33405f]">
           Trusted by professionals at
         </p>
-        <div className="flex min-w-0 flex-nowrap items-center justify-center gap-x-5 max-md:flex-wrap max-md:justify-start max-md:gap-y-3">
+        <div className="grid w-full max-w-[708px] min-w-0 translate-y-[-2px] grid-cols-5 items-end gap-x-2 self-center max-md:grid-cols-2 max-md:max-w-none max-md:translate-y-0 max-md:gap-x-5 max-md:gap-y-3">
           {proofLogos.map((logo) => (
-            <img
-              alt={logo.name}
-              className={cn("shrink-0 object-contain", logo.className)}
+            <div
+              className="flex h-[38px] min-w-0 items-end justify-center max-md:justify-start"
               key={logo.name}
-              src={logo.src}
-            />
+            >
+              <img
+                alt={logo.name}
+                className={cn("max-w-full shrink-0 object-contain object-center", logo.className)}
+                src={logo.src}
+              />
+            </div>
           ))}
         </div>
         <InsetDivider className="max-lg:hidden" />

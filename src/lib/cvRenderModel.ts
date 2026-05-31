@@ -1,7 +1,6 @@
 import {
   claimText,
   normalizeCvSections,
-  type CvBulletClaim,
   type CvSectionId,
   type NormalizedCvSection,
   type StructuredCv,
@@ -46,16 +45,11 @@ const a4AspectRatio = 210 / 297;
 const pageWidth = 794;
 const pageHeight = 1123;
 const underfilledThresholdPercent = 16;
-const maxExperienceBullets = 4;
-const maxSupportingExperienceBullets = 2;
-const maxHeroProjectBullets = 3;
-const maxProjectBullets = 2;
-const maxBulletSectionItems = 6;
-const maxCertificationItems = 6;
-const maxSkillGroups = 4;
-const maxSkillsPerGroup = 6;
-const maxSummaryParagraphs = 1;
-const restoredUnderfillBulletBudget = 2;
+const minOverflowFontScale = 0.78;
+const minOverflowSpacingScale = 0.68;
+const overflowShrinkFontStep = 0.02;
+const overflowShrinkSpacingStep = 0.04;
+const maxOverflowShrinkPasses = 18;
 
 function hasPresentationInput(value: unknown) {
   return Boolean(value && typeof value === "object");
@@ -73,195 +67,6 @@ function countBullets(section: NormalizedCvSection) {
 
 function countRenderedBullets(sections: NormalizedCvSection[]) {
   return sections.reduce((total, section) => total + countBullets(section), 0);
-}
-
-function totalOmitted(omitted: Record<string, number>) {
-  return Object.values(omitted).reduce((total, count) => total + count, 0);
-}
-
-function limitBullets(
-  bullets: CvBulletClaim[],
-  max: number,
-  omitted: Record<string, number>,
-  key: string,
-  restoreBudget: { remaining: number }
-) {
-  if (bullets.length <= max) return bullets;
-  const restored = Math.min(restoreBudget.remaining, bullets.length - max);
-  restoreBudget.remaining -= restored;
-  const limit = max + restored;
-  omitted[key] = (omitted[key] ?? 0) + bullets.length - limit;
-  return bullets.slice(0, limit);
-}
-
-function compactSection(
-  section: NormalizedCvSection,
-  omitted: Record<string, number>,
-  restoreBudget: { remaining: number }
-): NormalizedCvSection {
-  if (section.type === "summary" || section.type === "inline") {
-    if (section.paragraphs.length <= maxSummaryParagraphs) return section;
-    const restored = Math.min(
-      restoreBudget.remaining,
-      section.paragraphs.length - maxSummaryParagraphs
-    );
-    restoreBudget.remaining -= restored;
-    const limit = maxSummaryParagraphs + restored;
-    omitted[section.id] = (omitted[section.id] ?? 0) + section.paragraphs.length - limit;
-    return {
-      ...section,
-      paragraphs: section.paragraphs.slice(0, limit),
-    };
-  }
-
-  if (section.type === "certifications") {
-    return {
-      ...section,
-      bullets: limitBullets(
-        section.bullets,
-        maxCertificationItems,
-        omitted,
-        section.id,
-        restoreBudget
-      ),
-    };
-  }
-
-  if (section.type === "bullets") {
-    return {
-      ...section,
-      bullets: limitBullets(
-        section.bullets,
-        maxBulletSectionItems,
-        omitted,
-        section.id,
-        restoreBudget
-      ),
-    };
-  }
-
-  if (section.type === "experience") {
-    return {
-      ...section,
-      items: section.items.map((item, index) => ({
-        ...item,
-        bullets: limitBullets(
-          item.bullets,
-          index === 0 ? maxExperienceBullets : maxSupportingExperienceBullets,
-          omitted,
-          `${section.id}.${index}`,
-          restoreBudget
-        ),
-      })),
-    };
-  }
-
-  if (section.type === "projects") {
-    return {
-      ...section,
-      items: section.items.map((item, index) => ({
-        ...item,
-        bullets: limitBullets(
-          item.bullets,
-          index === 0 ? maxHeroProjectBullets : maxProjectBullets,
-          omitted,
-          `${section.id}.${index}`,
-          restoreBudget
-        ),
-      })),
-    };
-  }
-
-  if (section.type === "skills") {
-    const groups = section.groups.slice(0, maxSkillGroups).map((group, index) => {
-      if (group.skills.length > maxSkillsPerGroup) {
-        omitted[`${section.id}.${index}`] = (omitted[`${section.id}.${index}`] ?? 0) +
-          group.skills.length - maxSkillsPerGroup;
-      }
-      return {
-        ...group,
-        skills: group.skills.slice(0, maxSkillsPerGroup),
-      };
-    });
-    if (section.groups.length > groups.length) {
-      omitted[section.id] = (omitted[section.id] ?? 0) + section.groups.length - groups.length;
-    }
-    return {
-      ...section,
-      groups,
-    };
-  }
-
-  return section;
-}
-
-function compactSections(
-  sections: NormalizedCvSection[],
-  restoreBudgetCount = 0
-) {
-  const omittedOverflowItemCounts: Record<string, number> = {};
-  const restoreBudget = { remaining: restoreBudgetCount };
-  return {
-    sections: sections.map((section) =>
-      compactSection(section, omittedOverflowItemCounts, restoreBudget)
-    ),
-    omittedOverflowItemCounts,
-  };
-}
-
-function uniqueDetails(values: string[]) {
-  const seen = new Set<string>();
-  return values.filter((value) => {
-    const key = value.trim().toLowerCase();
-    if (!key || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
-function mergeSingleCertificationIntoEducation(
-  sections: NormalizedCvSection[]
-): NormalizedCvSection[] {
-  const certificationSection = sections.find((section) => section.type === "certifications");
-  const educationSection = sections.find((section) => section.type === "education");
-  if (
-    !certificationSection ||
-    certificationSection.type !== "certifications" ||
-    !educationSection ||
-    educationSection.type !== "education"
-  ) {
-    return sections;
-  }
-  if (certificationSection.bullets.length !== 1 || certificationSection.priority === "primary") {
-    return sections;
-  }
-  const credentialText = claimText(certificationSection.bullets[0]!);
-  if (!credentialText) return sections;
-  return sections
-    .map((section) => {
-      if (section !== educationSection || section.type !== "education") return section;
-      const items = section.items.length
-        ? section.items.map((item, itemIndex) =>
-            itemIndex === 0
-              ? {
-                  ...item,
-                  details: uniqueDetails([...item.details, `Credential: ${credentialText}`]),
-                }
-              : item
-          )
-        : [{
-            institution: null,
-            degree: "Credential",
-            dates: null,
-            details: [credentialText],
-          }];
-      return {
-        ...section,
-        label: /credential/i.test(section.label) ? section.label : "Education & Credentials",
-        items,
-      };
-    })
-    .filter((section) => section !== certificationSection);
 }
 
 function scaleTokens(
@@ -289,6 +94,10 @@ function scaleTokens(
     ),
     bulletGap: Number(Math.min(tokens.bulletGap * spacingScale, tokens.bulletGap + 3).toFixed(2)),
   };
+}
+
+function emptyOmittedOverflowItemCounts() {
+  return {} as Record<string, number>;
 }
 
 function pagePadding(tokens: RendererTokens) {
@@ -338,12 +147,11 @@ function estimateSectionHeight(section: NormalizedCvSection, tokens: RendererTok
   }
 
   if (section.type === "certifications") {
-    const rowCount = Math.min(section.bullets.length, maxCertificationItems);
     return (
       headingHeight +
       6 +
       estimateParagraphHeight(
-        section.bullets.slice(0, rowCount).map(claimText).join(" · "),
+        section.bullets.map(claimText).join(" · "),
         tokens,
         contentWidth
       )
@@ -469,7 +277,7 @@ function buildMetrics(args: {
     fontScale: args.fontScale,
     spacingScale: args.spacingScale,
     densityMode: args.densityMode,
-    omittedItemCount: totalOmitted(args.omittedOverflowItemCounts),
+    omittedItemCount: 0,
     presentationJsonUsed: args.presentationJsonUsed,
     pageAspectRatio: Number(a4AspectRatio.toFixed(4)),
     renderedSectionCount: args.sections.length,
@@ -482,19 +290,77 @@ function buildMetrics(args: {
   };
 }
 
+function shrinkToFitPage(args: {
+  cv: StructuredCv;
+  sections: NormalizedCvSection[];
+  baseTokens: RendererTokens;
+  presentationJsonUsed: boolean;
+  tokenState: RendererTokens;
+  metrics: CvRendererLayoutMetrics;
+  fontScale: number;
+  spacingScale: number;
+  densityMode: string;
+}) {
+  let {
+    tokenState,
+    metrics,
+    fontScale,
+    spacingScale,
+    densityMode,
+  } = args;
+
+  let pass = 0;
+  while (
+    metrics.usedHeight > pageHeight &&
+    pass < maxOverflowShrinkPasses &&
+    (fontScale > minOverflowFontScale || spacingScale > minOverflowSpacingScale)
+  ) {
+    fontScale = Math.max(minOverflowFontScale, fontScale - overflowShrinkFontStep);
+    spacingScale = Math.max(
+      minOverflowSpacingScale,
+      spacingScale - overflowShrinkSpacingStep
+    );
+    densityMode = `${args.baseTokens.density}_overflow_scaled_${pass + 1}`;
+    tokenState = scaleTokens(args.baseTokens, {
+      fontScale,
+      spacingScale,
+      credentialSpacingScale: Math.max(0.92, spacingScale),
+    });
+    metrics = buildMetrics({
+      cv: args.cv,
+      sections: args.sections,
+      tokens: tokenState,
+      omittedOverflowItemCounts: emptyOmittedOverflowItemCounts(),
+      presentationJsonUsed: args.presentationJsonUsed,
+      densityMode,
+      fontScale,
+      spacingScale,
+    });
+    pass += 1;
+  }
+
+  return {
+    tokenState,
+    metrics,
+    fontScale,
+    spacingScale,
+    densityMode,
+  };
+}
+
 export function buildCvRenderModel(
   cv: StructuredCv,
   presentationJson?: unknown
 ): CvRenderModel {
   const presentation = normalizeCvPresentation(presentationJson, cv);
   const baseTokens = presentationToRendererTokens(presentation);
-  const allSections = mergeSingleCertificationIntoEducation(normalizeCvSections(cv));
+  const sections = normalizeCvSections(cv);
   const presentationJsonUsed = hasPresentationInput(presentationJson);
   let tokenState = baseTokens;
   let fontScale = 1;
   let spacingScale = 1;
   let densityMode: string = baseTokens.density;
-  let { sections, omittedOverflowItemCounts } = compactSections(allSections);
+  let omittedOverflowItemCounts = emptyOmittedOverflowItemCounts();
   let metrics = buildMetrics({
     cv,
     sections,
@@ -526,48 +392,6 @@ export function buildCvRenderModel(
     fontScale = 1.08;
     densityMode = `${baseTokens.density}_underfill_font`;
     tokenState = scaleTokens(baseTokens, { fontScale, spacingScale });
-    metrics = buildMetrics({
-      cv,
-      sections,
-      tokens: tokenState,
-      omittedOverflowItemCounts,
-      presentationJsonUsed,
-      densityMode,
-      fontScale,
-      spacingScale,
-    });
-  }
-
-  if (
-    metrics.remainingHeightPercent > underfilledThresholdPercent &&
-    totalOmitted(omittedOverflowItemCounts) > 0
-  ) {
-    ({ sections, omittedOverflowItemCounts } = compactSections(
-      allSections,
-      restoredUnderfillBulletBudget
-    ));
-    densityMode = `${baseTokens.density}_underfill_restored_content`;
-    metrics = buildMetrics({
-      cv,
-      sections,
-      tokens: tokenState,
-      omittedOverflowItemCounts,
-      presentationJsonUsed,
-      densityMode,
-      fontScale,
-      spacingScale,
-    });
-  }
-
-  if (metrics.remainingHeightPercent > underfilledThresholdPercent) {
-    spacingScale = Math.max(spacingScale, 1.28);
-    fontScale = Math.max(fontScale, 1.1);
-    densityMode = `${baseTokens.density}_underfill_supporting_spacing`;
-    tokenState = scaleTokens(baseTokens, {
-      fontScale,
-      spacingScale,
-      credentialSpacingScale: 1.12,
-    });
     metrics = buildMetrics({
       cv,
       sections,
@@ -623,7 +447,7 @@ export function buildCvRenderModel(
   }
 
   if (
-    countRenderedBullets(sections) <= 8 &&
+    countRenderedBullets(sections) <= 10 &&
     sections.length <= 7 &&
     metrics.remainingHeightPercent > 10
   ) {
@@ -647,59 +471,24 @@ export function buildCvRenderModel(
     });
   }
 
-  if (densityMode.endsWith("_light_cv_expanded") && metrics.usedHeight > pageHeight) {
-    spacingScale = baseTokens.density === "compact" ? 1.72 : 1.3;
-    fontScale = baseTokens.density === "compact" ? 1.2 : 1.1;
-    densityMode = `${baseTokens.density}_light_cv_expanded_medium`;
-    tokenState = scaleTokens(baseTokens, {
-      fontScale,
-      spacingScale,
-      credentialSpacingScale: 1.16,
-    });
-    metrics = buildMetrics({
-      cv,
-      sections,
-      tokens: tokenState,
-      omittedOverflowItemCounts,
-      presentationJsonUsed,
-      densityMode,
-      fontScale,
-      spacingScale,
-    });
-  }
-
   if (metrics.usedHeight > pageHeight) {
-    spacingScale = 0.9;
-    fontScale = 0.96;
-    densityMode = `${baseTokens.density}_overflow_compact`;
-    tokenState = scaleTokens(baseTokens, { fontScale, spacingScale });
-    metrics = buildMetrics({
-      cv,
-      sections,
-      tokens: tokenState,
-      omittedOverflowItemCounts,
-      presentationJsonUsed,
-      densityMode,
+    ({
+      tokenState,
+      metrics,
       fontScale,
       spacingScale,
-    });
-  }
-
-  if (metrics.usedHeight > pageHeight) {
-    spacingScale = 0.82;
-    fontScale = 0.93;
-    densityMode = `${baseTokens.density}_overflow_tight`;
-    tokenState = scaleTokens(baseTokens, { fontScale, spacingScale });
-    metrics = buildMetrics({
+      densityMode,
+    } = shrinkToFitPage({
       cv,
       sections,
-      tokens: tokenState,
-      omittedOverflowItemCounts,
+      baseTokens,
       presentationJsonUsed,
-      densityMode,
+      tokenState,
+      metrics,
       fontScale,
       spacingScale,
-    });
+      densityMode,
+    }));
   }
 
   return {

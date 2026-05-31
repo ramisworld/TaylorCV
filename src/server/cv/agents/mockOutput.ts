@@ -265,6 +265,7 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
       "Early-career AI software engineer with strong project-based evidence in full-stack AI product development",
     sectionOrder: [
       "summary",
+      "selected-technical-achievements",
       "projects",
       "skills",
       "experience",
@@ -284,10 +285,10 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
     ],
     tone: "Clear, practical, technical and credible",
     spaceBudget: [
-      "Summary: 2 concise sentences",
-      "Selected achievements: 3 bullets",
-      "Projects: 2 focused projects",
-      "Skills: grouped and scan-friendly",
+      "Keep the summary concise and proof-led so the top third clarifies role fit immediately",
+      "Use a short selected achievements section only because it adds stronger technical proof than another supporting section would",
+      "Give most space to TaylorCV and the strongest supporting project evidence",
+      "Keep skills grouped and scan-friendly without crowding out project proof",
     ],
     riskWarnings: [
       "Candidate should not be positioned as a senior engineer",
@@ -297,6 +298,7 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
   cv: {
     sectionOrder: [
       "summary",
+      "selected-technical-achievements",
       "projects",
       "skills",
       "experience",

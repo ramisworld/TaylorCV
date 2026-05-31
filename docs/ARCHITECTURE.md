@@ -258,6 +258,31 @@ All top-level fields must exist.
 
 Arrays can be empty where appropriate.
 
+## Renderer Responsibilities
+
+The CV Composer owns:
+
+- section choice
+- section labels
+- section order
+- content density
+- proof prioritisation
+- one-page content budgeting
+
+The renderer owns:
+
+- typography
+- spacing
+- visual layout
+- one-page fitting through scaling
+
+The renderer must not:
+
+- reorder sections except keeping the professional summary first below the header
+- merge sections
+- delete bullets
+- trim content to force fit
+
 sectionOrder must not be empty.
 
 summary must not be empty.

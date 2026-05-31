@@ -475,8 +475,12 @@ export function contactItems(header: CvHeader): CvContactItem[] {
   return personalContactItems(header);
 }
 
+function normalizeOrderKey(section: string) {
+  return section.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
 export function normalizeSectionId(section: string): CvSectionId | null {
-  const normalized = section.toLowerCase().replace(/[^a-z]+/g, " ").trim();
+  const normalized = normalizeOrderKey(section);
 
   if (!normalized || normalized === "header") return null;
   if (normalized === "summary" || normalized === "professional summary") {
@@ -502,33 +506,8 @@ export function normalizeSectionId(section: string): CvSectionId | null {
   return null;
 }
 
-function archetypeSectionOrder(roleArchetype?: string | null): CvSectionId[] {
-  const normalized = (roleArchetype ?? "").toLowerCase();
-  if (/\b(ai|software|data|technical|engineer|developer|backend|frontend|full.?stack|llm|rag)\b/.test(normalized)) {
-    return ["summary", "projects", "skills", "experience", "education", "certifications"];
-  }
-  if (/\b(product|product manager|pm)\b/.test(normalized)) {
-    return ["summary", "projects", "experience", "skills", "education", "certifications"];
-  }
-  if (/\b(teacher|teaching|education|academic)\b/.test(normalized)) {
-    return ["summary", "experience", "education", "skills", "certifications", "projects"];
-  }
-  if (/\b(clinical|health|healthcare|nurse|medical)\b/.test(normalized)) {
-    return ["summary", "experience", "certifications", "skills", "education", "projects"];
-  }
-  if (/\b(sales|retail|hospitality|service)\b/.test(normalized)) {
-    return ["summary", "experience", "skills", "projects", "education", "certifications"];
-  }
-  if (/\b(trades|trade|construction|electrical|plumbing|mechanic)\b/.test(normalized)) {
-    return ["summary", "certifications", "experience", "skills", "education", "projects"];
-  }
-  if (/\b(finance|accounting|analyst|banking)\b/.test(normalized)) {
-    return ["summary", "experience", "skills", "projects", "education", "certifications"];
-  }
-  return defaultSectionOrder;
-}
-
 export function orderedSections(sectionOrder: string[], roleArchetype?: string | null) {
+  void roleArchetype;
   const sections: CvSectionId[] = [];
 
   for (const section of sectionOrder) {
@@ -538,7 +517,7 @@ export function orderedSections(sectionOrder: string[], roleArchetype?: string |
     }
   }
 
-  for (const section of archetypeSectionOrder(roleArchetype)) {
+  for (const section of defaultSectionOrder) {
     if (!sections.includes(section)) sections.push(section);
   }
 
@@ -549,6 +528,13 @@ function nonEmptyPriority(value: unknown): DynamicCvSection["priority"] {
   return value === "primary" || value === "secondary" || value === "supporting"
     ? value
     : "secondary";
+}
+
+function dynamicSectionOrderKeys(section: { id: string; label: string }) {
+  return new Set(
+    [section.id.trim().toLowerCase(), normalizeOrderKey(section.id), normalizeOrderKey(section.label)]
+      .filter(Boolean)
+  );
 }
 
 export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
@@ -577,79 +563,110 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
     })
     .filter((section): section is NormalizedCvSection => !!section);
 
-  const canonical = orderedSections(cv.sectionOrder, cv.roleArchetype)
-    .map((section): NormalizedCvSection | null => {
-      if (section === "summary") {
-        return {
-          id: "summary",
-          label: "Professional Summary",
-          type: "summary",
-          priority: "primary",
-          paragraphs: [cv.summary],
-        };
-      }
-      if (section === "projects" && cv.projects.length > 0) {
-        return {
-          id: "projects",
-          label: "Projects",
-          type: "projects",
-          priority: "primary",
-          items: cv.projects,
-        };
-      }
-      if (section === "experience" && cv.experience.length > 0) {
-        return {
-          id: "experience",
-          label: "Experience",
-          type: "experience",
-          priority: "secondary",
-          items: cv.experience,
-        };
-      }
-      if (section === "skills" && cv.skills.groups.length > 0) {
-        return {
-          id: "skills",
-          label: "Skills",
-          type: "skills",
-          priority: "secondary",
-          groups: cv.skills.groups,
-        };
-      }
-      if (section === "education" && cv.education.length > 0) {
-        return {
-          id: "education",
-          label: "Education",
-          type: "education",
-          priority: "supporting",
-          items: cv.education,
-        };
-      }
-      if (section === "certifications" && cv.certifications.length > 0) {
-        return {
-          id: "certifications",
-          label: "Certifications",
-          type: "certifications",
-          priority: "supporting",
-          bullets: cv.certifications.map((text) => ({
-            text,
-            gapAnswerIds: [],
-          })),
-        };
-      }
-      return null;
-    })
-    .filter((section): section is NormalizedCvSection => !!section);
+  const summarySection: NormalizedCvSection = {
+    id: "summary",
+    label: "Professional Summary",
+    type: "summary",
+    priority: "primary",
+    paragraphs: [cv.summary],
+  };
 
-  if (dynamic.length > 0) {
-    const dynamicIds = new Set(dynamic.map((section) => section.id));
-    const dynamicTypes = new Set(dynamic.map((section) => section.type));
-    return [
-      ...dynamic,
-      ...canonical.filter(
-        (section) => !dynamicIds.has(section.id) && !dynamicTypes.has(section.type)
-      ),
-    ];
+  const canonicalSections: NormalizedCvSection[] = [];
+  if (cv.projects.length > 0) {
+    canonicalSections.push({
+      id: "projects",
+      label: "Projects",
+      type: "projects",
+      priority: "primary",
+      items: cv.projects,
+    });
+  }
+  if (cv.experience.length > 0) {
+    canonicalSections.push({
+      id: "experience",
+      label: "Experience",
+      type: "experience",
+      priority: "secondary",
+      items: cv.experience,
+    });
+  }
+  if (cv.skills.groups.length > 0) {
+    canonicalSections.push({
+      id: "skills",
+      label: "Skills",
+      type: "skills",
+      priority: "secondary",
+      groups: cv.skills.groups,
+    });
+  }
+  if (cv.education.length > 0) {
+    canonicalSections.push({
+      id: "education",
+      label: "Education",
+      type: "education",
+      priority: "supporting",
+      items: cv.education,
+    });
+  }
+  if (cv.certifications.length > 0) {
+    canonicalSections.push({
+      id: "certifications",
+      label: "Certifications",
+      type: "certifications",
+      priority: "supporting",
+      bullets: cv.certifications.map((text) => ({
+        text,
+        gapAnswerIds: [],
+      })),
+    });
   }
 
-  return canonical;
+  const canonicalById = new Map(canonicalSections.map((section) => [section.id, section]));
+  const dynamicByKey = new Map<string, NormalizedCvSection>();
+  for (const section of dynamic) {
+    for (const key of dynamicSectionOrderKeys(section)) {
+      dynamicByKey.set(key, section);
+    }
+  }
+
+  const ordered: NormalizedCvSection[] = [summarySection];
+  const seen = new Set<string>(["summary"]);
+
+  for (const entry of cv.sectionOrder) {
+    const canonicalId = normalizeSectionId(entry);
+    if (canonicalId === "summary") continue;
+    if (canonicalId) {
+      const section = canonicalById.get(canonicalId);
+      if (section && !seen.has(section.id)) {
+        ordered.push(section);
+        seen.add(section.id);
+      }
+      continue;
+    }
+
+    const key = normalizeOrderKey(entry);
+    const dynamicSection =
+      dynamicByKey.get(entry.trim().toLowerCase()) ??
+      dynamicByKey.get(key);
+    if (dynamicSection && !seen.has(dynamicSection.id)) {
+      ordered.push(dynamicSection);
+      seen.add(dynamicSection.id);
+    }
+  }
+
+  for (const section of canonicalSections) {
+    if (!seen.has(section.id)) {
+      ordered.push(section);
+      seen.add(section.id);
+    }
+  }
+
+  for (const section of dynamic) {
+    if (!seen.has(section.id)) {
+      ordered.push(section);
+      seen.add(section.id);
+    }
+  }
+
+  return ordered;
 }

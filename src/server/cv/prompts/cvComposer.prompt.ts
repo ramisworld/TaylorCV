@@ -9,17 +9,28 @@ You are TaylorCV's CV Composer.
 
 Return JSON only, matching the provided schema exactly.
 
-Your job is to use the job analysis, candidate profile, and saved gap answers to produce:
+Produce:
 - blueprint: the CV strategy
 - cv: the renderer-ready CV
 
-Core standard:
+Rules:
+- You own content strategy, section choice, section labels, section order, and what evidence earns space.
+- The renderer will preserve your content and order and will only adjust typography and spacing.
+- Produce a one-page recruiter CV.
+- The professional summary must be the first content section directly below the header.
+- sectionOrder must begin with "summary".
+- blueprint.sectionOrder must match cv.sectionOrder.
+
+Quality bar:
 - Treat the CV as a compressed proof map.
-- Make the target fit obvious in the top third.
+- Make target fit obvious in the top third.
+- Follow the job context for recruiter priorities, expected proof types, and section emphasis.
 - Prioritise the strongest relevant proof early.
-- Keep the CV concise, skimmable, and recruiter-readable.
-- Do not keyword-stuff.
-- Do not overclaim seniority.
+- Every section and bullet must earn space.
+- Prefer fewer, stronger bullets over exhaustive coverage.
+- Cut weaker, repetitive, generic or low-evidence material yourself.
+- Keep the writing concise, skimmable, specific, and credible.
+- No keyword stuffing. No vague filler. No overclaiming seniority.
 
 Truth rules:
 - Use only facts supported by the candidate profile or saved gap answers.
@@ -27,33 +38,20 @@ Truth rules:
 - Use exact metrics only when provided.
 - If exact metrics are missing, use truthful context instead of fabricated numbers.
 
-Strategy rules:
-- Choose section order, emphasis, and wording based on role archetype, seniority, market, recruiter priorities, and the candidate's strongest available proof.
-- Keep the summary short and useful. No generic self-praise.
+Writing rules:
 - Write bullets as evidence, not responsibilities.
 - Prefer action + object + scope/result.
 - Use present tense for current work when appropriate and past tense for completed work.
-- Avoid vague filler.
-
-Archetype guidance:
-- Technical roles: prioritise shipped systems, projects, stack, deployment, evaluation, reliability, latency, cost, data, automation, users, and technical links.
-- Clinical or regulated roles: prioritise licence or registration, certifications, settings, populations, procedures, systems, and readiness.
-- Teaching or training roles: prioritise credentials, classroom or practicum context, subjects, year levels, planning, engagement, and outcomes.
-- Marketing, sales, or growth roles: prioritise campaigns, channels, audience, conversion, revenue, pipeline, engagement, and content results.
-- Finance or audit roles: prioritise reporting, modelling, controls, reconciliations, risk, compliance, scope, certifications, and finance tools.
-- Design or product roles: prioritise portfolio, shipped work, user impact, research, process, tools, and collaboration.
-- Trades or field roles: prioritise licences, tickets, safety, equipment, site work, troubleshooting, scope, and reliability.
-- Graduate or early-career candidates: prioritise education, projects, internships, certifications, initiative, and concrete proof.
-- Career changers: translate transferable experience truthfully without pretending prior roles were the target role.
-
-Gap answer rules:
 - Use a gap answer only when it adds credible, role-relevant proof.
-- If a bullet uses a saved gap answer, include that answer's gapQuestionId in gapAnswerIds.
-- Otherwise use [].
+- If a bullet uses a saved gap answer, include that answer's gapQuestionId in gapAnswerIds. Otherwise use [].
 
 Dynamic sections:
-- Use extra sections only for strong proof that does not fit naturally into experience, projects, skills, education, or certifications.
+- Use extra sections only when they add stronger proof than a canonical section would.
+- If you create a dynamic section, place its id in sectionOrder exactly where it belongs.
 - If no extra section improves the CV, return sections: [].
+
+Blueprint:
+- blueprint.spaceBudget should describe the one-page editorial strategy, not rigid quotas.
 `;
 
 type CvComposerCandidateProfile = CandidateProfileGapOutput["candidateProfile"];
@@ -62,63 +60,70 @@ function buildCvComposerContext(args: {
   jobAnalysis: JobAnalysis;
   candidateProfile: CvComposerCandidateProfile;
   gapAnswers: GapAnswerForComposer[];
-  rendererContract: string;
 }) {
   return {
+    pageTarget: "one_page",
     job: {
-      targetRoleTitle: args.jobAnalysis.targetRoleTitle,
-      companyName: args.jobAnalysis.companyName,
+      title: args.jobAnalysis.targetRoleTitle,
       market: args.jobAnalysis.market,
       seniority: args.jobAnalysis.seniority,
       archetype: args.jobAnalysis.archetype,
-      subArchetype: args.jobAnalysis.subArchetype,
-      roleSummary: args.jobAnalysis.roleSummary,
-      mustHaveRequirements: args.jobAnalysis.mustHaveRequirements,
-      niceToHaveRequirements: args.jobAnalysis.niceToHaveRequirements,
-      keywords: args.jobAnalysis.keywords,
-      recruiterPriorities: args.jobAnalysis.recruiterPriorities,
-      expectedProofTypes: args.jobAnalysis.expectedProofTypes,
-      recommendedSectionBias: args.jobAnalysis.recommendedSectionBias,
-      risksOrAmbiguities: args.jobAnalysis.risksOrAmbiguities,
+      mustHaves: args.jobAnalysis.mustHaveRequirements,
+      priorities: args.jobAnalysis.recruiterPriorities,
+      proofTypes: args.jobAnalysis.expectedProofTypes,
+      sectionBias: args.jobAnalysis.recommendedSectionBias,
     },
     candidate: {
-      identity: args.candidateProfile.identity,
-      headlineOptions: args.candidateProfile.headlineOptions,
+      identity: {
+        fullName: args.candidateProfile.identity.fullName,
+        currentTitle: args.candidateProfile.identity.currentTitle,
+        location: args.candidateProfile.identity.location,
+        email: args.candidateProfile.identity.email,
+        phone: args.candidateProfile.identity.phone,
+        linkedin: args.candidateProfile.identity.linkedin,
+        github: args.candidateProfile.identity.github,
+        portfolio: args.candidateProfile.identity.portfolio,
+      },
       summaryFacts: args.candidateProfile.summaryFacts,
-      experiences: args.candidateProfile.experiences.map((experience) => ({
+      experience: args.candidateProfile.experiences.map((experience) => ({
         title: experience.title,
         organization: experience.organization,
-        location: experience.location,
-        startDate: experience.startDate,
-        endDate: experience.endDate,
-        descriptionFacts: experience.descriptionFacts,
-        achievementFacts: experience.achievementFacts,
+        dates: {
+          start: experience.startDate,
+          end: experience.endDate,
+        },
+        achievements: experience.achievementFacts,
         tools: experience.tools,
         metrics: experience.metrics,
-        proofNotes: experience.proofNotes,
       })),
       projects: args.candidateProfile.projects.map((project) => ({
         name: project.name,
-        descriptionFacts: project.descriptionFacts,
-        achievementFacts: project.achievementFacts,
+        achievements: project.achievementFacts,
         tools: project.tools,
         metrics: project.metrics,
         links: project.links,
-        proofNotes: project.proofNotes,
       })),
-      skillsByGroup: args.candidateProfile.skillsByGroup,
-      education: args.candidateProfile.education,
-      certifications: args.candidateProfile.certifications,
-      links: args.candidateProfile.links,
-      proofNotes: args.candidateProfile.proofNotes,
+      skills: args.candidateProfile.skillsByGroup,
+      education: args.candidateProfile.education.map((item) => ({
+        institution: item.institution,
+        qualification: item.qualification,
+        dates: item.dates,
+      })),
+      certifications: args.candidateProfile.certifications.map((item) => ({
+        name: item.name,
+        issuer: item.issuer,
+        date: item.date,
+      })),
       warnings: args.candidateProfile.warnings,
     },
     gapAnswers: args.gapAnswers.map((gapAnswer) => ({
       gapQuestionId: gapAnswer.gapQuestionId,
-      question: gapAnswer.question,
       answer: gapAnswer.answer,
     })),
-    rendererContract: args.rendererContract,
+    renderingRules: {
+      summaryFirst: true,
+      pageTarget: "one_page",
+    },
   };
 }
 
@@ -126,7 +131,6 @@ export function buildCvComposerUserPrompt(args: {
   jobAnalysis: JobAnalysis;
   candidateProfile: CvComposerCandidateProfile;
   gapAnswers: GapAnswerForComposer[];
-  rendererContract: string;
 }): string {
-  return `Compose the final CV from this structured context. Prioritise the strongest relevant proof and keep every claim truthful.\n${JSON.stringify(buildCvComposerContext(args))}`;
+  return `Compose the final one-page CV from this structured context. Keep the professional summary first below the header, prioritise the strongest relevant proof, and keep every claim truthful.\n${JSON.stringify(buildCvComposerContext(args))}`;
 }
