@@ -2,27 +2,18 @@
 
 import { TaylorBrand } from "~/components/TaylorBrand";
 import { FlowStepper } from "~/components/cv-flow/FlowStepper";
+import {
+  workflowStepForStage,
+  type WorkflowVisualStage,
+} from "~/components/cv-flow/workflowSteps";
 
-export type FlowShellStage =
-  | "job_description"
-  | "cv_upload"
-  | "gap_questions"
-  | "cv_generating"
-  | "final_cv";
-
-function activeStepForStage(stage: FlowShellStage): 1 | 2 | 3 | 4 | null {
-  if (stage === "job_description") return 1;
-  if (stage === "cv_upload") return 2;
-  if (stage === "gap_questions") return 3;
-  if (stage === "cv_generating") return 4;
-  return null;
-}
+export type FlowShellStage = WorkflowVisualStage;
 
 export function FlowShell(props: {
   stage: FlowShellStage;
   children: React.ReactNode;
 }) {
-  const activeStep = activeStepForStage(props.stage);
+  const currentStep = workflowStepForStage(props.stage);
 
   return (
     <main className="relative min-h-[100dvh] overflow-hidden bg-[#f7f9ff] text-[#080b1d]">
@@ -38,17 +29,15 @@ export function FlowShell(props: {
           />
         </div>
 
-        {activeStep ? (
-          <div className="absolute inset-x-0 top-11 hidden px-40 lg:block">
-            <FlowStepper activeStep={activeStep} />
+        <div className="pointer-events-none absolute left-1/2 top-10 hidden w-max max-w-[calc(100vw-24rem)] -translate-x-1/2 lg:block">
+          <div className="pointer-events-auto">
+            <FlowStepper currentStep={currentStep} />
           </div>
-        ) : null}
+        </div>
 
-        {activeStep ? (
-          <div className="absolute inset-x-0 top-[92px] px-4 sm:px-6 lg:hidden">
-            <FlowStepper activeStep={activeStep} />
-          </div>
-        ) : null}
+        <div className="absolute inset-x-0 top-[90px] px-4 sm:px-6 lg:hidden">
+          <FlowStepper currentStep={currentStep} />
+        </div>
 
         {props.children}
       </div>

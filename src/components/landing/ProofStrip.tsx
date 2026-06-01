@@ -16,27 +16,27 @@ const proofLogos = [
   {
     name: "Microsoft",
     src: "/assets/company-logos/microsoft-wordmark.svg",
-    className: "h-[21px] w-auto translate-y-[-3px]",
+    className: "h-[22px] w-auto translate-y-[-10px]",
   },
   {
     name: "Deloitte",
     src: "/assets/company-logos/deloitte.svg",
-    className: "h-[17px] w-auto translate-y-[-3px]",
+    className: "h-[20px] w-auto translate-y-[-12px] translate-x-[17px]",
   },
   {
     name: "Stripe",
     src: "/assets/company-logos/stripe-wordmark.svg",
-    className: "h-[22px] w-auto translate-y-[-3px]",
+    className: "h-[24px] w-auto translate-y-[-9px] translate-x-[18px]",
   },
   {
     name: "Amazon",
     src: "/assets/company-logos/amazon-wordmark.png",
-    className: "h-[23px] w-auto translate-x-[1px]",
+    className: "h-[25px] w-auto translate-y-[-5px] translate-x-[16px]",
   },
   {
     name: "PwC",
     src: "/assets/company-logos/pwc.svg",
-    className: "h-[35px] w-auto translate-y-[-4px]",
+    className: "h-[38px] w-auto translate-y-[-10px] translate-x-[5px]",
   },
 ] as const;
 
@@ -146,7 +146,7 @@ function isLiveCounterState(value: unknown): value is LiveCounterState {
       (point) =>
         Number.isInteger(point) &&
         point >= liveCounterMin &&
-        point <= liveCounterMax
+        point <= liveCounterMax,
     )
   );
 }
@@ -172,13 +172,19 @@ function persistLiveCounterState(state: LiveCounterState) {
       lastUpdatedAt: state.lastUpdatedAt,
       anchor: state.anchor,
     };
-    window.localStorage.setItem(liveCounterStorageKey, JSON.stringify(persisted));
+    window.localStorage.setItem(
+      liveCounterStorageKey,
+      JSON.stringify(persisted),
+    );
   } catch {
     // The live proof stat should keep working even when storage is unavailable.
   }
 }
 
-function advanceCounterState(state: LiveCounterState, updates = 1): LiveCounterState {
+function advanceCounterState(
+  state: LiveCounterState,
+  updates = 1,
+): LiveCounterState {
   let value = state.value;
   let history = state.history.slice(-liveCounterHistoryLength);
   for (let index = 0; index < updates; index += 1) {
@@ -199,7 +205,9 @@ function normalizeStoredCounterState(state: LiveCounterState) {
   if (simulatedUpdates < 1) {
     return {
       value: safeCounterValue(state.value),
-      history: state.history.slice(-liveCounterHistoryLength).map(safeCounterValue),
+      history: state.history
+        .slice(-liveCounterHistoryLength)
+        .map(safeCounterValue),
       lastUpdatedAt: state.lastUpdatedAt,
       anchor: state.anchor,
     };
@@ -226,7 +234,11 @@ function Sparkline(props: { history: number[] }) {
     })
     .join(" ");
   return (
-    <svg aria-label="CV activity trend" className="h-12 w-[86px] shrink-0 overflow-visible" viewBox="0 0 90 48">
+    <svg
+      aria-label="CV activity trend"
+      className="h-12 w-[86px] shrink-0 overflow-visible"
+      viewBox="0 0 90 48"
+    >
       <path
         d={path}
         fill="none"
@@ -253,7 +265,9 @@ function LiveProofStat() {
 
   useEffect(() => {
     const stored = readLiveCounterState();
-    const initial = stored ? normalizeStoredCounterState(stored) : buildInitialCounterState();
+    const initial = stored
+      ? normalizeStoredCounterState(stored)
+      : buildInitialCounterState();
     persistLiveCounterState(initial);
     setState(initial);
   }, []);
@@ -308,7 +322,12 @@ function StarRating() {
   return (
     <span className="flex items-center gap-[1px] pb-[1px] text-[#08a968]">
       {Array.from({ length: 5 }).map((_, index) => (
-        <svg aria-hidden="true" className="h-[22px] w-[22px] fill-current" key={index} viewBox="0 0 20 20">
+        <svg
+          aria-hidden="true"
+          className="h-[22px] w-[22px] fill-current"
+          key={index}
+          viewBox="0 0 20 20"
+        >
           <path d="m10 1.9 2.18 4.78 5.2.61-3.86 3.56 1.03 5.15L10 13.42 5.45 16l1.03-5.15-3.86-3.56 5.2-.61L10 1.9Z" />
         </svg>
       ))}
@@ -320,7 +339,10 @@ function InsetDivider(props: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={cn("absolute right-0 top-[18px] bottom-[18px] w-px bg-[#cfd8e8]/82", props.className)}
+      className={cn(
+        "absolute right-0 top-[18px] bottom-[18px] w-px bg-[#cfd8e8]/82",
+        props.className,
+      )}
     />
   );
 }
@@ -334,14 +356,21 @@ export function ProofStrip() {
       </div>
       <div className="relative flex min-h-[104px] items-center gap-4 px-8 max-lg:border-b max-md:px-5">
         <div>
-          <p className="text-[13px] font-medium text-[#33405f]">Beta feedback</p>
+          <p className="text-[13px] font-medium text-[#33405f]">
+            Beta feedback
+          </p>
           <div className="mt-2 flex items-end gap-2.5">
             <span className="tabular-nums text-[31px] font-semibold leading-[1.04] tracking-[-0.018em] text-[#080d22]">
-              4.9<span className="ml-0.5 text-[16px] font-medium tracking-[-0.005em] text-[#2f3d5d]">/5</span>
+              4.9
+              <span className="ml-0.5 text-[16px] font-medium tracking-[-0.005em] text-[#2f3d5d]">
+                /5
+              </span>
             </span>
             <StarRating />
           </div>
-          <p className="mt-1 text-[12px] text-[#42506d]">from 327 beta testers</p>
+          <p className="mt-1 text-[12px] text-[#42506d]">
+            from 327 beta testers
+          </p>
         </div>
         <InsetDivider className="max-lg:hidden" />
       </div>
@@ -357,7 +386,10 @@ export function ProofStrip() {
             >
               <img
                 alt={logo.name}
-                className={cn("max-w-full shrink-0 object-contain object-center", logo.className)}
+                className={cn(
+                  "max-w-full shrink-0 object-contain object-center",
+                  logo.className,
+                )}
                 src={logo.src}
               />
             </div>
@@ -367,11 +399,17 @@ export function ProofStrip() {
       </div>
       <div className="grid min-w-0 gap-4 px-6 max-md:px-5 max-md:py-5">
         <p className="flex items-center gap-2.5 whitespace-nowrap text-[13px] font-semibold text-[#080d22]">
-          <FileText className="h-[19px] w-[19px] text-[#2047f0]" strokeWidth={1.8} />
+          <FileText
+            className="h-[19px] w-[19px] text-[#2047f0]"
+            strokeWidth={1.8}
+          />
           One-page CVs
         </p>
         <p className="flex items-center gap-2.5 whitespace-nowrap text-[13px] font-semibold text-[#080d22]">
-          <ShieldCheck className="h-[19px] w-[19px] text-[#2047f0]" strokeWidth={1.8} />
+          <ShieldCheck
+            className="h-[19px] w-[19px] text-[#2047f0]"
+            strokeWidth={1.8}
+          />
           ATS-safe
         </p>
       </div>

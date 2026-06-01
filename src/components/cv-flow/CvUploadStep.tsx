@@ -1,10 +1,36 @@
 "use client";
 
-import { ArrowRight, Check, FileText, FolderOpen, Loader2, ShieldCheck, Upload } from "lucide-react";
-import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, Check, Loader2, Upload } from "lucide-react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { GlassCard, WorkflowPanel } from "~/components/cv-flow/JobDescriptionStep";
 import { cn } from "~/lib/utils";
+
+const statusMessages = [
+  "Reading your CV",
+  "Extracting your experience",
+  "Matching evidence to the role",
+  "Scoring your strongest proof",
+  "Finding gaps to strengthen",
+  "Preparing your questions",
+] as const;
+
+const ringRadius = 132;
+const ringCircumference = 2 * Math.PI * ringRadius;
+
+function AnimatedDots() {
+  const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCount((current) => ((current % 3) + 1) as 1 | 2 | 3);
+    }, 420);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return <span className="inline-block w-[18px] text-left text-[#8390ab]">{".".repeat(count)}</span>;
+}
 
 export function CvUploadStep(props: {
   value: string;
@@ -12,149 +38,315 @@ export function CvUploadStep(props: {
   error?: string | null;
   isLoading: boolean;
   isReadingFile: boolean;
+  analysisState: "idle" | "analyzing" | "success";
   onBack: () => void;
-  onChange: (value: string) => void;
   onFile: (file: File) => void;
   onSubmit: () => void;
 }) {
+  const inputId = useId();
   const [isDragActive, setIsDragActive] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
-  const uploadInputId = "cv-upload";
-  const hasText = !!props.value.trim();
-  const fileLabel = props.isReadingFile
-    ? "Reading file..."
-    : props.fileName ?? (hasText ? "CV text ready" : null);
-  const canSubmit = hasText && !props.isReadingFile && !props.isLoading;
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const progressRef = useRef(0);
+  const hasSelectedFile = Boolean(props.fileName && props.value.trim());
+  const isAnalyzing = props.analysisState === "analyzing";
+  const isSuccess = props.analysisState === "success";
+  const canSubmit = hasSelectedFile && !props.isReadingFile && !props.isLoading;
+  const surfaceError = localError ?? props.error ?? null;
+
+  useEffect(() => {
+    if (!isAnalyzing) {
+      setMessageIndex(0);
+      return;
+    }
+
+    let cancelled = false;
+    let timeoutId: number | null = null;
+
+    const schedule = () => {
+      const duration = 3000 + Math.round(Math.random() * 1800);
+      timeoutId = window.setTimeout(() => {
+        if (cancelled) return;
+        setMessageIndex((current) => (current + 1) % statusMessages.length);
+        schedule();
+      }, duration);
+    };
+
+    schedule();
+
+    return () => {
+      cancelled = true;
+      if (timeoutId) window.clearTimeout(timeoutId);
+    };
+  }, [isAnalyzing]);
+
+  useEffect(() => {
+    progressRef.current = progress;
+  }, [progress]);
+
+  useEffect(() => {
+    if (!(isAnalyzing || isSuccess)) {
+      setProgress(0);
+      return;
+    }
+
+    if (isSuccess) {
+      const startedAt = performance.now();
+      const startValue = progressRef.current;
+      let frameId = 0;
+
+      const tick = (now: number) => {
+        const elapsed = now - startedAt;
+        const duration = 560;
+        const eased = 1 - Math.pow(1 - Math.min(elapsed / duration, 1), 3);
+        setProgress(startValue + (1 - startValue) * eased);
+        if (elapsed < duration) frameId = window.requestAnimationFrame(tick);
+      };
+
+      frameId = window.requestAnimationFrame(tick);
+      return () => window.cancelAnimationFrame(frameId);
+    }
+
+    const startedAt = performance.now();
+    let frameId = 0;
+
+    const tick = (now: number) => {
+      const elapsed = now - startedAt;
+      const target = Math.min(0.94, 0.94 * (1 - Math.exp(-elapsed / 6500)));
+      setProgress((current) => (target > current ? target : current));
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    frameId = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frameId);
+  }, [isAnalyzing, isSuccess]);
 
   function handleFile(file: File) {
     const tenMb = 10 * 1024 * 1024;
-    if (!/\.(pdf|docx|txt)$/i.test(file.name)) {
-      setLocalError("Choose a PDF, DOCX, or TXT file.");
+    const isAccepted =
+      file.type === "application/pdf" ||
+      file.type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      /\.(pdf|docx)$/i.test(file.name);
+
+    if (!isAccepted) {
+      setLocalError("Upload a PDF or DOCX file.");
       return;
     }
+
     if (file.size > tenMb) {
-      setLocalError("Choose a CV under 10MB.");
+      setLocalError("Upload a file under 10MB.");
       return;
     }
+
     setLocalError(null);
     props.onFile(file);
   }
 
-  function handleDrop(event: React.DragEvent<HTMLDivElement>) {
+  function handleDrop(event: React.DragEvent<HTMLLabelElement>) {
     event.preventDefault();
     setIsDragActive(false);
+    if (props.isLoading || props.isReadingFile) return;
     const file = event.dataTransfer.files?.[0];
     if (file) handleFile(file);
   }
 
-  const wordEstimate = useMemo(
-    () => props.value.trim().split(/\s+/).filter(Boolean).length,
-    [props.value]
+  const progressOffset = useMemo(
+    () => ringCircumference * (1 - Math.max(0, Math.min(progress, 1))),
+    [progress]
   );
 
   return (
-    <WorkflowPanel
-      eyebrow="Step 2 of 4"
-      subtitle="Upload a CV file or paste the text. Taylor will keep the facts, then tailor the framing."
-      title="Add your current CV."
+    <motion.section
+      animate={{ opacity: 1, y: 0 }}
+      className="mx-auto flex min-h-[100dvh] w-full flex-col items-center px-4 pb-10 pt-[148px] sm:px-6 sm:pb-12 sm:pt-[188px] lg:px-8 lg:pt-[204px]"
+      exit={{ opacity: 0, y: -12 }}
+      initial={{ opacity: 0, y: 12 }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-        <GlassCard className="p-5">
-          <input
-            accept=".pdf,.docx,.txt"
-            className="sr-only"
-            id={uploadInputId}
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) handleFile(file);
-              event.currentTarget.value = "";
-            }}
-            type="file"
-          />
-          <div
-            className={cn(
-              "flex min-h-[308px] flex-col items-center justify-center rounded-[16px] border border-dashed px-6 py-8 text-center transition",
-              isDragActive
-                ? "border-[#2450f4] bg-[#2450f4]/10"
-                : "border-[#9fb2db] bg-white/48"
-            )}
-            onDragEnter={(event) => {
-              event.preventDefault();
-              setIsDragActive(true);
-            }}
-            onDragLeave={() => setIsDragActive(false)}
-            onDragOver={(event) => event.preventDefault()}
-            onDrop={handleDrop}
-          >
-            <span className="grid h-[82px] w-[82px] place-items-center rounded-[22px] border border-[#cbd7ee] bg-white text-[#2450f4] shadow-[0_18px_38px_rgba(36,80,244,0.16)]">
-              <Upload className="h-8 w-8" />
-            </span>
-            <h2 className="mt-5 text-[22px] font-semibold tracking-[-0.025em] text-[#080d22]">
-              Drop your CV here
-            </h2>
-            <p className="mt-2 text-[14px] text-[#66728b]">PDF, DOCX or TXT under 10MB</p>
-            <label
-              aria-disabled={props.isReadingFile}
-              className={cn(
-                "mt-5 inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-[11px] bg-[#080d22] px-5 text-[14px] font-semibold text-white shadow-[0_14px_28px_rgba(8,13,34,0.16)] transition hover:scale-[1.02] hover:bg-[#152040] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/20",
-                props.isReadingFile && "pointer-events-none opacity-60"
-              )}
-              htmlFor={uploadInputId}
-            >
-              {props.isReadingFile ? <Loader2 className="h-4 w-4 animate-spin" /> : <FolderOpen className="h-4 w-4" />}
-              {props.isReadingFile ? "Reading..." : "Choose file"}
-            </label>
-            {fileLabel ? (
-              <div className="mt-5 flex w-full max-w-[430px] items-center justify-center gap-2 rounded-[12px] border border-emerald-200 bg-emerald-50 px-4 py-3 text-[13px] font-semibold text-emerald-900">
-                <Check className="h-4 w-4" />
-                <span className="truncate">{fileLabel}</span>
-              </div>
-            ) : null}
-          </div>
-        </GlassCard>
-        <GlassCard className="p-5">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-[14px] font-semibold text-[#080d22]">Or paste CV text</p>
-              <p className="mt-1 text-[12.5px] text-[#66728b]">
-                {wordEstimate > 0 ? `${wordEstimate.toLocaleString()} words detected` : "Helpful if the file parser misses anything"}
-              </p>
-            </div>
-            <FileText className="h-5 w-5 text-[#2450f4]" />
-          </div>
-          <textarea
-            className="mt-4 h-[308px] w-full resize-none rounded-[16px] border border-[#cad8f2]/70 bg-white/72 px-5 py-5 text-[15px] leading-6 text-[#111827] outline-none shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] placeholder:text-[#66728b] transition focus:border-[#2450f4]/55 focus:bg-white focus:shadow-[0_0_0_4px_rgba(36,80,244,0.12)]"
-            maxLength={30_000}
-            onChange={(event) => props.onChange(event.target.value)}
-            placeholder="Paste your current CV text here..."
-            value={props.value}
-          />
-        </GlassCard>
-      </div>
-      {localError || props.error ? (
-        <p className="mt-4 rounded-[12px] border border-amber-300/45 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          {localError ?? props.error}
+      <div className="mx-auto w-full max-w-4xl text-center">
+        <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#74809a]">
+          Step 2 of 4
         </p>
-      ) : null}
-      <div className="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="mt-4 text-balance text-[44px] font-normal leading-[1.03] tracking-[-0.052em] text-[#070b1f] [font-family:'Iowan_Old_Style','Palatino_Linotype','Book_Antiqua',Palatino,serif] sm:text-[66px] lg:text-[72px]">
+          Upload your CV
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-[16px] font-normal leading-7 text-[#6f7890] sm:mt-5 sm:text-[18px] sm:leading-8">
+          We&apos;ll review your CV and see how you match.
+        </p>
+      </div>
+
+      <div className="mt-8 flex w-full flex-col items-center sm:mt-12">
+        <input
+          accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          className="sr-only"
+          id={inputId}
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            if (file) handleFile(file);
+            event.currentTarget.value = "";
+          }}
+          type="file"
+        />
+
+        <label
+          className={cn(
+            "group relative grid h-[272px] w-[272px] cursor-pointer place-items-center rounded-full transition-all duration-300 sm:h-[332px] sm:w-[332px]",
+            props.isLoading && "cursor-default",
+            isDragActive && !props.isLoading && "scale-[1.015]",
+            surfaceError && !props.isLoading && "drop-shadow-[0_0_0_rgba(0,0,0,0)]"
+          )}
+          htmlFor={props.isLoading ? undefined : inputId}
+          onDragEnter={(event) => {
+            event.preventDefault();
+            if (!props.isLoading && !props.isReadingFile) setIsDragActive(true);
+          }}
+          onDragLeave={() => setIsDragActive(false)}
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={handleDrop}
+        >
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(244,247,255,0.88)_54%,rgba(224,232,255,0.58)_100%)] shadow-[0_34px_110px_rgba(174,190,232,0.28)]" />
+          <div className="absolute inset-[9px] rounded-full border border-[#edf1fb] bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(248,250,255,0.92)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]" />
+          <div className="absolute inset-[-18px] rounded-full bg-[radial-gradient(circle,rgba(162,180,255,0.18)_0%,rgba(162,180,255,0.06)_52%,transparent_72%)] blur-xl" />
+
+          <svg
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full -rotate-90"
+            viewBox="0 0 300 300"
+          >
+            <defs>
+              <linearGradient id="cv-upload-progress" x1="0%" x2="100%" y1="0%" y2="100%">
+                <stop offset="0%" stopColor="#0b4ef3" />
+                <stop offset="60%" stopColor="#3166ff" />
+                <stop offset="100%" stopColor="#6a6dff" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="150"
+              cy="150"
+              fill="none"
+              r={ringRadius}
+              stroke={isDragActive && !props.isLoading ? "#d7e2ff" : "#e8edf9"}
+              strokeWidth="8"
+            />
+            <motion.circle
+              animate={{ strokeDashoffset: progressOffset, opacity: isAnalyzing || isSuccess ? 1 : 0 }}
+              cx="150"
+              cy="150"
+              fill="none"
+              initial={false}
+              r={ringRadius}
+              stroke="url(#cv-upload-progress)"
+              strokeDasharray={ringCircumference}
+              strokeLinecap="round"
+              strokeWidth="8"
+              transition={{ duration: isSuccess ? 0.52 : 0.26, ease: "easeOut" }}
+            />
+          </svg>
+
+          <div className="relative z-10 flex max-w-[200px] flex-col items-center text-center sm:max-w-[240px]">
+            <AnimatePresence mode="wait">
+              {isAnalyzing || isSuccess ? (
+                <motion.div
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center"
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  key={isSuccess ? "success" : `status-${messageIndex}`}
+                  transition={{ duration: 0.24, ease: "easeOut" }}
+                >
+                  {isSuccess ? (
+                    <>
+                      <span className="grid h-[74px] w-[74px] place-items-center rounded-full bg-[linear-gradient(180deg,#165dff_0%,#0b4ef3_100%)] text-white shadow-[0_18px_42px_rgba(11,78,243,0.24)]">
+                        <Check className="h-9 w-9" />
+                      </span>
+                      <p className="mt-5 text-[24px] font-normal tracking-[-0.03em] text-[#09112f] sm:mt-6 sm:text-[27px]">
+                        Ready
+                      </p>
+                      <p className="mt-2 text-[15px] leading-6 text-[#73809b]">
+                        Taking you to your gap questions.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <span className="grid h-[62px] w-[62px] place-items-center rounded-full bg-white/88 text-[#0b4ef3] shadow-[0_14px_32px_rgba(144,162,214,0.18)] ring-1 ring-[#e8edf7]">
+                        <Loader2 className="h-7 w-7 animate-spin" />
+                      </span>
+                      <p className="mt-5 text-[21px] font-normal tracking-[-0.03em] text-[#09112f] sm:mt-6 sm:text-[24px]">
+                        {statusMessages[messageIndex]}
+                        <AnimatedDots />
+                      </p>
+                      <p className="mt-2 text-[14px] leading-6 text-[#7d88a1]">
+                        We&apos;re extracting the strongest evidence for this role.
+                      </p>
+                    </>
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center"
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  key="idle"
+                  transition={{ duration: 0.22, ease: "easeOut" }}
+                >
+                  <span
+                    className={cn(
+                      "grid h-[62px] w-[62px] place-items-center rounded-full bg-[linear-gradient(180deg,rgba(241,245,255,0.96)_0%,rgba(232,238,252,0.92)_100%)] text-[#0b4ef3] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_28px_rgba(158,175,223,0.16)] ring-1 ring-[#e3e8f5] transition-transform duration-300 sm:h-[68px] sm:w-[68px]",
+                      isDragActive && "scale-[1.03]"
+                    )}
+                  >
+                    <Upload className="h-7 w-7 sm:h-8 sm:w-8" />
+                  </span>
+                  <p className="mt-5 text-[20px] font-medium tracking-[-0.03em] text-[#0b122e] sm:mt-6 sm:text-[22px]">
+                    Click to upload
+                  </p>
+                  <p className="mt-2 text-[15px] leading-6 text-[#74809a]">or drag and drop</p>
+                  {props.isReadingFile ? (
+                    <p className="mt-5 text-[14px] leading-6 text-[#5870b2]">Preparing your file...</p>
+                  ) : hasSelectedFile ? (
+                    <div className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full bg-white/82 px-4 py-2 text-[13px] text-[#4f5d7c] shadow-[0_8px_20px_rgba(160,176,218,0.12)] ring-1 ring-[#e5eaf6]">
+                      <Check className="h-3.5 w-3.5 text-[#0b4ef3]" />
+                      <span className="truncate">{props.fileName}</span>
+                    </div>
+                  ) : null}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </label>
+
+        <p className="mt-6 text-[14px] font-normal tracking-[-0.01em] text-[#7d88a1] sm:mt-8 sm:text-[15px]">
+          PDF or DOCX • Max 10MB
+        </p>
+
+        {surfaceError ? (
+          <p className="mt-4 rounded-full border border-[#f2d0c4] bg-white/84 px-4 py-2.5 text-[13px] text-[#9a4a34] shadow-[0_10px_24px_rgba(188,123,96,0.08)]">
+            {surfaceError}
+          </p>
+        ) : null}
+
         <button
-          className="inline-flex h-11 items-center justify-center rounded-[11px] border border-[#d8e0ee] bg-white/70 px-5 text-[14px] font-semibold text-[#314066] transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/14"
+          className="mt-8 inline-flex h-[58px] min-w-[268px] items-center justify-center gap-3 rounded-[16px] border border-[#4b70ff]/18 bg-[linear-gradient(180deg,#1661ff_0%,#0b4ef3_100%)] px-8 text-[17px] font-normal tracking-[-0.02em] text-white shadow-[0_20px_42px_rgba(11,78,243,0.28)] transition hover:translate-y-[-1px] hover:shadow-[0_24px_46px_rgba(11,78,243,0.32)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/18 disabled:cursor-not-allowed disabled:opacity-55 sm:mt-9 sm:h-[62px] sm:min-w-[286px] sm:text-[18px]"
+          disabled={!canSubmit}
+          onClick={props.onSubmit}
+          type="button"
+        >
+          Upload and continue
+          <ArrowRight className="h-5 w-5" />
+        </button>
+
+        <button
+          className="mt-4 text-[14px] font-normal text-[#74809a] transition hover:text-[#425276]"
+          disabled={props.isLoading}
           onClick={props.onBack}
           type="button"
         >
           Back
         </button>
-        <button
-          className="inline-flex h-[54px] items-center justify-center gap-3 rounded-[12px] border border-[#4269ff]/30 bg-[linear-gradient(180deg,#3768ff_0%,#2250f4_54%,#1743df_100%)] px-7 text-[15px] font-semibold text-white shadow-[0_16px_34px_rgba(32,71,240,0.28)] transition hover:scale-[1.01] hover:shadow-[0_18px_38px_rgba(32,71,240,0.34)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/24 disabled:cursor-not-allowed disabled:opacity-60"
-          disabled={!canSubmit}
-          onClick={props.onSubmit}
-          type="button"
-        >
-          {props.isLoading ? <Loader2 className="h-4.5 w-4.5 animate-spin" /> : <ShieldCheck className="h-4.5 w-4.5" />}
-          Build my profile
-          <ArrowRight className="h-4.5 w-4.5" />
-        </button>
       </div>
-    </WorkflowPanel>
+    </motion.section>
   );
 }

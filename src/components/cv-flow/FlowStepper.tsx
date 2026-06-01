@@ -1,49 +1,62 @@
 "use client";
 
+import { Check } from "lucide-react";
+
 import { cn } from "~/lib/utils";
+import {
+  workflowStepState,
+  workflowSteps,
+  type WorkflowStepNumber,
+} from "~/components/cv-flow/workflowSteps";
 
-const steps = [
-  { fullLabel: "Job description" },
-  { fullLabel: "Evidence" },
-  { fullLabel: "Gaps" },
-  { fullLabel: "Tailored CV" },
-] as const;
-
-export function FlowStepper(props: { activeStep: 1 | 2 | 3 | 4 }) {
+export function FlowStepper(props: { currentStep: WorkflowStepNumber }) {
   return (
     <nav
       aria-label="CV workflow"
-      className="mx-auto overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="mx-auto w-full overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
-      <div className="mx-auto grid min-w-max grid-cols-[max-content_44px_max-content_44px_max-content_44px_max-content] items-center sm:grid-cols-[max-content_56px_max-content_56px_max-content_56px_max-content]">
-        {steps.map((step, index) => {
-          const stepNumber = (index + 1) as 1 | 2 | 3 | 4;
-          const isActive = stepNumber === props.activeStep;
+      <div className="mx-auto flex min-w-max items-center">
+        {workflowSteps.map((step, index) => {
+          const stepNumber = (index + 1) as WorkflowStepNumber;
+          const state = workflowStepState(props.currentStep, stepNumber);
+          const isCompleted = state === "completed";
+          const isActive = state === "active";
 
           return (
-            <div className="contents" key={step.fullLabel}>
-              <div className="flex items-center gap-2.5 justify-self-center sm:gap-4">
+            <div className="flex items-center" key={step.label}>
+              <div className="flex items-center gap-3 sm:gap-3.5">
                 <span
                   className={cn(
-                    "grid h-8 w-8 shrink-0 place-items-center rounded-full border text-[14px] leading-none transition-colors",
-                    isActive
-                      ? "border-[#0b4ef3] bg-[#0b4ef3] text-white"
-                      : "border-[#cfd7ea] bg-white/55 text-[#8190ad]"
+                    "grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[13px] leading-none transition-all sm:h-8 sm:w-8 sm:text-[14px]",
+                    isActive || isCompleted
+                      ? "border-[#0b4ef3] bg-[#0b4ef3] text-white shadow-[0_8px_22px_rgba(11,78,243,0.16)]"
+                      : "border-[#cfd6e8] bg-white/78 text-[#94a0b8]"
                   )}
                 >
-                  {stepNumber}
+                  {isCompleted ? <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : stepNumber}
                 </span>
                 <span
                   className={cn(
-                    "shrink-0 whitespace-nowrap text-[13px] font-medium tracking-[-0.02em] transition-colors sm:text-[15px]",
-                    isActive ? "text-[#0b4ef3]" : "text-[#74809a]"
+                    "shrink-0 whitespace-nowrap text-[13px] font-normal tracking-[-0.02em] transition-colors sm:text-[15px]",
+                    isActive
+                      ? "text-[#0b4ef3] font-medium"
+                      : isCompleted
+                        ? "text-[#2757de] font-medium"
+                        : "text-[#7e8aa3]"
                   )}
                 >
-                  {step.fullLabel}
+                  {step.label}
                 </span>
               </div>
-              {index < steps.length - 1 ? (
-                <span className="mx-auto block h-px w-[44px] bg-[#d6ddee] sm:w-[56px]" />
+
+              {index < workflowSteps.length - 1 ? (
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "mx-8 block h-px w-[38px] shrink-0 sm:mx-10 sm:w-[46px] lg:mx-11 lg:w-[52px]",
+                    stepNumber < props.currentStep ? "bg-[#0b4ef3]" : "bg-[#d7ddec]"
+                  )}
+                />
               ) : null}
             </div>
           );

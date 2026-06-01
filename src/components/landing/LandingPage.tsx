@@ -15,7 +15,6 @@ import {
 } from "~/lib/plans";
 
 import { LandingBackground } from "./LandingBackground";
-import { FlowArrow } from "./FlowArrow";
 import { GlassHeader } from "./GlassHeader";
 import { PrimaryButton } from "./GlassButton";
 import { LiquidGlassDefs } from "./LiquidGlassDefs";
@@ -436,11 +435,9 @@ function WorkflowCards() {
     >
       <motion.div className="relative" transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }} variants={entrance}>
         <JobAdCard />
-        <FlowArrow className="absolute right-[-34px] top-1/2 z-10 -translate-y-1/2 max-xl:hidden" />
       </motion.div>
       <motion.div className="relative" transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }} variants={entrance}>
         <FitGapsCard />
-        <FlowArrow className="absolute right-[-34px] top-1/2 z-10 -translate-y-1/2 max-xl:hidden" />
       </motion.div>
       <motion.div transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }} variants={entrance}>
         <CvPreviewCard />

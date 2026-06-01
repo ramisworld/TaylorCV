@@ -7,7 +7,10 @@ export type AgentConfig = {
   maxOutputTokens: number;
 };
 
-function parseReasoningEffort(value: string | undefined, fallback: AgentReasoningEffort) {
+function parseReasoningEffort(
+  value: string | undefined,
+  fallback: AgentReasoningEffort,
+) {
   if (value === "low" || value === "medium" || value === "high") return value;
   return fallback;
 }
@@ -21,21 +24,21 @@ export const AGENT_CONFIG: Record<"intakeGap" | "cvComposer", AgentConfig> = {
   intakeGap: {
     reasoningEffort: parseReasoningEffort(
       process.env.OPENAI_REASONING_EFFORT_INTAKE_GAP,
-      "low"
+      "low",
     ),
     maxOutputTokens: parsePositiveInt(
       process.env.OPENAI_MAX_OUTPUT_TOKENS_INTAKE_GAP,
-      1600
+      3200,
     ),
   },
   cvComposer: {
     reasoningEffort: parseReasoningEffort(
       process.env.OPENAI_REASONING_EFFORT_CV_COMPOSER,
-      "low"
+      "low",
     ),
     maxOutputTokens: parsePositiveInt(
       process.env.OPENAI_MAX_OUTPUT_TOKENS_CV_COMPOSER,
-      2600
+      2600,
     ),
   },
 };

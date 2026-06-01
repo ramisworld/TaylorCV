@@ -74,6 +74,9 @@ export default function Home() {
   const [candidateText, setCandidateText] = useState("");
   const [candidateFileName, setCandidateFileName] = useState<string | null>(null);
   const [isCandidateFileReading, setIsCandidateFileReading] = useState(false);
+  const [candidateAnalysisState, setCandidateAnalysisState] = useState<
+    "idle" | "analyzing" | "success"
+  >("idle");
   const [error, setError] = useState<string | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -209,18 +212,18 @@ export default function Home() {
   });
 
   const submitCandidate = api.application.submitCandidate.useMutation({
-    onSuccess: async (data, variables) => {
+    onSuccess: async (_data, variables) => {
       await utils.application.getApplicationState.invalidate({
         applicationId: variables.applicationId,
       });
-      if ((data.gapQuestions ?? []).length > 0) {
-        setStage("gap_questions");
-      } else {
-        startCvGeneration(variables.applicationId);
-      }
+      setCandidateAnalysisState("success");
       setError(null);
+      await new Promise((resolve) => window.setTimeout(resolve, 700));
+      setCandidateAnalysisState("idle");
+      setStage("gap_questions");
     },
     onError: (mutationError) => {
+      setCandidateAnalysisState("idle");
       if (isStaleApplicationError(mutationError.message)) {
         void recoverFromStaleApplication(true);
         return;
@@ -283,6 +286,7 @@ export default function Home() {
       setJobText("");
       setCandidateText("");
       setCandidateFileName(null);
+      setCandidateAnalysisState("idle");
       setError(null);
       setExportError(null);
       window.history.replaceState(null, "", `/?applicationId=${data.applicationId}`);
@@ -298,6 +302,7 @@ export default function Home() {
 
   async function readCandidateFile(file: File) {
     setIsCandidateFileReading(true);
+    setCandidateAnalysisState("idle");
     setCandidateFileName(file.name);
     try {
       const name = file.name.toLowerCase();
@@ -414,17 +419,21 @@ export default function Home() {
         ) : null}
         {stage === "cv_upload" ? (
           <CvUploadStep
+            analysisState={candidateAnalysisState}
             error={error}
             fileName={candidateFileName}
-            isLoading={submitCandidate.isPending}
+            isLoading={submitCandidate.isPending || candidateAnalysisState !== "idle"}
             isReadingFile={isCandidateFileReading}
             key="cv-upload"
-            onBack={() => setStage("job_description")}
-            onChange={setCandidateText}
+            onBack={() => {
+              setCandidateAnalysisState("idle");
+              setStage("job_description");
+            }}
             onFile={(file) => void readCandidateFile(file)}
             onSubmit={() => {
               if (!applicationId) return;
               setError(null);
+              setCandidateAnalysisState("analyzing");
               submitCandidate.mutate({ applicationId, rawCvText: candidateText });
             }}
             value={candidateText}

@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   title: "Taylor CV",
   description: "AI CV tailoring MVP",
   icons: {
-    icon: "/assets/logo.png",
-    apple: "/assets/logo.png",
-    shortcut: "/assets/logo.png",
+    icon: "/assets/taylorcv-logo-transparent.png",
+    apple: "/assets/taylorcv-logo-transparent.png",
+    shortcut: "/assets/taylorcv-logo-transparent.png",
   },
 };
 
