@@ -30,6 +30,7 @@ export async function runIntakeGapAgent(args: {
     applicationId: args.applicationId,
     model,
     reasoningEffort: AGENT_CONFIG.intakeGap.reasoningEffort,
+    maxOutputTokens: AGENT_CONFIG.intakeGap.maxOutputTokens,
     systemPrompt: INTAKE_GAP_SYSTEM_PROMPT,
     userPrompt,
     schemaName: "intake_gap",

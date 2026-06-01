@@ -20,6 +20,7 @@ export function JobDescriptionStep(props: {
     <WorkflowPanel
       eyebrow="Step 1 of 4"
       subtitle="We’ll analyze the role and extract what matters."
+      titleClassName="text-[48px] font-semibold tracking-[-0.052em] [font-family:'Iowan_Old_Style','Palatino_Linotype','Book_Antiqua',Palatino,serif] sm:text-[62px] lg:text-[72px]"
       title="Paste the job description"
     >
       <div className="mx-auto w-full max-w-[980px]">
@@ -62,21 +63,27 @@ export function WorkflowPanel(props: {
   eyebrow: string;
   title: string;
   subtitle?: string;
+  titleClassName?: string;
   children: React.ReactNode;
 }) {
   return (
     <motion.section
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto flex min-h-[100dvh] w-full flex-col justify-start px-4 pb-10 pt-[150px] sm:px-6 sm:pt-[170px] lg:px-8 lg:pt-[188px]"
+      className="mx-auto flex min-h-[100dvh] w-full flex-col justify-start px-4 pb-10 pt-[164px] sm:px-6 sm:pt-[188px] lg:px-8 lg:pt-[206px]"
       exit={{ opacity: 0, y: -12 }}
       initial={{ opacity: 0, y: 12 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className="mx-auto mb-8 max-w-4xl text-center sm:mb-10">
+      <div className="mx-auto mb-8 max-w-4xl pt-2 text-center sm:mb-10 sm:pt-3">
         <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#74809a]">
           {props.eyebrow}
         </p>
-        <h1 className="mt-4 text-balance text-[44px] font-normal leading-[1.04] tracking-[-0.045em] text-[#070b1f] [font-family:var(--font-serif)] sm:text-[56px] lg:text-[64px]">
+        <h1
+          className={cn(
+            "mt-4 text-balance text-[44px] font-normal leading-[1.04] tracking-[-0.045em] text-[#070b1f] [font-family:var(--font-serif)] sm:text-[56px] lg:text-[64px]",
+            props.titleClassName
+          )}
+        >
           {props.title}
         </h1>
         {props.subtitle ? (

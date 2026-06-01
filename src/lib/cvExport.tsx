@@ -368,6 +368,9 @@ function renderNormalizedPdfSection(section: NormalizedCvSection, tokens: Render
           </View>
         );
       })}
+      {section.certifications?.length ? (
+        <BulletList bullets={section.certifications.map(claimText)} tokens={tokens} />
+      ) : null}
     </PdfSection>
   );
 }
@@ -649,6 +652,10 @@ function pushNormalizedDocxSection(
     if (item.details.length > 0) {
       children.push(paragraph(item.details.join(", "), tokens));
     }
+  }
+
+  if (section.certifications?.length) {
+    children.push(...section.certifications.map((item) => bullet(item.text, tokens)));
   }
 }
 

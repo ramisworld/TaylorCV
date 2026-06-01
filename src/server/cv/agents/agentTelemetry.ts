@@ -4,6 +4,8 @@ export type AgentTelemetryContext = {
   rawJobChars?: number | null;
   rawCvChars?: number | null;
   structuredContextChars?: number | null;
+  sectionStrategyChars?: number | null;
+  payloadChars?: number | null;
   gapAnswerCount?: number | null;
 };
 

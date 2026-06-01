@@ -2,8 +2,8 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  padding-top: clamp(72px, 9vw, 128px);
-  padding-bottom: clamp(28px, 4vw, 56px);
+  padding-top: clamp(28px, 4.8vw, 68px);
+  padding-bottom: clamp(12px, 2.4vw, 30px);
   color: #070b1f;
   background: transparent;
   isolation: isolate;
@@ -21,22 +21,22 @@
   background:
     radial-gradient(
       ellipse at 50% 0%,
-      rgba(255, 255, 255, 0.54),
-      rgba(255, 255, 255, 0.22) 24%,
-      rgba(241, 244, 255, 0.08) 46%,
+      rgba(255, 255, 255, 0.28),
+      rgba(255, 255, 255, 0.12) 24%,
+      rgba(241, 244, 255, 0.04) 46%,
       transparent 76%
     ),
     radial-gradient(
       ellipse at 18% 14%,
-      rgba(214, 226, 255, 0.22),
+      rgba(214, 226, 255, 0.12),
       transparent 46%
     ),
     radial-gradient(
       ellipse at 82% 12%,
-      rgba(229, 220, 255, 0.18),
+      rgba(229, 220, 255, 0.1),
       transparent 42%
     );
-  filter: blur(28px);
+  filter: blur(34px);
 }
 
 .bgBase {
@@ -47,49 +47,54 @@
   background:
     radial-gradient(
       ellipse at 9% 8%,
-      rgba(219, 228, 255, 0.88),
+      rgba(219, 228, 255, 0.42),
       transparent 34%
     ),
     radial-gradient(
       ellipse at 91% 7%,
-      rgba(234, 226, 255, 0.92),
+      rgba(234, 226, 255, 0.42),
       transparent 38%
     ),
     radial-gradient(
       ellipse at 68% 62%,
-      rgba(194, 202, 255, 0.22),
+      rgba(194, 202, 255, 0.12),
       transparent 40%
     ),
     radial-gradient(
       ellipse at 85% 83%,
-      rgba(220, 226, 255, 0.38),
+      rgba(220, 226, 255, 0.18),
       transparent 34%
     ),
     radial-gradient(
       ellipse at 21% 92%,
-      rgba(202, 214, 255, 0.34),
+      rgba(202, 214, 255, 0.16),
       transparent 38%
     ),
-    linear-gradient(180deg, #fafaff 0%, #f5f4fd 46%, #f2f0fb 100%);
-  opacity: 0.88;
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(245, 244, 253, 0.1) 46%,
+      rgba(242, 240, 251, 0.08) 100%
+    );
+  opacity: 0.6;
   mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 0.78) 10%,
-    black 18%,
-    black 80%,
-    rgba(0, 0, 0, 0.52) 90%,
-    rgba(0, 0, 0, 0.18) 95%,
+    rgba(0, 0, 0, 0.58) 12%,
+    black 22%,
+    black 76%,
+    rgba(0, 0, 0, 0.42) 88%,
+    rgba(0, 0, 0, 0.12) 94%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(0, 0, 0, 0.78) 10%,
-    black 18%,
-    black 80%,
-    rgba(0, 0, 0, 0.52) 90%,
-    rgba(0, 0, 0, 0.18) 95%,
+    rgba(0, 0, 0, 0.58) 12%,
+    black 22%,
+    black 76%,
+    rgba(0, 0, 0, 0.42) 88%,
+    rgba(0, 0, 0, 0.12) 94%,
     transparent 100%
   );
 }
@@ -99,7 +104,7 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.2;
+  opacity: 0.12;
   background:
     radial-gradient(
       ellipse 96% 50% at 56% 58%,
@@ -124,7 +129,7 @@
   aspect-ratio: 1 / 1;
   pointer-events: none;
   border-radius: 999px;
-  opacity: 0.22;
+  opacity: 0.12;
   background: repeating-radial-gradient(
     ellipse at center,
     rgba(115, 130, 255, 0.11) 0 1px,
@@ -150,25 +155,25 @@
   background:
     radial-gradient(
       ellipse at 19% 48%,
-      rgba(168, 199, 255, 0.36),
+      rgba(168, 199, 255, 0.18),
       transparent 44%
     ),
     radial-gradient(
       ellipse at 51% 42%,
-      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0.3),
       transparent 30%
     ),
     radial-gradient(
       ellipse at 83% 52%,
-      rgba(176, 144, 255, 0.26),
+      rgba(176, 144, 255, 0.14),
       transparent 44%
     ),
     radial-gradient(
       ellipse at 63% 82%,
-      rgba(132, 94, 255, 0.12),
+      rgba(132, 94, 255, 0.06),
       transparent 46%
     );
-  filter: blur(54px);
+  filter: blur(62px);
 }
 
 .scene {

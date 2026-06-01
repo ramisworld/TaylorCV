@@ -353,10 +353,10 @@ function LatestCvPreview() {
 
 export function CareerWorkspaceSection(props: CareerWorkspaceSectionProps) {
   return (
-    <section className="relative z-10 -mt-[28px] overflow-hidden bg-transparent px-5 pb-[72px] pt-[120px] text-[#070d22] max-md:-mt-[14px] max-md:pb-[56px] max-md:pt-[86px]">
-      <div className="pointer-events-none absolute inset-x-0 -top-[132px] h-[280px] bg-[radial-gradient(ellipse_at_50%_30%,rgba(247,249,255,0.34),rgba(247,249,255,0.14)_36%,transparent_72%),radial-gradient(ellipse_at_18%_26%,rgba(215,227,255,0.14),transparent_42%),radial-gradient(ellipse_at_82%_24%,rgba(232,224,255,0.12),transparent_40%)] blur-3xl" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_81%_38%,rgba(248,223,239,0.24),transparent_51%),radial-gradient(ellipse_at_53%_0%,rgba(255,255,255,0.36)_0%,rgba(255,255,255,0.16)_36%,transparent_64%),radial-gradient(ellipse_at_16%_95%,rgba(221,234,255,0.12),transparent_42%)]" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[160px] bg-[linear-gradient(180deg,transparent,rgba(248,250,255,0.08)_30%,rgba(255,255,255,0.28)_72%,rgba(251,253,255,0))]" />
+    <section className="relative z-10 -mt-[54px] overflow-hidden bg-transparent px-5 pb-[58px] pt-[94px] text-[#070d22] max-md:-mt-[26px] max-md:pb-[46px] max-md:pt-[68px]">
+      <div className="pointer-events-none absolute inset-x-0 -top-[132px] h-[250px] bg-[radial-gradient(ellipse_at_50%_30%,rgba(247,249,255,0.14),rgba(247,249,255,0.06)_36%,transparent_72%),radial-gradient(ellipse_at_18%_26%,rgba(215,227,255,0.06),transparent_42%),radial-gradient(ellipse_at_82%_24%,rgba(232,224,255,0.06),transparent_40%)] blur-2xl" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_81%_38%,rgba(248,223,239,0.08),transparent_51%),radial-gradient(ellipse_at_53%_0%,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.06)_36%,transparent_64%),radial-gradient(ellipse_at_16%_95%,rgba(221,234,255,0.08),transparent_42%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-[-18px] h-[220px] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(247,250,255,0.08)_22%,rgba(244,247,255,0.18)_46%,rgba(245,247,255,0.34)_72%,rgba(247,249,255,0.52)_100%)] blur-[10px]" />
 
       <div className="relative mx-auto max-w-[1010px] text-center">
         <p className="inline-flex h-[48px] items-center gap-3 rounded-full border border-[#e2e7f0] bg-white px-[25px] text-[15px] font-semibold leading-none text-[#064fff] shadow-[0_12px_26px_rgba(39,52,87,0.12),inset_0_1px_0_rgba(255,255,255,0.95)]">

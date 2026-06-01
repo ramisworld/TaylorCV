@@ -451,7 +451,7 @@ function WorkflowCards() {
 
 function Hero(props: LandingPageProps) {
   return (
-    <section className="relative z-10 pb-[36px] pt-6 md:pb-[54px]">
+    <section className="relative z-10 pb-[14px] pt-6 md:pb-[24px]">
       <motion.div
         animate="visible"
         className="mx-auto max-w-[960px] px-5 text-center"
@@ -531,9 +531,10 @@ function LaunchSection(props: LandingPageProps) {
 
   return (
     <section
-      className="relative z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.22)_34%,rgba(245,247,255,0.18)_100%)] px-6 py-24"
+      className="relative z-10 -mt-[26px] bg-transparent px-6 pb-24 pt-[88px] md:-mt-[34px] md:pt-[78px]"
       id="launch"
     >
+      <div className="pointer-events-none absolute inset-x-0 -top-[88px] h-[220px] bg-[radial-gradient(ellipse_at_50%_34%,rgba(255,255,255,0.42),rgba(245,248,255,0.18)_34%,rgba(235,241,255,0.08)_54%,transparent_76%),radial-gradient(ellipse_at_16%_28%,rgba(217,229,255,0.14),transparent_40%),radial-gradient(ellipse_at_84%_24%,rgba(233,224,255,0.14),transparent_42%)] blur-3xl" />
       <div className="mx-auto max-w-[920px]">
         <div className="text-center">
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-[#2047f0]">

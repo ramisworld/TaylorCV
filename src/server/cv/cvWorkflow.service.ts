@@ -4,10 +4,14 @@ import { TRPCError } from "@trpc/server";
 import { Prisma } from "../../../generated/prisma/index.js";
 
 import { parseStructuredCv } from "~/lib/cvDocument";
+import { buildCvRenderModel } from "~/lib/cvRenderModel";
 import { db } from "~/server/db";
 import { runCvComposerAgent } from "./agents/cvComposer.agent";
 import { runIntakeGapAgent } from "./agents/intakeGap.agent";
-import { collectCvQualityWarnings } from "./cvQualityWarnings";
+import {
+  collectCvQualityWarnings,
+  repairCvForSectionStrategy,
+} from "./cvQualityWarnings";
 import {
   IntakeGapOutputSchema,
   StructuredCvDocumentSchema,
@@ -15,6 +19,7 @@ import {
   type GapAnswerForComposer,
   type JobContext,
 } from "./cvSchemas";
+import { buildSectionStrategy } from "./sectionStrategy";
 
 function compactText(value: string, max = 140) {
   const text = value.replace(/\s+/g, " ").trim();
@@ -46,6 +51,41 @@ function serializeSkills(candidateContext: CandidateContext) {
 function normalizeStoredIntake(value: unknown) {
   const parsed = IntakeGapOutputSchema.safeParse(value);
   return parsed.success ? parsed.data : null;
+}
+
+function buildPresentationJson(args: {
+  sectionStrategy: ReturnType<typeof buildSectionStrategy>;
+}) {
+  const labels = args.sectionStrategy.preferredSectionLabels;
+  return {
+    sectionLabelOverrides: {
+      skills: labels.skills ?? "Skills",
+      experience: labels.experience ?? "Experience",
+      education: args.sectionStrategy.combineEducationAndCertifications
+        ? labels.educationAndCertifications ?? "Education & Certifications"
+        : "Education",
+      certifications: "Certifications",
+    },
+    renderBehavior: {
+      combineEducationAndCertifications:
+        args.sectionStrategy.combineEducationAndCertifications,
+    },
+    rationale: args.sectionStrategy.sectionRationaleShort,
+    renderWarnings: [],
+  } satisfies Prisma.InputJsonValue;
+}
+
+function validateAndParseCv(cv: unknown) {
+  const validatedCv = StructuredCvDocumentSchema.parse(cv);
+  const parsed = parseStructuredCv(validatedCv);
+  if (!parsed) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Generated CV failed renderer validation.",
+    });
+  }
+
+  return { validatedCv, parsed };
 }
 
 export async function submitJob(args: {
@@ -319,6 +359,13 @@ export async function generateCv(args: { applicationId: string }) {
       };
     });
 
+  const sectionStrategy = buildSectionStrategy({
+    rawJobText: job.rawText,
+    jobContext: storedIntake?.jobContext ?? null,
+    candidateContext,
+    gapAnswers: gapAnswersForComposer,
+  });
+
   const composerOutput = await runCvComposerAgent({
     applicationId: args.applicationId,
     rawJobText: job.rawText,
@@ -326,31 +373,44 @@ export async function generateCv(args: { applicationId: string }) {
     jobContext: storedIntake?.jobContext ?? null,
     candidateContext,
     gapAnswers: gapAnswersForComposer,
+    sectionStrategy,
   });
 
-  const validatedCv = StructuredCvDocumentSchema.parse(composerOutput.cv);
-
-  const parsed = parseStructuredCv(validatedCv);
-  if (!parsed) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Generated CV failed renderer validation.",
-    });
-  }
+  const repaired = repairCvForSectionStrategy({
+    cv: composerOutput.cv,
+    sectionStrategy,
+  });
+  const repairedComposerOutput = {
+    ...composerOutput,
+    blueprint: {
+      ...composerOutput.blueprint,
+      sectionOrder: repaired.cv.sectionOrder,
+    },
+    cv: repaired.cv,
+  };
+  const { validatedCv, parsed } = validateAndParseCv(repairedComposerOutput.cv);
+  const presentationJson = buildPresentationJson({ sectionStrategy });
+  const renderModel = buildCvRenderModel(parsed, presentationJson);
 
   const qualityWarnings = collectCvQualityWarnings({
     rawJobText: job.rawText,
     jobContext: storedIntake?.jobContext ?? null,
     candidateContext,
+    sectionStrategy,
+    blueprint: repairedComposerOutput.blueprint,
     cv: parsed,
+    layoutWarnings: renderModel.metrics.layoutWarnings,
   });
+  const combinedQualityWarnings = [...new Set([...qualityWarnings, ...repaired.repairedWarnings])];
 
-  if (process.env.NODE_ENV !== "production" && qualityWarnings.length > 0) {
+  if (process.env.NODE_ENV !== "production" && combinedQualityWarnings.length > 0) {
     console.info(
       "[TaylorCV] composer quality warnings",
       JSON.stringify({
         applicationId: args.applicationId,
-        warnings: qualityWarnings,
+        warnings: combinedQualityWarnings,
+        sectionStrategy,
+        renderMetrics: renderModel.metrics,
       })
     );
   }
@@ -370,12 +430,15 @@ export async function generateCv(args: { applicationId: string }) {
       applicationId: args.applicationId,
       cvJson: validatedCv as unknown as Prisma.InputJsonValue,
       cvText,
+      presentationJson,
       builderOutputJson: {
-        blueprint: composerOutput.blueprint,
+        blueprint: repairedComposerOutput.blueprint,
         jobContext: storedIntake?.jobContext ?? null,
         candidateContext,
         gapAnswers: gapAnswersForComposer,
-        qualityWarnings,
+        sectionStrategy,
+        qualityWarnings: combinedQualityWarnings,
+        renderMetrics: renderModel.metrics,
       } as Prisma.InputJsonValue,
     },
   });

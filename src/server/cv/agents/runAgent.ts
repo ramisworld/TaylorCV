@@ -28,6 +28,7 @@ export async function runAgent<T>(args: {
   jsonSchema: JsonSchema;
   zodSchema: z.ZodType<T>;
   reasoningEffort: AgentReasoningEffort;
+  maxOutputTokens: number;
   telemetryContext?: AgentTelemetryContext;
   mockOutput?: T;
 }): Promise<T> {
@@ -42,6 +43,8 @@ export async function runAgent<T>(args: {
   let rawOutput: unknown = null;
   let errorClass: string | null = null;
   let providerErrorMeta: Record<string, unknown> | null = null;
+  let responseStatus: string | null = null;
+  let responseIncompleteDetails: unknown = null;
 
   const systemPromptChars = args.systemPrompt.length;
   const userPromptChars = args.userPrompt.length;
@@ -59,8 +62,11 @@ export async function runAgent<T>(args: {
     rawJobChars: args.telemetryContext?.rawJobChars ?? null,
     rawCvChars: args.telemetryContext?.rawCvChars ?? null,
     structuredContextChars: args.telemetryContext?.structuredContextChars ?? null,
+    sectionStrategyChars: args.telemetryContext?.sectionStrategyChars ?? null,
+    payloadChars: args.telemetryContext?.payloadChars ?? null,
     gapAnswerCount: args.telemetryContext?.gapAnswerCount ?? null,
     estimatedInputTokens,
+    maxOutputTokens: args.maxOutputTokens,
   };
 
   try {
@@ -79,12 +85,15 @@ export async function runAgent<T>(args: {
         schemaName: args.schemaName,
         jsonSchema: args.jsonSchema,
         reasoningEffort: args.reasoningEffort,
+        maxOutputTokens: args.maxOutputTokens,
       });
       rawOutput = result.parsed;
       promptTokens = result.usage.promptTokens;
       completionTokens = result.usage.completionTokens;
       totalTokens = result.usage.totalTokens;
       reasoningTokens = result.usage.reasoningTokens;
+      responseStatus = result.response.status;
+      responseIncompleteDetails = result.response.incompleteDetails;
       cost = estimateCost({ model, promptTokens, completionTokens });
     }
 
@@ -97,11 +106,13 @@ export async function runAgent<T>(args: {
       completionTokens,
       totalTokens,
       reasoningTokens,
+      responseStatus,
+      responseIncompleteDetails,
       estimatedCostUsd: cost,
     };
 
     console.log(
-      `[Agent] ${agentName} | model=${model} | reasoning=${args.reasoningEffort} | durationMs=${Date.now() - start} | status=success | tokens=${totalTokens ?? "n/a"} | reasoningTokens=${reasoningTokens ?? "n/a"} | estInputTokens=${estimatedInputTokens} | cost=${cost ?? "n/a"}`
+      `[Agent] ${agentName} | model=${model} | reasoning=${args.reasoningEffort} | maxOutputTokens=${args.maxOutputTokens} | durationMs=${Date.now() - start} | status=success | responseStatus=${responseStatus ?? "n/a"} | tokens=${totalTokens ?? "n/a"} | reasoningTokens=${reasoningTokens ?? "n/a"} | estInputTokens=${estimatedInputTokens} | cost=${cost ?? "n/a"}`
     );
     console.info("[AgentTelemetry]", JSON.stringify({ ...inputSummary, ...outputSummary }));
 
@@ -141,9 +152,11 @@ export async function runAgent<T>(args: {
       reasoningTokens,
       errorClass,
       providerErrorMeta,
+      responseStatus,
+      responseIncompleteDetails,
     };
     console.error(
-      `[Agent] ${agentName} | model=${model} | reasoning=${args.reasoningEffort} | durationMs=${Date.now() - start} | status=error | errorClass=${errorClass ?? "unknown"} | error=${errorMessage}`
+      `[Agent] ${agentName} | model=${model} | reasoning=${args.reasoningEffort} | maxOutputTokens=${args.maxOutputTokens} | durationMs=${Date.now() - start} | status=error | responseStatus=${responseStatus ?? "n/a"} | errorClass=${errorClass ?? "unknown"} | error=${errorMessage}`
     );
     console.info("[AgentTelemetry]", JSON.stringify({ ...inputSummary, ...outputSummary }));
 

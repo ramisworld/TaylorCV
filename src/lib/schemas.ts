@@ -70,6 +70,11 @@ export const CvLayoutStyleOutputSchema = z.object({
   }),
   headerStyle: z.enum(cvHeaderStyles),
   skillsStyle: z.enum(cvSkillsStyles),
+  renderBehavior: z
+    .object({
+      combineEducationAndCertifications: z.boolean(),
+    })
+    .optional(),
   sectionStyles: z.object(
     Object.fromEntries(
       canonicalPresentationSectionIds.map((section) => [

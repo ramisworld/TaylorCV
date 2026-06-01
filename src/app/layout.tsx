@@ -16,7 +16,11 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Taylor CV",
   description: "AI CV tailoring MVP",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: {
+    icon: "/assets/logo.png",
+    apple: "/assets/logo.png",
+    shortcut: "/assets/logo.png",
+  },
 };
 
 export const viewport: Viewport = {

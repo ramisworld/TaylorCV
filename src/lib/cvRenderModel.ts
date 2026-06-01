@@ -145,7 +145,7 @@ function estimateEducationItemHeight(
   tokens: RendererTokens,
   contentWidth: number
 ) {
-  return section.items.reduce((total, item) => {
+  const educationHeight = section.items.reduce((total, item) => {
     const degreeHeight = item.degree
       ? estimateParagraphHeight(item.degree, tokens, contentWidth * 0.62)
       : 0;
@@ -168,6 +168,16 @@ function estimateEducationItemHeight(
       (detailHeight > 0 ? 2 : 0)
     );
   }, 0);
+
+  const certificationHeight = section.certifications?.length
+    ? estimateCertificationListHeight(
+        section.certifications.map(claimText),
+        tokens,
+        contentWidth
+      ) + 6
+    : 0;
+
+  return educationHeight + certificationHeight;
 }
 
 function estimateSectionHeight(section: NormalizedCvSection, tokens: RendererTokens, contentWidth: number) {
@@ -424,7 +434,10 @@ export function buildCvRenderModel(
 ): CvRenderModel {
   const presentation = normalizeCvPresentation(presentationJson, cv);
   const baseTokens = presentationToRendererTokens(presentation);
-  const normalizedSections = normalizeCvSectionsWithMetadata(cv);
+  const normalizedSections = normalizeCvSectionsWithMetadata(cv, {
+    combineEducationAndCertifications:
+      presentation.renderBehavior.combineEducationAndCertifications,
+  });
   const sections = normalizedSections.sections;
   const presentationJsonUsed = hasPresentationInput(presentationJson);
   let tokenState = baseTokens;
@@ -580,5 +593,15 @@ export function renderSectionLabel(
   section: NormalizedCvSection,
   tokens: RendererTokens
 ) {
-  return section.label || tokens.labelFor(section.id as CvSectionId | PresentationSectionId);
+  if (
+    section.id === "summary" ||
+    section.id === "experience" ||
+    section.id === "projects" ||
+    section.id === "skills" ||
+    section.id === "education" ||
+    section.id === "certifications"
+  ) {
+    return tokens.labelFor(section.id as CvSectionId | PresentationSectionId);
+  }
+  return section.label;
 }

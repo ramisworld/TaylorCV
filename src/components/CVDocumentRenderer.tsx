@@ -323,6 +323,13 @@ function renderSection(
               mutedColor={tokens.mutedTextColor}
             />
           ))}
+          {section.certifications?.length ? (
+            <CertificationList
+              bodySize={tokens.bodySize}
+              items={section.certifications.map(claimText)}
+              lineHeight={tokens.lineHeight}
+            />
+          ) : null}
         </div>
       ) : null}
     </section>

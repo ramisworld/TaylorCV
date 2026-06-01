@@ -121,6 +121,7 @@ export type NormalizedCvSection =
       type: "education";
       priority: "primary" | "secondary" | "supporting";
       items: CvEducationItem[];
+      certifications?: CvBulletClaim[];
     };
 
 export type CvContactKind =
@@ -559,7 +560,10 @@ function dynamicSectionOrderKeys(section: { id: string; label: string }) {
   );
 }
 
-export function normalizeCvSectionsWithMetadata(cv: StructuredCv): NormalizedCvSectionsResult {
+export function normalizeCvSectionsWithMetadata(
+  cv: StructuredCv,
+  options?: { combineEducationAndCertifications?: boolean }
+): NormalizedCvSectionsResult {
   const dynamic = cv.sections
     .map((section): NormalizedCvSection | null => {
       const priority = nonEmptyPriority(section.priority);
@@ -628,9 +632,16 @@ export function normalizeCvSectionsWithMetadata(cv: StructuredCv): NormalizedCvS
       type: "education",
       priority: "supporting",
       items: cv.education,
+      certifications:
+        options?.combineEducationAndCertifications && cv.certifications.length > 0
+          ? cv.certifications.map((text) => ({
+              text,
+              gapAnswerIds: [],
+            }))
+          : undefined,
     });
   }
-  if (cv.certifications.length > 0) {
+  if (cv.certifications.length > 0 && !options?.combineEducationAndCertifications) {
     canonicalSections.push({
       id: "certifications",
       label: "Certifications",

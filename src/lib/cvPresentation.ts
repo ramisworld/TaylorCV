@@ -161,6 +161,9 @@ export type CvPresentation = {
   skillsStyle: CvSkillsStyle;
   sectionStyles: Partial<Record<PresentationSectionId, CvSectionPresentation>>;
   sectionLabelOverrides: Partial<Record<PresentationSectionId, string>>;
+  renderBehavior: {
+    combineEducationAndCertifications: boolean;
+  };
   renderWarnings: string[];
   rationale: string;
 };
@@ -578,6 +581,7 @@ export function normalizeCvPresentation(
   const colourSystem = record(source?.colourSystem);
   const sectionStylesSource = record(source?.sectionStyles);
   const labelSource = record(source?.sectionLabelOverrides);
+  const renderBehaviorSource = record(source?.renderBehavior);
   const labels = defaultLabelsForCareer(careerStyle);
   const normalizedDividerStyle =
     colourSystem?.dividerStyle === "no_rule" ? "no_rule" : "light_rule";
@@ -659,6 +663,10 @@ export function normalizeCvPresentation(
         : template.headerLayout,
     sectionStyles,
     sectionLabelOverrides,
+    renderBehavior: {
+      combineEducationAndCertifications:
+        renderBehaviorSource?.combineEducationAndCertifications === true,
+    },
     renderWarnings:
       compact || !source
         ? [

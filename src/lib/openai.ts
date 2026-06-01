@@ -8,6 +8,7 @@ type ResponsesApiBody = {
   model: string;
   input: Array<{ role: "system" | "user"; content: string }>;
   temperature?: number;
+  max_output_tokens?: number;
   reasoning?: {
     effort: "low" | "medium" | "high";
   };
@@ -193,6 +194,11 @@ export type OpenAiUsage = {
   reasoningTokens: number | null;
 };
 
+export type OpenAiResponseMeta = {
+  status: string | null;
+  incompleteDetails: unknown;
+};
+
 export async function createStructuredJsonResponseWithUsage(args: {
   model: string;
   systemPrompt: string;
@@ -201,7 +207,8 @@ export async function createStructuredJsonResponseWithUsage(args: {
   jsonSchema: JsonSchema;
   temperature?: number;
   reasoningEffort?: "low" | "medium" | "high";
-}): Promise<{ parsed: unknown; usage: OpenAiUsage }> {
+  maxOutputTokens?: number;
+}): Promise<{ parsed: unknown; usage: OpenAiUsage; response: OpenAiResponseMeta }> {
   if (!env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is required when USE_MOCK_AI is false");
   }
@@ -209,6 +216,7 @@ export async function createStructuredJsonResponseWithUsage(args: {
   const body: ResponsesApiBody = {
     model: args.model,
     temperature: args.temperature,
+    max_output_tokens: args.maxOutputTokens,
     reasoning: args.reasoningEffort ? { effort: args.reasoningEffort } : undefined,
     input: [
       { role: "system", content: args.systemPrompt },
@@ -256,6 +264,8 @@ export async function createStructuredJsonResponseWithUsage(args: {
         reasoning_tokens?: number;
       };
     };
+    status?: string;
+    incomplete_details?: unknown;
   };
 
   const outputText =
@@ -278,6 +288,10 @@ export async function createStructuredJsonResponseWithUsage(args: {
   return {
     parsed: parseJsonPayload(outputText, "OpenAI output text"),
     usage,
+    response: {
+      status: data.status ?? null,
+      incompleteDetails: data.incomplete_details ?? null,
+    },
   };
 }
 
@@ -367,4 +381,3 @@ export async function streamStructuredJsonResponse(args: {
 
   return parseJsonPayload(outputText, "OpenAI output text");
 }
-

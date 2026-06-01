@@ -3,117 +3,187 @@ import type {
   GapAnswerForComposer,
   JobContext,
 } from "../cvSchemas";
+import type { SectionStrategy } from "../sectionStrategy";
 
-export const COMPOSER_QUALITY_POLICY = `
-Composer Quality Policy:
-- A great CV is a compressed proof map. The top third must make target fit obvious within seconds.
-- Recruiters skim first. Make the target role, strongest relevant proof, must-have skills, credentials and credible outcomes easy to find.
-- Proof beats promises. Every important claim must be supported by the raw CV, structured candidate context, or saved gap answers.
-- Use the raw job description and raw CV as source of truth. Structured context is a helper summary only.
-- Do not lose strong source details: links, certification scores, scholarships, awards, education details, project context, tools, metrics, and strong original bullets.
-- Before writing, decide: application path or market, role archetype, seniority, threshold credentials, proof currency for this archetype, proof the candidate actually has, what belongs in the top third, which sections expose proof fastest, what should be cut or compressed, and what wording creates risk.
-- Choose section order by archetype, seniority, credentials, strongest proof, target job and page budget. Do not force one layout onto every career.
-- Never default blindly to Summary -> Skills -> Experience.
-- Skills should appear immediately after Summary only when skills or tools are the main screening gate, there is no stronger proof-first section available, or the archetype expects credentials or skills near the top.
-- If the candidate has strong project, system, achievement, portfolio, campaign, clinical, teaching, research or delivery proof, that proof should usually appear before Skills.
-- Summary stays first for now.
-- A Selected, Highlights, Achievements, Portfolio, Campaign Results, Selected Work, AI Systems or similar high-signal section must appear directly after Summary or near the top, or not exist at all.
-- Do not place a selected or highlights section after Education or Certifications.
-- Education and Certifications usually belong lower for technical candidates with stronger project or system proof, unless credentials are threshold requirements.
-- For regulated roles, threshold credentials may appear near the top.
-- Do not create both Projects and Selected Achievements if they duplicate the same proof. Choose the clearer section or split only when the evidence is genuinely different.
-- Every section must earn its space, have a clear purpose and avoid duplicated proof.
-- The top third should show fit and proof, not generic personality claims.
-- Bullets should use action + object + scope/result. Use real metrics when provided.
-- If exact metrics are missing, use truthful scale or context instead of fake numbers. Concrete non-metric detail beats a suspicious invented percentage.
-- Never invent metrics, dates, tools, companies, credentials, licences, users, revenue, awards, scholarships, publications or achievements.
-- Avoid generic filler, keyword stuffing, AI-sounding language, em dashes by default, comma-heavy phrasing, and words like dynamic, results-driven, proven track record, leveraged or cutting-edge unless directly justified by evidence.
-- Do not overclaim seniority or make a graduate sound senior.
-- Do not make the candidate look like a flight risk for normal employee applications.
-- Prefer truthful employee-fit framing over founder/operator framing unless the role benefits from founder/startup positioning or the source clearly requires it.
-- Use safer independent-project titles only when supported by the source, such as AI Product Engineer, Applied AI Engineer, Full-Stack AI Engineer, Software Engineer, Product Engineer or Technical Project Lead.
-- Certifications and education must stay readable. Do not clump them into paragraphs.
-- One page does not mean overly short. Use the page intelligently and include strong relevant proof when available.
-`;
+export const CV_COMPOSER_SYSTEM_PROMPT = `You are TaylorCV's CV Composer.
 
-export const CV_COMPOSER_SYSTEM_PROMPT = `
-You are TaylorCV's CV Composer.
+Return JSON only and match the provided schema exactly.
 
-Return JSON only, matching the provided schema exactly.
+Output:
+- blueprint: short developer-facing CV strategy
+- cv: renderer-ready structured CV
 
-Produce:
-- blueprint: the CV strategy for developer debugging
-- cv: the renderer-ready structured CV
+Writing rules:
+- The recruiter should see target fit within seconds.
+- The summary and the next section together must make the top third recruiter-clear.
+- Every section must earn its space. Compress or omit weak, repetitive, low-signal, or generic content.
+- Preserve useful evidence from the source: links, certification scores or distinctions, scholarships, project context, stakeholder context, tools, and concrete outcome wording.
+- Use the strongest available proof, not the most conventional template.
+- A strong CV is a compressed proof map. Make role fit obvious in the top third.
+- Use the raw CV, gap answers, and compact context as the only evidence sources.
+- Never invent facts, metrics, seniority, credentials, companies, tools, users, or outcomes.
+- Proof beats promises. Prefer action + object + scope/result bullets.
+- Real metrics are good. If exact metrics are missing, use truthful context instead of fake numbers.
+- Truthful scale or context is better than invented numbers.
+- Soft skills should be shown through examples, not listed as empty claims.
+- Avoid generic filler, keyword stuffing, AI-sounding phrasing, comma-heavy prose, and em dashes by default.
+- Avoid words like dynamic, results-driven, proven track record, leveraged, and cutting-edge unless the source clearly justifies them.
+- Do not duplicate the same proof across selected achievements, projects, and experience.
+- Do not create a late selected/highlights/achievements section.
+- Do not use Founder, CEO, Entrepreneur, or Builder framing for normal employee applications unless the source or job clearly benefits from it.
+- Prefer employee-fit independent-project wording when truthful.
+- Do not overclaim seniority. Do not make a graduate or early-career candidate sound senior.
+- Keep education and certifications readable and scannable.
+- Keep blueprint short.
 
-You are the main intelligence layer. Decide the target title, candidate archetype, section order, what proof deserves space, what to cut, what to compress, and how to tailor the CV to the job.
+Section strategy rules:
+- Follow sectionStrategy unless the source evidence clearly proves it wrong.
+- Summary remains first.
+- A selected/highlights/achievements/portfolio section belongs directly after Summary or near the top, or not at all.
+- If sectionStrategy.proofFirstRecommended is true, do not place Skills immediately after Summary when a stronger selected proof section exists.
+- If sectionStrategy.combineEducationAndCertifications is true, keep education and certifications adjacent and treat them as one compact supporting block.
+- Use sectionStrategy.preferredSectionLabels when they fit the evidence.
+- Keep the top third focused on sectionStrategy.topThirdPriorities.
+- Do not let education or certifications outrank stronger project, system, campaign, portfolio, or selected proof unless threshold credentials require it.
 
-The renderer owns visual layout. Do not output markdown, HTML, CSS, or free-form document prose outside the JSON fields.
+Renderer rules:
+- The renderer owns layout, typography, spacing, preview, PDF, and DOCX.
+- Do not output markdown, HTML, CSS, or prose outside the JSON fields.
+- Every required top-level CV field must exist even when empty.`;
 
-${COMPOSER_QUALITY_POLICY}
+const maxJobExcerptChars = 2_800;
+const maxRawCvChars = 12_000;
 
-Internal section-decision algorithm:
-1. Identify the market or application path: ATS/private-sector CV, academic or research CV, portfolio-led submission, regulated role, or another obvious path from the source.
-2. Identify the role archetype.
-3. Identify the candidate's seniority or career stage.
-4. Check whether threshold credentials, licences, certifications, degrees, admissions, exams, work-rights, or similar screens need early visibility.
-5. Decide what proof currency matters most for this archetype.
-6. Decide what proof the candidate actually has.
-7. Decide what belongs in the top third.
-8. Choose the sections that expose the strongest proof fastest.
-9. Cut, compress, merge, or move lower anything weaker, repetitive, lower-signal, or less relevant.
-10. Avoid wording that creates exaggeration, fake seniority, founder-framing risk, or employee-fit risk.
-
-Universal section logic:
-- Do not default to one section order for every candidate.
-- Choose order based on archetype, seniority, credentials, strongest proof, target job, and page budget.
-- Never default blindly to Summary -> Skills -> Experience.
-- Skills directly after Summary is allowed only when skills or credentials are the main screening gate or there is no stronger proof-first section.
-- If strong project, system, research, campaign, portfolio, clinical, classroom, delivery or achievement proof exists, put that proof ahead of Skills.
-- Technical candidates with strong shipped-system, evaluation, deployment, benchmarking, data, reliability, cost, latency or technical-project proof should not lead with Skills.
-- Regulated, teaching, healthcare, legal, and trades roles may need credentials earlier.
-- Marketing, sales, finance, design, product, graduate, academic, career-change and operations cases should adapt section order to their strongest proof.
-
-Archetype strategy map:
-- AI / ML / Data / Software / Technical: if early-career or light formal employment and project, system or evaluation proof is stronger than employment, use proof-first structure. Strong default when evidence supports it: Summary -> Selected Technical Achievements / Selected Projects / AI Systems -> Technical Skills -> Selected Experience -> Education & Certifications. A selected technical section must appear near the top or not exist at all. Do not place it after Education or Certifications.
-- Healthcare / Nursing / Clinical: credentials, licences and certifications are threshold proof and often need early visibility. Likely structure: Summary -> Licences & Certifications -> Clinical Experience -> Clinical Skills -> Education.
-- Teaching / Education: credentials, education and classroom, practicum or student-teaching proof matter early. Likely structure: Summary -> Teaching Credentials / Education -> Teaching Experience -> Skills / Professional Development.
-- Trades / Construction / Field Service: licences, tickets, apprenticeship, safety, equipment, fault-finding and site scope matter early. Likely structure: Summary -> Licences / Qualifications -> Experience -> Technical Skills -> Apprenticeship / Education.
-- Finance / Accounting / Audit / Compliance: use conservative structure and wording. Experience, reporting, audit, control, modelling, education and exams or certifications matter. Likely structure: Summary optional -> Experience -> Technical Skills -> Education -> Certifications / Exams.
-- Marketing / Sales / Growth / Communications: results, revenue, leads, conversion, engagement, pipeline, audience growth and portfolio or campaign proof matter early. Likely structure: Summary -> Campaign Results / Selected Achievements -> Experience -> Skills / Channels / Tools -> Education.
-- Design / UX / Creative: portfolio or selected work needs early visibility. Likely structure: Summary / Profile -> Portfolio Link -> Selected Work -> Experience -> Tools -> Education.
-- Product / Project / Operations / Business: delivery, stakeholder coordination, process improvement, customer, user or business impact, budget, timeline, adoption and risk reduction matter. Likely structure: Summary -> Selected Achievements -> Experience -> Tools / Methods -> Education / Certifications.
-- Research / Academic / Science: do not force a one-page private-sector order when the target is clearly academic or research-led. Education, research experience, publications, methods, posters, grants and presentations may lead.
-- Legal / Regulatory: admissions, licence, education, matter type and compliance scope matter. Use conservative exact wording with no exaggeration.
-- Graduate / Early Career: if formal experience is thin, education, projects, internships, certifications and selected achievements can outrank experience. Do not make the candidate sound senior.
-- Career Changer: do not pretend old work was the new role. Use a hybrid structure when chronological titles hide relevance and translate transferable proof honestly.
-
-Flight-risk framing:
-- Prefer employee-fit wording for normal employment applications.
-- Do not overuse founder-style titles unless the source material or target role clearly benefits from it.
-- Use truthful role-aligned titles for independent projects when that reduces flight-risk framing.
-
-Rules:
-- cv.sectionOrder must begin with "summary".
-- blueprint.sectionOrder must match cv.sectionOrder.
-- All top-level CV fields required by the schema must exist. Arrays can be empty when appropriate.
-- Use dynamic sections only when they add clearer proof than canonical sections.
-- Do not create a selected or highlights section late in the document.
-- Do not create duplicated proof across Projects and Selected Achievements.
-- If a bullet uses a saved gap answer, include that answer's gapQuestionId in gapAnswerIds. Otherwise use [].
-- Do not include source-tracking fields in CV bullets beyond gapAnswerIds.
-`;
-
-const maxRawJobChars = 20_000;
-const maxRawCvChars = 30_000;
-
-function cleanText(value: string) {
+function normalizeWhitespace(value: string) {
   return value.replace(/\s+/g, " ").trim();
 }
 
-function boundedRawText(value: string, maxChars: number) {
+function clampText(value: string, maxChars: number) {
   const text = value.trim();
   if (text.length <= maxChars) return text;
-  return `${text.slice(0, maxChars).trimEnd()}\n\n[truncated after ${maxChars} characters]`;
+  return `${text.slice(0, maxChars).trimEnd()} [truncated]`;
+}
+
+function uniqueStrings(values: string[], maxItems: number) {
+  return [...new Set(values.map((value) => normalizeWhitespace(value)).filter(Boolean))].slice(
+    0,
+    maxItems
+  );
+}
+
+function excerptCandidates(rawJobText: string) {
+  return rawJobText
+    .split(/\n{1,}|\r\n{1,}/)
+    .map((part) => normalizeWhitespace(part))
+    .filter((part) => part.length >= 40);
+}
+
+function scoreExcerpt(text: string, jobContext: JobContext | null) {
+  const normalized = normalizeWhitespace(text).toLowerCase();
+  let score = Math.min(40, text.length / 10);
+  for (const phrase of [
+    ...(jobContext?.mustHaveRequirements ?? []),
+    ...(jobContext?.recruiterPriorities ?? []),
+    ...(jobContext?.expectedProofTypes ?? []),
+  ]) {
+    const compact = normalizeWhitespace(phrase).toLowerCase();
+    if (compact && normalized.includes(compact.slice(0, Math.min(compact.length, 30)))) score += 8;
+  }
+  if (/required|must|responsib|experience|skill|qualification|build|ship|deploy|stakeholder/i.test(text)) {
+    score += 10;
+  }
+  return score;
+}
+
+function selectJobExcerpts(rawJobText: string, jobContext: JobContext | null) {
+  const picked: string[] = [];
+  let usedChars = 0;
+  for (const excerpt of excerptCandidates(rawJobText)
+    .sort((a, b) => scoreExcerpt(b, jobContext) - scoreExcerpt(a, jobContext))
+    .slice(0, 8)) {
+    if (picked.length >= 5) break;
+    const nextChars = usedChars + excerpt.length;
+    if (nextChars > maxJobExcerptChars && picked.length >= 2) break;
+    picked.push(excerpt);
+    usedChars = nextChars;
+  }
+  return picked;
+}
+
+export function compactJobContextForComposer(jobContext: JobContext | null) {
+  if (!jobContext) return null;
+
+  return {
+    targetRoleTitle: jobContext.targetRoleTitle,
+    companyName: jobContext.companyName,
+    marketOrLocation: jobContext.marketOrLocation,
+    seniority: jobContext.seniority,
+    archetype: jobContext.archetype,
+    roleSummary: jobContext.roleSummary,
+    mustHaveRequirements: uniqueStrings(jobContext.mustHaveRequirements, 8),
+    keywords: uniqueStrings(jobContext.keywords, 12),
+    recruiterPriorities: uniqueStrings(jobContext.recruiterPriorities, 8),
+    expectedProofTypes: uniqueStrings(jobContext.expectedProofTypes, 8),
+    culturalSignals: uniqueStrings(jobContext.culturalSignals, 6),
+    risksOrAmbiguities: uniqueStrings(jobContext.risksOrAmbiguities, 6),
+  };
+}
+
+function summarizeExperience(candidateContext: CandidateContext) {
+  return candidateContext.experiences.slice(0, 4).map((item) => ({
+    title: item.title,
+    organization: item.organization,
+    dates: [item.startDate, item.endDate].filter(Boolean).join(" - ") || null,
+    strongestProof: uniqueStrings(
+      [...item.achievementFacts, ...item.metrics, ...item.descriptionFacts, ...item.originalBullets],
+      4
+    ),
+    tools: uniqueStrings(item.tools, 8),
+  }));
+}
+
+function summarizeProjects(candidateContext: CandidateContext) {
+  return candidateContext.projects.slice(0, 4).map((item) => ({
+    name: item.name,
+    strongestProof: uniqueStrings(
+      [...item.achievementFacts, ...item.metrics, ...item.descriptionFacts, ...item.originalBullets],
+      4
+    ),
+    tools: uniqueStrings(item.tools, 8),
+    links: uniqueStrings(item.links, 2),
+  }));
+}
+
+export function compactCandidateContextForComposer(candidateContext: CandidateContext) {
+  return {
+    identity: candidateContext.identity,
+    currentHeadline: candidateContext.currentHeadline,
+    summaryFacts: uniqueStrings(candidateContext.summaryFacts, 8),
+    strongestEvidence: uniqueStrings(candidateContext.notableEvidence, 10),
+    experiences: summarizeExperience(candidateContext),
+    projects: summarizeProjects(candidateContext),
+    skillsByGroup: candidateContext.skillsByGroup.slice(0, 6).map((group) => ({
+      group: group.group,
+      skills: uniqueStrings(group.skills, 10),
+    })),
+    education: candidateContext.education.slice(0, 3),
+    certifications: candidateContext.certifications.slice(0, 5).map((item) => ({
+      name: item.name,
+      issuer: item.issuer,
+      date: item.date,
+      scoreOrDetail: item.scoreOrDetail,
+      notes: uniqueStrings(item.notes, 2),
+    })),
+    awardsOrScholarships: uniqueStrings(candidateContext.awardsOrScholarships, 6),
+    warnings: uniqueStrings(candidateContext.warnings, 6),
+    weakOrMissingAreas: uniqueStrings(candidateContext.weakOrMissingAreas, 8),
+    sourceHierarchy: candidateContext.sourceStructure.slice(0, 5).map((item) => ({
+      sectionName: item.sectionName,
+      normalizedType: item.normalizedType,
+      highSignal: item.highSignal,
+      usefulDetails: uniqueStrings(item.usefulDetails, 3),
+    })),
+  };
 }
 
 export function buildCvComposerContext(args: {
@@ -122,23 +192,50 @@ export function buildCvComposerContext(args: {
   jobContext: JobContext | null;
   candidateContext: CandidateContext;
   gapAnswers: GapAnswerForComposer[];
+  sectionStrategy: SectionStrategy;
 }) {
+  const compactJobContext = compactJobContextForComposer(args.jobContext);
+  const compactCandidateContext = compactCandidateContextForComposer(args.candidateContext);
+  const jobExcerpts = selectJobExcerpts(args.rawJobText, args.jobContext);
+
   return {
     pageTarget: "one_page",
-    rawJobDescription: boundedRawText(args.rawJobText, maxRawJobChars),
-    rawCandidateCvText: boundedRawText(args.rawCvText, maxRawCvChars),
-    structuredJobContext: args.jobContext,
-    structuredCandidateContext: args.candidateContext,
-    gapQuestionsAndAnswers: args.gapAnswers.map((answer) => ({
+    sectionStrategy: args.sectionStrategy,
+    jobContext: compactJobContext,
+    candidateContext: compactCandidateContext,
+    gapAnswers: args.gapAnswers.map((answer) => ({
       gapQuestionId: answer.gapQuestionId,
-      question: cleanText(answer.question),
-      answer: cleanText(answer.answer),
+      question: normalizeWhitespace(answer.question),
+      answer: normalizeWhitespace(answer.answer),
     })),
+    rawJobSignals: {
+      roleTitle: compactJobContext?.targetRoleTitle ?? null,
+      mustHaves: compactJobContext?.mustHaveRequirements ?? [],
+      recruiterPriorities: compactJobContext?.recruiterPriorities ?? [],
+      expectedProofTypes: compactJobContext?.expectedProofTypes ?? [],
+      culturalSignals: compactJobContext?.culturalSignals ?? [],
+      excerpts: jobExcerpts,
+    },
+    rawCandidateCvText: clampText(args.rawCvText, maxRawCvChars),
     rendererContract: {
-      output: "strict structured CV JSON only",
-      requiredTopLevelFields: ["sectionOrder", "header", "summary", "skills", "experience", "projects", "education", "certifications", "sections", "roleArchetype"],
+      requiredTopLevelFields: [
+        "sectionOrder",
+        "header",
+        "summary",
+        "skills",
+        "experience",
+        "projects",
+        "education",
+        "certifications",
+        "sections",
+        "roleArchetype",
+      ],
       bulletShape: { text: "string", gapAnswerIds: ["gapQuestionId when used"] },
-      rendererOwns: ["layout", "typography", "spacing", "export"],
+      notes: [
+        "renderer owns layout",
+        "keep education/certifications readable",
+        "do not rely on renderer to invent or merge strategy",
+      ],
     },
   };
 }
@@ -147,10 +244,8 @@ export type CvComposerContext = ReturnType<typeof buildCvComposerContext>;
 
 export function buildCvComposerUserPromptFromContext(context: CvComposerContext) {
   return `Compose the final one-page CV from this context.
-Use the raw job description and raw CV as source of truth.
-Use structured context as a helper summary.
-Use gap answers only when they add credible relevant proof.
-Keep the blueprint short and developer-focused.
+Use sectionStrategy as the main source for section order and section labels.
+Use rawCandidateCvText, gapAnswers, and compact context as evidence.
 
 ${JSON.stringify(context)}`;
 }

@@ -29,29 +29,29 @@ const CandidateExperienceFactSchema = z.object({
   location: z.string().nullable(),
   startDate: z.string().nullable(),
   endDate: z.string().nullable(),
-  descriptionFacts: z.array(z.string()),
-  achievementFacts: z.array(z.string()),
-  tools: z.array(z.string()),
-  metrics: z.array(z.string()),
-  originalBullets: z.array(z.string()),
+  descriptionFacts: z.array(z.string()).max(6),
+  achievementFacts: z.array(z.string()).max(6),
+  tools: z.array(z.string()).max(10),
+  metrics: z.array(z.string()).max(6),
+  originalBullets: z.array(z.string()).max(6),
 });
 
 const CandidateProjectFactSchema = z.object({
   name: z.string().min(1),
-  descriptionFacts: z.array(z.string()),
-  achievementFacts: z.array(z.string()),
-  tools: z.array(z.string()),
-  metrics: z.array(z.string()),
-  links: z.array(z.string()),
-  originalBullets: z.array(z.string()),
+  descriptionFacts: z.array(z.string()).max(6),
+  achievementFacts: z.array(z.string()).max(6),
+  tools: z.array(z.string()).max(10),
+  metrics: z.array(z.string()).max(6),
+  links: z.array(z.string()).max(4),
+  originalBullets: z.array(z.string()).max(6),
 });
 
 const CandidateEducationFactSchema = z.object({
   institution: z.string().nullable(),
   qualification: z.string().nullable(),
   dates: z.string().nullable(),
-  details: z.array(z.string()),
-  awardsOrScholarships: z.array(z.string()),
+  details: z.array(z.string()).max(4),
+  awardsOrScholarships: z.array(z.string()).max(4),
 });
 
 const CandidateCertificationFactSchema = z.object({
@@ -59,7 +59,7 @@ const CandidateCertificationFactSchema = z.object({
   issuer: z.string().nullable(),
   date: z.string().nullable(),
   scoreOrDetail: z.string().nullable(),
-  notes: z.array(z.string()),
+  notes: z.array(z.string()).max(3),
 });
 
 const SourceStructureItemSchema = z.object({
@@ -77,7 +77,7 @@ const SourceStructureItemSchema = z.object({
     "other",
   ]),
   highSignal: z.boolean(),
-  usefulDetails: z.array(z.string()),
+  usefulDetails: z.array(z.string()).max(4),
 });
 
 const JobContextSchema = z.object({
@@ -88,32 +88,32 @@ const JobContextSchema = z.object({
   archetype: z.string().min(1),
   subArchetype: z.string().nullable(),
   roleSummary: z.string().min(1),
-  mustHaveRequirements: z.array(z.string()),
-  niceToHaveRequirements: z.array(z.string()),
-  keywords: z.array(z.string()),
-  recruiterPriorities: z.array(z.string()),
-  expectedProofTypes: z.array(z.string()),
-  culturalSignals: z.array(z.string()),
-  risksOrAmbiguities: z.array(z.string()),
+  mustHaveRequirements: z.array(z.string()).max(8),
+  niceToHaveRequirements: z.array(z.string()).max(6),
+  keywords: z.array(z.string()).max(16),
+  recruiterPriorities: z.array(z.string()).max(8),
+  expectedProofTypes: z.array(z.string()).max(8),
+  culturalSignals: z.array(z.string()).max(6),
+  risksOrAmbiguities: z.array(z.string()).max(6),
 });
 
 const CandidateContextSchema = z.object({
   identity: CandidateIdentitySchema,
   currentHeadline: z.string().nullable(),
-  summaryFacts: z.array(z.string()),
-  experiences: z.array(CandidateExperienceFactSchema),
-  projects: z.array(CandidateProjectFactSchema),
+  summaryFacts: z.array(z.string()).max(8),
+  experiences: z.array(CandidateExperienceFactSchema).max(8),
+  projects: z.array(CandidateProjectFactSchema).max(8),
   skillsByGroup: z.array(
-    z.object({ group: z.string().min(1), skills: z.array(z.string()) })
-  ),
-  education: z.array(CandidateEducationFactSchema),
-  certifications: z.array(CandidateCertificationFactSchema),
-  awardsOrScholarships: z.array(z.string()),
-  links: z.array(z.string()),
-  notableEvidence: z.array(z.string()),
-  weakOrMissingAreas: z.array(z.string()),
-  sourceStructure: z.array(SourceStructureItemSchema),
-  warnings: z.array(z.string()),
+    z.object({ group: z.string().min(1), skills: z.array(z.string()).max(12) })
+  ).max(8),
+  education: z.array(CandidateEducationFactSchema).max(6),
+  certifications: z.array(CandidateCertificationFactSchema).max(8),
+  awardsOrScholarships: z.array(z.string()).max(6),
+  links: z.array(z.string()).max(8),
+  notableEvidence: z.array(z.string()).max(10),
+  weakOrMissingAreas: z.array(z.string()).max(8),
+  sourceStructure: z.array(SourceStructureItemSchema).max(6),
+  warnings: z.array(z.string()).max(6),
 });
 
 const GapQuestionOutputSchema = z.object({
@@ -234,6 +234,7 @@ export const CvComposerOutputSchema = z.object({
 });
 
 export type CvComposerOutput = z.infer<typeof CvComposerOutputSchema>;
+export type CvBlueprint = z.infer<typeof CvBlueprintSchema>;
 
 export const GapAnswerForComposerSchema = z.object({
   gapQuestionId: z.string(),
@@ -244,6 +245,14 @@ export const GapAnswerForComposerSchema = z.object({
 export type GapAnswerForComposer = z.infer<typeof GapAnswerForComposerSchema>;
 
 const stringArrayJsonSchema = { type: "array", items: { type: "string" } } as const;
+
+function boundedStringArrayJsonSchema(maxItems: number) {
+  return {
+    type: "array",
+    maxItems,
+    items: { type: "string" },
+  } as const;
+}
 
 const seniorityJsonSchema = {
   type: "string",
@@ -313,7 +322,7 @@ const sourceStructureJsonSchema = {
       ],
     },
     highSignal: { type: "boolean" },
-    usefulDetails: stringArrayJsonSchema,
+    usefulDetails: boundedStringArrayJsonSchema(4),
   },
 } as const;
 
@@ -350,13 +359,13 @@ export const AgentJsonSchemas = {
           archetype: { type: "string" },
           subArchetype: { type: ["string", "null"] },
           roleSummary: { type: "string" },
-          mustHaveRequirements: stringArrayJsonSchema,
-          niceToHaveRequirements: stringArrayJsonSchema,
-          keywords: stringArrayJsonSchema,
-          recruiterPriorities: stringArrayJsonSchema,
-          expectedProofTypes: stringArrayJsonSchema,
-          culturalSignals: stringArrayJsonSchema,
-          risksOrAmbiguities: stringArrayJsonSchema,
+          mustHaveRequirements: boundedStringArrayJsonSchema(8),
+          niceToHaveRequirements: boundedStringArrayJsonSchema(6),
+          keywords: boundedStringArrayJsonSchema(16),
+          recruiterPriorities: boundedStringArrayJsonSchema(8),
+          expectedProofTypes: boundedStringArrayJsonSchema(8),
+          culturalSignals: boundedStringArrayJsonSchema(6),
+          risksOrAmbiguities: boundedStringArrayJsonSchema(6),
         },
       },
       candidateContext: {
@@ -381,9 +390,10 @@ export const AgentJsonSchemas = {
         properties: {
           identity: candidateIdentityJsonSchema,
           currentHeadline: { type: ["string", "null"] },
-          summaryFacts: stringArrayJsonSchema,
+          summaryFacts: boundedStringArrayJsonSchema(8),
           experiences: {
             type: "array",
+            maxItems: 8,
             items: {
               type: "object",
               additionalProperties: false,
@@ -405,16 +415,17 @@ export const AgentJsonSchemas = {
                 location: { type: ["string", "null"] },
                 startDate: { type: ["string", "null"] },
                 endDate: { type: ["string", "null"] },
-                descriptionFacts: stringArrayJsonSchema,
-                achievementFacts: stringArrayJsonSchema,
-                tools: stringArrayJsonSchema,
-                metrics: stringArrayJsonSchema,
-                originalBullets: stringArrayJsonSchema,
+                descriptionFacts: boundedStringArrayJsonSchema(6),
+                achievementFacts: boundedStringArrayJsonSchema(6),
+                tools: boundedStringArrayJsonSchema(10),
+                metrics: boundedStringArrayJsonSchema(6),
+                originalBullets: boundedStringArrayJsonSchema(6),
               },
             },
           },
           projects: {
             type: "array",
+            maxItems: 8,
             items: {
               type: "object",
               additionalProperties: false,
@@ -429,29 +440,31 @@ export const AgentJsonSchemas = {
               ],
               properties: {
                 name: { type: "string" },
-                descriptionFacts: stringArrayJsonSchema,
-                achievementFacts: stringArrayJsonSchema,
-                tools: stringArrayJsonSchema,
-                metrics: stringArrayJsonSchema,
-                links: stringArrayJsonSchema,
-                originalBullets: stringArrayJsonSchema,
+                descriptionFacts: boundedStringArrayJsonSchema(6),
+                achievementFacts: boundedStringArrayJsonSchema(6),
+                tools: boundedStringArrayJsonSchema(10),
+                metrics: boundedStringArrayJsonSchema(6),
+                links: boundedStringArrayJsonSchema(4),
+                originalBullets: boundedStringArrayJsonSchema(6),
               },
             },
           },
           skillsByGroup: {
             type: "array",
+            maxItems: 8,
             items: {
               type: "object",
               additionalProperties: false,
               required: ["group", "skills"],
               properties: {
                 group: { type: "string" },
-                skills: stringArrayJsonSchema,
+                skills: boundedStringArrayJsonSchema(12),
               },
             },
           },
           education: {
             type: "array",
+            maxItems: 6,
             items: {
               type: "object",
               additionalProperties: false,
@@ -466,13 +479,14 @@ export const AgentJsonSchemas = {
                 institution: { type: ["string", "null"] },
                 qualification: { type: ["string", "null"] },
                 dates: { type: ["string", "null"] },
-                details: stringArrayJsonSchema,
-                awardsOrScholarships: stringArrayJsonSchema,
+                details: boundedStringArrayJsonSchema(4),
+                awardsOrScholarships: boundedStringArrayJsonSchema(4),
               },
             },
           },
           certifications: {
             type: "array",
+            maxItems: 8,
             items: {
               type: "object",
               additionalProperties: false,
@@ -482,16 +496,16 @@ export const AgentJsonSchemas = {
                 issuer: { type: ["string", "null"] },
                 date: { type: ["string", "null"] },
                 scoreOrDetail: { type: ["string", "null"] },
-                notes: stringArrayJsonSchema,
+                notes: boundedStringArrayJsonSchema(3),
               },
             },
           },
-          awardsOrScholarships: stringArrayJsonSchema,
-          links: stringArrayJsonSchema,
-          notableEvidence: stringArrayJsonSchema,
-          weakOrMissingAreas: stringArrayJsonSchema,
-          sourceStructure: { type: "array", items: sourceStructureJsonSchema },
-          warnings: stringArrayJsonSchema,
+          awardsOrScholarships: boundedStringArrayJsonSchema(6),
+          links: boundedStringArrayJsonSchema(8),
+          notableEvidence: boundedStringArrayJsonSchema(10),
+          weakOrMissingAreas: boundedStringArrayJsonSchema(8),
+          sourceStructure: { type: "array", maxItems: 6, items: sourceStructureJsonSchema },
+          warnings: boundedStringArrayJsonSchema(6),
         },
       },
       gapQuestions: {
