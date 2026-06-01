@@ -41,11 +41,11 @@ export function TaylorBrand(props: {
       <TaylorLogoMark className={props.markClassName} />
       <span
         className={cn(
-          "truncate text-[21px] font-semibold tracking-[-0.035em] text-white",
+          "truncate text-[21px] font-semibold tracking-[-0.035em] text-[#08112f]",
           props.textClassName,
         )}
       >
-        Taylor CV
+        TaylorCV
       </span>
     </div>
   );

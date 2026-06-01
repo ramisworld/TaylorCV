@@ -3,10 +3,15 @@ import "~/styles/globals.css";
 import { type Metadata, type Viewport } from "next";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { Geist } from "next/font/google";
+import { Cormorant_Garamond, Geist } from "next/font/google";
 import { cn } from "~/lib/utils";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  weight: ["400", "500"],
+});
 
 export const metadata: Metadata = {
   title: "Taylor CV",
@@ -23,7 +28,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn("font-sans", geist.variable, cormorant.variable)}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>

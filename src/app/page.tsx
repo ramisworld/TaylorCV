@@ -1,10 +1,10 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
-import { Loader2, RotateCcw } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { CvGeneratingStep } from "~/components/cv-flow/CvGeneratingStep";
+import { FlowShell, type FlowShellStage } from "~/components/cv-flow/FlowShell";
 import { CvUploadStep } from "~/components/cv-flow/CvUploadStep";
 import { FinalCvStep } from "~/components/cv-flow/FinalCvStep";
 import { GapQuestionsStep } from "~/components/cv-flow/GapQuestionsStep";
@@ -24,12 +24,7 @@ const staleApplicationErrorFragments = [
 
 type ApplicationState = NonNullable<RouterOutputs["application"]["getApplicationState"]>;
 
-type FlowStage =
-  | "job_description"
-  | "cv_upload"
-  | "gap_questions"
-  | "cv_generating"
-  | "final_cv";
+type FlowStage = FlowShellStage;
 
 function isStaleApplicationError(message: string) {
   const normalized = message.toLowerCase();
@@ -68,43 +63,6 @@ function deriveFlowStage(state: ApplicationState | null): FlowStage {
 function hasOpenQuestions(state: ApplicationState | null) {
   return (state?.gapQuestions ?? []).some(
     (question) => question.status === "unanswered" && question.question.trim()
-  );
-}
-
-function AppChrome(props: {
-  applicationId: string | null;
-  isResetting: boolean;
-  onReset: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <main className="relative min-h-[100dvh] overflow-hidden bg-[#edf3ff] text-[#080d22]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_15%_0%,rgba(99,151,255,0.28),transparent_34%),radial-gradient(ellipse_at_88%_18%,rgba(70,214,190,0.18),transparent_30%),linear-gradient(180deg,#f8fbff_0%,#edf3ff_48%,#e9f1ff_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-white/38 backdrop-blur-2xl" />
-      <header className="relative z-20 flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex min-w-0 items-center gap-2.5">
-          <img
-            alt=""
-            aria-hidden="true"
-            className="h-9 w-9 shrink-0 object-contain"
-            src="/assets/taylorcv-logo-transparent.png"
-          />
-          <span className="truncate text-[24px] font-bold tracking-[-0.04em] text-[#080d22]">
-            TaylorCV
-          </span>
-        </div>
-        <button
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-[#d8e0ee]/90 bg-white/62 px-4 text-[13px] font-semibold text-[#314066] shadow-sm backdrop-blur-xl transition hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/14 disabled:cursor-not-allowed disabled:opacity-55"
-          disabled={!props.applicationId || props.isResetting}
-          onClick={props.onReset}
-          type="button"
-        >
-          {props.isResetting ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
-          New CV
-        </button>
-      </header>
-      <div className="relative z-10 min-h-[calc(100dvh-64px)]">{props.children}</div>
-    </main>
   );
 }
 
@@ -473,13 +431,7 @@ export default function Home() {
     generateCv.isPending;
 
   return (
-    <AppChrome
-      applicationId={applicationId}
-      isResetting={resetApplication.isPending}
-      onReset={() => {
-        if (applicationId) resetApplication.mutate({ applicationId });
-      }}
-    >
+    <FlowShell stage={stage}>
       <AnimatePresence mode="wait">
         {stage === "job_description" ? (
           <JobDescriptionStep
@@ -559,6 +511,6 @@ export default function Home() {
           />
         ) : null}
       </AnimatePresence>
-    </AppChrome>
+    </FlowShell>
   );
 }
