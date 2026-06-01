@@ -681,12 +681,16 @@ export function ProofSection() {
   return (
     <section
       className={cn(
-        "relative z-10 overflow-hidden bg-[#fbfcff] px-5 text-[#070b1f] shadow-[inset_0_1px_0_rgba(255,255,255,0.82)]",
-        isRevealed ? "min-h-[1086px] pt-[44px] pb-[40px]" : "min-h-[1024px] pt-[32px] pb-[35px]"
+        "relative z-10 mt-[32px] overflow-hidden bg-transparent px-5 text-[#070b1f]",
+        isRevealed
+          ? "min-h-[1086px] pt-[92px] pb-[72px]"
+          : "min-h-[1024px] pt-[84px] pb-[64px]"
       )}
       id="proof-reveal"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_7%_4%,rgba(225,235,253,0.95),transparent_35%),radial-gradient(ellipse_at_91%_3%,rgba(251,230,245,0.82),transparent_36%),radial-gradient(ellipse_at_50%_24%,rgba(255,255,255,0.96),rgba(255,255,255,0.76)_45%,transparent_68%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_7%_4%,rgba(225,235,253,0.42),transparent_35%),radial-gradient(ellipse_at_91%_3%,rgba(251,230,245,0.32),transparent_36%),radial-gradient(ellipse_at_50%_24%,rgba(255,255,255,0.48),rgba(255,255,255,0.24)_45%,transparent_68%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[190px] bg-[linear-gradient(180deg,rgba(251,253,255,0),rgba(255,255,255,0.3)_34%,rgba(255,255,255,0.06)_76%,transparent)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[150px] bg-[linear-gradient(180deg,transparent,rgba(248,250,255,0.08)_28%,rgba(255,255,255,0.2)_72%,rgba(251,253,255,0))]" />
       <div
         className={cn(
           "relative mx-auto max-w-[1368px]",

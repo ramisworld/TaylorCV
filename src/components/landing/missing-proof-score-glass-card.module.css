@@ -57,7 +57,7 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 49.2%;
+  left: 48.6%;
   width: 1px;
   background: linear-gradient(
     180deg,
@@ -71,7 +71,7 @@
 .arrowButton {
   position: absolute;
   top: 50%;
-  left: 49.2%;
+  left: 48.6%;
   z-index: 3;
   display: grid;
   width: clamp(62px, 4.25vw, 82px);
@@ -131,7 +131,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   font-size: clamp(53px, 3.82vw, 75px);
-  font-weight: 720;
+  font-weight: 660;
   line-height: 1.02;
   letter-spacing: -0.032em;
   font-variant-numeric: tabular-nums;

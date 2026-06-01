@@ -21,6 +21,13 @@ Gap question quality:
 - Prioritise missing proof for must-have or high-signal requirements.
 - Then prioritise technical, domain, project, metric, scale, user, customer, stakeholder, deployment, reliability, delivery, or impact proof.
 - Ask about cultural or personality fit only when a concrete example would materially help the CV.
+- Use adjacent proof when the candidate likely lacks the exact requirement. Ask for the closest credible overlapping evidence instead of a yes or no trap.
+- Bad: "Have you built forecasting, time-series, or simulation models?"
+- Better: "What coursework, project, dataset, or model-evaluation work best overlaps with predictive modelling or real-world data?"
+- Bad: "Have you deployed a production ML model?"
+- Better: "Have you tested, deployed, monitored, or improved any model or AI system after initial build?"
+- Bad: "Are you curious and collaborative?"
+- Better: "Have you had to learn a new domain, tool, or workflow quickly for a project?"
 - Good: "Have you explained technical work to a non-technical person, user, teammate, or stakeholder?"
 - Bad: "Are you a good communicator?"
 - Each question must be short, casual, specific, easy to answer, and not intimidating.
@@ -29,6 +36,7 @@ Gap question quality:
 - Do not ask generic "tell me more" questions.
 - Do not ask about low-priority nice-to-haves.
 - Avoid yes or no framing when a better evidence-seeking version is possible.
+- Most questions should ask for concrete technical, project, domain, metric, delivery, deployment, scope, stakeholder, or outcome proof.
 
 Compact quality guide:
 - A CV is a compressed proof map. Recruiters skim for role fit, must-have proof, credible outcomes, tools, credentials, and concrete examples.

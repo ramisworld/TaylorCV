@@ -1,11 +1,13 @@
 import assert from "node:assert/strict";
 
 import { CvLayoutStyleOutputSchema } from "../src/lib/schemas.ts";
+import { buildCvRenderModel } from "../src/lib/cvRenderModel.ts";
 import {
   canonicalPresentationSectionIds,
   normalizeCvPresentation,
   presentationToRendererTokens,
 } from "../src/lib/cvPresentation.ts";
+import { collectCvQualityWarnings } from "../src/server/cv/cvQualityWarnings.ts";
 
 const sectionStyle = {
   treatment: "accent_heading",
@@ -86,7 +88,13 @@ function validLayout(overrides = {}) {
   };
 }
 
-function cvFixture({ title = "Applied AI Engineer", summary = "Applied AI engineer building LLM tools.", skillsLabel = "AI / ML", bulletCount = 4 } = {}) {
+function cvFixture({
+  title = "Applied AI Engineer",
+  summary = "Applied AI engineer building LLM tools.",
+  skillsLabel = "AI / ML",
+  bulletCount = 4,
+  roleArchetype = null,
+} = {}) {
   return {
     sectionOrder: [
       "Summary",
@@ -140,6 +148,8 @@ function cvFixture({ title = "Applied AI Engineer", summary = "Applied AI engine
     ],
     education: [],
     certifications: [],
+    sections: [],
+    roleArchetype,
   };
 }
 
@@ -258,6 +268,145 @@ const overridden = normalizeCvPresentation(
   cvFixture()
 );
 assert.equal(presentationToRendererTokens(overridden).labelFor("skills"), "AI / ML Skills");
+
+const warningCv = {
+  ...cvFixture({ roleArchetype: "technical" }),
+  sectionOrder: [
+    "Summary",
+    "Skills",
+    "Education",
+    "Certifications",
+  ],
+  certifications: [
+    "Microsoft Azure AI Engineer Associate - Passed with distinction",
+    "Databricks Data Engineer Associate - Score: 910/1000",
+    "AWS Certified Cloud Practitioner - Completed 2025",
+    "TensorFlow Developer Certificate - In progress",
+  ],
+  sections: [
+    {
+      id: "selected-technical-achievements",
+      label: "Selected Technical Achievements",
+      type: "bullets",
+      priority: "primary",
+      items: [
+        {
+          text: "Built an evaluation-aware CV composer with structured outputs and renderer-safe JSON.",
+          gapAnswerIds: [],
+        },
+      ],
+    },
+  ],
+  projects: [
+    {
+      name: "TaylorCV",
+      descriptor: "AI CV tailoring platform",
+      dates: "2026",
+      bullets: [
+        {
+          text: "Built an evaluation-aware CV composer with structured outputs and renderer-safe JSON.",
+          gapAnswerIds: [],
+        },
+      ],
+    },
+  ],
+  education: [
+    {
+      institution: "University of Auckland",
+      degree: "Bachelor of Science in Computer Science",
+      dates: "2023 - 2026",
+      details: ["Scholarship recipient", "Algorithms, systems, statistics, machine learning"],
+    },
+  ],
+};
+
+const qualityWarnings = collectCvQualityWarnings({
+  rawJobText:
+    "Applied AI Engineer role building product-facing AI systems, evaluations, deployment quality, and stakeholder-friendly tooling.",
+  jobContext: {
+    targetRoleTitle: "Applied AI Engineer",
+    companyName: null,
+    marketOrLocation: null,
+    seniority: "graduate",
+    archetype: "technical",
+    subArchetype: null,
+    roleSummary: "Build product-facing AI systems.",
+    mustHaveRequirements: ["TypeScript", "AI systems", "evaluation"],
+    niceToHaveRequirements: [],
+    keywords: ["AI", "deployment", "evaluation"],
+    recruiterPriorities: ["Strong technical proof"],
+    expectedProofTypes: ["Shipped systems", "projects"],
+    culturalSignals: [],
+    risksOrAmbiguities: [],
+  },
+  candidateContext: {
+    identity: {
+      fullName: "Ben Smith",
+      currentTitle: "Independent Software Engineer",
+      location: "Auckland",
+      email: null,
+      phone: null,
+      linkedin: null,
+      github: null,
+      portfolio: null,
+    },
+    currentHeadline: "Independent software engineer building AI products",
+    summaryFacts: [],
+    experiences: [],
+    projects: [
+      {
+        name: "TaylorCV",
+        descriptionFacts: ["AI CV tailoring platform"],
+        achievementFacts: ["Built structured outputs and evaluation-aware rendering"],
+        tools: ["TypeScript", "Next.js", "OpenAI APIs"],
+        metrics: [],
+        links: [],
+        originalBullets: [],
+      },
+    ],
+    skillsByGroup: [{ group: "AI / ML", skills: ["TypeScript", "OpenAI APIs"] }],
+    education: [],
+    certifications: [],
+    awardsOrScholarships: [],
+    links: [],
+    notableEvidence: ["Project evidence is stronger than formal employment history"],
+    weakOrMissingAreas: [],
+    sourceStructure: [],
+    warnings: [],
+  },
+  cv: warningCv,
+});
+
+assert.equal(
+  qualityWarnings.includes("section_order_starts_with_skills_after_summary_when_proof_first_expected"),
+  true
+);
+assert.equal(
+  qualityWarnings.includes("selected_or_highlights_section_too_late"),
+  true
+);
+assert.equal(
+  qualityWarnings.includes("duplicate_projects_and_selected_achievements_possible"),
+  true
+);
+assert.equal(
+  qualityWarnings.includes("education_or_certifications_above_stronger_technical_proof_when_not_threshold"),
+  true
+);
+
+const renderModel = buildCvRenderModel(warningCv);
+assert.equal(
+  renderModel.metrics.layoutWarnings.includes("certifications_require_list_layout"),
+  true
+);
+assert.equal(
+  renderModel.metrics.layoutWarnings.includes("nonempty_section_missing_from_section_order"),
+  true
+);
+assert.equal(
+  renderModel.metrics.layoutWarnings.includes("appended_unordered_section"),
+  true
+);
 
 const previewTokens = presentationToRendererTokens(
   normalizeCvPresentation(validLayout(), cvFixture())

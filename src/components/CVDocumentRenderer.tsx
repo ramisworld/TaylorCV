@@ -379,7 +379,7 @@ export function CVDocumentRenderer(props: {
           {props.cv.header.targetTitle ? (
             <p
               className="mt-1 max-w-[680px] font-medium leading-snug"
-              style={{ color: tokens.mutedTextColor, fontSize: tokens.subtitleSize }}
+              style={{ color: tokens.mutedTextColor, fontSize: Math.max(tokens.subtitleSize - 0.35, 11.2) }}
             >
               {props.cv.header.targetTitle}
             </p>
@@ -387,7 +387,7 @@ export function CVDocumentRenderer(props: {
           {contact.length > 0 ? (
             <div
               className={cn(
-                "mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 leading-snug",
+                "mt-2 flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-1 leading-snug",
                 tokens.headerLayout === "centered" ? "justify-center" : "justify-start"
               )}
               style={{

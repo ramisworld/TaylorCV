@@ -458,7 +458,7 @@ function WorkflowCards() {
 
 function Hero(props: LandingPageProps) {
   return (
-    <section className="relative z-10 pt-6">
+    <section className="relative z-10 pb-[36px] pt-6 md:pb-[54px]">
       <motion.div
         animate="visible"
         className="mx-auto max-w-[960px] px-5 text-center"
@@ -570,7 +570,7 @@ function PricingSection(props: LandingPageProps) {
   );
 
   return (
-    <section className="relative z-10 bg-white/46 px-6 py-24" id="pricing">
+    <section className="relative z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.22)_34%,rgba(245,247,255,0.18)_100%)] px-6 py-24" id="pricing">
       <div className="mx-auto max-w-[1220px]">
         <div className="text-center">
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-[#2047f0]">
@@ -682,7 +682,7 @@ function FaqSection() {
 
 export function LandingPage(props: LandingPageProps) {
   return (
-    <main className="relative min-h-screen max-w-[100vw] overflow-x-hidden bg-[#fcfcfd] text-[#080d22]">
+    <main className="relative min-h-screen max-w-[100vw] overflow-x-hidden bg-transparent text-[#080d22]">
       <LiquidGlassDefs />
       <LandingBackground />
       <GlassHeader {...props} />

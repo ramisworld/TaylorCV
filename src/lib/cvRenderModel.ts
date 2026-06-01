@@ -1,6 +1,6 @@
 import {
   claimText,
-  normalizeCvSections,
+  normalizeCvSectionsWithMetadata,
   personalContactItems,
   type CvSectionId,
   type NormalizedCvSection,
@@ -125,6 +125,51 @@ function estimateBulletHeight(text: string, tokens: RendererTokens, width: numbe
   return estimateParagraphHeight(text, tokens, Math.max(160, width - 24)) + tokens.bulletGap;
 }
 
+function estimateCertificationListHeight(
+  bullets: string[],
+  tokens: RendererTokens,
+  width: number
+) {
+  if (bullets.length === 0) return 0;
+  return (
+    6 +
+    bullets.reduce(
+      (total, bullet) => total + estimateBulletHeight(bullet, tokens, width) + 1,
+      0
+    )
+  );
+}
+
+function estimateEducationItemHeight(
+  section: Extract<NormalizedCvSection, { type: "education" }>,
+  tokens: RendererTokens,
+  contentWidth: number
+) {
+  return section.items.reduce((total, item) => {
+    const degreeHeight = item.degree
+      ? estimateParagraphHeight(item.degree, tokens, contentWidth * 0.62)
+      : 0;
+    const institutionHeight = item.institution
+      ? estimateParagraphHeight(item.institution, tokens, contentWidth * 0.62)
+      : 0;
+    const dateHeight = item.dates
+      ? estimateParagraphHeight(item.dates, tokens, contentWidth * 0.24)
+      : 0;
+    const detailHeight = item.details.length
+      ? estimateParagraphHeight(item.details.join(", "), tokens, contentWidth)
+      : 0;
+
+    return (
+      total +
+      tokens.itemGap +
+      degreeHeight +
+      Math.max(institutionHeight, dateHeight) +
+      detailHeight +
+      (detailHeight > 0 ? 2 : 0)
+    );
+  }, 0);
+}
+
 function estimateSectionHeight(section: NormalizedCvSection, tokens: RendererTokens, contentWidth: number) {
   const headingHeight = tokens.headingSize + 6 + 8;
 
@@ -149,15 +194,7 @@ function estimateSectionHeight(section: NormalizedCvSection, tokens: RendererTok
   }
 
   if (section.type === "certifications") {
-    return (
-      headingHeight +
-      6 +
-      estimateParagraphHeight(
-        section.bullets.map(claimText).join(" · "),
-        tokens,
-        contentWidth
-      )
-    );
+    return headingHeight + estimateCertificationListHeight(section.bullets.map(claimText), tokens, contentWidth);
   }
 
   if (section.type === "experience") {
@@ -206,16 +243,7 @@ function estimateSectionHeight(section: NormalizedCvSection, tokens: RendererTok
 
   if (section.type !== "education") return headingHeight;
 
-  return (
-    headingHeight +
-    section.items.reduce((total, item) => {
-      const titleHeight = item.institution || item.degree || item.dates ? tokens.bodySize * 1.35 : 0;
-      const detailsHeight = item.details.length
-        ? estimateParagraphHeight(item.details.join(", "), tokens, contentWidth)
-        : 0;
-      return total + tokens.itemGap + titleHeight + detailsHeight;
-    }, 0)
-  );
+  return headingHeight + estimateEducationItemHeight(section, tokens, contentWidth);
 }
 
 function estimateHeaderHeight(cv: StructuredCv, tokens: RendererTokens, contentWidth: number) {
@@ -250,6 +278,7 @@ function estimateUsedHeight(
 function buildMetrics(args: {
   cv: StructuredCv;
   sections: NormalizedCvSection[];
+  normalizationWarnings: string[];
   tokens: RendererTokens;
   omittedOverflowItemCounts: Record<string, number>;
   presentationJsonUsed: boolean;
@@ -267,18 +296,28 @@ function buildMetrics(args: {
   const certificationSection = args.sections.find(
     (section) => section.type === "certifications"
   );
+  const educationSection = args.sections.find(
+    (section) => section.type === "education"
+  );
   const lastSection = args.sections.at(-1) ?? null;
+  const contentWidth = pageWidth - pagePadding(args.tokens).horizontal;
   const lastSectionHeight = lastSection
     ? estimateSectionHeight(
         lastSection,
         args.tokens,
-        pageWidth - pagePadding(args.tokens).horizontal
+        contentWidth
       )
     : 0;
   const bulletsRenderedBySection = Object.fromEntries(
     args.sections.map((section) => [section.id, countBullets(section)])
   );
+  const educationOrCertificationClipRisk =
+    usedHeight > pageHeight &&
+    [certificationSection, educationSection]
+      .filter((section): section is NormalizedCvSection => !!section)
+      .some((section) => estimateSectionHeight(section, args.tokens, contentWidth) > pageHeight * 0.1);
   const layoutWarnings = [
+    ...args.normalizationWarnings,
     usedHeight > pageHeight ? "content_overflows_page" : null,
     remainingHeight / pageHeight > 0.18 ? "page_underfilled" : null,
     contactItems.length > 5 || contactLineEstimate > 2 ? "contact_line_may_wrap" : null,
@@ -288,13 +327,7 @@ function buildMetrics(args: {
     )
       ? "certifications_require_list_layout"
       : null,
-    certificationSection && estimateSectionHeight(
-      certificationSection,
-      args.tokens,
-      pageWidth - pagePadding(args.tokens).horizontal
-    ) > pageHeight * 0.16
-      ? "certifications_may_clip"
-      : null,
+    educationOrCertificationClipRisk ? "certifications_or_education_clipped" : null,
     lastSection && remainingHeight > 0 && remainingHeight < Math.min(28, lastSectionHeight * 0.14)
       ? "orphan_heading_risk"
       : null,
@@ -328,6 +361,7 @@ function buildMetrics(args: {
 function shrinkToFitPage(args: {
   cv: StructuredCv;
   sections: NormalizedCvSection[];
+  normalizationWarnings: string[];
   baseTokens: RendererTokens;
   presentationJsonUsed: boolean;
   tokenState: RendererTokens;
@@ -364,6 +398,7 @@ function shrinkToFitPage(args: {
     metrics = buildMetrics({
       cv: args.cv,
       sections: args.sections,
+      normalizationWarnings: args.normalizationWarnings,
       tokens: tokenState,
       omittedOverflowItemCounts: emptyOmittedOverflowItemCounts(),
       presentationJsonUsed: args.presentationJsonUsed,
@@ -389,7 +424,8 @@ export function buildCvRenderModel(
 ): CvRenderModel {
   const presentation = normalizeCvPresentation(presentationJson, cv);
   const baseTokens = presentationToRendererTokens(presentation);
-  const sections = normalizeCvSections(cv);
+  const normalizedSections = normalizeCvSectionsWithMetadata(cv);
+  const sections = normalizedSections.sections;
   const presentationJsonUsed = hasPresentationInput(presentationJson);
   let tokenState = baseTokens;
   let fontScale = 1;
@@ -399,6 +435,7 @@ export function buildCvRenderModel(
   let metrics = buildMetrics({
     cv,
     sections,
+    normalizationWarnings: normalizedSections.warnings,
     tokens: tokenState,
     omittedOverflowItemCounts,
     presentationJsonUsed,
@@ -414,6 +451,7 @@ export function buildCvRenderModel(
     metrics = buildMetrics({
       cv,
       sections,
+      normalizationWarnings: normalizedSections.warnings,
       tokens: tokenState,
       omittedOverflowItemCounts,
       presentationJsonUsed,
@@ -430,6 +468,7 @@ export function buildCvRenderModel(
     metrics = buildMetrics({
       cv,
       sections,
+      normalizationWarnings: normalizedSections.warnings,
       tokens: tokenState,
       omittedOverflowItemCounts,
       presentationJsonUsed,
@@ -451,6 +490,7 @@ export function buildCvRenderModel(
     metrics = buildMetrics({
       cv,
       sections,
+      normalizationWarnings: normalizedSections.warnings,
       tokens: tokenState,
       omittedOverflowItemCounts,
       presentationJsonUsed,
@@ -472,6 +512,7 @@ export function buildCvRenderModel(
     metrics = buildMetrics({
       cv,
       sections,
+      normalizationWarnings: normalizedSections.warnings,
       tokens: tokenState,
       omittedOverflowItemCounts,
       presentationJsonUsed,
@@ -497,6 +538,7 @@ export function buildCvRenderModel(
     metrics = buildMetrics({
       cv,
       sections,
+      normalizationWarnings: normalizedSections.warnings,
       tokens: tokenState,
       omittedOverflowItemCounts,
       presentationJsonUsed,
@@ -516,6 +558,7 @@ export function buildCvRenderModel(
     } = shrinkToFitPage({
       cv,
       sections,
+      normalizationWarnings: normalizedSections.warnings,
       baseTokens,
       presentationJsonUsed,
       tokenState,

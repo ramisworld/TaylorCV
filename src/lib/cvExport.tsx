@@ -420,10 +420,10 @@ function CvPdfDocument(props: { cv: StructuredCv; model: CvRenderModel }) {
               style={[
                 styles.meta,
                 {
-                color: tokens.bodyTextColor,
-                fontSize: tokens.subtitleSize + 1,
-                fontFamily: tokens.pdfFontFamily,
-              },
+                  color: tokens.mutedTextColor,
+                  fontSize: tokens.subtitleSize + 0.4,
+                  fontFamily: tokens.pdfFontFamily,
+                },
               ]}
             >
               {props.cv.header.targetTitle}

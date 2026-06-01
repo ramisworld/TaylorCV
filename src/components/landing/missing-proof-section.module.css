@@ -2,9 +2,41 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
+  padding-top: clamp(72px, 9vw, 128px);
+  padding-bottom: clamp(28px, 4vw, 56px);
   color: #070b1f;
-  background: #f5f4fd;
+  background: transparent;
   isolation: isolate;
+}
+
+.section::after {
+  position: absolute;
+  right: 0;
+  bottom: -132px;
+  left: 0;
+  z-index: 1;
+  height: 300px;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(255, 255, 255, 0.54),
+      rgba(255, 255, 255, 0.22) 24%,
+      rgba(241, 244, 255, 0.08) 46%,
+      transparent 76%
+    ),
+    radial-gradient(
+      ellipse at 18% 14%,
+      rgba(214, 226, 255, 0.22),
+      transparent 46%
+    ),
+    radial-gradient(
+      ellipse at 82% 12%,
+      rgba(229, 220, 255, 0.18),
+      transparent 42%
+    );
+  filter: blur(28px);
 }
 
 .bgBase {
@@ -39,6 +71,27 @@
       transparent 38%
     ),
     linear-gradient(180deg, #fafaff 0%, #f5f4fd 46%, #f2f0fb 100%);
+  opacity: 0.88;
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.78) 10%,
+    black 18%,
+    black 80%,
+    rgba(0, 0, 0, 0.52) 90%,
+    rgba(0, 0, 0, 0.18) 95%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.78) 10%,
+    black 18%,
+    black 80%,
+    rgba(0, 0, 0, 0.52) 90%,
+    rgba(0, 0, 0, 0.18) 95%,
+    transparent 100%
+  );
 }
 
 .bgArc {

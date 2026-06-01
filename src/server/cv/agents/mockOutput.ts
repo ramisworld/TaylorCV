@@ -221,9 +221,9 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
   gapQuestions: [
     {
       question:
-        "Have you measured any latency, cost, reliability, or output-quality improvements in TaylorCV?",
+        "What testing, deployment, latency, cost, reliability, or output-quality evidence can you point to from TaylorCV?",
       tinyExample:
-        "For example, faster generation, lower token cost, fewer failed outputs, or reliability across multiple CVs.",
+        "For example, faster generation, lower token cost, fewer failed outputs, or testing across multiple CVs.",
       whyItMatters:
         "This would turn the AI project from a build claim into stronger engineering proof.",
       answerGuidance:
@@ -233,7 +233,7 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
     },
     {
       question:
-        "Have you explained TaylorCV or another technical project to a user, teammate, or non-technical person?",
+        "Have you had to explain TaylorCV or another technical project to a user, teammate, or non-technical person?",
       tinyExample:
         "For example, walking someone through a model result, product decision, or system tradeoff.",
       whyItMatters:
@@ -336,7 +336,7 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
     },
     experience: [
       {
-        role: "Freelance Software Builder",
+        role: "Independent Software Engineer",
         company: "Independent Projects",
         location: "Auckland, New Zealand",
         dates: "Feb 2025 - Present",

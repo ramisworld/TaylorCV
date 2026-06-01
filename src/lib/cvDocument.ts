@@ -138,6 +138,11 @@ export type CvContactItem = {
   value: string;
 };
 
+export type NormalizedCvSectionsResult = {
+  sections: NormalizedCvSection[];
+  warnings: string[];
+};
+
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value);
 }
@@ -395,18 +400,20 @@ export function linkText(link: { label: string | null; url: string; linkType?: s
   const value = `${link.label ?? ""} ${link.url}`.toLowerCase();
   const urlWithoutProtocol = normalizedUrlText(link.url);
   if (value.includes("linkedin")) {
-    const handle = urlWithoutProtocol
-      .replace(/^(?:linkedin\.com\/)+/i, "linkedin.com/")
-      .replace(/^linkedin\.com\/in\//i, "")
-      .replace(/^in\//i, "")
+    const compact = urlWithoutProtocol
+      .replace(/^linkedin\.com\/+/i, "")
+      .replace(/^www\.linkedin\.com\/+/i, "")
+      .replace(/^in\/+/i, "")
       .replace(/\/$/, "");
+    const handle = compact.replace(/^linkedin\.com\/in\//i, "").replace(/^linkedin\.com\//i, "");
     return handle ? `linkedin.com/in/${handle}` : "LinkedIn";
   }
   if (value.includes("github")) {
-    const handle = urlWithoutProtocol
-      .replace(/^(?:github\.com\/)+/i, "github.com/")
-      .replace(/^github\.com\//i, "")
+    const compact = urlWithoutProtocol
+      .replace(/^github\.com\/+/i, "")
+      .replace(/^www\.github\.com\/+/i, "")
       .replace(/\/$/, "");
+    const handle = compact.replace(/^github\.com\//i, "");
     return handle ? `github.com/${handle}` : "GitHub";
   }
   if (value.includes("portfolio")) return "Portfolio";
@@ -552,7 +559,7 @@ function dynamicSectionOrderKeys(section: { id: string; label: string }) {
   );
 }
 
-export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
+export function normalizeCvSectionsWithMetadata(cv: StructuredCv): NormalizedCvSectionsResult {
   const dynamic = cv.sections
     .map((section): NormalizedCvSection | null => {
       const priority = nonEmptyPriority(section.priority);
@@ -646,11 +653,14 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
 
   const ordered: NormalizedCvSection[] = [summarySection];
   const seen = new Set<string>(["summary"]);
+  const warnings = new Set<string>();
+  const mentionedEntries = new Set<string>();
 
   for (const entry of cv.sectionOrder) {
     const canonicalId = normalizeSectionId(entry);
     if (canonicalId === "summary") continue;
     if (canonicalId) {
+      mentionedEntries.add(canonicalId);
       const section = canonicalById.get(canonicalId);
       if (section && !seen.has(section.id)) {
         ordered.push(section);
@@ -664,6 +674,7 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
       dynamicByKey.get(entry.trim().toLowerCase()) ??
       dynamicByKey.get(key);
     if (dynamicSection && !seen.has(dynamicSection.id)) {
+      mentionedEntries.add(dynamicSection.id);
       ordered.push(dynamicSection);
       seen.add(dynamicSection.id);
     }
@@ -671,6 +682,8 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
 
   for (const section of canonicalSections) {
     if (!seen.has(section.id)) {
+      warnings.add("nonempty_section_missing_from_section_order");
+      warnings.add("appended_unordered_section");
       ordered.push(section);
       seen.add(section.id);
     }
@@ -678,10 +691,21 @@ export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
 
   for (const section of dynamic) {
     if (!seen.has(section.id)) {
+      if (!mentionedEntries.has(section.id)) {
+        warnings.add("nonempty_section_missing_from_section_order");
+        warnings.add("appended_unordered_section");
+      }
       ordered.push(section);
       seen.add(section.id);
     }
   }
 
-  return ordered;
+  return {
+    sections: ordered,
+    warnings: [...warnings],
+  };
+}
+
+export function normalizeCvSections(cv: StructuredCv): NormalizedCvSection[] {
+  return normalizeCvSectionsWithMetadata(cv).sections;
 }

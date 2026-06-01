@@ -7,6 +7,7 @@ import { parseStructuredCv } from "~/lib/cvDocument";
 import { db } from "~/server/db";
 import { runCvComposerAgent } from "./agents/cvComposer.agent";
 import { runIntakeGapAgent } from "./agents/intakeGap.agent";
+import { collectCvQualityWarnings } from "./cvQualityWarnings";
 import {
   IntakeGapOutputSchema,
   StructuredCvDocumentSchema,
@@ -337,6 +338,23 @@ export async function generateCv(args: { applicationId: string }) {
     });
   }
 
+  const qualityWarnings = collectCvQualityWarnings({
+    rawJobText: job.rawText,
+    jobContext: storedIntake?.jobContext ?? null,
+    candidateContext,
+    cv: parsed,
+  });
+
+  if (process.env.NODE_ENV !== "production" && qualityWarnings.length > 0) {
+    console.info(
+      "[TaylorCV] composer quality warnings",
+      JSON.stringify({
+        applicationId: args.applicationId,
+        warnings: qualityWarnings,
+      })
+    );
+  }
+
   const cvText = [
     validatedCv.header.name,
     validatedCv.header.targetTitle,
@@ -357,6 +375,7 @@ export async function generateCv(args: { applicationId: string }) {
         jobContext: storedIntake?.jobContext ?? null,
         candidateContext,
         gapAnswers: gapAnswersForComposer,
+        qualityWarnings,
       } as Prisma.InputJsonValue,
     },
   });

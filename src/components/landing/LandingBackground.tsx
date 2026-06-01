@@ -3,9 +3,11 @@
 export function LandingBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[#fcfdff]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_9%_8%,rgba(203,229,255,0.62),transparent_34%),radial-gradient(ellipse_at_92%_31%,rgba(242,213,233,0.54),transparent_32%),radial-gradient(ellipse_at_50%_24%,rgba(255,255,255,0.98),rgba(255,255,255,0.72)_35%,transparent_58%),radial-gradient(ellipse_at_48%_96%,rgba(205,225,252,0.34),transparent_38%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#fbfdff_0%,#f2f6ff_18%,#eef4ff_38%,#f7f5ff_58%,#eef3ff_78%,#fbfdff_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_9%_7%,rgba(203,229,255,0.58),transparent_32%),radial-gradient(ellipse_at_91%_15%,rgba(242,213,233,0.4),transparent_28%),radial-gradient(ellipse_at_22%_48%,rgba(213,230,255,0.3),transparent_34%),radial-gradient(ellipse_at_81%_56%,rgba(223,214,255,0.28),transparent_34%),radial-gradient(ellipse_at_48%_96%,rgba(205,225,252,0.28),transparent_36%)]" />
       <div className="absolute inset-x-0 top-[88px] h-[420px] bg-[radial-gradient(ellipse_at_50%_18%,rgba(255,255,255,0.96),rgba(255,255,255,0.74)_38%,transparent_72%)]" />
+      <div className="absolute inset-x-0 top-[32%] h-[34%] bg-[radial-gradient(ellipse_at_50%_48%,rgba(255,255,255,0.6),rgba(255,255,255,0.22)_44%,transparent_72%)]" />
+      <div className="absolute inset-x-0 bottom-[10%] h-[34%] bg-[radial-gradient(ellipse_at_50%_50%,rgba(255,255,255,0.54),rgba(233,239,255,0.22)_46%,transparent_78%)]" />
 
       <svg
         aria-hidden="true"
@@ -125,8 +127,8 @@ export function LandingBackground() {
         </g>
       </svg>
 
-      <div className="absolute right-[-14%] bottom-[-20%] h-[520px] w-[620px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.36),rgba(210,226,252,0.16)_48%,transparent_72%)] blur-2xl" />
-      <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(252,253,255,0.7)_58%,#fcfdff_100%)]" />
+      <div className="absolute right-[-14%] bottom-[-20%] h-[520px] w-[620px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.3),rgba(210,226,252,0.14)_48%,transparent_72%)] blur-2xl" />
+      <div className="absolute inset-x-0 bottom-0 h-[28%] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(252,253,255,0.42)_58%,rgba(251,253,255,0.78)_100%)]" />
     </div>
   );
 }

@@ -162,6 +162,24 @@ export default function Home() {
     [state?.cvDraft?.cvJson]
   );
 
+  useEffect(() => {
+    const qualityWarnings = Array.isArray(
+      (state?.cvDraft?.builderOutputJson as { qualityWarnings?: unknown } | null | undefined)
+        ?.qualityWarnings
+    )
+      ? ((state?.cvDraft?.builderOutputJson as { qualityWarnings?: unknown[] }).qualityWarnings ?? []).filter(
+          (warning): warning is string => typeof warning === "string" && warning.length > 0
+        )
+      : [];
+
+    if (process.env.NODE_ENV !== "production" && qualityWarnings.length > 0) {
+      console.info("CV_COMPOSER_QUALITY_WARNINGS", {
+        applicationId,
+        warnings: qualityWarnings,
+      });
+    }
+  }, [applicationId, state?.cvDraft?.builderOutputJson]);
+
   function recoverFromStaleApplication(preserveDraft = true) {
     localStorage.removeItem(currentApplicationStorageKey);
     setApplicationId(null);
