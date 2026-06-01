@@ -1,5 +1,11 @@
+import { Suspense } from "react";
+
 import { AuthShell } from "../AuthShell";
 
 export default function ResetPasswordPage() {
-  return <AuthShell mode="reset" />;
+  return (
+    <Suspense fallback={null}>
+      <AuthShell mode="reset" />
+    </Suspense>
+  );
 }

@@ -8,12 +8,9 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { animate, motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
-  paidPlanFromSelection,
-  planDisplayPrice,
-  plans,
   type PlanKey,
 } from "~/lib/plans";
 
@@ -24,17 +21,13 @@ import { PrimaryButton } from "./GlassButton";
 import { LiquidGlassDefs } from "./LiquidGlassDefs";
 import { CareerWorkspaceSection } from "./CareerWorkspaceSection";
 import { MissingProofSection } from "./MissingProofSection";
-import { ProofSection } from "./ProofSection";
 import { ProofStrip } from "./ProofStrip";
 
 type LandingPageProps = {
   error?: string | null;
   isLoading: boolean;
-  isSignedIn?: boolean;
   onGetStarted: () => void;
-  onDashboard?: () => void;
   onPlanSelected?: (planKey: PlanKey) => void;
-  isCheckoutLoading?: boolean;
 };
 
 const requirements = [
@@ -93,7 +86,7 @@ const faqItems = [
   {
     question: "Do I need an account?",
     answer:
-      "You can start the analysis first. Account verification is required before final CV generation so your CV, usage, and billing are protected.",
+      "No. This version is focused on one fast anonymous flow: paste the job, upload the CV, answer any short gap questions, and export the final result.",
   },
   {
     question: "Is the CV ATS-safe?",
@@ -526,126 +519,77 @@ function Hero(props: LandingPageProps) {
   );
 }
 
-function PricingSection(props: LandingPageProps) {
-  const [variant, setVariant] = useState<"annual" | "monthly">("annual");
-  const proKey = paidPlanFromSelection("pro", variant);
-  const premiumKey = paidPlanFromSelection("premium", variant);
-  const cards = useMemo(
-    () => [
-      {
-        key: "free" as const,
-        name: "Free",
-        detail: "Start with one tailored CV generation.",
-        price: "NZ$0",
-        quota: "1 CV generation",
-        bullets: ["Paste a job ad", "Role-aware match analysis", "PDF export"],
-        cta: "Get started",
-        featured: false,
-        onClick: props.onGetStarted,
-      },
-      {
-        key: proKey,
-        name: "Pro",
-        detail: variant === "annual" ? "Annual plan, billed for 12 months." : "Monthly access for active job search.",
-        price: planDisplayPrice(proKey),
-        quota: `${plans[proKey].cvGenerationQuota} CVs / month`,
-        bullets: ["Gap questions", "Evidence-backed tailoring", "DOCX and PDF exports"],
-        cta: "Start Pro",
-        featured: true,
-        onClick: () => props.onPlanSelected?.(proKey),
-      },
-      {
-        key: premiumKey,
-        name: "Premium",
-        detail: variant === "annual" ? "Best for frequent applications." : "Higher monthly capacity.",
-        price: planDisplayPrice(premiumKey),
-        quota: `${plans[premiumKey].cvGenerationQuota} CVs / month`,
-        bullets: ["Everything in Pro", "Higher generation capacity", "Built for frequent tailoring"],
-        cta: "Start Premium",
-        featured: false,
-        onClick: () => props.onPlanSelected?.(premiumKey),
-      },
-    ],
-    [premiumKey, proKey, props, variant]
-  );
+function LaunchSection(props: LandingPageProps) {
+  const bullets = [
+    "Paste a target job description",
+    "Upload or paste a candidate CV",
+    "Answer up to three targeted gap questions",
+    "Generate a structured tailored CV",
+    "Preview the final one-page result",
+    "Export PDF or DOCX immediately",
+  ];
 
   return (
-    <section className="relative z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.22)_34%,rgba(245,247,255,0.18)_100%)] px-6 py-24" id="pricing">
-      <div className="mx-auto max-w-[1220px]">
+    <section
+      className="relative z-10 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.22)_34%,rgba(245,247,255,0.18)_100%)] px-6 py-24"
+      id="launch"
+    >
+      <div className="mx-auto max-w-[920px]">
         <div className="text-center">
           <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-[#2047f0]">
-            Pricing
+            Launch
           </p>
           <h2 className="mt-4 text-[clamp(2.15rem,3vw,3.55rem)] font-semibold leading-[1.08] tracking-[-0.045em] text-[#080d22]">
-            Simple plans for serious applications.
+            One focused flow, live first.
           </h2>
           <p className="mx-auto mt-4 max-w-[620px] text-[17px] leading-7 text-[#42506d]">
-            Start free, then choose the amount of tailoring you need while you apply.
+            TaylorCV is currently set up for the core anonymous experience only:
+            job description, CV upload, gap questions, final CV preview, PDF,
+            and DOCX export.
           </p>
-          <div className="mt-7 inline-grid grid-cols-2 rounded-full border border-[#d8dfec] bg-white p-1 shadow-[0_10px_22px_rgba(29,42,78,0.07)]">
-            {(["monthly", "annual"] as const).map((option) => (
-              <button
-                className={cn(
-                  "h-10 rounded-full px-5 text-[14px] font-semibold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/16",
-                  variant === option
-                    ? "bg-[#2047f0] text-white shadow-[0_8px_18px_rgba(32,71,240,0.22)]"
-                    : "text-[#42506d] hover:text-[#080d22]"
-                )}
-                key={option}
-                onClick={() => setVariant(option)}
-                type="button"
-              >
-                {option === "monthly" ? "Monthly" : "Annual"}
-              </button>
-            ))}
-          </div>
         </div>
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {cards.map((card) => (
-            <article
-              className={cn(
-                "relative rounded-[18px] border bg-white p-7 shadow-[0_22px_48px_rgba(29,42,78,0.1),inset_0_1px_0_rgba(255,255,255,0.95)]",
-                card.featured
-                  ? "border-[#2047f0] ring-4 ring-[#2047f0]/10"
-                  : "border-[#dfe5ef]"
-              )}
-              key={card.key}
-            >
-              {card.featured ? (
-                <span className="absolute right-5 top-5 rounded-full bg-[#eef3ff] px-3 py-1 text-[12px] font-bold text-[#2047f0]">
-                  Most popular
-                </span>
-              ) : null}
-              <h3 className="text-[27px] font-semibold tracking-[-0.04em] text-[#080d22]">
-                {card.name}
+
+        <article className="mt-12 rounded-[22px] border border-[#dfe5ef] bg-white p-8 shadow-[0_22px_48px_rgba(29,42,78,0.1),inset_0_1px_0_rgba(255,255,255,0.95)]">
+          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <h3 className="text-[31px] font-semibold tracking-[-0.04em] text-[#080d22]">
+                What you can do right now
               </h3>
-              <p className="mt-2 min-h-12 text-[14.5px] leading-6 text-[#42506d]">{card.detail}</p>
-              <p className="mt-8 text-[42px] font-bold leading-none tracking-[-0.04em] text-[#080d22]">
-                {card.price}
-                {card.key !== "free" ? <span className="text-[15px] font-medium text-[#42506d]"> / month</span> : null}
-              </p>
-              <p className="mt-3 rounded-[10px] bg-[#f3f6fb] px-4 py-3 text-[14px] font-bold text-[#263252]">
-                {card.quota}
-              </p>
               <ul className="mt-6 grid gap-3">
-                {card.bullets.map((bullet) => (
-                  <li className="flex items-center gap-3 text-[14.5px] text-[#263252]" key={bullet}>
+                {bullets.map((bullet) => (
+                  <li
+                    className="flex items-center gap-3 text-[15px] text-[#263252]"
+                    key={bullet}
+                  >
                     <CircleCheck className="h-4.5 w-4.5 text-[#04ae66]" />
                     {bullet}
                   </li>
                 ))}
               </ul>
+            </div>
+
+            <div className="rounded-[18px] bg-[#f3f6fb] p-6">
+              <p className="text-[13px] font-bold uppercase tracking-[0.18em] text-[#2047f0]">
+                MVP scope
+              </p>
+              <p className="mt-4 text-[17px] font-semibold leading-7 text-[#080d22]">
+                No signup. No billing. No extra workflow.
+              </p>
+              <p className="mt-3 text-[14.5px] leading-6 text-[#42506d]">
+                This deploy is intentionally narrowed to the fastest useful path
+                so you can get the core product live cleanly.
+              </p>
               <PrimaryButton
-                className={cn("mt-8 w-full", !card.featured && "bg-[#080d22] hover:bg-[#18213b]")}
-                disabled={props.isLoading || props.isCheckoutLoading}
-                onClick={card.onClick}
+                className="mt-6 w-full"
+                disabled={props.isLoading}
+                onClick={props.onGetStarted}
                 trailingArrow
               >
-                {card.cta}
+                Start tailoring now
               </PrimaryButton>
-            </article>
-          ))}
-        </div>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
   );
@@ -689,8 +633,7 @@ export function LandingPage(props: LandingPageProps) {
       <Hero {...props} />
       <MissingProofSection />
       <CareerWorkspaceSection onGetStarted={props.onGetStarted} />
-      <ProofSection />
-      <PricingSection {...props} />
+      <LaunchSection {...props} />
       <FaqSection />
     </main>
   );

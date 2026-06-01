@@ -1,5 +1,11 @@
+import { Suspense } from "react";
+
 import { AuthShell } from "../AuthShell";
 
 export default function SignUpPage() {
-  return <AuthShell mode="sign-up" />;
+  return (
+    <Suspense fallback={null}>
+      <AuthShell mode="sign-up" />
+    </Suspense>
+  );
 }

@@ -1,9 +1,8 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
-const isProduction = process.env.NODE_ENV === "production";
-const emailEnabled = isProduction || process.env.ENABLE_EMAIL === "true";
-const billingEnabled = isProduction || process.env.ENABLE_BILLING === "true";
+const emailEnabled = process.env.ENABLE_EMAIL === "true";
+const billingEnabled = process.env.ENABLE_BILLING === "true";
 const realAiEnabled = process.env.USE_MOCK_AI === "false";
 
 /** @param {string} message */
@@ -25,12 +24,12 @@ const optionalWhenMock = requiredWhen(
 
 const requiredWhenEmailEnabled = requiredWhen(
   emailEnabled,
-  'Required in production or when ENABLE_EMAIL is "true"'
+  'Required when ENABLE_EMAIL is "true"'
 );
 
 const requiredWhenBillingEnabled = requiredWhen(
   billingEnabled,
-  'Required in production or when ENABLE_BILLING is "true"'
+  'Required when ENABLE_BILLING is "true"'
 );
 
 export const env = createEnv({

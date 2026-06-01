@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Download, FileCheck2, Loader2, Lock, RotateCcw } from "lucide-react";
+import { ArrowLeft, Download, FileCheck2, Loader2, RotateCcw } from "lucide-react";
 
 import { A4CvPreview } from "~/components/cv-flow/A4CvPreview";
 import { GlassCard } from "~/components/cv-flow/JobDescriptionStep";
@@ -11,7 +11,6 @@ export function FinalCvStep(props: {
   presentationJson?: unknown;
   exportError?: string | null;
   isExporting: boolean;
-  isSignedIn: boolean;
   onNew: () => void;
   onPdf: () => void;
   onDocx: () => void;
@@ -26,19 +25,8 @@ export function FinalCvStep(props: {
           Your tailored one-page CV is ready.
         </h1>
         <p className="mt-3 text-[14px] leading-6 text-[#5f6c84]">
-          Review the A4 preview, then export when you are ready. Export is protected by the existing TaylorCV account gate.
+          Review the A4 preview, then export the final CV when you are ready.
         </p>
-        {!props.isSignedIn ? (
-          <div className="mt-5 rounded-[14px] border border-[#d8e0ee] bg-white/64 p-4">
-            <p className="flex items-center gap-2 text-[13.5px] font-semibold text-[#080d22]">
-              <Lock className="h-4 w-4 text-[#2450f4]" />
-              Sign in to export
-            </p>
-            <p className="mt-1 text-[12.5px] leading-5 text-[#66728b]">
-              You can preview the CV now. PDF and DOCX export will ask you to claim this application.
-            </p>
-          </div>
-        ) : null}
         <div className="mt-6 grid gap-3">
           <button
             className="inline-flex h-[52px] items-center justify-center gap-3 rounded-[12px] bg-[#2450f4] px-5 text-[15px] font-semibold text-white shadow-[0_16px_34px_rgba(32,71,240,0.28)] transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"

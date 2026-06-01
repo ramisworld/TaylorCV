@@ -10,10 +10,8 @@ import { FinalCvStep } from "~/components/cv-flow/FinalCvStep";
 import { GapQuestionsStep } from "~/components/cv-flow/GapQuestionsStep";
 import { JobDescriptionStep } from "~/components/cv-flow/JobDescriptionStep";
 import { LandingPage } from "~/components/landing/LandingPage";
-import { useSession } from "~/lib/auth-client";
 import { parseStructuredCv } from "~/lib/cvDocument";
 import { exportCvDocx, exportCvPdf } from "~/lib/cvExport";
-import type { PlanKey } from "~/lib/plans";
 import { api, type RouterOutputs } from "~/trpc/react";
 
 const currentApplicationStorageKey = "currentApplicationId";
@@ -68,7 +66,6 @@ function hasOpenQuestions(state: ApplicationState | null) {
 
 export default function Home() {
   const utils = api.useUtils();
-  const session = useSession();
   const [showLanding, setShowLanding] = useState(true);
   const [applicationId, setApplicationId] = useState<string | null>(null);
   const [resumedApplicationId, setResumedApplicationId] = useState<string | null>(null);
@@ -81,19 +78,6 @@ export default function Home() {
   const [exportError, setExportError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const recoveryPromiseRef = useRef<Promise<string | null> | null>(null);
-
-  const checkout = api.billing.createCheckoutSession.useMutation({
-    onSuccess: (data) => {
-      window.location.href = data.url;
-    },
-    onError: (mutationError) => {
-      if (mutationError.message === "ALREADY_HAS_SUBSCRIPTION") {
-        window.location.href = "/dashboard";
-        return;
-      }
-      setError(friendlyError(mutationError.message));
-    },
-  });
 
   const createApplication = api.application.createApplication.useMutation({
     onSuccess: (data) => {
@@ -363,19 +347,6 @@ export default function Home() {
     createApplication.mutate();
   }
 
-  function selectPlan(planKey: PlanKey) {
-    if (planKey === "free") {
-      enterWorkspace();
-      return;
-    }
-    if (!session.data?.user) {
-      localStorage.setItem("pendingPlanKey", planKey);
-      window.location.href = `/auth/sign-up?returnTo=${encodeURIComponent(`/dashboard?checkoutPlan=${planKey}`)}`;
-      return;
-    }
-    checkout.mutate({ planKey: planKey as Exclude<PlanKey, "free"> });
-  }
-
   function startCvGeneration(targetApplicationId = applicationId) {
     if (!targetApplicationId) return;
     setStage("cv_generating");
@@ -412,14 +383,8 @@ export default function Home() {
     return (
       <LandingPage
         error={error}
-        isCheckoutLoading={checkout.isPending}
         isLoading={createApplication.isPending}
-        isSignedIn={!!session.data?.user}
-        onDashboard={() => {
-          window.location.href = "/dashboard";
-        }}
         onGetStarted={enterWorkspace}
-        onPlanSelected={selectPlan}
       />
     );
   }
@@ -500,7 +465,6 @@ export default function Home() {
             cv={cv}
             exportError={exportError}
             isExporting={isExporting || authorizeExport.isPending}
-            isSignedIn={!!session.data?.user}
             key="final"
             onDocx={() => void exportWithGate("docx")}
             onNew={() => {

@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 
 import { cn } from "~/lib/utils";
-import type { PlanKey } from "~/lib/plans";
 
 import { PrimaryButton } from "./GlassButton";
 import styles from "./landing-glass.module.css";
@@ -11,11 +10,7 @@ import styles from "./landing-glass.module.css";
 type GlassHeaderProps = {
   error?: string | null;
   isLoading: boolean;
-  isSignedIn?: boolean;
   onGetStarted: () => void;
-  onDashboard?: () => void;
-  onPlanSelected?: (planKey: PlanKey) => void;
-  isCheckoutLoading?: boolean;
 };
 
 const entrance = {
@@ -73,24 +68,14 @@ export function GlassHeader(props: GlassHeaderProps) {
           <a className="rounded-md transition hover:text-[#2047f0] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/14" href="#how-it-works">
             How it works
           </a>
-          <a className="rounded-md transition hover:text-[#2047f0] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/14" href="#pricing">
-            Pricing
+          <a className="rounded-md transition hover:text-[#2047f0] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/14" href="#launch">
+            Launch
           </a>
           <a className="rounded-md transition hover:text-[#2047f0] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/14" href="#faq">
             FAQ
           </a>
         </nav>
         <div className="relative z-10 ml-auto flex items-center gap-[18px]">
-          <button
-            className="hidden rounded-md text-[16px] font-semibold text-[#080d22] transition hover:text-[#2047f0] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/18 sm:inline-flex"
-            onClick={() => {
-              if (props.isSignedIn) props.onDashboard?.();
-              else window.location.href = "/auth/sign-in";
-            }}
-            type="button"
-          >
-            {props.isSignedIn ? "Dashboard" : "Sign in"}
-          </button>
           <PrimaryButton
             className="h-[52px] rounded-[13px] px-6 max-sm:h-11 max-sm:px-4"
             disabled={props.isLoading}
