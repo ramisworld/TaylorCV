@@ -251,19 +251,7 @@ function renderNormalizedPdfSection(section: NormalizedCvSection, tokens: Render
   if (section.type === "bullets" || section.type === "certifications") {
     return (
       <PdfSection title={title} key={section.id} tokens={tokens}>
-        {section.type === "certifications" ? (
-          <Text
-            style={{
-              color: tokens.bodyTextColor,
-              fontSize: tokens.bodySize - 0.1,
-              lineHeight: tokens.lineHeight,
-            }}
-          >
-            {section.bullets.map(claimText).join(" · ")}
-          </Text>
-        ) : (
-          <BulletList bullets={section.bullets.map(claimText)} tokens={tokens} />
-        )}
+        <BulletList bullets={section.bullets.map(claimText)} tokens={tokens} />
       </PdfSection>
     );
   }
@@ -359,7 +347,15 @@ function renderNormalizedPdfSection(section: NormalizedCvSection, tokens: Render
               </Text>
             </View>
             {item.details.length > 0 ? (
-              <Text style={{ color: tokens.bodyTextColor }}>{item.details.join(", ")}</Text>
+              <Text
+                style={{
+                  color: tokens.mutedTextColor,
+                  fontSize: tokens.bodySize - 0.2,
+                  lineHeight: tokens.lineHeight,
+                }}
+              >
+                {item.details.join(", ")}
+              </Text>
             ) : null}
           </View>
         );
@@ -521,11 +517,7 @@ function pushNormalizedDocxSection(
 
   if (section.type === "bullets" || section.type === "certifications") {
     children.push(heading(sectionTitle, tokens));
-    if (section.type === "certifications") {
-      children.push(...section.bullets.map((item) => paragraph(claimText(item), tokens)));
-    } else {
-      children.push(...section.bullets.map((item) => bullet(claimText(item), tokens)));
-    }
+    children.push(...section.bullets.map((item) => bullet(claimText(item), tokens)));
     return;
   }
 

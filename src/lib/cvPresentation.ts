@@ -344,7 +344,7 @@ function estimateCvLoad(cv: StructuredCv) {
     summaryWords,
     bulletCount: projectBullets + experienceBullets,
     skillItems,
-    sectionCount: orderedSections(cv.sectionOrder, cv.roleArchetype).length + cv.sections.length,
+    sectionCount: orderedSections(cv.sectionOrder, cv.roleArchetype).length + (cv.sections?.length ?? 0),
     estimatedWords: summaryWords + bulletWords + skillItems * 2,
     supportingItems: educationItems + certificationItems,
   };
@@ -445,7 +445,7 @@ function defaultLabelsForCareer(careerStyle: CvCareerStyle) {
     return {
       ...defaultSectionLabels,
       summary: "Professional Summary",
-      skills: "Skills",
+      skills: "Technical Skills",
       projects: "Projects",
     };
   }
@@ -453,7 +453,7 @@ function defaultLabelsForCareer(careerStyle: CvCareerStyle) {
     return {
       ...defaultSectionLabels,
       summary: "Professional Summary",
-      skills: "Skills",
+      skills: "Marketing Skills",
       projects: "Projects",
       experience: "Experience",
     };
@@ -463,7 +463,7 @@ function defaultLabelsForCareer(careerStyle: CvCareerStyle) {
       ...defaultSectionLabels,
       summary: "Professional Summary",
       experience: "Experience",
-      skills: "Skills",
+      skills: "Customer Service Skills",
     };
   }
   if (careerStyle === "trades") {

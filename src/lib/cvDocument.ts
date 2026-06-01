@@ -384,23 +384,31 @@ function projectNameFromUrl(url: string) {
 
 export function linkText(link: { label: string | null; url: string; linkType?: string | null }) {
   const value = `${link.label ?? ""} ${link.url}`.toLowerCase();
+  const urlWithoutProtocol = link.url
+    .replace(/^https?:\/\//i, "")
+    .replace(/^www\./i, "")
+    .replace(/\/$/, "")
+    .replace(/\?.+$/, "");
   if (value.includes("linkedin")) {
-    const handle = link.url.replace(/^https?:\/\/(?:www\.)?linkedin\.com\/in\//i, "").replace(/\/$/, "").replace(/\?.+$/, "");
+    const handle = urlWithoutProtocol
+      .replace(/^(?:linkedin\.com\/)?(?:www\.)?linkedin\.com\/in\//i, "")
+      .replace(/^linkedin\.com\/in\//i, "")
+      .replace(/^in\//i, "")
+      .replace(/\/$/, "");
     return handle ? `linkedin.com/in/${handle}` : "LinkedIn";
   }
   if (value.includes("github")) {
-    const handle = link.url.replace(/^https?:\/\/(?:www\.)?github\.com\//i, "").replace(/\/$/, "");
+    const handle = urlWithoutProtocol
+      .replace(/^(?:github\.com\/)?(?:www\.)?github\.com\//i, "")
+      .replace(/^github\.com\//i, "")
+      .replace(/\/$/, "");
     return handle ? `github.com/${handle}` : "GitHub";
   }
   if (value.includes("portfolio")) return "Portfolio";
-  const compactUrl = link.url
-    .replace(/^https?:\/\//i, "")
-    .replace(/^www\./i, "")
-    .replace(/\/$/, "");
   if (link.label && link.label !== link.url && link.label.length <= 24) {
     return link.label;
   }
-  return compactUrl;
+  return urlWithoutProtocol;
 }
 
 function linkKind(link: { label: string | null; url: string; linkType?: string | null }): CvContactKind {

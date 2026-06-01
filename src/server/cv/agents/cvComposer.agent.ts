@@ -6,28 +6,39 @@ import {
   AgentJsonSchemas,
   CvComposerOutputSchema,
   type CvComposerOutput,
-  type JobAnalysis,
-  type CandidateProfileGapOutput,
+  type CandidateContext,
   type GapAnswerForComposer,
+  type JobContext,
 } from "../cvSchemas";
 import {
   CV_COMPOSER_SYSTEM_PROMPT,
-  buildCvComposerUserPrompt,
+  buildCvComposerContext,
+  buildCvComposerUserPromptFromContext,
 } from "../prompts/cvComposer.prompt";
 import { MOCK_CV_COMPOSER_OUTPUT } from "./mockOutput.ts";
 
 export async function runCvComposerAgent(args: {
   applicationId: string;
-  jobAnalysis: JobAnalysis;
-  candidateProfile: CandidateProfileGapOutput["candidateProfile"];
+  rawJobText: string;
+  rawCvText: string;
+  jobContext: JobContext | null;
+  candidateContext: CandidateContext;
   gapAnswers: GapAnswerForComposer[];
 }): Promise<CvComposerOutput> {
   const model = getStrongModel();
-  const userPrompt = buildCvComposerUserPrompt({
-    jobAnalysis: args.jobAnalysis,
-    candidateProfile: args.candidateProfile,
+  const composerContext = buildCvComposerContext({
+    rawJobText: args.rawJobText,
+    rawCvText: args.rawCvText,
+    jobContext: args.jobContext,
+    candidateContext: args.candidateContext,
     gapAnswers: args.gapAnswers,
   });
+  const userPrompt = buildCvComposerUserPromptFromContext(composerContext);
+  const schemaJson = JSON.stringify(AgentJsonSchemas.cvComposer);
+
+  console.log(
+    `[AgentPayload] cvComposer | userPromptChars=${userPrompt.length} | systemPromptChars=${CV_COMPOSER_SYSTEM_PROMPT.length} | schemaChars=${schemaJson.length} | rawJobChars=${composerContext.rawJobDescription.length} | rawCvChars=${composerContext.rawCandidateCvText.length} | gapAnswers=${composerContext.gapQuestionsAndAnswers.length}`
+  );
 
   return runAgent({
     agentName: "cvComposer",

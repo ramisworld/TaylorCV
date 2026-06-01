@@ -1,33 +1,16 @@
 import { z } from "zod";
 
-export const JobAnalysisSchema = z.object({
-  targetRoleTitle: z.string().min(1),
-  companyName: z.string().nullable(),
-  market: z.string().nullable(),
-  seniority: z.enum([
-    "intern",
-    "graduate",
-    "junior",
-    "mid",
-    "senior",
-    "lead",
-    "manager",
-    "executive",
-    "unknown",
-  ]),
-  archetype: z.string().min(1),
-  subArchetype: z.string().nullable(),
-  roleSummary: z.string().min(1),
-  mustHaveRequirements: z.array(z.string()),
-  niceToHaveRequirements: z.array(z.string()),
-  keywords: z.array(z.string()),
-  recruiterPriorities: z.array(z.string()),
-  expectedProofTypes: z.array(z.string()),
-  recommendedSectionBias: z.array(z.string()),
-  risksOrAmbiguities: z.array(z.string()),
-});
-
-export type JobAnalysis = z.infer<typeof JobAnalysisSchema>;
+const SenioritySchema = z.enum([
+  "intern",
+  "graduate",
+  "junior",
+  "mid",
+  "senior",
+  "lead",
+  "manager",
+  "executive",
+  "unknown",
+]);
 
 const CandidateIdentitySchema = z.object({
   fullName: z.string().nullable(),
@@ -50,7 +33,7 @@ const CandidateExperienceFactSchema = z.object({
   achievementFacts: z.array(z.string()),
   tools: z.array(z.string()),
   metrics: z.array(z.string()),
-  proofNotes: z.array(z.string()),
+  originalBullets: z.array(z.string()),
 });
 
 const CandidateProjectFactSchema = z.object({
@@ -60,64 +43,98 @@ const CandidateProjectFactSchema = z.object({
   tools: z.array(z.string()),
   metrics: z.array(z.string()),
   links: z.array(z.string()),
-  proofNotes: z.array(z.string()),
+  originalBullets: z.array(z.string()),
+});
+
+const CandidateEducationFactSchema = z.object({
+  institution: z.string().nullable(),
+  qualification: z.string().nullable(),
+  dates: z.string().nullable(),
+  details: z.array(z.string()),
+  awardsOrScholarships: z.array(z.string()),
+});
+
+const CandidateCertificationFactSchema = z.object({
+  name: z.string().min(1),
+  issuer: z.string().nullable(),
+  date: z.string().nullable(),
+  scoreOrDetail: z.string().nullable(),
+  notes: z.array(z.string()),
+});
+
+const SourceStructureItemSchema = z.object({
+  sectionName: z.string().min(1),
+  sectionOrder: z.number().int().nonnegative(),
+  normalizedType: z.enum([
+    "summary",
+    "experience",
+    "projects",
+    "skills",
+    "education",
+    "certifications",
+    "awards",
+    "portfolio",
+    "other",
+  ]),
+  highSignal: z.boolean(),
+  usefulDetails: z.array(z.string()),
+});
+
+const JobContextSchema = z.object({
+  targetRoleTitle: z.string().min(1),
+  companyName: z.string().nullable(),
+  marketOrLocation: z.string().nullable(),
+  seniority: SenioritySchema,
+  archetype: z.string().min(1),
+  subArchetype: z.string().nullable(),
+  roleSummary: z.string().min(1),
+  mustHaveRequirements: z.array(z.string()),
+  niceToHaveRequirements: z.array(z.string()),
+  keywords: z.array(z.string()),
+  recruiterPriorities: z.array(z.string()),
+  expectedProofTypes: z.array(z.string()),
+  culturalSignals: z.array(z.string()),
+  risksOrAmbiguities: z.array(z.string()),
+});
+
+const CandidateContextSchema = z.object({
+  identity: CandidateIdentitySchema,
+  currentHeadline: z.string().nullable(),
+  summaryFacts: z.array(z.string()),
+  experiences: z.array(CandidateExperienceFactSchema),
+  projects: z.array(CandidateProjectFactSchema),
+  skillsByGroup: z.array(
+    z.object({ group: z.string().min(1), skills: z.array(z.string()) })
+  ),
+  education: z.array(CandidateEducationFactSchema),
+  certifications: z.array(CandidateCertificationFactSchema),
+  awardsOrScholarships: z.array(z.string()),
+  links: z.array(z.string()),
+  notableEvidence: z.array(z.string()),
+  weakOrMissingAreas: z.array(z.string()),
+  sourceStructure: z.array(SourceStructureItemSchema),
+  warnings: z.array(z.string()),
 });
 
 const GapQuestionOutputSchema = z.object({
-  question: z.string().min(1),
-  targetArea: z.string().min(1),
-  whyItMatters: z.string().min(1),
-  answerGuidance: z.string().min(1),
-  expectedAnswerType: z.enum([
-    "metric",
-    "project_detail",
-    "tooling",
-    "scope",
-    "credential",
-    "outcome",
-    "deployment",
-    "leadership",
-    "other",
-  ]),
+  question: z.string().min(1).max(220),
+  tinyExample: z.string().min(1).max(260),
+  whyItMatters: z.string().min(1).max(260),
+  answerGuidance: z.string().min(1).max(260),
+  targetArea: z.string().min(1).max(120),
   priority: z.enum(["high", "medium"]),
 });
 
-export const CandidateProfileGapOutputSchema = z.object({
-  candidateProfile: z.object({
-    identity: CandidateIdentitySchema,
-    headlineOptions: z.array(z.string()),
-    summaryFacts: z.array(z.string()),
-    experiences: z.array(CandidateExperienceFactSchema),
-    projects: z.array(CandidateProjectFactSchema),
-    skillsByGroup: z.array(
-      z.object({ group: z.string().min(1), skills: z.array(z.string()) }),
-    ),
-    education: z.array(
-      z.object({
-        institution: z.string().min(1),
-        qualification: z.string().min(1),
-        dates: z.string().nullable(),
-        notes: z.array(z.string()),
-      }),
-    ),
-    certifications: z.array(
-      z.object({
-        name: z.string().min(1),
-        issuer: z.string().nullable(),
-        date: z.string().nullable(),
-        notes: z.array(z.string()),
-      }),
-    ),
-    links: z.array(z.string()),
-    proofNotes: z.array(z.string()),
-    warnings: z.array(z.string()),
-  }),
+export const IntakeGapOutputSchema = z.object({
+  jobContext: JobContextSchema,
+  candidateContext: CandidateContextSchema,
   gapQuestions: z.array(GapQuestionOutputSchema).max(3),
 });
 
-export type CandidateProfileGapOutput = z.infer<
-  typeof CandidateProfileGapOutputSchema
->;
+export type IntakeGapOutput = z.infer<typeof IntakeGapOutputSchema>;
+export type JobContext = z.infer<typeof JobContextSchema>;
+export type CandidateContext = z.infer<typeof CandidateContextSchema>;
+export type GapQuestionOutput = z.infer<typeof GapQuestionOutputSchema>;
 
 const CvBulletClaimSchema = z.object({
   text: z.string().min(1),
@@ -196,13 +213,23 @@ export const StructuredCvDocumentSchema = z.object({
 
 export type StructuredCvDocument = z.infer<typeof StructuredCvDocumentSchema>;
 
+const CvSectionPlanItemSchema = z.object({
+  id: z.string().min(1),
+  label: z.string().min(1),
+  purpose: z.string().min(1),
+  orderReason: z.string().min(1),
+  evidenceUsed: z.array(z.string()),
+  spacePriority: z.enum(["high", "medium", "low"]),
+});
+
 const CvBlueprintSchema = z.object({
   archetype: z.string().min(1),
   targetPositioning: z.string().min(1),
   sectionOrder: z.array(z.string().min(1)),
-  contentPriorities: z.array(z.string()),
+  sectionPlan: z.array(CvSectionPlanItemSchema).min(1),
+  strongestEvidenceUsed: z.array(z.string()),
   contentToCut: z.array(z.string()),
-  tone: z.string().min(1),
+  toneDecisions: z.array(z.string()),
   spaceBudget: z.array(z.string()),
   riskWarnings: z.array(z.string()),
 });
@@ -222,128 +249,145 @@ export const GapAnswerForComposerSchema = z.object({
 
 export type GapAnswerForComposer = z.infer<typeof GapAnswerForComposerSchema>;
 
-export const AgentJsonSchemas = {
-  jobIntake: {
-    type: "object",
-    additionalProperties: false,
-    required: [
-      "targetRoleTitle",
-      "companyName",
-      "market",
-      "seniority",
-      "archetype",
-      "subArchetype",
-      "roleSummary",
-      "mustHaveRequirements",
-      "niceToHaveRequirements",
-      "keywords",
-      "recruiterPriorities",
-      "expectedProofTypes",
-      "recommendedSectionBias",
-      "risksOrAmbiguities",
-    ],
-    properties: {
-      targetRoleTitle: { type: "string" },
-      companyName: { type: ["string", "null"] },
-      market: { type: ["string", "null"] },
-      seniority: {
-        type: "string",
-        enum: [
-          "intern",
-          "graduate",
-          "junior",
-          "mid",
-          "senior",
-          "lead",
-          "manager",
-          "executive",
-          "unknown",
-        ],
-      },
-      archetype: { type: "string" },
-      subArchetype: { type: ["string", "null"] },
-      roleSummary: { type: "string" },
-      mustHaveRequirements: {
-        type: "array",
-        items: { type: "string" },
-      },
-      niceToHaveRequirements: {
-        type: "array",
-        items: { type: "string" },
-      },
-      keywords: { type: "array", items: { type: "string" } },
-      recruiterPriorities: {
-        type: "array",
-        items: { type: "string" },
-      },
-      expectedProofTypes: {
-        type: "array",
-        items: { type: "string" },
-      },
-      recommendedSectionBias: {
-        type: "array",
-        items: { type: "string" },
-      },
-      risksOrAmbiguities: {
-        type: "array",
-        items: { type: "string" },
-      },
-    },
+const stringArrayJsonSchema = { type: "array", items: { type: "string" } } as const;
+
+const seniorityJsonSchema = {
+  type: "string",
+  enum: [
+    "intern",
+    "graduate",
+    "junior",
+    "mid",
+    "senior",
+    "lead",
+    "manager",
+    "executive",
+    "unknown",
+  ],
+} as const;
+
+const candidateIdentityJsonSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "fullName",
+    "currentTitle",
+    "location",
+    "email",
+    "phone",
+    "linkedin",
+    "github",
+    "portfolio",
+  ],
+  properties: {
+    fullName: { type: ["string", "null"] },
+    currentTitle: { type: ["string", "null"] },
+    location: { type: ["string", "null"] },
+    email: { type: ["string", "null"] },
+    phone: { type: ["string", "null"] },
+    linkedin: { type: ["string", "null"] },
+    github: { type: ["string", "null"] },
+    portfolio: { type: ["string", "null"] },
   },
-  candidateProfileGap: {
+} as const;
+
+const sourceStructureJsonSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "sectionName",
+    "sectionOrder",
+    "normalizedType",
+    "highSignal",
+    "usefulDetails",
+  ],
+  properties: {
+    sectionName: { type: "string" },
+    sectionOrder: { type: "integer", minimum: 0 },
+    normalizedType: {
+      type: "string",
+      enum: [
+        "summary",
+        "experience",
+        "projects",
+        "skills",
+        "education",
+        "certifications",
+        "awards",
+        "portfolio",
+        "other",
+      ],
+    },
+    highSignal: { type: "boolean" },
+    usefulDetails: stringArrayJsonSchema,
+  },
+} as const;
+
+export const AgentJsonSchemas = {
+  intakeGap: {
     type: "object",
     additionalProperties: false,
-    required: ["candidateProfile", "gapQuestions"],
+    required: ["jobContext", "candidateContext", "gapQuestions"],
     properties: {
-      candidateProfile: {
+      jobContext: {
+        type: "object",
+        additionalProperties: false,
+        required: [
+          "targetRoleTitle",
+          "companyName",
+          "marketOrLocation",
+          "seniority",
+          "archetype",
+          "subArchetype",
+          "roleSummary",
+          "mustHaveRequirements",
+          "niceToHaveRequirements",
+          "keywords",
+          "recruiterPriorities",
+          "expectedProofTypes",
+          "culturalSignals",
+          "risksOrAmbiguities",
+        ],
+        properties: {
+          targetRoleTitle: { type: "string" },
+          companyName: { type: ["string", "null"] },
+          marketOrLocation: { type: ["string", "null"] },
+          seniority: seniorityJsonSchema,
+          archetype: { type: "string" },
+          subArchetype: { type: ["string", "null"] },
+          roleSummary: { type: "string" },
+          mustHaveRequirements: stringArrayJsonSchema,
+          niceToHaveRequirements: stringArrayJsonSchema,
+          keywords: stringArrayJsonSchema,
+          recruiterPriorities: stringArrayJsonSchema,
+          expectedProofTypes: stringArrayJsonSchema,
+          culturalSignals: stringArrayJsonSchema,
+          risksOrAmbiguities: stringArrayJsonSchema,
+        },
+      },
+      candidateContext: {
         type: "object",
         additionalProperties: false,
         required: [
           "identity",
-          "headlineOptions",
+          "currentHeadline",
           "summaryFacts",
           "experiences",
           "projects",
           "skillsByGroup",
           "education",
           "certifications",
+          "awardsOrScholarships",
           "links",
-          "proofNotes",
+          "notableEvidence",
+          "weakOrMissingAreas",
+          "sourceStructure",
           "warnings",
         ],
         properties: {
-          identity: {
-            type: "object",
-            additionalProperties: false,
-            required: [
-              "fullName",
-              "currentTitle",
-              "location",
-              "email",
-              "phone",
-              "linkedin",
-              "github",
-              "portfolio",
-            ],
-            properties: {
-              fullName: { type: ["string", "null"] },
-              currentTitle: { type: ["string", "null"] },
-              location: { type: ["string", "null"] },
-              email: { type: ["string", "null"] },
-              phone: { type: ["string", "null"] },
-              linkedin: { type: ["string", "null"] },
-              github: { type: ["string", "null"] },
-              portfolio: { type: ["string", "null"] },
-            },
-          },
-          headlineOptions: {
-            type: "array",
-            items: { type: "string" },
-          },
-          summaryFacts: {
-            type: "array",
-            items: { type: "string" },
-          },
+          identity: candidateIdentityJsonSchema,
+          currentHeadline: { type: ["string", "null"] },
+          summaryFacts: stringArrayJsonSchema,
           experiences: {
             type: "array",
             items: {
@@ -359,7 +403,7 @@ export const AgentJsonSchemas = {
                 "achievementFacts",
                 "tools",
                 "metrics",
-                "proofNotes",
+                "originalBullets",
               ],
               properties: {
                 title: { type: "string" },
@@ -367,20 +411,11 @@ export const AgentJsonSchemas = {
                 location: { type: ["string", "null"] },
                 startDate: { type: ["string", "null"] },
                 endDate: { type: ["string", "null"] },
-                descriptionFacts: {
-                  type: "array",
-                  items: { type: "string" },
-                },
-                achievementFacts: {
-                  type: "array",
-                  items: { type: "string" },
-                },
-                tools: { type: "array", items: { type: "string" } },
-                metrics: { type: "array", items: { type: "string" } },
-                proofNotes: {
-                  type: "array",
-                  items: { type: "string" },
-                },
+                descriptionFacts: stringArrayJsonSchema,
+                achievementFacts: stringArrayJsonSchema,
+                tools: stringArrayJsonSchema,
+                metrics: stringArrayJsonSchema,
+                originalBullets: stringArrayJsonSchema,
               },
             },
           },
@@ -396,25 +431,16 @@ export const AgentJsonSchemas = {
                 "tools",
                 "metrics",
                 "links",
-                "proofNotes",
+                "originalBullets",
               ],
               properties: {
                 name: { type: "string" },
-                descriptionFacts: {
-                  type: "array",
-                  items: { type: "string" },
-                },
-                achievementFacts: {
-                  type: "array",
-                  items: { type: "string" },
-                },
-                tools: { type: "array", items: { type: "string" } },
-                metrics: { type: "array", items: { type: "string" } },
-                links: { type: "array", items: { type: "string" } },
-                proofNotes: {
-                  type: "array",
-                  items: { type: "string" },
-                },
+                descriptionFacts: stringArrayJsonSchema,
+                achievementFacts: stringArrayJsonSchema,
+                tools: stringArrayJsonSchema,
+                metrics: stringArrayJsonSchema,
+                links: stringArrayJsonSchema,
+                originalBullets: stringArrayJsonSchema,
               },
             },
           },
@@ -426,7 +452,7 @@ export const AgentJsonSchemas = {
               required: ["group", "skills"],
               properties: {
                 group: { type: "string" },
-                skills: { type: "array", items: { type: "string" } },
+                skills: stringArrayJsonSchema,
               },
             },
           },
@@ -435,12 +461,19 @@ export const AgentJsonSchemas = {
             items: {
               type: "object",
               additionalProperties: false,
-              required: ["institution", "qualification", "dates", "notes"],
+              required: [
+                "institution",
+                "qualification",
+                "dates",
+                "details",
+                "awardsOrScholarships",
+              ],
               properties: {
-                institution: { type: "string" },
-                qualification: { type: "string" },
+                institution: { type: ["string", "null"] },
+                qualification: { type: ["string", "null"] },
                 dates: { type: ["string", "null"] },
-                notes: { type: "array", items: { type: "string" } },
+                details: stringArrayJsonSchema,
+                awardsOrScholarships: stringArrayJsonSchema,
               },
             },
           },
@@ -449,18 +482,22 @@ export const AgentJsonSchemas = {
             items: {
               type: "object",
               additionalProperties: false,
-              required: ["name", "issuer", "date", "notes"],
+              required: ["name", "issuer", "date", "scoreOrDetail", "notes"],
               properties: {
                 name: { type: "string" },
                 issuer: { type: ["string", "null"] },
                 date: { type: ["string", "null"] },
-                notes: { type: "array", items: { type: "string" } },
+                scoreOrDetail: { type: ["string", "null"] },
+                notes: stringArrayJsonSchema,
               },
             },
           },
-          links: { type: "array", items: { type: "string" } },
-          proofNotes: { type: "array", items: { type: "string" } },
-          warnings: { type: "array", items: { type: "string" } },
+          awardsOrScholarships: stringArrayJsonSchema,
+          links: stringArrayJsonSchema,
+          notableEvidence: stringArrayJsonSchema,
+          weakOrMissingAreas: stringArrayJsonSchema,
+          sourceStructure: { type: "array", items: sourceStructureJsonSchema },
+          warnings: stringArrayJsonSchema,
         },
       },
       gapQuestions: {
@@ -471,35 +508,19 @@ export const AgentJsonSchemas = {
           additionalProperties: false,
           required: [
             "question",
-            "targetArea",
+            "tinyExample",
             "whyItMatters",
             "answerGuidance",
-            "expectedAnswerType",
+            "targetArea",
             "priority",
           ],
           properties: {
-            question: { type: "string" },
-            targetArea: { type: "string" },
-            whyItMatters: { type: "string" },
-            answerGuidance: { type: "string" },
-            expectedAnswerType: {
-              type: "string",
-              enum: [
-                "metric",
-                "project_detail",
-                "tooling",
-                "scope",
-                "credential",
-                "outcome",
-                "deployment",
-                "leadership",
-                "other",
-              ],
-            },
-            priority: {
-              type: "string",
-              enum: ["high", "medium"],
-            },
+            question: { type: "string", maxLength: 220 },
+            tinyExample: { type: "string", maxLength: 260 },
+            whyItMatters: { type: "string", maxLength: 260 },
+            answerGuidance: { type: "string", maxLength: 260 },
+            targetArea: { type: "string", maxLength: 120 },
+            priority: { type: "string", enum: ["high", "medium"] },
           },
         },
       },
@@ -517,36 +538,49 @@ export const AgentJsonSchemas = {
           "archetype",
           "targetPositioning",
           "sectionOrder",
-          "contentPriorities",
+          "sectionPlan",
+          "strongestEvidenceUsed",
           "contentToCut",
-          "tone",
+          "toneDecisions",
           "spaceBudget",
           "riskWarnings",
         ],
         properties: {
           archetype: { type: "string" },
           targetPositioning: { type: "string" },
-          sectionOrder: {
+          sectionOrder: stringArrayJsonSchema,
+          sectionPlan: {
             type: "array",
-            items: { type: "string" },
+            minItems: 1,
+            items: {
+              type: "object",
+              additionalProperties: false,
+              required: [
+                "id",
+                "label",
+                "purpose",
+                "orderReason",
+                "evidenceUsed",
+                "spacePriority",
+              ],
+              properties: {
+                id: { type: "string" },
+                label: { type: "string" },
+                purpose: { type: "string" },
+                orderReason: { type: "string" },
+                evidenceUsed: stringArrayJsonSchema,
+                spacePriority: {
+                  type: "string",
+                  enum: ["high", "medium", "low"],
+                },
+              },
+            },
           },
-          contentPriorities: {
-            type: "array",
-            items: { type: "string" },
-          },
-          contentToCut: {
-            type: "array",
-            items: { type: "string" },
-          },
-          tone: { type: "string" },
-          spaceBudget: {
-            type: "array",
-            items: { type: "string" },
-          },
-          riskWarnings: {
-            type: "array",
-            items: { type: "string" },
-          },
+          strongestEvidenceUsed: stringArrayJsonSchema,
+          contentToCut: stringArrayJsonSchema,
+          toneDecisions: stringArrayJsonSchema,
+          spaceBudget: stringArrayJsonSchema,
+          riskWarnings: stringArrayJsonSchema,
         },
       },
       cv: {
@@ -565,11 +599,7 @@ export const AgentJsonSchemas = {
           "roleArchetype",
         ],
         properties: {
-          sectionOrder: {
-            type: "array",
-            items: { type: "string" },
-            minItems: 1,
-          },
+          sectionOrder: { ...stringArrayJsonSchema, minItems: 1 },
           header: {
             type: "object",
             additionalProperties: false,
@@ -616,10 +646,7 @@ export const AgentJsonSchemas = {
                   required: ["group", "skills"],
                   properties: {
                     group: { type: "string" },
-                    skills: {
-                      type: "array",
-                      items: { type: "string" },
-                    },
+                    skills: stringArrayJsonSchema,
                   },
                 },
               },
@@ -648,19 +675,16 @@ export const AgentJsonSchemas = {
                 endDate: { type: ["string", "null"] },
                 bullets: {
                   type: "array",
+                  minItems: 1,
                   items: {
                     type: "object",
                     additionalProperties: false,
                     required: ["text", "gapAnswerIds"],
                     properties: {
                       text: { type: "string" },
-                      gapAnswerIds: {
-                        type: "array",
-                        items: { type: "string" },
-                      },
+                      gapAnswerIds: stringArrayJsonSchema,
                     },
                   },
-                  minItems: 1,
                 },
               },
             },
@@ -677,19 +701,16 @@ export const AgentJsonSchemas = {
                 dates: { type: ["string", "null"] },
                 bullets: {
                   type: "array",
+                  minItems: 1,
                   items: {
                     type: "object",
                     additionalProperties: false,
                     required: ["text", "gapAnswerIds"],
                     properties: {
                       text: { type: "string" },
-                      gapAnswerIds: {
-                        type: "array",
-                        items: { type: "string" },
-                      },
+                      gapAnswerIds: stringArrayJsonSchema,
                     },
                   },
-                  minItems: 1,
                 },
               },
             },
@@ -704,17 +725,11 @@ export const AgentJsonSchemas = {
                 institution: { type: ["string", "null"] },
                 degree: { type: ["string", "null"] },
                 dates: { type: ["string", "null"] },
-                details: {
-                  type: "array",
-                  items: { type: "string" },
-                },
+                details: stringArrayJsonSchema,
               },
             },
           },
-          certifications: {
-            type: "array",
-            items: { type: "string" },
-          },
+          certifications: stringArrayJsonSchema,
           sections: {
             type: "array",
             items: {
@@ -740,10 +755,7 @@ export const AgentJsonSchemas = {
                     required: ["text", "gapAnswerIds"],
                     properties: {
                       text: { type: "string" },
-                      gapAnswerIds: {
-                        type: "array",
-                        items: { type: "string" },
-                      },
+                      gapAnswerIds: stringArrayJsonSchema,
                     },
                   },
                 },

@@ -102,12 +102,12 @@ export const applicationRouter = createTRPCRouter({
         userId: ctx.userId,
       });
 
-      const jobAnalysis = await submitJobService({
+      const job = await submitJobService({
         applicationId: input.applicationId,
         rawJobText: input.rawJobText,
       });
 
-      return { jobAnalysis };
+      return { job };
     }),
 
   submitCandidate: publicProcedure

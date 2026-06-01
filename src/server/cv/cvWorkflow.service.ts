@@ -1,51 +1,80 @@
 import "server-only";
 
 import { TRPCError } from "@trpc/server";
-import type { Prisma } from "../../../generated/prisma/index.js";
+import { Prisma } from "../../../generated/prisma/index.js";
 
 import { parseStructuredCv } from "~/lib/cvDocument";
 import { db } from "~/server/db";
-import { runJobIntakeAgent } from "./agents/jobIntake.agent";
-import { runCandidateProfileGapAgent } from "./agents/candidateProfileGap.agent";
 import { runCvComposerAgent } from "./agents/cvComposer.agent";
+import { runIntakeGapAgent } from "./agents/intakeGap.agent";
 import {
+  IntakeGapOutputSchema,
   StructuredCvDocumentSchema,
-  type JobAnalysis,
-  type CandidateProfileGapOutput,
+  type CandidateContext,
   type GapAnswerForComposer,
+  type JobContext,
 } from "./cvSchemas";
+
+function compactText(value: string, max = 140) {
+  const text = value.replace(/\s+/g, " ").trim();
+  if (text.length <= max) return text;
+  return `${text.slice(0, max - 1).trimEnd().replace(/[.,;:!?-]+$/, "")}.`;
+}
+
+function fallbackJobTitle(rawJobText: string) {
+  const firstUsefulLine =
+    rawJobText
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .find((line) => line.length >= 4 && line.length <= 90) ?? "Target Role";
+  return compactText(firstUsefulLine, 90);
+}
+
+function profileSummary(candidateContext: CandidateContext) {
+  return (
+    candidateContext.summaryFacts.join(". ") ||
+    candidateContext.notableEvidence.join(". ") ||
+    "Candidate CV saved by TaylorCV."
+  );
+}
+
+function serializeSkills(candidateContext: CandidateContext) {
+  return candidateContext.skillsByGroup.flatMap((group) => group.skills);
+}
+
+function normalizeStoredIntake(value: unknown) {
+  const parsed = IntakeGapOutputSchema.safeParse(value);
+  return parsed.success ? parsed.data : null;
+}
 
 export async function submitJob(args: {
   applicationId: string;
   rawJobText: string;
 }) {
-  const jobAnalysis = await runJobIntakeAgent({
-    applicationId: args.applicationId,
-    rawJobText: args.rawJobText,
-  });
+  const title = fallbackJobTitle(args.rawJobText);
 
-  await db.job.upsert({
+  const job = await db.job.upsert({
     where: { applicationId: args.applicationId },
     update: {
       rawText: args.rawJobText,
-      title: jobAnalysis.targetRoleTitle,
-      company: jobAnalysis.companyName,
-      seniority: jobAnalysis.seniority,
-      summary: jobAnalysis.roleSummary,
-      roleDomain: jobAnalysis.market,
-      archetypeHint: jobAnalysis.archetype,
-      analysisJson: jobAnalysis as unknown as Prisma.InputJsonValue,
+      title,
+      company: null,
+      seniority: null,
+      summary: "Raw job description saved. TaylorCV will analyse it with the CV during intake.",
+      roleDomain: null,
+      archetypeHint: null,
+      analysisJson: Prisma.JsonNull,
     },
     create: {
       applicationId: args.applicationId,
       rawText: args.rawJobText,
-      title: jobAnalysis.targetRoleTitle || "Target Role",
-      company: jobAnalysis.companyName,
-      seniority: jobAnalysis.seniority,
-      summary: jobAnalysis.roleSummary || "Job description analysed by TaylorCV.",
-      roleDomain: jobAnalysis.market,
-      archetypeHint: jobAnalysis.archetype,
-      analysisJson: jobAnalysis as unknown as Prisma.InputJsonValue,
+      title,
+      company: null,
+      seniority: null,
+      summary: "Raw job description saved. TaylorCV will analyse it with the CV during intake.",
+      roleDomain: null,
+      archetypeHint: null,
+      analysisJson: Prisma.JsonNull,
     },
   });
 
@@ -54,11 +83,12 @@ export async function submitJob(args: {
     data: {
       status: "job_added",
       currentStep: "job_added",
-      dreamRole: jobAnalysis.targetRoleTitle,
+      dreamRole: title,
+      roleArchetype: null,
     },
   });
 
-  return jobAnalysis;
+  return job;
 }
 
 export async function submitCandidate(args: {
@@ -69,72 +99,104 @@ export async function submitCandidate(args: {
     where: { applicationId: args.applicationId },
   });
 
-  if (!job || !job.analysisJson) {
+  if (!job) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Job analysis not found. Please submit a job description first.",
+      message: "Job description not found. Please submit a job description first.",
     });
   }
 
-  const jobAnalysis = job.analysisJson as unknown as JobAnalysis;
-
-  const output = await runCandidateProfileGapAgent({
+  const intake = await runIntakeGapAgent({
     applicationId: args.applicationId,
-    jobAnalysis,
+    rawJobText: job.rawText,
     rawCvText: args.rawCvText,
   });
 
-  const profile = output.candidateProfile;
+  const { jobContext, candidateContext } = intake;
 
-  await db.candidateProfile.create({
+  await db.job.update({
+    where: { applicationId: args.applicationId },
     data: {
-      sourceApplicationId: args.applicationId,
-      sourceType: "cv_upload",
-      rawCvText: args.rawCvText,
-      profileJson: profile as unknown as Prisma.InputJsonValue,
-      summary: profile.summaryFacts.join(". ") || "Candidate profile analysed by TaylorCV.",
-      skillsJson: profile.skillsByGroup.map((g) => g.skills).flat() as Prisma.InputJsonValue,
-      projectsJson: profile.projects.map((p) => ({ name: p.name, tools: p.tools })) as Prisma.InputJsonValue,
-      educationJson: profile.education.map((e) => ({
-        institution: e.institution,
-        qualification: e.qualification,
-        dates: e.dates,
-      })) as Prisma.InputJsonValue,
-      certificationsJson: profile.certifications.map((c) => c.name) as Prisma.InputJsonValue,
-      experienceJson: profile.experiences.map((e) => ({
-        title: e.title,
-        organization: e.organization,
-        tools: e.tools,
-      })) as Prisma.InputJsonValue,
-      toolsJson: profile.experiences
-        .flatMap((e) => e.tools)
-        .concat(profile.projects.flatMap((p) => p.tools))
-        .filter((v, i, a) => a.indexOf(v) === i) as Prisma.InputJsonValue,
-      achievementsJson: profile.experiences
-        .flatMap((e) => e.achievementFacts)
-        .concat(profile.projects.flatMap((p) => p.achievementFacts)) as Prisma.InputJsonValue,
-      contactInfoJson: {
-        fullName: profile.identity.fullName,
-        professionalTitle: profile.identity.currentTitle,
-        location: profile.identity.location,
-        email: profile.identity.email,
-        phone: profile.identity.phone,
-      } as Prisma.InputJsonValue,
-      linksJson: {
-        linkedin: profile.identity.linkedin,
-        github: profile.identity.github,
-        portfolio: profile.identity.portfolio,
-        other: profile.links,
-      } as Prisma.InputJsonValue,
+      title: jobContext.targetRoleTitle || job.title,
+      company: jobContext.companyName,
+      seniority: jobContext.seniority,
+      summary: jobContext.roleSummary,
+      roleDomain: jobContext.marketOrLocation,
+      archetypeHint: jobContext.archetype,
+      analysisJson: intake as unknown as Prisma.InputJsonValue,
     },
   });
 
+  await db.gapAnswer.deleteMany({
+    where: { applicationId: args.applicationId },
+  });
   await db.gapQuestion.deleteMany({
     where: { applicationId: args.applicationId },
   });
 
+  const profileRow = await db.candidateProfile.create({
+    data: {
+      sourceApplicationId: args.applicationId,
+      sourceType: "cv_upload",
+      rawCvText: args.rawCvText,
+      profileJson: candidateContext as unknown as Prisma.InputJsonValue,
+      summary: compactText(profileSummary(candidateContext), 700),
+      skillsJson: serializeSkills(candidateContext) as Prisma.InputJsonValue,
+      projectsJson: candidateContext.projects.map((project) => ({
+        name: project.name,
+        tools: project.tools,
+        links: project.links,
+      })) as Prisma.InputJsonValue,
+      educationJson: candidateContext.education.map((item) => ({
+        institution: item.institution,
+        qualification: item.qualification,
+        dates: item.dates,
+        details: item.details,
+        awardsOrScholarships: item.awardsOrScholarships,
+      })) as Prisma.InputJsonValue,
+      certificationsJson: candidateContext.certifications.map((item) => ({
+        name: item.name,
+        issuer: item.issuer,
+        date: item.date,
+        scoreOrDetail: item.scoreOrDetail,
+        notes: item.notes,
+      })) as Prisma.InputJsonValue,
+      experienceJson: candidateContext.experiences.map((experience) => ({
+        title: experience.title,
+        organization: experience.organization,
+        tools: experience.tools,
+        metrics: experience.metrics,
+      })) as Prisma.InputJsonValue,
+      toolsJson: candidateContext.experiences
+        .flatMap((experience) => experience.tools)
+        .concat(candidateContext.projects.flatMap((project) => project.tools))
+        .filter((value, index, values) => values.indexOf(value) === index) as Prisma.InputJsonValue,
+      achievementsJson: candidateContext.experiences
+        .flatMap((experience) => experience.achievementFacts)
+        .concat(candidateContext.projects.flatMap((project) => project.achievementFacts))
+        .concat(candidateContext.notableEvidence) as Prisma.InputJsonValue,
+      strongProofCandidatesJson: candidateContext.notableEvidence as Prisma.InputJsonValue,
+      likelyTopEvidenceJson: candidateContext.sourceStructure as unknown as Prisma.InputJsonValue,
+      cautionNotesJson: candidateContext.warnings as Prisma.InputJsonValue,
+      scopeOpportunitiesJson: candidateContext.weakOrMissingAreas as Prisma.InputJsonValue,
+      contactInfoJson: {
+        fullName: candidateContext.identity.fullName,
+        professionalTitle: candidateContext.identity.currentTitle,
+        location: candidateContext.identity.location,
+        email: candidateContext.identity.email,
+        phone: candidateContext.identity.phone,
+      } as Prisma.InputJsonValue,
+      linksJson: {
+        linkedin: candidateContext.identity.linkedin,
+        github: candidateContext.identity.github,
+        portfolio: candidateContext.identity.portfolio,
+        other: candidateContext.links,
+      } as Prisma.InputJsonValue,
+    },
+  });
+
   const createdQuestions = [];
-  for (const q of output.gapQuestions) {
+  for (const q of intake.gapQuestions) {
     const created = await db.gapQuestion.create({
       data: {
         applicationId: args.applicationId,
@@ -143,29 +205,33 @@ export async function submitCandidate(args: {
         whyItMatters: q.whyItMatters,
         answerGuidance: q.answerGuidance,
         questionJson: {
+          tinyExample: q.tinyExample,
           whyThisMatters: q.whyItMatters,
           howYourAnswerHelps: q.answerGuidance,
-          expectedAnswerType: q.expectedAnswerType,
+          targetArea: q.targetArea,
           priority: q.priority,
-        },
+        } as Prisma.InputJsonValue,
       },
     });
     createdQuestions.push(created);
   }
 
   const newStatus =
-    output.gapQuestions.length > 0 ? "questions_ready" : "candidate_added";
+    intake.gapQuestions.length > 0 ? "questions_ready" : "candidate_added";
 
   await db.application.update({
     where: { id: args.applicationId },
     data: {
       status: newStatus,
       currentStep: newStatus,
+      dreamRole: jobContext.targetRoleTitle,
+      roleArchetype: jobContext.archetype,
     },
   });
 
   return {
-    candidateProfile: profile,
+    candidateProfile: candidateContext,
+    candidateProfileRow: profileRow,
     gapQuestions: createdQuestions,
   };
 }
@@ -224,38 +290,40 @@ export async function generateCv(args: { applicationId: string }) {
     }),
   ]);
 
-  if (!job || !job.analysisJson) {
+  if (!job) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Job analysis not found.",
+      message: "Job description not found.",
     });
   }
 
-  if (!candidateProfileRow || !candidateProfileRow.profileJson) {
+  if (!candidateProfileRow?.rawCvText || !candidateProfileRow.profileJson) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "Candidate profile not found.",
     });
   }
 
-  const jobAnalysis = job.analysisJson as unknown as JobAnalysis;
-  const candidateProfile = candidateProfileRow.profileJson as unknown as CandidateProfileGapOutput["candidateProfile"];
+  const storedIntake = normalizeStoredIntake(job.analysisJson);
+  const candidateContext = candidateContextFromJson(candidateProfileRow.profileJson);
 
   const gapAnswersForComposer: GapAnswerForComposer[] = gapAnswers
-    .filter((a) => !a.skipped && a.rawUserAnswer)
-    .map((a) => {
-      const question = gapQuestions.find((q) => q.id === a.gapQuestionId);
+    .filter((answer) => !answer.skipped && answer.rawUserAnswer?.trim())
+    .map((answer) => {
+      const question = gapQuestions.find((q) => q.id === answer.gapQuestionId);
       return {
-        gapQuestionId: a.gapQuestionId,
+        gapQuestionId: answer.gapQuestionId,
         question: question?.question ?? "",
-        answer: a.rawUserAnswer ?? "",
+        answer: answer.rawUserAnswer ?? "",
       };
     });
 
   const composerOutput = await runCvComposerAgent({
     applicationId: args.applicationId,
-    jobAnalysis,
-    candidateProfile,
+    rawJobText: job.rawText,
+    rawCvText: candidateProfileRow.rawCvText,
+    jobContext: storedIntake?.jobContext ?? null,
+    candidateContext,
     gapAnswers: gapAnswersForComposer,
   });
 
@@ -273,8 +341,8 @@ export async function generateCv(args: { applicationId: string }) {
     validatedCv.header.name,
     validatedCv.header.targetTitle,
     validatedCv.summary,
-    ...validatedCv.experience.map((e) => `${e.role} at ${e.company}`),
-    ...validatedCv.projects.map((p) => p.name),
+    ...validatedCv.experience.map((item) => `${item.role ?? ""} ${item.company ?? ""}`.trim()),
+    ...validatedCv.projects.map((project) => project.name),
   ]
     .filter(Boolean)
     .join("\n");
@@ -286,7 +354,9 @@ export async function generateCv(args: { applicationId: string }) {
       cvText,
       builderOutputJson: {
         blueprint: composerOutput.blueprint,
-        jobAnalysis,
+        jobContext: storedIntake?.jobContext ?? null,
+        candidateContext,
+        gapAnswers: gapAnswersForComposer,
       } as Prisma.InputJsonValue,
     },
   });
@@ -300,6 +370,17 @@ export async function generateCv(args: { applicationId: string }) {
   });
 
   return cvDraft;
+}
+
+function candidateContextFromJson(value: unknown): CandidateContext {
+  const result = IntakeGapOutputSchema.shape.candidateContext.safeParse(value);
+  if (!result.success) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Candidate profile is invalid. Please submit the CV again.",
+    });
+  }
+  return result.data;
 }
 
 export async function authorizeExport(args: {

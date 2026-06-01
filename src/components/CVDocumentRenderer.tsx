@@ -166,33 +166,17 @@ function CertificationList(props: {
   if (props.items.length === 0) return null;
   const compactItems = props.items.map((item) => item.replace(/\s+/g, " ").trim()).filter(Boolean);
 
-  if (compactItems.length === 1) {
-    return (
-      <p
-        className="mt-1.5 font-medium text-[#1f2937]"
-        style={{ fontSize: props.bodySize, lineHeight: props.lineHeight }}
-      >
-        {compactItems[0]}
-      </p>
-    );
-  }
-
   return (
-    <p
-      className="mt-1.5 font-medium text-[#1f2937]"
+    <ul
+      className="mt-1.5 list-disc space-y-0.5 pl-4 font-medium text-[#1f2937]"
       style={{ fontSize: props.bodySize - 0.1, lineHeight: props.lineHeight }}
     >
       {compactItems.map((item, index) => (
-        <span key={`${item}-${index}`}>
+        <li key={`${item}-${index}`}>
           {item}
-          {index < compactItems.length - 1 ? (
-            <span className="px-1.5 text-[#9ca3af]" aria-hidden="true">
-              ·
-            </span>
-          ) : null}
-        </span>
+        </li>
       ))}
-    </p>
+    </ul>
   );
 }
 
@@ -393,7 +377,7 @@ export function CVDocumentRenderer(props: {
             >
               {contact.map((item, index) => (
                 <span className="inline-flex min-w-0 items-center" key={`${item.kind}-${item.value}`}>
-                  <span className="max-w-[190px] truncate">{item.value}</span>
+                  <span className="break-words [overflow-wrap:anywhere]">{item.value}</span>
                   {index < contact.length - 1 ? (
                     <span className="mx-1.5 text-[#9ca3af]" aria-hidden="true">
                       |

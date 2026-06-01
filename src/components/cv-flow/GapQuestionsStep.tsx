@@ -21,9 +21,14 @@ function questionMeta(question: GapQuestion) {
         ? json.whyThisMatters
         : question.whyItMatters ?? "This gives Taylor a stronger proof point for the final CV.",
     hint:
-      typeof json.howYourAnswerHelps === "string"
-        ? json.howYourAnswerHelps
-        : question.answerGuidance ?? "A short, honest example is enough.",
+      [
+        typeof json.howYourAnswerHelps === "string"
+          ? json.howYourAnswerHelps
+          : question.answerGuidance ?? "A short, honest example is enough.",
+        typeof json.tinyExample === "string" ? json.tinyExample : null,
+      ]
+        .filter(Boolean)
+        .join(" "),
   };
 }
 

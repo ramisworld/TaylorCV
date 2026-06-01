@@ -1,16 +1,17 @@
 import {
   claimText,
   normalizeCvSections,
+  personalContactItems,
   type CvSectionId,
   type NormalizedCvSection,
   type StructuredCv,
-} from "./cvDocument";
+} from "./cvDocument.ts";
 import {
   normalizeCvPresentation,
   presentationToRendererTokens,
   type PresentationSectionId,
   type RendererTokens,
-} from "./cvPresentation";
+} from "./cvPresentation.ts";
 
 export type CvRendererLayoutMetrics = {
   pageWidth: number;
@@ -30,6 +31,7 @@ export type CvRendererLayoutMetrics = {
   renderedSectionIds: string[];
   bulletsRenderedBySection: Record<string, number>;
   omittedOverflowItemCounts: Record<string, number>;
+  layoutWarnings: string[];
   density: RendererTokens["density"];
   templateId: RendererTokens["templateId"];
   headerLayout: RendererTokens["headerLayout"];
@@ -265,6 +267,16 @@ function buildMetrics(args: {
   const bulletsRenderedBySection = Object.fromEntries(
     args.sections.map((section) => [section.id, countBullets(section)])
   );
+  const layoutWarnings = [
+    usedHeight > pageHeight ? "content_overflows_page" : null,
+    remainingHeight / pageHeight > 0.18 ? "page_underfilled" : null,
+    personalContactItems(args.cv.header).length > 5 ? "contact_line_may_wrap" : null,
+    args.sections.some(
+      (section) => section.type === "certifications" && section.bullets.length >= 3
+    )
+      ? "certifications_require_list_layout"
+      : null,
+  ].filter((warning): warning is string => !!warning);
 
   return {
     pageWidth,
@@ -284,6 +296,7 @@ function buildMetrics(args: {
     renderedSectionIds: args.sections.map((section) => section.id),
     bulletsRenderedBySection,
     omittedOverflowItemCounts: args.omittedOverflowItemCounts,
+    layoutWarnings,
     density: args.tokens.density,
     templateId: args.tokens.templateId,
     headerLayout: args.tokens.headerLayout,
