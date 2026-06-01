@@ -1,7 +1,6 @@
-// src/components/landing/MissingProofSection.tsx
-
 "use client";
 
+import type { ReactNode } from "react";
 import {
   BriefcaseBusiness,
   MessageCircleQuestion,
@@ -30,7 +29,7 @@ const questions = [
 ] as const;
 
 function IconCircle(props: {
-  children: React.ReactNode;
+  children: ReactNode;
   small?: boolean;
   className?: string;
 }) {
@@ -48,9 +47,9 @@ function IconCircle(props: {
 }
 
 function DiagramCard(props: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
 }) {
   return (
@@ -71,16 +70,31 @@ function ConnectorLines() {
       className={styles.connectorSvg}
       fill="none"
       viewBox="0 0 1000 560"
+      preserveAspectRatio="none"
     >
       <defs>
-        <linearGradient id="mp-line" x1="300" y1="90" x2="700" y2="250">
-          <stop offset="0%" stopColor="#5d6cff" stopOpacity="0.9" />
-          <stop offset="55%" stopColor="#6b63ff" stopOpacity="0.82" />
-          <stop offset="100%" stopColor="#7b5cff" stopOpacity="0.86" />
+        <linearGradient
+          id="mp-line"
+          x1="330"
+          y1="70"
+          x2="675"
+          y2="245"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0%" stopColor="#5f67ff" stopOpacity="0.88" />
+          <stop offset="52%" stopColor="#6560ff" stopOpacity="0.84" />
+          <stop offset="100%" stopColor="#755cff" stopOpacity="0.86" />
         </linearGradient>
 
-        <filter id="mp-line-glow" x="-30%" y="-120%" width="160%" height="340%">
-          <feGaussianBlur result="blur" stdDeviation="1.45" />
+        <filter
+          id="mp-line-glow"
+          x="340"
+          y="20"
+          width="360"
+          height="290"
+          filterUnits="userSpaceOnUse"
+        >
+          <feGaussianBlur result="blur" stdDeviation="1.15" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -88,48 +102,53 @@ function ConnectorLines() {
         </filter>
       </defs>
 
+      {/* left arm - raised higher */}
       <path
-        d="M440 130 H416 C404 130 398 120 398 108 V106 C398 96 390 91 379 91 H348"
+        d="M445 128 H421 Q409 128 409 116 V89 Q409 77 397 77 H384"
         filter="url(#mp-line-glow)"
         stroke="url(#mp-line)"
-        strokeLinejoin="round"
         strokeLinecap="round"
-        strokeWidth="2.1"
+        strokeLinejoin="round"
+        strokeWidth="2.15"
       />
 
+      {/* right arm - raised higher */}
       <path
-        d="M560 130 H584 C596 130 602 120 602 108 V106 C602 96 610 91 621 91 H658"
+        d="M565 128 H589 Q601 128 601 116 V58 Q601 44 613 44 H633"
         filter="url(#mp-line-glow)"
         stroke="url(#mp-line)"
-        strokeLinejoin="round"
         strokeLinecap="round"
-        strokeWidth="2.1"
+        strokeLinejoin="round"
+        strokeWidth="2.15"
       />
 
+      {/* vertical connector - unchanged */}
+      {/* vertical connector - connects the two bottom purple circles */}
+      {/* vertical connector - reliable straight line between bottom circles */}
       <path
-        d="M500 190 V278"
+        d="M505 200 V276"
         filter="url(#mp-line-glow)"
         stroke="url(#mp-line)"
         strokeLinecap="round"
-        strokeWidth="2.1"
+        strokeLinejoin="round"
+        strokeWidth="2.15"
       />
 
       {[
-        [348, 91],
-        [440, 130],
-        [560, 130],
-        [658, 91],
-        [500, 190],
-        [500, 278],
+        [384, 78],
+        [444, 128],
+        [565, 128],
+        [633, 44],
+        [505, 200],
+        [505, 276],
       ].map(([cx, cy]) => (
-        <circle
+        <ellipse
           cx={cx}
           cy={cy}
-          fill="#655bff"
+          fill="#665cff"
           key={`${cx}-${cy}`}
-          r="4.6"
-          stroke="rgba(255,255,255,0.95)"
-          strokeWidth="2"
+          rx="4.8"
+          ry="5.75"
         />
       ))}
     </svg>

@@ -1,5 +1,3 @@
-/* src/components/landing/missing-proof-section.module.css */
-
 .section {
   position: relative;
   z-index: 10;
@@ -15,11 +13,31 @@
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 9% 8%, rgba(219, 228, 255, 0.88), transparent 34%),
-    radial-gradient(ellipse at 91% 7%, rgba(234, 226, 255, 0.92), transparent 38%),
-    radial-gradient(ellipse at 68% 62%, rgba(194, 202, 255, 0.22), transparent 40%),
-    radial-gradient(ellipse at 85% 83%, rgba(220, 226, 255, 0.38), transparent 34%),
-    radial-gradient(ellipse at 21% 92%, rgba(202, 214, 255, 0.34), transparent 38%),
+    radial-gradient(
+      ellipse at 9% 8%,
+      rgba(219, 228, 255, 0.88),
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 91% 7%,
+      rgba(234, 226, 255, 0.92),
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 68% 62%,
+      rgba(194, 202, 255, 0.22),
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 85% 83%,
+      rgba(220, 226, 255, 0.38),
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 21% 92%,
+      rgba(202, 214, 255, 0.34),
+      transparent 38%
+    ),
     linear-gradient(180deg, #fafaff 0%, #f5f4fd 46%, #f2f0fb 100%);
 }
 
@@ -100,7 +118,6 @@
   filter: blur(54px);
 }
 
-/* IMPORTANT: reference-frame layout. No 1920px hard-coded scene. */
 .scene {
   position: relative;
   z-index: 2;
@@ -115,7 +132,7 @@
 
 .heroBlock {
   position: absolute;
-  top: 8.2%;
+  top: 7.6%;
   left: 5.35%;
   z-index: 5;
   width: 37%;
@@ -174,13 +191,13 @@
 .headline {
   display: grid;
   gap: clamp(3px, 0.42vw, 8px);
-  margin-top: clamp(30px, 3.2vw, 64px);
+  margin-top: clamp(28px, 2.95vw, 58px);
   color: #080a1f;
   font-family: Georgia, ui-serif, Cambria, "Times New Roman", serif;
-  font-size: clamp(46px, 4.8vw, 99px);
+  font-size: clamp(44px, 4.58vw, 94px);
   font-weight: 400;
-  line-height: 0.98;
-  letter-spacing: -0.043em;
+  line-height: 0.985;
+  letter-spacing: -0.034em;
 }
 
 .headline > span {
@@ -192,11 +209,11 @@
   font-style: normal;
   color: transparent;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 42%),
-    linear-gradient(94deg, #244dff 0%, #3f6cff 28%, #675dff 61%, #8a48ee 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.32), transparent 43%),
+    linear-gradient(94deg, #2651ff 0%, #3d71ff 25%, #625fff 58%, #8b4ff0 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.022em;
 }
 
 .subheadline {
@@ -234,7 +251,7 @@
 
 .diagramStage {
   position: absolute;
-  top: 9.6%;
+  top: 8.9%;
   left: 38.7%;
   z-index: 3;
   width: 56.7%;
@@ -244,24 +261,37 @@
 .connectorSvg {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 7;
   width: 100%;
   height: 100%;
   pointer-events: none;
+  overflow: visible;
 }
 
 /* Shared frosted glass card */
 
 .glassCard {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.86);
   border-radius: clamp(20px, 1.38vw, 28px);
   background:
-    radial-gradient(ellipse at 17% 8%, rgba(255, 255, 255, 0.82), transparent 34%),
-    radial-gradient(ellipse at 85% 88%, rgba(210, 204, 255, 0.16), transparent 36%),
-    linear-gradient(152deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.36)),
+    radial-gradient(
+      ellipse at 17% 8%,
+      rgba(255, 255, 255, 0.82),
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 85% 88%,
+      rgba(210, 204, 255, 0.16),
+      transparent 36%
+    ),
+    linear-gradient(
+      152deg,
+      rgba(255, 255, 255, 0.78),
+      rgba(255, 255, 255, 0.36)
+    ),
     rgba(255, 255, 255, 0.28);
   box-shadow:
     0 28px 84px rgba(64, 68, 144, 0.12),
@@ -288,7 +318,11 @@
       transparent 76%,
       rgba(130, 82, 255, 0.05)
     ),
-    radial-gradient(ellipse at 76% 8%, rgba(228, 238, 255, 0.34), transparent 30%);
+    radial-gradient(
+      ellipse at 76% 8%,
+      rgba(228, 238, 255, 0.34),
+      transparent 30%
+    );
   opacity: 0.92;
 }
 
@@ -312,26 +346,26 @@
 }
 
 .jobCard {
-  top: 0.2%;
-  left: 7.2%;
-  width: 27.6%;
-  min-height: 44.6%;
+  top: -8%;
+  left: 12%;
+  width: 26.4%;
+  min-height: 47.8%;
   padding: clamp(21px, 1.48vw, 30px);
 }
 
 .questionsCard {
-  top: 0.4%;
-  right: 2.4%;
-  width: 31.8%;
-  min-height: 74%;
+  top: -12%;
+  left: 63.3%;
+  width: 31%;
+  min-height: 70%;
   padding: clamp(21px, 1.5vw, 31px);
 }
 
 .gapCard {
-  top: 49.6%;
-  left: 34.5%;
-  width: 31%;
-  min-height: 39%;
+  top: 49.2%;
+  left: 28%;
+  width: 32.8%;
+  min-height: 37%;
   padding: clamp(20px, 1.5vw, 30px);
 }
 
@@ -405,7 +439,11 @@
       rgba(255, 255, 255, 0.96),
       transparent 42%
     ),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.38)),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.82),
+      rgba(255, 255, 255, 0.38)
+    ),
     rgba(255, 255, 255, 0.26);
   box-shadow:
     0 14px 28px rgba(67, 79, 172, 0.1),
@@ -423,10 +461,10 @@
 
 .orbSlot {
   position: absolute;
-  top: 7.8%;
-  left: 42.8%;
-  z-index: 4;
-  width: 14.4%;
+  top: 7.2%;
+  left: 43.2%;
+  z-index: 6;
+  width: 14.6%;
   aspect-ratio: 1 / 1;
 }
 
