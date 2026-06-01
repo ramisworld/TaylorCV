@@ -138,17 +138,37 @@ function EducationLine(props: {
   bodySize: number;
   mutedColor: string;
 }) {
-  const title = joinPresent([props.item.degree, props.item.institution], " - ");
+  const degree = props.item.degree ?? "";
+  const institution = props.item.institution ?? "";
   const detailText = props.item.details.join(", ");
 
   return (
-    <div key={`${title}-${props.index}`}>
-      <ItemHeading
-        bodySize={props.bodySize}
-        meta={props.item.dates ?? ""}
-        mutedColor={props.mutedColor}
-        title={title}
-      />
+    <div key={`${degree}-${institution}-${props.index}`}>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
+        <div className="min-w-0">
+          {degree ? (
+            <p
+              className="font-semibold leading-snug text-[#111827]"
+              style={{ fontSize: props.bodySize + 0.5 }}
+            >
+              {degree}
+            </p>
+          ) : null}
+          {institution ? (
+            <p
+              className="leading-snug"
+              style={{ color: props.mutedColor, fontSize: props.bodySize - 0.1 }}
+            >
+              {institution}
+            </p>
+          ) : null}
+        </div>
+        {props.item.dates ? (
+          <p className="leading-snug" style={{ color: props.mutedColor, fontSize: props.bodySize - 0.2 }}>
+            {props.item.dates}
+          </p>
+        ) : null}
+      </div>
       {detailText ? (
         <p className="mt-0.5 leading-snug text-[#374151]" style={{ fontSize: props.bodySize - 0.2 }}>
           {detailText}
@@ -358,8 +378,8 @@ export function CVDocumentRenderer(props: {
           ) : null}
           {props.cv.header.targetTitle ? (
             <p
-              className="mt-1.5 max-w-[680px] font-semibold leading-snug"
-              style={{ color: tokens.bodyTextColor, fontSize: tokens.subtitleSize + 1 }}
+              className="mt-1 max-w-[680px] font-medium leading-snug"
+              style={{ color: tokens.mutedTextColor, fontSize: tokens.subtitleSize }}
             >
               {props.cv.header.targetTitle}
             </p>
@@ -367,7 +387,7 @@ export function CVDocumentRenderer(props: {
           {contact.length > 0 ? (
             <div
               className={cn(
-                "mt-2.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 leading-snug",
+                "mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 leading-snug",
                 tokens.headerLayout === "centered" ? "justify-center" : "justify-start"
               )}
               style={{
@@ -376,7 +396,7 @@ export function CVDocumentRenderer(props: {
               }}
             >
               {contact.map((item, index) => (
-                <span className="inline-flex min-w-0 items-center" key={`${item.kind}-${item.value}`}>
+                <span className="inline-flex min-w-0 max-w-full items-center" key={`${item.kind}-${item.value}`}>
                   <span className="break-words [overflow-wrap:anywhere]">{item.value}</span>
                   {index < contact.length - 1 ? (
                     <span className="mx-1.5 text-[#9ca3af]" aria-hidden="true">

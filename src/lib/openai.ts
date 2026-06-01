@@ -8,6 +8,9 @@ type ResponsesApiBody = {
   model: string;
   input: Array<{ role: "system" | "user"; content: string }>;
   temperature?: number;
+  reasoning?: {
+    effort: "low" | "medium" | "high";
+  };
   text: {
     format: {
       type: "json_schema";
@@ -18,6 +21,26 @@ type ResponsesApiBody = {
   };
 };
 
+export type OpenAiProviderErrorMeta = {
+  provider: "openai";
+  status: number | null;
+  errorClass: string;
+  retryable: boolean;
+  rayId: string | null;
+  bodyPreview: string | null;
+  durationMs: number;
+};
+
+export class OpenAiProviderError extends Error {
+  meta: OpenAiProviderErrorMeta;
+
+  constructor(message: string, meta: OpenAiProviderErrorMeta) {
+    super(message);
+    this.name = "OpenAiProviderError";
+    this.meta = meta;
+  }
+}
+
 function parseJsonPayload(text: string, serviceName: string) {
   try {
     return JSON.parse(text) as unknown;
@@ -27,6 +50,59 @@ function parseJsonPayload(text: string, serviceName: string) {
       `${serviceName} returned ${looksLikeHtml ? "HTML" : "invalid JSON"} instead of JSON`
     );
   }
+}
+
+function sanitizeBodyPreview(value: string) {
+  return value.replace(/\s+/g, " ").trim().slice(0, 300) || null;
+}
+
+function extractCloudflareRayId(value: string) {
+  const match =
+    value.match(/Ray ID[:\s]*([A-Za-z0-9-]+)/i) ??
+    value.match(/cf-ray["'>:\s]+([A-Za-z0-9-]+)/i);
+  return match?.[1] ?? null;
+}
+
+function classifyErrorResponse(args: {
+  responseText: string;
+  status: number;
+  durationMs: number;
+}) {
+  const preview = sanitizeBodyPreview(args.responseText);
+  const looksLikeHtml = /^\s*</.test(args.responseText);
+  const cloudflareSignal =
+    args.status === 520 ||
+    /cloudflare|api\.openai\.com\s*\|\s*520|error code:\s*520|<title>\s*520/i.test(
+      args.responseText
+    );
+
+  if (looksLikeHtml && cloudflareSignal) {
+    return new OpenAiProviderError(
+      "OpenAI provider edge error 520. Request failed before a valid JSON response.",
+      {
+        provider: "openai",
+        status: args.status,
+        errorClass: "openai_cloudflare_520",
+        retryable: true,
+        rayId: extractCloudflareRayId(args.responseText),
+        bodyPreview: preview,
+        durationMs: args.durationMs,
+      }
+    );
+  }
+
+  return new OpenAiProviderError(
+    `OpenAI Responses API failed with HTTP ${args.status}.`,
+    {
+      provider: "openai",
+      status: args.status,
+      errorClass: looksLikeHtml ? "openai_non_json_error" : "openai_http_error",
+      retryable: args.status >= 500,
+      rayId: extractCloudflareRayId(args.responseText),
+      bodyPreview: preview,
+      durationMs: args.durationMs,
+    }
+  );
 }
 
 export function isMockAiEnabled() {
@@ -114,6 +190,7 @@ export type OpenAiUsage = {
   promptTokens: number | null;
   completionTokens: number | null;
   totalTokens: number | null;
+  reasoningTokens: number | null;
 };
 
 export async function createStructuredJsonResponseWithUsage(args: {
@@ -123,6 +200,7 @@ export async function createStructuredJsonResponseWithUsage(args: {
   schemaName: string;
   jsonSchema: JsonSchema;
   temperature?: number;
+  reasoningEffort?: "low" | "medium" | "high";
 }): Promise<{ parsed: unknown; usage: OpenAiUsage }> {
   if (!env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is required when USE_MOCK_AI is false");
@@ -131,6 +209,7 @@ export async function createStructuredJsonResponseWithUsage(args: {
   const body: ResponsesApiBody = {
     model: args.model,
     temperature: args.temperature,
+    reasoning: args.reasoningEffort ? { effort: args.reasoningEffort } : undefined,
     input: [
       { role: "system", content: args.systemPrompt },
       { role: "user", content: args.userPrompt },
@@ -145,6 +224,7 @@ export async function createStructuredJsonResponseWithUsage(args: {
     },
   };
 
+  const startedAt = Date.now();
   const response = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
     headers: {
@@ -156,7 +236,11 @@ export async function createStructuredJsonResponseWithUsage(args: {
 
   const responseText = await response.text();
   if (!response.ok) {
-    throw new Error(`OpenAI Responses API failed: ${responseText}`);
+    throw classifyErrorResponse({
+      responseText,
+      status: response.status,
+      durationMs: Date.now() - startedAt,
+    });
   }
 
   const data = parseJsonPayload(responseText, "OpenAI Responses API") as {
@@ -168,6 +252,9 @@ export async function createStructuredJsonResponseWithUsage(args: {
       input_tokens?: number;
       output_tokens?: number;
       total_tokens?: number;
+      output_tokens_details?: {
+        reasoning_tokens?: number;
+      };
     };
   };
 
@@ -185,6 +272,7 @@ export async function createStructuredJsonResponseWithUsage(args: {
     promptTokens: data.usage?.input_tokens ?? null,
     completionTokens: data.usage?.output_tokens ?? null,
     totalTokens: data.usage?.total_tokens ?? null,
+    reasoningTokens: data.usage?.output_tokens_details?.reasoning_tokens ?? null,
   };
 
   return {
@@ -279,5 +367,4 @@ export async function streamStructuredJsonResponse(args: {
 
   return parseJsonPayload(outputText, "OpenAI output text");
 }
-
 

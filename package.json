@@ -12,6 +12,7 @@
     "dev": "next dev --turbo",
     "postinstall": "prisma generate",
     "preview": "next build && next start",
+    "qa:cv-workflow": "node scripts/qa-cv-workflow.mjs",
     "qa:cv-screenshot": "node scripts/qa-cv-screenshot.mjs",
     "start": "next start",
     "test:billing": "NODE_ENV=test USE_MOCK_AI=true node scripts/test-billing-entitlements.mjs",

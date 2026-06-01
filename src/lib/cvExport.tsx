@@ -337,15 +337,23 @@ function renderNormalizedPdfSection(section: NormalizedCvSection, tokens: Render
   return (
     <PdfSection title={title} key={section.id} tokens={tokens}>
       {section.items.map((item, index) => {
-        const title = joinPresent([item.degree, item.institution], " - ");
         return (
           <View key={`${section.id}-item-${index}`} style={{ marginBottom: tokens.itemGap }}>
-            <View style={styles.itemTitleRow}>
-              <Text style={[styles.itemTitle, { color: tokens.bodyTextColor }]}>{title}</Text>
-              <Text style={[styles.itemMeta, { color: tokens.mutedTextColor }]}>
-                {item.dates ?? ""}
+            {item.degree ? (
+              <Text style={[styles.itemTitle, { color: tokens.bodyTextColor }]}>
+                {item.degree}
               </Text>
-            </View>
+            ) : null}
+            {item.institution || item.dates ? (
+              <View style={styles.itemTitleRow}>
+                <Text style={[styles.itemMeta, { color: tokens.mutedTextColor }]}>
+                  {item.institution ?? ""}
+                </Text>
+                <Text style={[styles.itemMeta, { color: tokens.mutedTextColor }]}>
+                  {item.dates ?? ""}
+                </Text>
+              </View>
+            ) : null}
             {item.details.length > 0 ? (
               <Text
                 style={{
@@ -605,20 +613,32 @@ function pushNormalizedDocxSection(
   if (section.type !== "education") return;
 
   for (const item of section.items) {
-    const title = joinPresent([item.degree, item.institution], " - ");
     const meta = item.dates;
-    if (title || meta) {
+    if (item.degree) {
       children.push(
         new Paragraph({
           children: [
             new TextRun({
-              text: title ?? "",
+              text: item.degree,
               bold: true,
               color: docxColor(tokens.bodyTextColor),
               font: tokens.docxFontFamily,
             }),
+          ],
+        })
+      );
+    }
+    if (item.institution || meta) {
+      children.push(
+        new Paragraph({
+          children: [
             new TextRun({
-              text: meta ? ` | ${meta}` : "",
+              text: item.institution ?? "",
+              color: docxColor(tokens.mutedTextColor),
+              font: tokens.docxFontFamily,
+            }),
+            new TextRun({
+              text: meta ? `${item.institution ? " | " : ""}${meta}` : "",
               color: docxColor(tokens.mutedTextColor),
               font: tokens.docxFontFamily,
             }),
@@ -680,9 +700,8 @@ export async function exportCvDocx(cv: StructuredCv, presentation?: unknown) {
         children: [
           new TextRun({
             text: cv.header.targetTitle,
-            bold: true,
-            size: Math.round((tokens.subtitleSize + 1) * 2),
-            color: docxColor(tokens.bodyTextColor),
+            size: Math.round(tokens.subtitleSize * 2),
+            color: docxColor(tokens.mutedTextColor),
             font: tokens.docxFontFamily,
           }),
         ],

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getFastModel } from "~/lib/openai";
+import { AGENT_CONFIG } from "./agentConfig";
 import { runAgent } from "./runAgent";
 import {
   AgentJsonSchemas,
@@ -28,11 +29,16 @@ export async function runIntakeGapAgent(args: {
     agentName: "intakeGap",
     applicationId: args.applicationId,
     model,
+    reasoningEffort: AGENT_CONFIG.intakeGap.reasoningEffort,
     systemPrompt: INTAKE_GAP_SYSTEM_PROMPT,
     userPrompt,
     schemaName: "intake_gap",
     jsonSchema: AgentJsonSchemas.intakeGap as Record<string, unknown>,
     zodSchema: IntakeGapOutputSchema,
+    telemetryContext: {
+      rawJobChars: args.rawJobText.length,
+      rawCvChars: args.rawCvText.length,
+    },
     mockOutput: MOCK_INTAKE_GAP_OUTPUT,
   });
 }

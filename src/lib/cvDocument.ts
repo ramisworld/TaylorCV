@@ -382,16 +382,21 @@ function projectNameFromUrl(url: string) {
     .replace(/\bCv\b/g, "CV");
 }
 
-export function linkText(link: { label: string | null; url: string; linkType?: string | null }) {
-  const value = `${link.label ?? ""} ${link.url}`.toLowerCase();
-  const urlWithoutProtocol = link.url
+function normalizedUrlText(url: string) {
+  return url
+    .trim()
     .replace(/^https?:\/\//i, "")
-    .replace(/^www\./i, "")
+    .replace(/^(?:www\.)+/i, "")
     .replace(/\/$/, "")
     .replace(/\?.+$/, "");
+}
+
+export function linkText(link: { label: string | null; url: string; linkType?: string | null }) {
+  const value = `${link.label ?? ""} ${link.url}`.toLowerCase();
+  const urlWithoutProtocol = normalizedUrlText(link.url);
   if (value.includes("linkedin")) {
     const handle = urlWithoutProtocol
-      .replace(/^(?:linkedin\.com\/)?(?:www\.)?linkedin\.com\/in\//i, "")
+      .replace(/^(?:linkedin\.com\/)+/i, "linkedin.com/")
       .replace(/^linkedin\.com\/in\//i, "")
       .replace(/^in\//i, "")
       .replace(/\/$/, "");
@@ -399,7 +404,7 @@ export function linkText(link: { label: string | null; url: string; linkType?: s
   }
   if (value.includes("github")) {
     const handle = urlWithoutProtocol
-      .replace(/^(?:github\.com\/)?(?:www\.)?github\.com\//i, "")
+      .replace(/^(?:github\.com\/)+/i, "github.com/")
       .replace(/^github\.com\//i, "")
       .replace(/\/$/, "");
     return handle ? `github.com/${handle}` : "GitHub";
@@ -408,7 +413,9 @@ export function linkText(link: { label: string | null; url: string; linkType?: s
   if (link.label && link.label !== link.url && link.label.length <= 24) {
     return link.label;
   }
-  return urlWithoutProtocol;
+  return urlWithoutProtocol.length > 42
+    ? `${urlWithoutProtocol.slice(0, 39).replace(/[-_/]+$/, "")}...`
+    : urlWithoutProtocol;
 }
 
 function linkKind(link: { label: string | null; url: string; linkType?: string | null }): CvContactKind {

@@ -4,10 +4,17 @@ import { z } from "zod";
 
 import { estimateCost } from "~/lib/modelPricing";
 import {
+  OpenAiProviderError,
   createStructuredJsonResponseWithUsage,
   isMockAiEnabled,
 } from "~/lib/openai";
 import { db } from "~/server/db";
+import type { AgentReasoningEffort } from "./agentConfig";
+import {
+  compactJsonChars,
+  estimateTokenCountFromChars,
+  type AgentTelemetryContext,
+} from "./agentTelemetry";
 
 type JsonSchema = Record<string, unknown>;
 
@@ -20,17 +27,41 @@ export async function runAgent<T>(args: {
   schemaName: string;
   jsonSchema: JsonSchema;
   zodSchema: z.ZodType<T>;
+  reasoningEffort: AgentReasoningEffort;
+  telemetryContext?: AgentTelemetryContext;
   mockOutput?: T;
 }): Promise<T> {
   const { agentName, applicationId, model } = args;
   const start = Date.now();
-  let status: "success" | "error" = "success";
   let errorMessage: string | null = null;
   let promptTokens: number | null = null;
   let completionTokens: number | null = null;
   let totalTokens: number | null = null;
+  let reasoningTokens: number | null = null;
   let cost: number | null = null;
   let rawOutput: unknown = null;
+  let errorClass: string | null = null;
+  let providerErrorMeta: Record<string, unknown> | null = null;
+
+  const systemPromptChars = args.systemPrompt.length;
+  const userPromptChars = args.userPrompt.length;
+  const schemaChars = compactJsonChars(args.jsonSchema);
+  const estimatedInputTokens = estimateTokenCountFromChars(
+    systemPromptChars + userPromptChars + schemaChars
+  );
+  const inputSummary = {
+    agentName,
+    model,
+    reasoningEffort: args.reasoningEffort,
+    systemPromptChars,
+    userPromptChars,
+    schemaChars,
+    rawJobChars: args.telemetryContext?.rawJobChars ?? null,
+    rawCvChars: args.telemetryContext?.rawCvChars ?? null,
+    structuredContextChars: args.telemetryContext?.structuredContextChars ?? null,
+    gapAnswerCount: args.telemetryContext?.gapAnswerCount ?? null,
+    estimatedInputTokens,
+  };
 
   try {
     if (isMockAiEnabled()) {
@@ -47,26 +78,39 @@ export async function runAgent<T>(args: {
         userPrompt: args.userPrompt,
         schemaName: args.schemaName,
         jsonSchema: args.jsonSchema,
+        reasoningEffort: args.reasoningEffort,
       });
       rawOutput = result.parsed;
       promptTokens = result.usage.promptTokens;
       completionTokens = result.usage.completionTokens;
       totalTokens = result.usage.totalTokens;
+      reasoningTokens = result.usage.reasoningTokens;
       cost = estimateCost({ model, promptTokens, completionTokens });
     }
 
     const validated = args.zodSchema.parse(rawOutput);
+    const outputSummary = {
+      status: "success",
+      outputChars: compactJsonChars(validated),
+      durationMs: Date.now() - start,
+      promptTokens,
+      completionTokens,
+      totalTokens,
+      reasoningTokens,
+      estimatedCostUsd: cost,
+    };
 
     console.log(
-      `[Agent] ${agentName} | model=${model} | durationMs=${Date.now() - start} | status=success | tokens=${totalTokens ?? "n/a"} | cost=${cost ?? "n/a"}`
+      `[Agent] ${agentName} | model=${model} | reasoning=${args.reasoningEffort} | durationMs=${Date.now() - start} | status=success | tokens=${totalTokens ?? "n/a"} | reasoningTokens=${reasoningTokens ?? "n/a"} | estInputTokens=${estimatedInputTokens} | cost=${cost ?? "n/a"}`
     );
+    console.info("[AgentTelemetry]", JSON.stringify({ ...inputSummary, ...outputSummary }));
 
     await writeAgentRun({
       applicationId,
       agentName,
       model,
-      inputSummary: args.userPrompt.slice(0, 500),
-      outputSummary: JSON.stringify(validated).slice(0, 2000),
+      inputSummary: JSON.stringify(inputSummary),
+      outputSummary: JSON.stringify(outputSummary),
       status: "success",
       error: null,
       durationMs: Date.now() - start,
@@ -78,20 +122,43 @@ export async function runAgent<T>(args: {
 
     return validated;
   } catch (err) {
-    status = "error";
-    errorMessage = err instanceof Error ? err.message : String(err);
+    if (err instanceof OpenAiProviderError) {
+      errorClass = err.meta.errorClass;
+      providerErrorMeta = err.meta;
+      errorMessage = err.message;
+    } else {
+      errorMessage = err instanceof Error ? err.message : String(err);
+      if (err instanceof z.ZodError) {
+        errorClass = "agent_output_schema_validation_error";
+      }
+    }
+    const outputSummary = {
+      status: "error",
+      durationMs: Date.now() - start,
+      promptTokens,
+      completionTokens,
+      totalTokens,
+      reasoningTokens,
+      errorClass,
+      providerErrorMeta,
+    };
     console.error(
-      `[Agent] ${agentName} | model=${model} | durationMs=${Date.now() - start} | status=error | error=${errorMessage}`
+      `[Agent] ${agentName} | model=${model} | reasoning=${args.reasoningEffort} | durationMs=${Date.now() - start} | status=error | errorClass=${errorClass ?? "unknown"} | error=${errorMessage}`
     );
+    console.info("[AgentTelemetry]", JSON.stringify({ ...inputSummary, ...outputSummary }));
 
     await writeAgentRun({
       applicationId,
       agentName,
       model,
-      inputSummary: args.userPrompt.slice(0, 500),
-      outputSummary: "",
+      inputSummary: JSON.stringify(inputSummary),
+      outputSummary: JSON.stringify(outputSummary),
       status: "error",
-      error: errorMessage,
+      error: JSON.stringify({
+        message: errorMessage,
+        errorClass,
+        providerErrorMeta,
+      }),
       durationMs: Date.now() - start,
       promptTokens,
       completionTokens,

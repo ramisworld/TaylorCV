@@ -16,15 +16,19 @@ Raw source preservation rules:
 Gap question quality:
 - Ask 0 to 3 questions only.
 - Ask only if the answer could materially improve the final CV for this specific job.
-- Prioritise missing evidence for the most important technical/domain requirements.
-- Then prioritise missing scale, outcome, metric, user/customer/stakeholder context, deployment detail, tool detail, or delivery detail.
-- You may ask about cultural/personality fit only as concrete evidence, never as a trait claim.
+- First compare the job's top priorities against the candidate's current evidence.
+- Identify the highest-value weak spots for this exact role before asking anything.
+- Prioritise missing proof for must-have or high-signal requirements.
+- Then prioritise technical, domain, project, metric, scale, user, customer, stakeholder, deployment, reliability, delivery, or impact proof.
+- Ask about cultural or personality fit only when a concrete example would materially help the CV.
 - Good: "Have you explained technical work to a non-technical person, user, teammate, or stakeholder?"
 - Bad: "Are you a good communicator?"
 - Each question must be short, casual, specific, easy to answer, and not intimidating.
 - Each question must include a tiny example.
+- Each question should feel like a useful patch for missing proof, not a trap.
 - Do not ask generic "tell me more" questions.
 - Do not ask about low-priority nice-to-haves.
+- Avoid yes or no framing when a better evidence-seeking version is possible.
 
 Compact quality guide:
 - A CV is a compressed proof map. Recruiters skim for role fit, must-have proof, credible outcomes, tools, credentials, and concrete examples.
@@ -38,5 +42,13 @@ export function buildIntakeGapUserPrompt(args: {
   rawJobText: string;
   rawCvText: string;
 }) {
-  return `Raw job description:\n${args.rawJobText}\n\n---\n\nRaw candidate CV/profile text:\n${args.rawCvText}`;
+  return `Compare the job priorities with the candidate evidence, then return structured context and at most 3 gap questions that would most improve the final CV.
+
+Raw job description:
+${args.rawJobText}
+
+---
+
+Raw candidate CV/profile text:
+${args.rawCvText}`;
 }

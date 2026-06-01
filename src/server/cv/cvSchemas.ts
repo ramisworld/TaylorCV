@@ -213,25 +213,19 @@ export const StructuredCvDocumentSchema = z.object({
 
 export type StructuredCvDocument = z.infer<typeof StructuredCvDocumentSchema>;
 
-const CvSectionPlanItemSchema = z.object({
-  id: z.string().min(1),
-  label: z.string().min(1),
-  purpose: z.string().min(1),
-  orderReason: z.string().min(1),
-  evidenceUsed: z.array(z.string()),
-  spacePriority: z.enum(["high", "medium", "low"]),
+const CvSectionReasonSchema = z.object({
+  section: z.string().min(1),
+  reason: z.string().min(1),
 });
 
 const CvBlueprintSchema = z.object({
   archetype: z.string().min(1),
+  seniority: SenioritySchema.or(z.string().min(1)),
   targetPositioning: z.string().min(1),
   sectionOrder: z.array(z.string().min(1)),
-  sectionPlan: z.array(CvSectionPlanItemSchema).min(1),
-  strongestEvidenceUsed: z.array(z.string()),
-  contentToCut: z.array(z.string()),
-  toneDecisions: z.array(z.string()),
-  spaceBudget: z.array(z.string()),
+  sectionReasons: z.array(CvSectionReasonSchema).min(1),
   riskWarnings: z.array(z.string()),
+  omittedImportantDetails: z.array(z.string()),
 });
 
 export const CvComposerOutputSchema = z.object({
@@ -536,51 +530,33 @@ export const AgentJsonSchemas = {
         additionalProperties: false,
         required: [
           "archetype",
+          "seniority",
           "targetPositioning",
           "sectionOrder",
-          "sectionPlan",
-          "strongestEvidenceUsed",
-          "contentToCut",
-          "toneDecisions",
-          "spaceBudget",
+          "sectionReasons",
           "riskWarnings",
+          "omittedImportantDetails",
         ],
         properties: {
           archetype: { type: "string" },
+          seniority: seniorityJsonSchema,
           targetPositioning: { type: "string" },
           sectionOrder: stringArrayJsonSchema,
-          sectionPlan: {
+          sectionReasons: {
             type: "array",
             minItems: 1,
             items: {
               type: "object",
               additionalProperties: false,
-              required: [
-                "id",
-                "label",
-                "purpose",
-                "orderReason",
-                "evidenceUsed",
-                "spacePriority",
-              ],
+              required: ["section", "reason"],
               properties: {
-                id: { type: "string" },
-                label: { type: "string" },
-                purpose: { type: "string" },
-                orderReason: { type: "string" },
-                evidenceUsed: stringArrayJsonSchema,
-                spacePriority: {
-                  type: "string",
-                  enum: ["high", "medium", "low"],
-                },
+                section: { type: "string" },
+                reason: { type: "string" },
               },
             },
           },
-          strongestEvidenceUsed: stringArrayJsonSchema,
-          contentToCut: stringArrayJsonSchema,
-          toneDecisions: stringArrayJsonSchema,
-          spaceBudget: stringArrayJsonSchema,
           riskWarnings: stringArrayJsonSchema,
+          omittedImportantDetails: stringArrayJsonSchema,
         },
       },
       cv: {

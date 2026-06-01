@@ -1,6 +1,8 @@
 import "server-only";
 
 import { getStrongModel } from "~/lib/openai";
+import { AGENT_CONFIG } from "./agentConfig";
+import { compactJsonChars } from "./agentTelemetry";
 import { runAgent } from "./runAgent";
 import {
   AgentJsonSchemas,
@@ -35,20 +37,34 @@ export async function runCvComposerAgent(args: {
   });
   const userPrompt = buildCvComposerUserPromptFromContext(composerContext);
   const schemaJson = JSON.stringify(AgentJsonSchemas.cvComposer);
+  const structuredContextChars =
+    compactJsonChars(composerContext.structuredJobContext) +
+    compactJsonChars(composerContext.structuredCandidateContext) +
+    compactJsonChars(composerContext.gapQuestionsAndAnswers) +
+    compactJsonChars(composerContext.rendererContract);
+  const payloadChars =
+    userPrompt.length + CV_COMPOSER_SYSTEM_PROMPT.length + schemaJson.length;
 
   console.log(
-    `[AgentPayload] cvComposer | userPromptChars=${userPrompt.length} | systemPromptChars=${CV_COMPOSER_SYSTEM_PROMPT.length} | schemaChars=${schemaJson.length} | rawJobChars=${composerContext.rawJobDescription.length} | rawCvChars=${composerContext.rawCandidateCvText.length} | gapAnswers=${composerContext.gapQuestionsAndAnswers.length}`
+    `[AgentPayload] cvComposer | payloadChars=${payloadChars} | userPromptChars=${userPrompt.length} | systemPromptChars=${CV_COMPOSER_SYSTEM_PROMPT.length} | schemaChars=${schemaJson.length} | rawJobChars=${composerContext.rawJobDescription.length} | rawCvChars=${composerContext.rawCandidateCvText.length} | structuredContextChars=${structuredContextChars} | gapAnswers=${composerContext.gapQuestionsAndAnswers.length}`
   );
 
   return runAgent({
     agentName: "cvComposer",
     applicationId: args.applicationId,
     model,
+    reasoningEffort: AGENT_CONFIG.cvComposer.reasoningEffort,
     systemPrompt: CV_COMPOSER_SYSTEM_PROMPT,
     userPrompt,
     schemaName: "cv_composer",
     jsonSchema: AgentJsonSchemas.cvComposer as Record<string, unknown>,
     zodSchema: CvComposerOutputSchema,
+    telemetryContext: {
+      rawJobChars: composerContext.rawJobDescription.length,
+      rawCvChars: composerContext.rawCandidateCvText.length,
+      structuredContextChars,
+      gapAnswerCount: composerContext.gapQuestionsAndAnswers.length,
+    },
     mockOutput: MOCK_CV_COMPOSER_OUTPUT,
   });
 }

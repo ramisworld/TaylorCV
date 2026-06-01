@@ -41,6 +41,9 @@ function clientErrorMessage(error: unknown) {
 }
 
 function friendlyError(message: string) {
+  if (/OpenAI provider edge error 520/i.test(message)) {
+    return "Taylor hit a temporary OpenAI edge error. Try again shortly.";
+  }
   if (/Unexpected token|<!DOCTYPE|not valid JSON|JSON\.parse|html/i.test(message)) {
     return "Taylor could not reach the analysis service cleanly. Check that the app server is running, then try again.";
   }

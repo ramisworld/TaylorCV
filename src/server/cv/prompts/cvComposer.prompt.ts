@@ -33,11 +33,34 @@ Produce:
 - blueprint: the CV strategy for developer debugging
 - cv: the renderer-ready structured CV
 
-You are the main intelligence layer. Decide the target title, candidate archetype, section order, what proof deserves space, what to cut, what to expand, and how to tailor the CV to the job.
+You are the main intelligence layer. Decide the target title, candidate archetype, section order, what proof deserves space, what to cut, what to compress, and how to tailor the CV to the job.
 
 The renderer owns visual layout. Do not output markdown, HTML, CSS, or free-form document prose outside the JSON fields.
 
 ${COMPOSER_QUALITY_POLICY}
+
+Internal section-decision algorithm:
+1. Identify the role archetype.
+2. Identify the candidate's seniority or career stage.
+3. Check whether threshold credentials, licences, or certifications need early visibility.
+4. Decide what proof matters most for this archetype.
+5. Decide what proof the candidate actually has.
+6. Decide what belongs in the top third.
+7. Choose the sections that expose the strongest proof fastest.
+8. Cut, compress, or move lower anything weaker, repetitive, or less relevant.
+9. Avoid wording that creates exaggeration, founder-framing risk, or inflated seniority.
+
+Universal section logic:
+- Do not default to one section order for every candidate.
+- Choose order based on archetype, seniority, credentials, strongest proof, target job, and page budget.
+- Technical or data roles may lead with selected technical achievements or projects when proof is stronger than formal experience.
+- Regulated, teaching, healthcare, legal, and trades roles may need credentials earlier.
+- Marketing, sales, finance, design, graduate, and career-change cases should adapt section order to their strongest proof.
+
+Flight-risk framing:
+- Prefer employee-fit wording for normal employment applications.
+- Do not overuse founder-style titles unless the source material or target role clearly benefits from it.
+- Use truthful role-aligned titles for independent projects when that reduces flight-risk framing.
 
 Rules:
 - cv.sectionOrder must begin with "summary".
@@ -81,20 +104,9 @@ export function buildCvComposerContext(args: {
     })),
     rendererContract: {
       output: "strict structured CV JSON only",
-      requiredTopLevelFields: [
-        "sectionOrder",
-        "header",
-        "summary",
-        "skills",
-        "experience",
-        "projects",
-        "education",
-        "certifications",
-        "sections",
-        "roleArchetype",
-      ],
+      requiredTopLevelFields: ["sectionOrder", "header", "summary", "skills", "experience", "projects", "education", "certifications", "sections", "roleArchetype"],
       bulletShape: { text: "string", gapAnswerIds: ["gapQuestionId when used"] },
-      rendererOwns: ["layout", "typography", "spacing", "PDF export", "DOCX export"],
+      rendererOwns: ["layout", "typography", "spacing", "export"],
     },
   };
 }
@@ -102,5 +114,11 @@ export function buildCvComposerContext(args: {
 export type CvComposerContext = ReturnType<typeof buildCvComposerContext>;
 
 export function buildCvComposerUserPromptFromContext(context: CvComposerContext) {
-  return `Compose the final one-page CV from this context. Use the raw job description and raw CV as source of truth, use structured context as a helper, and use gap answers only when credible and relevant.\n${JSON.stringify(context)}`;
+  return `Compose the final one-page CV from this context.
+Use the raw job description and raw CV as source of truth.
+Use structured context as a helper summary.
+Use gap answers only when they add credible relevant proof.
+Keep the blueprint short and developer-focused.
+
+${JSON.stringify(context)}`;
 }

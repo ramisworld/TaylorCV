@@ -362,6 +362,7 @@ Strong proof includes:
 Good sections can include:
 
 - Campaign Highlights
+- Teachnical/Key Achievements
 - Experience
 - Skills / Channels / Tools
 - Projects
@@ -1087,6 +1088,7 @@ Technical early-career example:
 4. Experience
 5. Education
 6. Certifications
+7. Education + Certifications (If candidate has both)
 
 Experienced technical example:
 
@@ -1096,15 +1098,17 @@ Experienced technical example:
 4. Experience
 5. Education
 6. Certifications
+7. Education + Certifications (If candidate has both)
 
 Experienced general professional example:
 
 1. Professional Summary
-2. Experience
+2. (Technical) Experience
 3. Selected Achievements
 4. Skills
 5. Education
 6. Certifications
+7. Education + Certifications (If candidate has both)
 
 Clinical example:
 

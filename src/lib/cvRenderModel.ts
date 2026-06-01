@@ -221,13 +221,8 @@ function estimateSectionHeight(section: NormalizedCvSection, tokens: RendererTok
 function estimateHeaderHeight(cv: StructuredCv, tokens: RendererTokens, contentWidth: number) {
   let height = 0;
   if (cv.header.name) height += tokens.nameSize * 1.03;
-  if (cv.header.targetTitle) height += 4 + (tokens.subtitleSize + 1) * 1.3;
-  const contacts = [
-    cv.header.location,
-    cv.header.phone,
-    cv.header.email,
-    ...cv.header.links.map((link) => link.label || link.url),
-  ].filter(Boolean);
+  if (cv.header.targetTitle) height += 4 + tokens.subtitleSize * 1.25;
+  const contacts = personalContactItems(cv.header).map((item) => item.value);
   if (contacts.length > 0) {
     height += 8 + Math.ceil(contacts.join(" | ").length / Math.max(38, contentWidth / 6.4)) * 20;
   }
@@ -264,17 +259,44 @@ function buildMetrics(args: {
 }): CvRendererLayoutMetrics {
   const usedHeight = estimateUsedHeight(args.cv, args.sections, args.tokens);
   const remainingHeight = Math.max(0, pageHeight - usedHeight);
+  const contactItems = personalContactItems(args.cv.header);
+  const contactLineEstimate = Math.ceil(
+    contactItems.map((item) => item.value).join(" | ").length /
+      Math.max(38, (pageWidth - pagePadding(args.tokens).horizontal) / 6.4)
+  );
+  const certificationSection = args.sections.find(
+    (section) => section.type === "certifications"
+  );
+  const lastSection = args.sections.at(-1) ?? null;
+  const lastSectionHeight = lastSection
+    ? estimateSectionHeight(
+        lastSection,
+        args.tokens,
+        pageWidth - pagePadding(args.tokens).horizontal
+      )
+    : 0;
   const bulletsRenderedBySection = Object.fromEntries(
     args.sections.map((section) => [section.id, countBullets(section)])
   );
   const layoutWarnings = [
     usedHeight > pageHeight ? "content_overflows_page" : null,
     remainingHeight / pageHeight > 0.18 ? "page_underfilled" : null,
-    personalContactItems(args.cv.header).length > 5 ? "contact_line_may_wrap" : null,
+    contactItems.length > 5 || contactLineEstimate > 2 ? "contact_line_may_wrap" : null,
+    contactLineEstimate > 3 ? "contact_line_may_clip" : null,
     args.sections.some(
       (section) => section.type === "certifications" && section.bullets.length >= 3
     )
       ? "certifications_require_list_layout"
+      : null,
+    certificationSection && estimateSectionHeight(
+      certificationSection,
+      args.tokens,
+      pageWidth - pagePadding(args.tokens).horizontal
+    ) > pageHeight * 0.16
+      ? "certifications_may_clip"
+      : null,
+    lastSection && remainingHeight > 0 && remainingHeight < Math.min(28, lastSectionHeight * 0.14)
+      ? "orphan_heading_risk"
       : null,
   ].filter((warning): warning is string => !!warning);
 
