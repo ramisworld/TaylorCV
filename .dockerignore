@@ -3,6 +3,7 @@
 .next
 .logs
 artifacts
+generated
 node_modules
 .env
 .env.local
