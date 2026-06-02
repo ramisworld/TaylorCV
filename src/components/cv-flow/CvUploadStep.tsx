@@ -166,13 +166,13 @@ export function CvUploadStep(props: {
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
       <div className="mx-auto w-full max-w-4xl text-center">
-        <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#74809a]">
+        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#2563eb]">
           Step 2 of 4
         </p>
-        <h1 className="mt-4 text-balance text-[44px] font-normal leading-[1.03] tracking-[-0.052em] text-[#070b1f] [font-family:'Iowan_Old_Style','Palatino_Linotype','Book_Antiqua',Palatino,serif] sm:text-[66px] lg:text-[72px]">
+        <h1 className="mt-4 text-balance text-[46px] font-[650] leading-[1.02] tracking-[-0.05em] text-[#081437] sm:text-[60px] lg:text-[68px]">
           Upload your CV
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-[16px] font-normal leading-7 text-[#6f7890] sm:mt-5 sm:text-[18px] sm:leading-8">
+        <p className="mx-auto mt-4 max-w-2xl text-[16px] font-normal leading-7 text-[#7081a0] sm:mt-5 sm:text-[18px] sm:leading-8">
           We&apos;ll review your CV and see how you match.
         </p>
       </div>
@@ -206,8 +206,8 @@ export function CvUploadStep(props: {
           onDragOver={(event) => event.preventDefault()}
           onDrop={handleDrop}
         >
-          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(244,247,255,0.88)_54%,rgba(224,232,255,0.58)_100%)] shadow-[0_34px_110px_rgba(174,190,232,0.28)]" />
-          <div className="absolute inset-[9px] rounded-full border border-[#edf1fb] bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(248,250,255,0.92)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]" />
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(244,247,255,0.88)_54%,rgba(224,232,255,0.58)_100%)] shadow-[0_24px_78px_rgba(174,190,232,0.24)]" />
+          <div className="absolute inset-[9px] rounded-full border border-[#edf1fb] bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(248,250,255,0.94)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]" />
           <div className="absolute inset-[-18px] rounded-full bg-[radial-gradient(circle,rgba(162,180,255,0.18)_0%,rgba(162,180,255,0.06)_52%,transparent_72%)] blur-xl" />
 
           <svg
@@ -329,7 +329,7 @@ export function CvUploadStep(props: {
         ) : null}
 
         <button
-          className="mt-8 inline-flex h-[58px] min-w-[268px] items-center justify-center gap-3 rounded-[16px] border border-[#4b70ff]/18 bg-[linear-gradient(180deg,#1661ff_0%,#0b4ef3_100%)] px-8 text-[17px] font-normal tracking-[-0.02em] text-white shadow-[0_20px_42px_rgba(11,78,243,0.28)] transition hover:translate-y-[-1px] hover:shadow-[0_24px_46px_rgba(11,78,243,0.32)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/18 disabled:cursor-not-allowed disabled:opacity-55 sm:mt-9 sm:h-[62px] sm:min-w-[286px] sm:text-[18px]"
+          className="mt-8 inline-flex h-[58px] min-w-[268px] items-center justify-center gap-3 rounded-[16px] border border-[#4b70ff]/18 bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-8 text-[17px] font-medium tracking-[-0.02em] text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_38px_rgba(11,78,243,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/18 disabled:cursor-not-allowed disabled:opacity-55 sm:mt-9 sm:h-[62px] sm:min-w-[286px] sm:text-[18px]"
           disabled={!canSubmit}
           onClick={props.onSubmit}
           type="button"
@@ -339,7 +339,7 @@ export function CvUploadStep(props: {
         </button>
 
         <button
-          className="mt-4 text-[14px] font-normal text-[#74809a] transition hover:text-[#425276]"
+          className="mt-4 text-[14px] font-normal text-[#74809a] transition hover:text-[#0b4ef3]"
           disabled={props.isLoading}
           onClick={props.onBack}
           type="button"

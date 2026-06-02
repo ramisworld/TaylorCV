@@ -15,7 +15,7 @@ export function CvGeneratingStep() {
     <WorkflowPanel
       eyebrow="Step 4 of 4"
       subtitle="Taylor is choosing the strongest honest angle, writing the CV, and checking the one-page structure."
-      title="Writing your tailored CV."
+      title="Writing your tailored CV"
     >
       <div className="grid gap-5 lg:grid-cols-[360px_minmax(0,1fr)]">
         <GlassCard className="p-6">
@@ -25,7 +25,7 @@ export function CvGeneratingStep() {
             </span>
             <div>
               <p className="text-[18px] font-semibold text-[#080d22]">Taylor is writing</p>
-              <p className="mt-1 text-[13.5px] leading-5 text-[#66728b]">This usually takes a short moment.</p>
+              <p className="mt-1 text-[14px] leading-6 text-[#7081a0]">This usually takes a short moment.</p>
             </div>
           </div>
           <div className="mt-7 space-y-4">
@@ -36,7 +36,7 @@ export function CvGeneratingStep() {
                 </span>
                 <span>
                   <span className="block text-[13.5px] font-semibold text-[#080d22]">{label}</span>
-                  <span className="block text-[12.5px] text-[#66728b]">{copy}</span>
+                  <span className="block text-[12.5px] text-[#7081a0]">{copy}</span>
                 </span>
               </div>
             ))}

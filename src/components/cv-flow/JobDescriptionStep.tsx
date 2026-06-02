@@ -20,20 +20,20 @@ export function JobDescriptionStep(props: {
     <WorkflowPanel
       eyebrow="Step 1 of 4"
       subtitle="We’ll analyze the role and extract what matters."
-      titleClassName="text-[48px] font-semibold tracking-[-0.052em] [font-family:'Iowan_Old_Style','Palatino_Linotype','Book_Antiqua',Palatino,serif] sm:text-[62px] lg:text-[72px]"
+      titleClassName="sm:text-[60px] lg:text-[68px]"
       title="Paste the job description"
     >
       <div className="mx-auto w-full max-w-[980px]">
         <div className="relative">
           <textarea
-            className="h-[390px] w-full resize-none rounded-[24px] border border-[#c9d0e5] bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(251,252,255,0.96)_100%)] px-8 py-8 text-[18px] leading-8 text-[#0b132f] outline-none shadow-[0_8px_28px_rgba(84,105,162,0.08)] placeholder:text-[#9aa5c0] transition focus:border-[#95a6e8] focus:shadow-[0_0_0_4px_rgba(11,78,243,0.08),0_14px_34px_rgba(84,105,162,0.08)] sm:h-[408px] sm:px-9 sm:py-9"
+            className="h-[390px] w-full resize-none rounded-[28px] border border-[#d8e2f3] bg-white px-8 py-8 text-[18px] font-normal leading-8 text-[#11203f] outline-none shadow-[0_18px_55px_rgba(103,126,177,0.08)] placeholder:text-[#9cabc4] transition focus:border-[#9bb2f5] focus:shadow-[0_0_0_4px_rgba(37,99,235,0.08),0_18px_50px_rgba(103,126,177,0.12)] sm:h-[408px] sm:px-9 sm:py-9"
             maxLength={maxCharacters}
             onChange={(event) => props.onChange(event.target.value)}
             placeholder="Paste the full job description here..."
             ref={textareaRef}
             value={props.value}
           />
-          <p className="absolute bottom-7 right-8 text-[14px] font-normal text-[#8d99b4]">
+          <p className="absolute bottom-7 right-8 text-[14px] font-normal text-[#8a99b5]">
             {props.value.length.toLocaleString()} / {maxCharacters.toLocaleString()}
           </p>
         </div>
@@ -44,7 +44,7 @@ export function JobDescriptionStep(props: {
         ) : null}
         <div className="mt-11 flex justify-center">
           <button
-            className="inline-flex h-[64px] w-full max-w-[320px] items-center justify-center gap-3 rounded-[14px] bg-[linear-gradient(180deg,#1160ff_0%,#0b4ef3_100%)] px-7 text-[18px] font-medium text-white shadow-[0_18px_38px_rgba(11,78,243,0.28)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_42px_rgba(11,78,243,0.32)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/20 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-[64px] w-full max-w-[320px] items-center justify-center gap-3 rounded-[16px] bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-7 text-[18px] font-medium text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_38px_rgba(11,78,243,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/20 disabled:cursor-not-allowed disabled:opacity-60"
             disabled={props.isLoading || !props.value.trim()}
             onClick={props.onSubmit}
             type="button"
@@ -75,19 +75,19 @@ export function WorkflowPanel(props: {
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
       <div className="mx-auto mb-8 max-w-4xl pt-2 text-center sm:mb-10 sm:pt-3">
-        <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#74809a]">
+        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#2563eb]">
           {props.eyebrow}
         </p>
         <h1
           className={cn(
-            "mt-4 text-balance text-[44px] font-normal leading-[1.04] tracking-[-0.045em] text-[#070b1f] [font-family:var(--font-serif)] sm:text-[56px] lg:text-[64px]",
+            "mt-4 text-balance text-[46px] font-[650] leading-[1.02] tracking-[-0.05em] text-[#081437] sm:text-[56px] lg:text-[64px]",
             props.titleClassName
           )}
         >
           {props.title}
         </h1>
         {props.subtitle ? (
-          <p className="mx-auto mt-5 max-w-2xl text-[18px] font-normal leading-8 text-[#6f7890]">
+          <p className="mx-auto mt-5 max-w-2xl text-[18px] font-normal leading-8 text-[#7081a0]">
             {props.subtitle}
           </p>
         ) : null}
@@ -104,8 +104,7 @@ export function GlassCard(props: {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-[18px] border border-white/70 bg-white/62 shadow-[0_22px_60px_rgba(36,64,118,0.13),0_4px_16px_rgba(20,35,68,0.06),inset_0_1px_0_rgba(255,255,255,0.92)] backdrop-blur-2xl",
-        "before:pointer-events-none before:absolute before:inset-0 before:bg-[linear-gradient(115deg,rgba(255,255,255,0.54)_0%,rgba(255,255,255,0.18)_28%,transparent_56%)] before:opacity-70",
+        "relative overflow-hidden rounded-[28px] border border-[#dde6f5] bg-white shadow-[0_22px_60px_rgba(74,97,145,0.08),0_4px_16px_rgba(20,35,68,0.03)]",
         props.className
       )}
     >

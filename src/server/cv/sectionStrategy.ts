@@ -1,9 +1,10 @@
 import "server-only";
 
 import type {
-  CandidateContext,
+  CandidateBrief,
+  DeterministicCandidateBasics,
   GapAnswerForComposer,
-  JobContext,
+  JobBrief,
 } from "./cvSchemas";
 
 export const SECTION_STRATEGY_ARCHETYPES = [
@@ -36,6 +37,7 @@ export type CareerStage = (typeof CAREER_STAGE_VALUES)[number];
 
 export type SectionStrategy = {
   archetype: SectionStrategyArchetype;
+  subArchetype: string | null;
   careerStage: CareerStage;
   credentialsAreThreshold: boolean;
   proofFirstRecommended: boolean;
@@ -67,45 +69,47 @@ function firstNonEmpty(values: Array<string | null | undefined>) {
 
 function inferArchetype(args: {
   rawJobText: string;
-  jobContext: JobContext | null;
-  candidateContext: CandidateContext;
-}): SectionStrategyArchetype {
+  rawCvText: string;
+  jobBrief: JobBrief | null;
+  candidateBrief: CandidateBrief;
+}) {
   const text = corpus([
     args.rawJobText,
-    args.jobContext?.archetype,
-    args.jobContext?.subArchetype,
-    args.jobContext?.roleSummary,
-    ...(args.jobContext?.mustHaveRequirements ?? []),
-    ...(args.jobContext?.keywords ?? []),
-    ...(args.candidateContext.skillsByGroup.flatMap((group) => group.skills) ?? []),
+    args.rawCvText,
+    args.jobBrief?.archetype,
+    args.jobBrief?.subArchetype,
+    args.jobBrief?.roleSummary,
+    ...(args.jobBrief?.keywords ?? []),
+    ...args.candidateBrief.relevantSignals,
+    ...args.candidateBrief.strongestEvidence,
   ]);
 
   if (includesAny(text, ["nurse", "clinical", "patient", "hospital", "registered nurse", "emr"])) {
-    return "healthcare_clinical";
+    return "healthcare_clinical" as const;
   }
   if (includesAny(text, ["teacher", "classroom", "curriculum", "student learning", "practicum"])) {
-    return "teaching_education";
+    return "teaching_education" as const;
   }
   if (includesAny(text, ["electrician", "construction", "apprentice", "site", "ticket", "fault finding"])) {
-    return "trades_construction_field_service";
+    return "trades_construction_field_service" as const;
   }
   if (includesAny(text, ["audit", "accounting", "finance", "compliance", "month end", "tax", "forecast"])) {
-    return "finance_accounting_audit_compliance";
+    return "finance_accounting_audit_compliance" as const;
   }
   if (includesAny(text, ["marketing", "growth", "campaign", "sales", "pipeline", "crm", "roas"])) {
-    return "marketing_sales_growth_comms";
+    return "marketing_sales_growth_comms" as const;
   }
   if (includesAny(text, ["design", "ux", "ui", "portfolio", "figma", "creative"])) {
-    return "design_ux_creative";
+    return "design_ux_creative" as const;
   }
   if (includesAny(text, ["product manager", "project manager", "operations", "program manager", "roadmap"])) {
-    return "product_project_operations_business";
+    return "product_project_operations_business" as const;
   }
   if (includesAny(text, ["research", "publication", "laboratory", "scientist", "grant", "academic"])) {
-    return "research_academic_science";
+    return "research_academic_science" as const;
   }
   if (includesAny(text, ["legal", "law", "regulatory", "admission", "bar", "matter"])) {
-    return "legal_regulatory";
+    return "legal_regulatory" as const;
   }
   if (
     includesAny(text, [
@@ -121,39 +125,49 @@ function inferArchetype(args: {
       "backend",
     ])
   ) {
-    return "ai_ml_data_software";
+    return "ai_ml_data_software" as const;
   }
 
-  return "general_professional";
+  return "general_professional" as const;
 }
 
 function inferCareerStage(args: {
+  rawCvText: string;
   rawJobText: string;
-  jobContext: JobContext | null;
-  candidateContext: CandidateContext;
-}): CareerStage {
-  const seniority = args.jobContext?.seniority ?? "unknown";
+  jobBrief: JobBrief | null;
+  candidateBrief: CandidateBrief;
+  deterministicBasics: DeterministicCandidateBasics;
+}) {
+  const seniority = args.jobBrief?.seniority ?? "unknown";
   if (seniority === "intern" || seniority === "graduate") return "graduate";
   if (seniority === "junior") return "early_career";
-  if (seniority === "senior" || seniority === "lead" || seniority === "manager" || seniority === "executive") {
+  if (["senior", "lead", "manager", "executive"].includes(seniority)) return "senior";
+
+  const text = corpus([
+    args.rawCvText,
+    args.rawJobText,
+    args.candidateBrief.possibleHeadline,
+    ...args.deterministicBasics.sectionHeadings,
+  ]);
+
+  if (includesAny(text, ["student", "graduate", "intern", "bachelor", "master", "university"])) {
+    return "graduate";
+  }
+  if (includesAny(text, ["lead", "manager", "head of", "director", "principal"])) {
     return "senior";
   }
-
-  const currentEducation = args.candidateContext.education.some((item) =>
-    /\bpresent\b|\bcurrent\b|202[56]/i.test(item.dates ?? "")
-  );
-  if (currentEducation && args.candidateContext.experiences.length <= 2) return "graduate";
-  if (args.candidateContext.experiences.length <= 2) return "early_career";
-  if (args.candidateContext.experiences.length >= 5) return "senior";
-  return "mid_career";
+  if (includesAny(text, ["3 years", "4 years", "5 years", "senior"])) {
+    return "mid_career";
+  }
+  return "early_career";
 }
 
-function credentialsAreThreshold(rawJobText: string, jobContext: JobContext | null) {
+function credentialsAreThreshold(rawJobText: string, jobBrief: JobBrief | null) {
   const text = corpus([
     rawJobText,
-    jobContext?.roleSummary,
-    ...(jobContext?.mustHaveRequirements ?? []),
-    ...(jobContext?.expectedProofTypes ?? []),
+    jobBrief?.roleSummary,
+    ...(jobBrief?.topPriorities ?? []),
+    ...(jobBrief?.proofNeeds ?? []),
   ]);
 
   return includesAny(text, [
@@ -175,68 +189,56 @@ function credentialsAreThreshold(rawJobText: string, jobContext: JobContext | nu
   ]);
 }
 
-function candidateHasStrongProjectProof(candidateContext: CandidateContext) {
+function candidateHasStrongProjectProof(args: {
+  rawCvText: string;
+  candidateBrief: CandidateBrief;
+  gapAnswers: GapAnswerForComposer[];
+}) {
   const evidenceCorpus = corpus([
-    ...candidateContext.notableEvidence,
-    ...candidateContext.projects.flatMap((project) => [
-      ...project.achievementFacts,
-      ...project.descriptionFacts,
-      ...project.metrics,
-      ...project.originalBullets,
-    ]),
+    args.rawCvText,
+    ...args.candidateBrief.strongestEvidence,
+    ...args.candidateBrief.relevantSignals,
+    ...args.gapAnswers.map((item) => item.answer),
   ]);
 
-  return (
-    candidateContext.projects.length > 0 &&
-    includesAny(evidenceCorpus, [
-      "deployed",
-      "shipped",
-      "evaluation",
-      "latency",
-      "reliability",
-      "cost",
-      "structured output",
-      "system",
-      "benchmark",
-      "stakeholder",
-      "customer",
-      "user",
-      "workflow",
-    ])
-  );
+  return includesAny(evidenceCorpus, [
+    "deployed",
+    "shipped",
+    "evaluation",
+    "latency",
+    "reliability",
+    "cost",
+    "structured output",
+    "system",
+    "benchmark",
+    "stakeholder",
+    "customer",
+    "user",
+    "workflow",
+    "project",
+  ]);
 }
 
-function experienceStrongerThanProjects(candidateContext: CandidateContext) {
-  const experienceSignals = candidateContext.experiences.reduce((total, item) => {
-    return total + item.achievementFacts.length + item.metrics.length + item.originalBullets.length;
-  }, 0);
-  const projectSignals = candidateContext.projects.reduce((total, item) => {
-    return total + item.achievementFacts.length + item.metrics.length + item.originalBullets.length;
-  }, 0);
-  return experienceSignals > projectSignals + 2;
+function educationAndCertificationsAreShort(args: {
+  rawCvText: string;
+  deterministicBasics: DeterministicCandidateBasics;
+}) {
+  const text = args.rawCvText;
+  const hasEducation = /education|university|bachelor|master|degree/i.test(text);
+  const hasCertifications =
+    /certification|certificate|licensed|licence|exam|associate/i.test(text);
+  return hasEducation && hasCertifications && args.deterministicBasics.sectionHeadings.length <= 8;
 }
 
-function educationAndCertificationsAreShort(candidateContext: CandidateContext) {
-  const educationLines = candidateContext.education.reduce(
-    (total, item) => total + 1 + item.details.length,
-    0
-  );
-  const certificationLines = candidateContext.certifications.reduce(
-    (total, item) => total + 1 + item.notes.length,
-    0
-  );
-
-  return educationLines <= 5 && certificationLines <= 5;
-}
-
-function candidateMayNeedFounderDeframing(candidateContext: CandidateContext) {
+function candidateMayNeedFounderDeframing(args: {
+  rawCvText: string;
+  candidateBrief: CandidateBrief;
+}) {
   const text = corpus([
-    candidateContext.identity.currentTitle,
-    candidateContext.currentHeadline,
-    ...candidateContext.summaryFacts,
-    ...candidateContext.experiences.map((item) => item.title),
+    args.rawCvText,
+    args.candidateBrief.possibleHeadline,
+    ...args.candidateBrief.relevantSignals,
   ]);
-
   return includesAny(text, ["founder", "ceo", "entrepreneur", "builder"]);
 }
 
@@ -299,22 +301,23 @@ function preferredLabelsFor(archetype: SectionStrategyArchetype) {
 
 function inferCareerChanger(args: {
   rawJobText: string;
-  jobContext: JobContext | null;
-  candidateContext: CandidateContext;
+  rawCvText: string;
+  jobBrief: JobBrief | null;
+  candidateBrief: CandidateBrief;
   careerStage: CareerStage;
   strongProjectProof: boolean;
 }) {
   if (args.careerStage === "graduate") return false;
 
   const targetRole = corpus([
-    args.jobContext?.targetRoleTitle,
-    args.jobContext?.archetype,
+    args.jobBrief?.targetRoleTitle,
+    args.jobBrief?.archetype,
     args.rawJobText.slice(0, 220),
   ]);
   const currentProfile = corpus([
-    args.candidateContext.identity.currentTitle,
-    args.candidateContext.currentHeadline,
-    ...args.candidateContext.experiences.map((item) => item.title),
+    args.candidateBrief.possibleHeadline,
+    args.rawCvText.slice(0, 500),
+    ...args.candidateBrief.relevantSignals,
   ]);
 
   const targetSignals = [
@@ -341,20 +344,22 @@ function inferCareerChanger(args: {
 
 export function buildSectionStrategy(args: {
   rawJobText: string;
-  jobContext: JobContext | null;
-  candidateContext: CandidateContext;
+  rawCvText: string;
+  jobBrief: JobBrief | null;
+  candidateBrief: CandidateBrief;
+  deterministicBasics: DeterministicCandidateBasics;
   gapAnswers: GapAnswerForComposer[];
 }): SectionStrategy {
   const archetype = inferArchetype(args);
   const careerStage = inferCareerStage(args);
-  const credentialsThreshold = credentialsAreThreshold(args.rawJobText, args.jobContext);
-  const strongProjectProof = candidateHasStrongProjectProof(args.candidateContext);
-  const experienceDominant = experienceStrongerThanProjects(args.candidateContext);
-  const founderRisk = candidateMayNeedFounderDeframing(args.candidateContext);
+  const credentialsThreshold = credentialsAreThreshold(args.rawJobText, args.jobBrief);
+  const strongProjectProof = candidateHasStrongProjectProof(args);
+  const founderRisk = candidateMayNeedFounderDeframing(args);
   const careerChanger = inferCareerChanger({
     rawJobText: args.rawJobText,
-    jobContext: args.jobContext,
-    candidateContext: args.candidateContext,
+    rawCvText: args.rawCvText,
+    jobBrief: args.jobBrief,
+    candidateBrief: args.candidateBrief,
     careerStage,
     strongProjectProof,
   });
@@ -373,18 +378,19 @@ export function buildSectionStrategy(args: {
 
   const proofFirstRecommended =
     !credentialsThreshold &&
-    (archetype === "ai_ml_data_software" ||
-      archetype === "marketing_sales_growth_comms" ||
-      archetype === "design_ux_creative" ||
-      archetype === "graduate_early_career") &&
-    (strongProjectProof || gapAnswerBoost) &&
-    !experienceDominant;
+    (effectiveArchetype === "ai_ml_data_software" ||
+      effectiveArchetype === "marketing_sales_growth_comms" ||
+      effectiveArchetype === "design_ux_creative" ||
+      effectiveArchetype === "graduate_early_career" ||
+      effectiveArchetype === "career_changer") &&
+    (strongProjectProof || gapAnswerBoost);
 
   const combineEducationAndCertifications =
     !credentialsThreshold &&
-    args.candidateContext.education.length > 0 &&
-    args.candidateContext.certifications.length > 0 &&
-    educationAndCertificationsAreShort(args.candidateContext);
+    educationAndCertificationsAreShort({
+      rawCvText: args.rawCvText,
+      deterministicBasics: args.deterministicBasics,
+    });
 
   let recommendedSectionOrder: string[];
   switch (effectiveArchetype) {
@@ -424,17 +430,6 @@ export function buildSectionStrategy(args: {
       break;
   }
 
-  if (careerStage === "graduate" && !credentialsThreshold && proofFirstRecommended) {
-    recommendedSectionOrder = [
-      "summary",
-      "selected-technical-achievements",
-      "skills",
-      "experience",
-      "education",
-      "certifications",
-    ];
-  }
-
   if (combineEducationAndCertifications) {
     recommendedSectionOrder = recommendedSectionOrder.filter(
       (section) => section !== "certifications"
@@ -446,19 +441,18 @@ export function buildSectionStrategy(args: {
     : "Prefer employee-fit wording for independent projects unless founder framing is clearly useful.";
 
   const roleHint = firstNonEmpty([
-    args.jobContext?.targetRoleTitle,
-    args.candidateContext.identity.currentTitle,
-    args.candidateContext.currentHeadline,
+    args.jobBrief?.targetRoleTitle,
+    args.candidateBrief.possibleHeadline,
   ]) ?? "target role";
   const rationale = proofFirstRecommended
-    ? `Proof-first strategy for ${roleHint}: project or system evidence is stronger and more relevant than formal experience, so selected proof should appear before skills.`
+    ? `Proof-first strategy for ${roleHint}: strong project or systems evidence should appear before generic support sections.`
     : credentialsThreshold
       ? `Credential-aware strategy for ${roleHint}: threshold credentials need early visibility before broader supporting proof.`
-      : `Conservative strategy for ${roleHint}: lead with the clearest role fit and keep supporting proof compact and non-duplicative.`;
+      : `Conservative strategy for ${roleHint}: lead with clear role fit and keep supporting proof compact and non-duplicative.`;
 
   return {
-    archetype:
-      effectiveArchetype,
+    archetype: effectiveArchetype,
+    subArchetype: args.jobBrief?.subArchetype ?? null,
     careerStage,
     credentialsAreThreshold: credentialsThreshold,
     proofFirstRecommended,

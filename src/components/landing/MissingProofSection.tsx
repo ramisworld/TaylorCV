@@ -66,7 +66,7 @@ function DiagramCard(props: {
 function ConnectorLines() {
   return (
     <svg
-      aria-hidden="true"
+      xia-hidden="true"
       className={styles.connectorSvg}
       fill="none"
       viewBox="0 0 1000 560"

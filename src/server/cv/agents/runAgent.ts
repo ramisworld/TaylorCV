@@ -2,7 +2,7 @@ import "server-only";
 
 import { z } from "zod";
 
-import { estimateCost } from "~/lib/modelPricing";
+import { estimateCost, getModelPricing } from "~/lib/modelPricing";
 import {
   OpenAiProviderError,
   createStructuredJsonResponseWithUsage,
@@ -40,6 +40,7 @@ export async function runAgent<T>(args: {
   let totalTokens: number | null = null;
   let reasoningTokens: number | null = null;
   let cost: number | null = null;
+  const modelPricing = getModelPricing(model);
   let rawOutput: unknown = null;
   let errorClass: string | null = null;
   let providerErrorMeta: Record<string, unknown> | null = null;
@@ -112,7 +113,7 @@ export async function runAgent<T>(args: {
     };
 
     console.log(
-      `[Agent] ${agentName} | model=${model} | reasoning=${args.reasoningEffort} | maxOutputTokens=${args.maxOutputTokens} | durationMs=${Date.now() - start} | status=success | responseStatus=${responseStatus ?? "n/a"} | tokens=${totalTokens ?? "n/a"} | reasoningTokens=${reasoningTokens ?? "n/a"} | estInputTokens=${estimatedInputTokens} | cost=${cost ?? "n/a"}`
+      `[Agent] ${agentName} | model=${model} | pricedAs=${modelPricing.normalizedModel} | promptCptPer1k=${modelPricing.pricing.promptPer1k} | completionCptPer1k=${modelPricing.pricing.completionPer1k} | reasoning=${args.reasoningEffort} | maxOutputTokens=${args.maxOutputTokens} | durationMs=${Date.now() - start} | status=success | responseStatus=${responseStatus ?? "n/a"} | tokens=${totalTokens ?? "n/a"} | reasoningTokens=${reasoningTokens ?? "n/a"} | estInputTokens=${estimatedInputTokens} | cost=${cost ?? "n/a"}`
     );
     console.info("[AgentTelemetry]", JSON.stringify({ ...inputSummary, ...outputSummary }));
 

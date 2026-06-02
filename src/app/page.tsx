@@ -15,6 +15,7 @@ import { exportCvDocx, exportCvPdf } from "~/lib/cvExport";
 import { api, type RouterOutputs } from "~/trpc/react";
 
 const currentApplicationStorageKey = "currentApplicationId";
+const pendingPlanStorageKey = "pendingPlanKey";
 const staleApplicationErrorFragments = [
   "does not belong to this anonymous session",
   "does not belong to this session",
@@ -107,6 +108,19 @@ export default function Home() {
     [state?.cvDraft?.cvJson]
   );
 
+  function clearClientApplicationState(options?: { preserveDraft?: boolean }) {
+    localStorage.removeItem(currentApplicationStorageKey);
+    localStorage.removeItem(pendingPlanStorageKey);
+    if (!options?.preserveDraft) {
+      setJobText("");
+      setCandidateText("");
+      setCandidateFileName(null);
+    }
+    setCandidateAnalysisState("idle");
+    setError(null);
+    setExportError(null);
+  }
+
   useEffect(() => {
     const qualityWarnings = Array.isArray(
       (state?.cvDraft?.builderOutputJson as { qualityWarnings?: unknown } | null | undefined)
@@ -126,19 +140,12 @@ export default function Home() {
   }, [applicationId, state?.cvDraft?.builderOutputJson]);
 
   function recoverFromStaleApplication(preserveDraft = true) {
-    localStorage.removeItem(currentApplicationStorageKey);
+    clearClientApplicationState({ preserveDraft });
     setApplicationId(null);
     setResumedApplicationId(null);
     setShowLanding(false);
     setStage("job_description");
-    setError(null);
     window.history.replaceState(null, "", "/");
-
-    if (!preserveDraft) {
-      setJobText("");
-      setCandidateText("");
-      setCandidateFileName(null);
-    }
 
     recoveryPromiseRef.current ??= createApplication
       .mutateAsync()
@@ -278,17 +285,12 @@ export default function Home() {
 
   const resetApplication = api.application.resetApplication.useMutation({
     onSuccess: (data) => {
+      clearClientApplicationState({ preserveDraft: false });
       localStorage.setItem(currentApplicationStorageKey, data.applicationId);
       setApplicationId(data.applicationId);
       setResumedApplicationId(null);
       setShowLanding(false);
       setStage("job_description");
-      setJobText("");
-      setCandidateText("");
-      setCandidateFileName(null);
-      setCandidateAnalysisState("idle");
-      setError(null);
-      setExportError(null);
       window.history.replaceState(null, "", `/?applicationId=${data.applicationId}`);
     },
     onError: (mutationError) => {

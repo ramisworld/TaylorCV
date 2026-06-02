@@ -14,11 +14,15 @@ import {
 } from "./cvQualityWarnings";
 import {
   IntakeGapOutputSchema,
+  StoredCandidateProfileJsonSchema,
   StructuredCvDocumentSchema,
-  type CandidateContext,
+  type CandidateBrief,
+  type DeterministicCandidateBasics,
   type GapAnswerForComposer,
-  type JobContext,
+  type JobBrief,
+  type StoredCandidateProfile,
 } from "./cvSchemas";
+import { extractCandidateBasics } from "./extractCandidateBasics";
 import { buildSectionStrategy } from "./sectionStrategy";
 
 function compactText(value: string, max = 140) {
@@ -36,20 +40,29 @@ function fallbackJobTitle(rawJobText: string) {
   return compactText(firstUsefulLine, 90);
 }
 
-function profileSummary(candidateContext: CandidateContext) {
+function profileSummary(candidateBrief: CandidateBrief) {
   return (
-    candidateContext.summaryFacts.join(". ") ||
-    candidateContext.notableEvidence.join(". ") ||
+    candidateBrief.possibleHeadline ||
+    candidateBrief.strongestEvidence.join(". ") ||
+    candidateBrief.relevantSignals.join(". ") ||
     "Candidate CV saved by TaylorCV."
   );
 }
 
-function serializeSkills(candidateContext: CandidateContext) {
-  return candidateContext.skillsByGroup.flatMap((group) => group.skills);
+function serializeSkills(candidateBrief: CandidateBrief) {
+  return candidateBrief.relevantSignals.filter((signal) =>
+    /typescript|javascript|python|sql|react|next|node|postgres|prisma|openai|aws|azure|figma|excel|salesforce|seo|google ads/i.test(
+      signal
+    )
+  );
 }
 
 function normalizeStoredIntake(value: unknown) {
-  const parsed = IntakeGapOutputSchema.safeParse(value);
+  const parsed = IntakeGapOutputSchema.shape.jobBrief.safeParse(
+    value && typeof value === "object" && !Array.isArray(value)
+      ? (value as { jobBrief?: unknown }).jobBrief
+      : value
+  );
   return parsed.success ? parsed.data : null;
 }
 
@@ -86,6 +99,17 @@ function validateAndParseCv(cv: unknown) {
   }
 
   return { validatedCv, parsed };
+}
+
+function parseStoredCandidateProfile(value: unknown): StoredCandidateProfile {
+  const result = StoredCandidateProfileJsonSchema.safeParse(value);
+  if (!result.success) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Candidate profile is invalid. Please submit the CV again.",
+    });
+  }
+  return result.data;
 }
 
 export async function submitJob(args: {
@@ -147,24 +171,25 @@ export async function submitCandidate(args: {
     });
   }
 
+  const deterministicBasics = extractCandidateBasics(args.rawCvText);
   const intake = await runIntakeGapAgent({
     applicationId: args.applicationId,
     rawJobText: job.rawText,
     rawCvText: args.rawCvText,
   });
 
-  const { jobContext, candidateContext } = intake;
+  const { jobBrief, candidateBrief } = intake;
 
   await db.job.update({
     where: { applicationId: args.applicationId },
     data: {
-      title: jobContext.targetRoleTitle || job.title,
-      company: jobContext.companyName,
-      seniority: jobContext.seniority,
-      summary: jobContext.roleSummary,
-      roleDomain: jobContext.marketOrLocation,
-      archetypeHint: jobContext.archetype,
-      analysisJson: intake as unknown as Prisma.InputJsonValue,
+      title: jobBrief.targetRoleTitle || job.title,
+      company: jobBrief.companyName,
+      seniority: jobBrief.seniority,
+      summary: jobBrief.roleSummary,
+      roleDomain: jobBrief.marketOrLocation,
+      archetypeHint: jobBrief.archetype,
+      analysisJson: { jobBrief } as Prisma.InputJsonValue,
     },
   });
 
@@ -175,63 +200,41 @@ export async function submitCandidate(args: {
     where: { applicationId: args.applicationId },
   });
 
+  const storedProfile = {
+    candidateBrief,
+    deterministicBasics,
+  } satisfies StoredCandidateProfile;
+
   const profileRow = await db.candidateProfile.create({
     data: {
       sourceApplicationId: args.applicationId,
       sourceType: "cv_upload",
       rawCvText: args.rawCvText,
-      profileJson: candidateContext as unknown as Prisma.InputJsonValue,
-      summary: compactText(profileSummary(candidateContext), 700),
-      skillsJson: serializeSkills(candidateContext) as Prisma.InputJsonValue,
-      projectsJson: candidateContext.projects.map((project) => ({
-        name: project.name,
-        tools: project.tools,
-        links: project.links,
-      })) as Prisma.InputJsonValue,
-      educationJson: candidateContext.education.map((item) => ({
-        institution: item.institution,
-        qualification: item.qualification,
-        dates: item.dates,
-        details: item.details,
-        awardsOrScholarships: item.awardsOrScholarships,
-      })) as Prisma.InputJsonValue,
-      certificationsJson: candidateContext.certifications.map((item) => ({
-        name: item.name,
-        issuer: item.issuer,
-        date: item.date,
-        scoreOrDetail: item.scoreOrDetail,
-        notes: item.notes,
-      })) as Prisma.InputJsonValue,
-      experienceJson: candidateContext.experiences.map((experience) => ({
-        title: experience.title,
-        organization: experience.organization,
-        tools: experience.tools,
-        metrics: experience.metrics,
-      })) as Prisma.InputJsonValue,
-      toolsJson: candidateContext.experiences
-        .flatMap((experience) => experience.tools)
-        .concat(candidateContext.projects.flatMap((project) => project.tools))
-        .filter((value, index, values) => values.indexOf(value) === index) as Prisma.InputJsonValue,
-      achievementsJson: candidateContext.experiences
-        .flatMap((experience) => experience.achievementFacts)
-        .concat(candidateContext.projects.flatMap((project) => project.achievementFacts))
-        .concat(candidateContext.notableEvidence) as Prisma.InputJsonValue,
-      strongProofCandidatesJson: candidateContext.notableEvidence as Prisma.InputJsonValue,
-      likelyTopEvidenceJson: candidateContext.sourceStructure as unknown as Prisma.InputJsonValue,
-      cautionNotesJson: candidateContext.warnings as Prisma.InputJsonValue,
-      scopeOpportunitiesJson: candidateContext.weakOrMissingAreas as Prisma.InputJsonValue,
+      profileJson: storedProfile as unknown as Prisma.InputJsonValue,
+      summary: compactText(profileSummary(candidateBrief), 700),
+      skillsJson: serializeSkills(candidateBrief) as Prisma.InputJsonValue,
+      projectsJson: [] as Prisma.InputJsonValue,
+      educationJson: [] as Prisma.InputJsonValue,
+      certificationsJson: [] as Prisma.InputJsonValue,
+      experienceJson: [] as Prisma.InputJsonValue,
+      toolsJson: serializeSkills(candidateBrief) as Prisma.InputJsonValue,
+      achievementsJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
+      strongProofCandidatesJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
+      likelyTopEvidenceJson: candidateBrief.usefulSections as Prisma.InputJsonValue,
+      cautionNotesJson: candidateBrief.warnings as Prisma.InputJsonValue,
+      scopeOpportunitiesJson: candidateBrief.missingOrWeakProof as Prisma.InputJsonValue,
       contactInfoJson: {
-        fullName: candidateContext.identity.fullName,
-        professionalTitle: candidateContext.identity.currentTitle,
-        location: candidateContext.identity.location,
-        email: candidateContext.identity.email,
-        phone: candidateContext.identity.phone,
+        fullName: deterministicBasics.possibleName,
+        professionalTitle: candidateBrief.possibleHeadline,
+        location: null,
+        email: deterministicBasics.email,
+        phone: deterministicBasics.phone,
       } as Prisma.InputJsonValue,
       linksJson: {
-        linkedin: candidateContext.identity.linkedin,
-        github: candidateContext.identity.github,
-        portfolio: candidateContext.identity.portfolio,
-        other: candidateContext.links,
+        linkedin: deterministicBasics.linkedin,
+        github: deterministicBasics.github,
+        portfolio: deterministicBasics.portfolio,
+        other: deterministicBasics.otherUrls,
       } as Prisma.InputJsonValue,
     },
   });
@@ -244,11 +247,13 @@ export async function submitCandidate(args: {
         question: q.question,
         reason: q.targetArea,
         whyItMatters: q.whyItMatters,
-        answerGuidance: q.answerGuidance,
+        answerGuidance: q.helperText,
         questionJson: {
+          questionTitle: q.questionTitle,
+          shortTitle: q.shortTitle,
           tinyExample: q.tinyExample,
+          helperText: q.helperText,
           whyThisMatters: q.whyItMatters,
-          howYourAnswerHelps: q.answerGuidance,
           targetArea: q.targetArea,
           priority: q.priority,
         } as Prisma.InputJsonValue,
@@ -265,13 +270,13 @@ export async function submitCandidate(args: {
     data: {
       status: newStatus,
       currentStep: newStatus,
-      dreamRole: jobContext.targetRoleTitle,
-      roleArchetype: jobContext.archetype,
+      dreamRole: jobBrief.targetRoleTitle,
+      roleArchetype: jobBrief.archetype,
     },
   });
 
   return {
-    candidateProfile: candidateContext,
+    candidateProfile: storedProfile,
     candidateProfileRow: profileRow,
     gapQuestions: createdQuestions,
   };
@@ -345,8 +350,8 @@ export async function generateCv(args: { applicationId: string }) {
     });
   }
 
-  const storedIntake = normalizeStoredIntake(job.analysisJson);
-  const candidateContext = candidateContextFromJson(candidateProfileRow.profileJson);
+  const jobBrief = normalizeStoredIntake(job.analysisJson);
+  const storedCandidateProfile = parseStoredCandidateProfile(candidateProfileRow.profileJson);
 
   const gapAnswersForComposer: GapAnswerForComposer[] = gapAnswers
     .filter((answer) => !answer.skipped && answer.rawUserAnswer?.trim())
@@ -355,14 +360,18 @@ export async function generateCv(args: { applicationId: string }) {
       return {
         gapQuestionId: answer.gapQuestionId,
         question: question?.question ?? "",
+        targetArea: question?.reason ?? "",
+        whyItMatters: question?.whyItMatters ?? "",
         answer: answer.rawUserAnswer ?? "",
       };
     });
 
   const sectionStrategy = buildSectionStrategy({
     rawJobText: job.rawText,
-    jobContext: storedIntake?.jobContext ?? null,
-    candidateContext,
+    rawCvText: candidateProfileRow.rawCvText,
+    jobBrief,
+    candidateBrief: storedCandidateProfile.candidateBrief,
+    deterministicBasics: storedCandidateProfile.deterministicBasics,
     gapAnswers: gapAnswersForComposer,
   });
 
@@ -370,8 +379,9 @@ export async function generateCv(args: { applicationId: string }) {
     applicationId: args.applicationId,
     rawJobText: job.rawText,
     rawCvText: candidateProfileRow.rawCvText,
-    jobContext: storedIntake?.jobContext ?? null,
-    candidateContext,
+    jobBrief,
+    candidateBrief: storedCandidateProfile.candidateBrief,
+    deterministicBasics: storedCandidateProfile.deterministicBasics,
     gapAnswers: gapAnswersForComposer,
     sectionStrategy,
   });
@@ -394,8 +404,8 @@ export async function generateCv(args: { applicationId: string }) {
 
   const qualityWarnings = collectCvQualityWarnings({
     rawJobText: job.rawText,
-    jobContext: storedIntake?.jobContext ?? null,
-    candidateContext,
+    jobBrief,
+    candidateBrief: storedCandidateProfile.candidateBrief,
     sectionStrategy,
     blueprint: repairedComposerOutput.blueprint,
     cv: parsed,
@@ -433,8 +443,9 @@ export async function generateCv(args: { applicationId: string }) {
       presentationJson,
       builderOutputJson: {
         blueprint: repairedComposerOutput.blueprint,
-        jobContext: storedIntake?.jobContext ?? null,
-        candidateContext,
+        jobBrief,
+        candidateBrief: storedCandidateProfile.candidateBrief,
+        deterministicBasics: storedCandidateProfile.deterministicBasics,
         gapAnswers: gapAnswersForComposer,
         sectionStrategy,
         qualityWarnings: combinedQualityWarnings,
@@ -452,17 +463,6 @@ export async function generateCv(args: { applicationId: string }) {
   });
 
   return cvDraft;
-}
-
-function candidateContextFromJson(value: unknown): CandidateContext {
-  const result = IntakeGapOutputSchema.shape.candidateContext.safeParse(value);
-  if (!result.success) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Candidate profile is invalid. Please submit the CV again.",
-    });
-  }
-  return result.data;
 }
 
 export async function authorizeExport(args: {

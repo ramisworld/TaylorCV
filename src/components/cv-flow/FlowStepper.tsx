@@ -27,10 +27,10 @@ export function FlowStepper(props: { currentStep: WorkflowStepNumber }) {
               <div className="flex items-center gap-3 sm:gap-3.5">
                 <span
                   className={cn(
-                    "grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[13px] leading-none transition-all sm:h-8 sm:w-8 sm:text-[14px]",
+                    "grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[13px] font-medium leading-none transition-all sm:h-8 sm:w-8 sm:text-[14px]",
                     isActive || isCompleted
                       ? "border-[#0b4ef3] bg-[#0b4ef3] text-white shadow-[0_8px_22px_rgba(11,78,243,0.16)]"
-                      : "border-[#cfd6e8] bg-white/78 text-[#94a0b8]"
+                      : "border-[#d3ddec] bg-white text-[#8fa0be]"
                   )}
                 >
                   {isCompleted ? <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : stepNumber}
@@ -42,7 +42,7 @@ export function FlowStepper(props: { currentStep: WorkflowStepNumber }) {
                       ? "text-[#0b4ef3] font-medium"
                       : isCompleted
                         ? "text-[#2757de] font-medium"
-                        : "text-[#7e8aa3]"
+                        : "text-[#7b89a4]"
                   )}
                 >
                   {step.label}

@@ -1,7 +1,8 @@
 import type {
-  CandidateContext,
+  CandidateBrief,
+  DeterministicCandidateBasics,
   GapAnswerForComposer,
-  JobContext,
+  JobBrief,
 } from "../cvSchemas";
 import type { SectionStrategy } from "../sectionStrategy";
 
@@ -13,6 +14,13 @@ Output:
 - blueprint: short developer-facing CV strategy
 - cv: renderer-ready structured CV
 
+Source rules:
+- rawJobText is the source of truth for the target role.
+- rawCandidateCvText is the source of truth for the candidate evidence.
+- jobBrief, candidateBrief, deterministicBasics, and sectionStrategy are guidance only.
+- gap answers may be used only when they credibly fill missing or weak proof.
+- whyItMatters explains why a gap question was asked. It is not a fact to copy into the CV.
+
 Writing rules:
 - The recruiter should see target fit within seconds.
 - The summary and the next section together must make the top third recruiter-clear.
@@ -20,7 +28,6 @@ Writing rules:
 - Preserve useful evidence from the source: links, certification scores or distinctions, scholarships, project context, stakeholder context, tools, and concrete outcome wording.
 - Use the strongest available proof, not the most conventional template.
 - A strong CV is a compressed proof map. Make role fit obvious in the top third.
-- Use the raw CV, gap answers, and compact context as the only evidence sources.
 - Never invent facts, metrics, seniority, credentials, companies, tools, users, or outcomes.
 - Proof beats promises. Prefer action + object + scope/result bullets.
 - Real metrics are good. If exact metrics are missing, use truthful context instead of fake numbers.
@@ -51,17 +58,10 @@ Renderer rules:
 - Do not output markdown, HTML, CSS, or prose outside the JSON fields.
 - Every required top-level CV field must exist even when empty.`;
 
-const maxJobExcerptChars = 2_800;
-const maxRawCvChars = 12_000;
+const abnormalRawCvSafetyCap = 80_000;
 
 function normalizeWhitespace(value: string) {
   return value.replace(/\s+/g, " ").trim();
-}
-
-function clampText(value: string, maxChars: number) {
-  const text = value.trim();
-  if (text.length <= maxChars) return text;
-  return `${text.slice(0, maxChars).trimEnd()} [truncated]`;
 }
 
 function uniqueStrings(values: string[], maxItems: number) {
@@ -71,152 +71,54 @@ function uniqueStrings(values: string[], maxItems: number) {
   );
 }
 
-function excerptCandidates(rawJobText: string) {
-  return rawJobText
-    .split(/\n{1,}|\r\n{1,}/)
-    .map((part) => normalizeWhitespace(part))
-    .filter((part) => part.length >= 40);
-}
-
-function scoreExcerpt(text: string, jobContext: JobContext | null) {
-  const normalized = normalizeWhitespace(text).toLowerCase();
-  let score = Math.min(40, text.length / 10);
-  for (const phrase of [
-    ...(jobContext?.mustHaveRequirements ?? []),
-    ...(jobContext?.recruiterPriorities ?? []),
-    ...(jobContext?.expectedProofTypes ?? []),
-  ]) {
-    const compact = normalizeWhitespace(phrase).toLowerCase();
-    if (compact && normalized.includes(compact.slice(0, Math.min(compact.length, 30)))) score += 8;
-  }
-  if (/required|must|responsib|experience|skill|qualification|build|ship|deploy|stakeholder/i.test(text)) {
-    score += 10;
-  }
-  return score;
-}
-
-function selectJobExcerpts(rawJobText: string, jobContext: JobContext | null) {
-  const picked: string[] = [];
-  let usedChars = 0;
-  for (const excerpt of excerptCandidates(rawJobText)
-    .sort((a, b) => scoreExcerpt(b, jobContext) - scoreExcerpt(a, jobContext))
-    .slice(0, 8)) {
-    if (picked.length >= 5) break;
-    const nextChars = usedChars + excerpt.length;
-    if (nextChars > maxJobExcerptChars && picked.length >= 2) break;
-    picked.push(excerpt);
-    usedChars = nextChars;
-  }
-  return picked;
-}
-
-export function compactJobContextForComposer(jobContext: JobContext | null) {
-  if (!jobContext) return null;
-
-  return {
-    targetRoleTitle: jobContext.targetRoleTitle,
-    companyName: jobContext.companyName,
-    marketOrLocation: jobContext.marketOrLocation,
-    seniority: jobContext.seniority,
-    archetype: jobContext.archetype,
-    roleSummary: jobContext.roleSummary,
-    mustHaveRequirements: uniqueStrings(jobContext.mustHaveRequirements, 8),
-    keywords: uniqueStrings(jobContext.keywords, 12),
-    recruiterPriorities: uniqueStrings(jobContext.recruiterPriorities, 8),
-    expectedProofTypes: uniqueStrings(jobContext.expectedProofTypes, 8),
-    culturalSignals: uniqueStrings(jobContext.culturalSignals, 6),
-    risksOrAmbiguities: uniqueStrings(jobContext.risksOrAmbiguities, 6),
-  };
-}
-
-function summarizeExperience(candidateContext: CandidateContext) {
-  return candidateContext.experiences.slice(0, 4).map((item) => ({
-    title: item.title,
-    organization: item.organization,
-    dates: [item.startDate, item.endDate].filter(Boolean).join(" - ") || null,
-    strongestProof: uniqueStrings(
-      [...item.achievementFacts, ...item.metrics, ...item.descriptionFacts, ...item.originalBullets],
-      4
-    ),
-    tools: uniqueStrings(item.tools, 8),
-  }));
-}
-
-function summarizeProjects(candidateContext: CandidateContext) {
-  return candidateContext.projects.slice(0, 4).map((item) => ({
-    name: item.name,
-    strongestProof: uniqueStrings(
-      [...item.achievementFacts, ...item.metrics, ...item.descriptionFacts, ...item.originalBullets],
-      4
-    ),
-    tools: uniqueStrings(item.tools, 8),
-    links: uniqueStrings(item.links, 2),
-  }));
-}
-
-export function compactCandidateContextForComposer(candidateContext: CandidateContext) {
-  return {
-    identity: candidateContext.identity,
-    currentHeadline: candidateContext.currentHeadline,
-    summaryFacts: uniqueStrings(candidateContext.summaryFacts, 8),
-    strongestEvidence: uniqueStrings(candidateContext.notableEvidence, 10),
-    experiences: summarizeExperience(candidateContext),
-    projects: summarizeProjects(candidateContext),
-    skillsByGroup: candidateContext.skillsByGroup.slice(0, 6).map((group) => ({
-      group: group.group,
-      skills: uniqueStrings(group.skills, 10),
-    })),
-    education: candidateContext.education.slice(0, 3),
-    certifications: candidateContext.certifications.slice(0, 5).map((item) => ({
-      name: item.name,
-      issuer: item.issuer,
-      date: item.date,
-      scoreOrDetail: item.scoreOrDetail,
-      notes: uniqueStrings(item.notes, 2),
-    })),
-    awardsOrScholarships: uniqueStrings(candidateContext.awardsOrScholarships, 6),
-    warnings: uniqueStrings(candidateContext.warnings, 6),
-    weakOrMissingAreas: uniqueStrings(candidateContext.weakOrMissingAreas, 8),
-    sourceHierarchy: candidateContext.sourceStructure.slice(0, 5).map((item) => ({
-      sectionName: item.sectionName,
-      normalizedType: item.normalizedType,
-      highSignal: item.highSignal,
-      usefulDetails: uniqueStrings(item.usefulDetails, 3),
-    })),
-  };
+function applyAbnormalRawCvSafetyCap(rawCvText: string) {
+  if (rawCvText.length <= abnormalRawCvSafetyCap) return rawCvText;
+  console.warn(
+    `[TaylorCV] raw CV exceeded abnormal safety cap (${rawCvText.length} chars); truncating for composer payload.`
+  );
+  return `${rawCvText.slice(0, abnormalRawCvSafetyCap).trimEnd()} [abnormally truncated]`;
 }
 
 export function buildCvComposerContext(args: {
   rawJobText: string;
   rawCvText: string;
-  jobContext: JobContext | null;
-  candidateContext: CandidateContext;
+  jobBrief: JobBrief | null;
+  candidateBrief: CandidateBrief;
+  deterministicBasics: DeterministicCandidateBasics;
   gapAnswers: GapAnswerForComposer[];
   sectionStrategy: SectionStrategy;
 }) {
-  const compactJobContext = compactJobContextForComposer(args.jobContext);
-  const compactCandidateContext = compactCandidateContextForComposer(args.candidateContext);
-  const jobExcerpts = selectJobExcerpts(args.rawJobText, args.jobContext);
-
   return {
     pageTarget: "one_page",
+    rawJobText: args.rawJobText,
+    rawCandidateCvText: applyAbnormalRawCvSafetyCap(args.rawCvText),
+    jobBrief: args.jobBrief
+      ? {
+          ...args.jobBrief,
+          topPriorities: uniqueStrings(args.jobBrief.topPriorities, 8),
+          proofNeeds: uniqueStrings(args.jobBrief.proofNeeds, 8),
+          keywords: uniqueStrings(args.jobBrief.keywords, 16),
+          cultureSignals: uniqueStrings(args.jobBrief.cultureSignals, 6),
+          risks: uniqueStrings(args.jobBrief.risks, 6),
+        }
+      : null,
+    candidateBrief: {
+      ...args.candidateBrief,
+      strongestEvidence: uniqueStrings(args.candidateBrief.strongestEvidence, 10),
+      relevantSignals: uniqueStrings(args.candidateBrief.relevantSignals, 12),
+      missingOrWeakProof: uniqueStrings(args.candidateBrief.missingOrWeakProof, 8),
+      usefulSections: uniqueStrings(args.candidateBrief.usefulSections, 8),
+      warnings: uniqueStrings(args.candidateBrief.warnings, 6),
+    },
+    deterministicBasics: args.deterministicBasics,
     sectionStrategy: args.sectionStrategy,
-    jobContext: compactJobContext,
-    candidateContext: compactCandidateContext,
     gapAnswers: args.gapAnswers.map((answer) => ({
       gapQuestionId: answer.gapQuestionId,
       question: normalizeWhitespace(answer.question),
+      targetArea: normalizeWhitespace(answer.targetArea),
+      whyItMatters: normalizeWhitespace(answer.whyItMatters),
       answer: normalizeWhitespace(answer.answer),
     })),
-    rawJobSignals: {
-      roleTitle: compactJobContext?.targetRoleTitle ?? null,
-      mustHaves: compactJobContext?.mustHaveRequirements ?? [],
-      recruiterPriorities: compactJobContext?.recruiterPriorities ?? [],
-      expectedProofTypes: compactJobContext?.expectedProofTypes ?? [],
-      culturalSignals: compactJobContext?.culturalSignals ?? [],
-      excerpts: jobExcerpts,
-    },
-    rawCandidateCvText: clampText(args.rawCvText, maxRawCvChars),
     rendererContract: {
       requiredTopLevelFields: [
         "sectionOrder",
@@ -245,7 +147,7 @@ export type CvComposerContext = ReturnType<typeof buildCvComposerContext>;
 export function buildCvComposerUserPromptFromContext(context: CvComposerContext) {
   return `Compose the final one-page CV from this context.
 Use sectionStrategy as the main source for section order and section labels.
-Use rawCandidateCvText, gapAnswers, and compact context as evidence.
+Use rawCandidateCvText and rawJobText as the primary evidence sources.
 
 ${JSON.stringify(context)}`;
 }

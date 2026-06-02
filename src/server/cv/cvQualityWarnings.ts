@@ -3,9 +3,9 @@ import type { StructuredCv } from "../../lib/cvDocument.ts";
 import { normalizeCvSectionsWithMetadata } from "../../lib/cvDocument.ts";
 
 import type {
-  CandidateContext,
+  CandidateBrief,
   CvBlueprint,
-  JobContext,
+  JobBrief,
   StructuredCvDocument,
 } from "./cvSchemas";
 import type { SectionStrategy } from "./sectionStrategy";
@@ -36,13 +36,13 @@ function isTechnicalArchetype(value: string | null | undefined) {
   ]);
 }
 
-function isRegulatedOrCredentialHeavy(jobContext: JobContext | null, rawJobText: string) {
+function isRegulatedOrCredentialHeavy(jobBrief: JobBrief | null, rawJobText: string) {
   const source = normalizeText(
     [
       rawJobText,
-      jobContext?.archetype ?? "",
-      ...(jobContext?.mustHaveRequirements ?? []),
-      ...(jobContext?.expectedProofTypes ?? []),
+      jobBrief?.archetype ?? "",
+      ...(jobBrief?.topPriorities ?? []),
+      ...(jobBrief?.proofNeeds ?? []),
     ].join(" ")
   );
 
@@ -110,13 +110,13 @@ function hasFounderFraming(cv: StructuredCv) {
   ]);
 }
 
-function jobRewardsFounderFraming(rawJobText: string, jobContext: JobContext | null) {
+function jobRewardsFounderFraming(rawJobText: string, jobBrief: JobBrief | null) {
   const source = normalizeText(
     [
       rawJobText,
-      jobContext?.roleSummary ?? "",
-      ...(jobContext?.keywords ?? []),
-      ...(jobContext?.recruiterPriorities ?? []),
+      jobBrief?.roleSummary ?? "",
+      ...(jobBrief?.keywords ?? []),
+      ...(jobBrief?.topPriorities ?? []),
     ].join(" ")
   );
 
@@ -235,22 +235,21 @@ export function repairCvForSectionStrategy(args: {
 
 export function collectCvQualityWarnings(args: {
   rawJobText: string;
-  jobContext: JobContext | null;
-  candidateContext: CandidateContext;
+  jobBrief: JobBrief | null;
+  candidateBrief: CandidateBrief;
   sectionStrategy?: SectionStrategy;
   blueprint?: CvBlueprint;
   cv: StructuredCv;
   layoutWarnings?: string[];
 }) {
-  const { rawJobText, jobContext, cv } = args;
+  const { rawJobText, jobBrief, cv } = args;
   const inferredProofFirstExpected =
-    isTechnicalArchetype(cv.roleArchetype ?? jobContext?.archetype ?? null) &&
-    !isRegulatedOrCredentialHeavy(jobContext, rawJobText) &&
+    isTechnicalArchetype(cv.roleArchetype ?? jobBrief?.archetype ?? null) &&
+    !isRegulatedOrCredentialHeavy(jobBrief, rawJobText) &&
     hasStrongProjectOrProofSection(cv) &&
-    (args.candidateContext.projects.length > 0 ||
-      args.candidateContext.notableEvidence.some((item) =>
+    args.candidateBrief.strongestEvidence.some((item) =>
         /project|system|deployment|evaluation|benchmark|latency|reliability|cost/i.test(item)
-      ));
+      );
   const proofFirstExpected =
     args.sectionStrategy?.proofFirstRecommended ?? inferredProofFirstExpected;
   const normalizedSections = normalizeCvSectionsWithMetadata(cv);
@@ -275,7 +274,7 @@ export function collectCvQualityWarnings(args: {
     cv.projects.length > 0 && hasSelectedSection && overlappingSelectedAndProjectProof(cv)
       ? "duplicate_projects_and_selected_achievements_possible"
       : null,
-    hasFounderFraming(cv) && !jobRewardsFounderFraming(rawJobText, jobContext)
+    hasFounderFraming(cv) && !jobRewardsFounderFraming(rawJobText, jobBrief)
       ? "founder_framing_risk_for_employee_application"
       : null,
     normalizedSections.warnings.includes("nonempty_section_missing_from_section_order")
