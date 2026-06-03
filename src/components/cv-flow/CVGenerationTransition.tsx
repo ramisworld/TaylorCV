@@ -5,11 +5,10 @@ import {
   Check,
   ChevronLeft,
   Clock,
-  Lock,
+  LockKeyhole,
   LockOpen,
   ShieldCheck,
   Sparkles,
-  Star,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -473,7 +472,7 @@ function CVRevealDocument(props: {
 
       <div className={styles.lockBadgeWrap}>
         <span className={styles.lockBadgeOuter}>
-          <Lock className="h-7 w-7" strokeWidth={2.35} />
+          <LockKeyhole className="h-7 w-7" strokeWidth={2.25} />
         </span>
       </div>
     </div>
@@ -619,12 +618,9 @@ export function GeneratedCVPreviewState(props: {
         <div className={styles.trustRow}>
           <span className={styles.starGroup} aria-label="5 star rating">
             {Array.from({ length: 5 }).map((_, index) => (
-              <Star
-                className={styles.pointStar}
-                fill="currentColor"
-                key={index}
-                strokeWidth={1.9}
-              />
+              <span className={styles.pointStar} key={index}>
+                ★
+              </span>
             ))}
           </span>
 
