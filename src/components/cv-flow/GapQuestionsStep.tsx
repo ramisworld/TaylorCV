@@ -12,15 +12,24 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 
-import { GlassCard, WorkflowPanel } from "~/components/cv-flow/JobDescriptionStep";
+import {
+  GlassCard,
+  WorkflowPanel,
+} from "~/components/cv-flow/JobDescriptionStep";
 import { cn } from "~/lib/utils";
 import type { RouterOutputs } from "~/trpc/react";
 
-type ApplicationState = NonNullable<RouterOutputs["application"]["getApplicationState"]>;
+type ApplicationState = NonNullable<
+  RouterOutputs["application"]["getApplicationState"]
+>;
 type GapQuestion = ApplicationState["gapQuestions"][number];
 
 const MAX_CHARACTERS = 1000;
-const SUGGESTION_CHIPS = ["Use metrics", "Be specific", "Mention scope"] as const;
+const SUGGESTION_CHIPS = [
+  "Use metrics",
+  "Be specific",
+  "Mention scope",
+] as const;
 
 function readQuestionJson(question: GapQuestion) {
   return question.questionJson &&
@@ -41,7 +50,7 @@ function questionMeta(question: GapQuestion) {
       ? json.helperText
       : typeof json.tinyExample === "string"
         ? json.tinyExample
-        : question.answerGuidance ?? "A short, honest example is enough.";
+        : (question.answerGuidance ?? "A short, honest example is enough.");
   const tinyExample =
     typeof json.tinyExample === "string" && json.tinyExample.trim()
       ? json.tinyExample
@@ -59,7 +68,8 @@ function questionMeta(question: GapQuestion) {
     why:
       typeof json.whyThisMatters === "string"
         ? json.whyThisMatters
-        : question.whyItMatters ?? "This gives Taylor a stronger proof point for the final CV.",
+        : (question.whyItMatters ??
+          "This gives Taylor a stronger proof point for the final CV."),
   };
 }
 
@@ -70,7 +80,10 @@ function compactQuestionTitle(question: string) {
     .replace(/^what /i, "")
     .replace(/^have you /i, "")
     .replace(/\?+$/, "")
-    .replace(/\b(a|an|the|your|you|to|for|of|and|or|that|this|did|have|has|had)\b/gi, " ")
+    .replace(
+      /\b(a|an|the|your|you|to|for|of|and|or|that|this|did|have|has|had)\b/gi,
+      " ",
+    )
     .replace(/\s+/g, " ")
     .trim();
 
@@ -81,7 +94,8 @@ function compactQuestionTitle(question: string) {
 }
 
 function answeredCount(answers: Record<string, string>) {
-  return Object.values(answers).filter((value) => value.trim().length > 0).length;
+  return Object.values(answers).filter((value) => value.trim().length > 0)
+    .length;
 }
 
 export function GapQuestionsStep(props: {
@@ -90,15 +104,27 @@ export function GapQuestionsStep(props: {
   isLoading: boolean;
   onBack: () => void;
   onSkip: () => void;
-  onSubmit: (answers: Array<{ gapQuestionId: string; answerText: string | null; skipped: boolean }>) => void;
+  onSubmit: (
+    answers: Array<{
+      gapQuestionId: string;
+      answerText: string | null;
+      skipped: boolean;
+    }>,
+  ) => void;
 }) {
   const answerable = useMemo(
-    () => props.questions.filter((question) => question.status === "unanswered" && question.question.trim()),
-    [props.questions]
+    () =>
+      props.questions.filter(
+        (question) =>
+          question.status === "unanswered" && question.question.trim(),
+      ),
+    [props.questions],
   );
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [expandedExampleId, setExpandedExampleId] = useState<string | null>(null);
+  const [expandedExampleId, setExpandedExampleId] = useState<string | null>(
+    null,
+  );
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -112,7 +138,9 @@ export function GapQuestionsStep(props: {
   }, [answerable]);
 
   useEffect(() => {
-    setCurrentIndex((current) => Math.min(current, Math.max(answerable.length - 1, 0)));
+    setCurrentIndex((current) =>
+      Math.min(current, Math.max(answerable.length - 1, 0)),
+    );
   }, [answerable.length]);
 
   if (answerable.length === 0) {
@@ -128,7 +156,9 @@ export function GapQuestionsStep(props: {
               <Sparkles className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-[20px] font-semibold text-[#081437]">Taylor can move straight to writing.</p>
+              <p className="text-[20px] font-semibold text-[#081437]">
+                Taylor can move straight to writing.
+              </p>
               <p className="mt-2 text-[15px] leading-7 text-[#7081a0]">
                 Your CV already gives enough role-relevant proof for this pass.
               </p>
@@ -182,9 +212,11 @@ export function GapQuestionsStep(props: {
 
   function appendHint(hint: (typeof SUGGESTION_CHIPS)[number]) {
     const additions: Record<(typeof SUGGESTION_CHIPS)[number], string> = {
-      "Use metrics": " Include numbers, timing, volume, or measurable impact if you have them.",
+      "Use metrics":
+        " Include numbers, timing, volume, or measurable impact if you have them.",
       "Be specific": " Name the project, situation, or result directly.",
-      "Mention scope": " Add who was involved, what you owned, or how wide the impact was.",
+      "Mention scope":
+        " Add who was involved, what you owned, or how wide the impact was.",
     };
     const nextValue = `${currentAnswer}${currentAnswer ? "" : ""}${additions[hint]}`;
     updateAnswer(currentQuestionId, nextValue);
@@ -200,7 +232,7 @@ export function GapQuestionsStep(props: {
             answerText: answerText || null,
             skipped: !answerText,
           };
-        })
+        }),
       );
       return;
     }
@@ -236,12 +268,25 @@ export function GapQuestionsStep(props: {
       <div className="mx-auto w-full max-w-[1160px]">
         <div className="grid gap-6 lg:grid-cols-[248px_minmax(0,1fr)]">
           <GlassCard className="p-6 lg:self-start">
-            <p className="text-[16px] font-semibold tracking-[-0.02em] text-[#33476b]">Your progress</p>
+            <p className="text-[16px] font-semibold tracking-[-0.02em] text-[#33476b]">
+              Your progress
+            </p>
 
             <div className="mt-5 flex items-center justify-center">
               <div className="relative h-[168px] w-[168px]">
-                <svg aria-hidden="true" className="h-full w-full -rotate-90" viewBox="0 0 148 148">
-                  <circle cx="74" cy="74" fill="none" r="58" stroke="#e7edf8" strokeWidth="6" />
+                <svg
+                  aria-hidden="true"
+                  className="h-full w-full -rotate-90"
+                  viewBox="0 0 148 148"
+                >
+                  <circle
+                    cx="74"
+                    cy="74"
+                    fill="none"
+                    r="58"
+                    stroke="#e7edf8"
+                    strokeWidth="6"
+                  />
                   <circle
                     cx="74"
                     cy="74"
@@ -273,7 +318,8 @@ export function GapQuestionsStep(props: {
                 const isCurrent = index === currentIndex;
                 const isAnswered = Boolean((answers[question.id] ?? "").trim());
                 const isCompleted = index < currentIndex && isAnswered;
-                const isFuture = index > currentIndex || (index < currentIndex && !isAnswered);
+                const isFuture =
+                  index > currentIndex || (index < currentIndex && !isAnswered);
 
                 return (
                   <div className="flex gap-3" key={question.id}>
@@ -285,7 +331,7 @@ export function GapQuestionsStep(props: {
                             ? "bg-[#2450f4] text-white"
                             : isCurrent
                               ? "bg-[#2450f4] text-white"
-                              : "bg-[#e8edf7] text-[#7f91af]"
+                              : "bg-[#e8edf7] text-[#7f91af]",
                         )}
                       >
                         <AnimatePresence mode="wait" initial={false}>
@@ -294,19 +340,33 @@ export function GapQuestionsStep(props: {
                             className="grid place-items-center"
                             exit={{ opacity: 0, scale: 0.72 }}
                             initial={{ opacity: 0, scale: 0.72 }}
-                            key={isCompleted ? `check-${question.id}` : `number-${question.id}-${index + 1}`}
+                            key={
+                              isCompleted
+                                ? `check-${question.id}`
+                                : `number-${question.id}-${index + 1}`
+                            }
                             transition={{ duration: 0.2, ease: "easeOut" }}
                           >
-                            {isCompleted ? <Check className="h-3.5 w-3.5" /> : index + 1}
+                            {isCompleted ? (
+                              <Check className="h-3.5 w-3.5" />
+                            ) : (
+                              index + 1
+                            )}
                           </motion.span>
                         </AnimatePresence>
                       </span>
-                      {index < answerable.length - 1 ? <span className="mt-2 h-8 w-px bg-[#e4eaf5]" /> : null}
+                      {index < answerable.length - 1 ? (
+                        <span className="mt-2 h-8 w-px bg-[#e4eaf5]" />
+                      ) : null}
                     </div>
                     <p
                       className={cn(
                         "pt-0.5 text-[15px] leading-7",
-                        isCurrent ? "font-medium text-[#2450f4]" : isFuture ? "text-[#7f8ea9]" : "text-[#364867]"
+                        isCurrent
+                          ? "font-medium text-[#2450f4]"
+                          : isFuture
+                            ? "text-[#7f8ea9]"
+                            : "text-[#364867]",
                       )}
                     >
                       {meta.shortTitle}
@@ -322,16 +382,23 @@ export function GapQuestionsStep(props: {
               <motion.div
                 key={currentQuestion.id}
                 {...questionTransition}
-                transition={{ duration: prefersReducedMotion ? 0.14 : 0.26, ease: "easeOut" }}
+                transition={{
+                  duration: prefersReducedMotion ? 0.14 : 0.26,
+                  ease: "easeOut",
+                }}
               >
                 <h2 className="max-w-4xl text-[27px] font-[620] leading-[1.22] tracking-[-0.04em] text-[#081437] sm:text-[29px]">
-                  {currentMeta.questionTitle}
+                  {currentQuestion.question}
                 </h2>
 
                 <button
                   className="mt-4 inline-flex items-center gap-2 text-[15px] font-medium text-[#2450f4] transition hover:text-[#1543d8]"
                   onClick={() =>
-                    setExpandedExampleId((current) => (current === currentQuestion.id ? null : currentQuestion.id))
+                    setExpandedExampleId((current) =>
+                      current === currentQuestion.id
+                        ? null
+                        : currentQuestion.id,
+                    )
                   }
                   type="button"
                 >
@@ -339,17 +406,25 @@ export function GapQuestionsStep(props: {
                   <ChevronDown
                     className={cn(
                       "h-4 w-4 transition-transform",
-                      expandedExampleId === currentQuestion.id && "rotate-180"
+                      expandedExampleId === currentQuestion.id && "rotate-180",
                     )}
                   />
                 </button>
 
-                {expandedExampleId === currentQuestion.id && currentMeta.tinyExample ? (
+                {expandedExampleId === currentQuestion.id &&
+                currentMeta.tinyExample ? (
                   <div className="mt-4 rounded-[16px] border border-[#e3e9f5] bg-[#f8faff] p-4">
-                    <p className="text-[14px] leading-6 text-[#617391]">{currentMeta.tinyExample}</p>
+                    <p className="text-[14px] leading-6 text-[#617391]">
+                      {currentMeta.tinyExample}
+                    </p>
                     <button
                       className="mt-3 inline-flex items-center gap-2 text-[14px] font-medium text-[#2450f4] transition hover:text-[#1543d8]"
-                      onClick={() => updateAnswer(currentQuestion.id, currentMeta.tinyExample ?? "")}
+                      onClick={() =>
+                        updateAnswer(
+                          currentQuestion.id,
+                          currentMeta.tinyExample ?? "",
+                        )
+                      }
                       type="button"
                     >
                       Use as starting point
@@ -361,7 +436,9 @@ export function GapQuestionsStep(props: {
                   <textarea
                     className="h-[248px] w-full resize-none rounded-[16px] border border-[#d8e2f3] bg-white px-6 py-5 text-[16px] leading-7 text-[#11203f] outline-none transition placeholder:text-[#a1aec7] focus:border-[#9bb2f5] focus:shadow-[0_0_0_4px_rgba(37,99,235,0.08)]"
                     maxLength={MAX_CHARACTERS}
-                    onChange={(event) => updateAnswer(currentQuestion.id, event.target.value)}
+                    onChange={(event) =>
+                      updateAnswer(currentQuestion.id, event.target.value)
+                    }
                     placeholder="Type your answer here..."
                     value={currentAnswer}
                   />
@@ -388,7 +465,9 @@ export function GapQuestionsStep(props: {
                   <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b84b8]">
                     Why this matters
                   </p>
-                  <p className="mt-1 text-[14px] leading-6 text-[#62728d]">{currentMeta.why}</p>
+                  <p className="mt-1 text-[14px] leading-6 text-[#62728d]">
+                    {currentMeta.why}
+                  </p>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -406,7 +485,9 @@ export function GapQuestionsStep(props: {
             <button
               className="inline-flex items-center gap-2 font-medium text-[#41506d] transition hover:text-[#0b4ef3] disabled:pointer-events-none disabled:opacity-35"
               disabled={currentIndex === 0 || props.isLoading}
-              onClick={() => setCurrentIndex((current) => Math.max(current - 1, 0))}
+              onClick={() =>
+                setCurrentIndex((current) => Math.max(current - 1, 0))
+              }
               type="button"
             >
               <ArrowLeft className="h-4.5 w-4.5" />
@@ -434,7 +515,9 @@ export function GapQuestionsStep(props: {
             onClick={moveNext}
             type="button"
           >
-            {props.isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : null}
+            {props.isLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : null}
             {isLastQuestion ? "Generate my CV" : "Next question"}
             <ArrowRight className="h-5 w-5" />
           </button>

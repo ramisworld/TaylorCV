@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, type CSSProperties } from "react";
 
 import {
   claimText,
@@ -247,7 +247,7 @@ function renderSection(
   const sectionTitle = renderSectionLabel(section, tokens);
 
   return (
-    <section key={section.id}>
+    <section className="text-left" key={section.id}>
       <SectionHeading
         headingColor={tokens.bodyTextColor}
         headingSize={tokens.headingSize}
@@ -340,6 +340,7 @@ export function CVDocumentRenderer(props: {
   cv: StructuredCv;
   presentationJson?: unknown;
   className?: string;
+  style?: CSSProperties;
 }) {
   const model = useMemo(
     () => buildCvRenderModel(props.cv, props.presentationJson),
@@ -371,6 +372,7 @@ export function CVDocumentRenderer(props: {
         height: "1123px",
         minHeight: "1123px",
         padding: tokens.pagePaddingCss,
+        ...props.style,
       }}
     >
       {props.cv.header.name || props.cv.header.targetTitle || contact.length > 0 ? (
@@ -417,7 +419,7 @@ export function CVDocumentRenderer(props: {
         </header>
       ) : null}
       <div
-        className="mt-5"
+        className="mt-5 text-left"
         style={{
           alignContent: shouldDistributeUnderfilledPage ? "space-between" : undefined,
           display: "grid",

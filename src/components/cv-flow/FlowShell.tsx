@@ -14,6 +14,8 @@ export function FlowShell(props: {
   children: React.ReactNode;
 }) {
   const currentStep = workflowStepForStage(props.stage);
+  const showWorkflowChrome =
+    props.stage !== "cv_generating" && props.stage !== "final_cv";
 
   return (
     <main className="relative min-h-[100dvh] overflow-hidden bg-[#f7f9ff] font-sans text-[#080b1d]">
@@ -21,23 +23,29 @@ export function FlowShell(props: {
       <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:linear-gradient(rgba(255,255,255,0.44),rgba(255,255,255,0.44))]" />
 
       <div className="relative z-10 min-h-[100dvh]">
-        <div className="absolute left-8 top-8">
-          <TaylorBrand
-            className="gap-3"
-            markClassName="h-11 w-11"
-            textClassName="text-[21px] font-semibold tracking-[-0.04em] text-[#081437]"
-          />
-        </div>
+        {showWorkflowChrome ? (
+          <div className="absolute left-6 top-5 sm:left-8 sm:top-6">
+            <TaylorBrand
+              className="gap-3"
+              markClassName="h-10 w-10 sm:h-11 sm:w-11"
+              textClassName="text-[19px] font-semibold tracking-[-0.04em] text-[#081437] sm:text-[20px]"
+            />
+          </div>
+        ) : null}
 
-        <div className="pointer-events-none absolute left-1/2 top-10 hidden w-max max-w-[calc(100vw-24rem)] -translate-x-1/2 lg:block">
-          <div className="pointer-events-auto">
+        {showWorkflowChrome ? (
+          <div className="pointer-events-none absolute left-1/2 top-5 hidden w-max max-w-[calc(100vw-24rem)] -translate-x-1/2 lg:block">
+            <div className="pointer-events-auto">
+              <FlowStepper currentStep={currentStep} />
+            </div>
+          </div>
+        ) : null}
+
+        {showWorkflowChrome ? (
+          <div className="absolute inset-x-0 top-[70px] px-4 sm:top-[76px] sm:px-6 lg:hidden">
             <FlowStepper currentStep={currentStep} />
           </div>
-        </div>
-
-        <div className="absolute inset-x-0 top-[90px] px-4 sm:px-6 lg:hidden">
-          <FlowStepper currentStep={currentStep} />
-        </div>
+        ) : null}
 
         {props.children}
       </div>

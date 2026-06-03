@@ -3,15 +3,16 @@
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { CvGeneratingStep } from "~/components/cv-flow/CvGeneratingStep";
+import {
+  CVGenerationLoadingState,
+  GeneratedCVPreviewState,
+} from "~/components/cv-flow/CVGenerationTransition";
 import { FlowShell, type FlowShellStage } from "~/components/cv-flow/FlowShell";
 import { CvUploadStep } from "~/components/cv-flow/CvUploadStep";
-import { FinalCvStep } from "~/components/cv-flow/FinalCvStep";
 import { GapQuestionsStep } from "~/components/cv-flow/GapQuestionsStep";
 import { JobDescriptionStep } from "~/components/cv-flow/JobDescriptionStep";
 import { LandingPage } from "~/components/landing/LandingPage";
 import { parseStructuredCv } from "~/lib/cvDocument";
-import { exportCvDocx, exportCvPdf } from "~/lib/cvExport";
 import { api, type RouterOutputs } from "~/trpc/react";
 
 const currentApplicationStorageKey = "currentApplicationId";
@@ -79,8 +80,6 @@ export default function Home() {
     "idle" | "analyzing" | "success"
   >("idle");
   const [error, setError] = useState<string | null>(null);
-  const [exportError, setExportError] = useState<string | null>(null);
-  const [isExporting, setIsExporting] = useState(false);
   const recoveryPromiseRef = useRef<Promise<string | null> | null>(null);
 
   const createApplication = api.application.createApplication.useMutation({
@@ -118,7 +117,6 @@ export default function Home() {
     }
     setCandidateAnalysisState("idle");
     setError(null);
-    setExportError(null);
   }
 
   useEffect(() => {
@@ -264,7 +262,6 @@ export default function Home() {
       await utils.application.getApplicationState.invalidate({
         applicationId: variables.applicationId,
       });
-      setStage("final_cv");
       setError(null);
     },
     onError: (mutationError) => {
@@ -278,27 +275,6 @@ export default function Home() {
       } else {
         setStage("cv_upload");
       }
-    },
-  });
-
-  const authorizeExport = api.application.authorizeExport.useMutation();
-
-  const resetApplication = api.application.resetApplication.useMutation({
-    onSuccess: (data) => {
-      clearClientApplicationState({ preserveDraft: false });
-      localStorage.setItem(currentApplicationStorageKey, data.applicationId);
-      setApplicationId(data.applicationId);
-      setResumedApplicationId(null);
-      setShowLanding(false);
-      setStage("job_description");
-      window.history.replaceState(null, "", `/?applicationId=${data.applicationId}`);
-    },
-    onError: (mutationError) => {
-      if (isStaleApplicationError(mutationError.message)) {
-        void recoverFromStaleApplication(false);
-        return;
-      }
-      setError(friendlyError(mutationError.message));
     },
   });
 
@@ -361,29 +337,14 @@ export default function Home() {
     generateCv.mutate({ applicationId: targetApplicationId });
   }
 
-  async function exportWithGate(kind: "pdf" | "docx") {
-    if (!cv || !applicationId || !state?.cvDraft) return;
-    setExportError(null);
-    setIsExporting(true);
-    try {
-      await authorizeExport.mutateAsync({
-        applicationId,
-        cvDraftId: state.cvDraft.id,
-      });
-      if (kind === "pdf") await exportCvPdf(cv, state.cvDraft.presentationJson);
-      else await exportCvDocx(cv, state.cvDraft.presentationJson);
-    } catch (exportFailure) {
-      const message =
-        exportFailure instanceof Error ? exportFailure.message : "Export failed.";
-      if (message === "ACCOUNT_REQUIRED") {
-        const next = `/?applicationId=${applicationId}`;
-        window.location.href = `/auth/claim?applicationId=${encodeURIComponent(applicationId)}&next=${encodeURIComponent(next)}`;
-        return;
-      }
-      setExportError(friendlyError(message));
-    } finally {
-      setIsExporting(false);
+  function unlockFullCv() {
+    if (!applicationId) {
+      window.location.href = "/auth/sign-up";
+      return;
     }
+    const next = "/dashboard";
+    const claimUrl = `/auth/claim?applicationId=${encodeURIComponent(applicationId)}&next=${encodeURIComponent(next)}`;
+    window.location.href = `/auth/sign-up?returnTo=${encodeURIComponent(claimUrl)}`;
   }
 
   if (showLanding) {
@@ -470,18 +431,27 @@ export default function Home() {
             questions={state?.gapQuestions ?? []}
           />
         ) : null}
-        {stage === "cv_generating" ? <CvGeneratingStep key="generating" /> : null}
-        {stage === "final_cv" ? (
-          <FinalCvStep
-            cv={cv}
-            exportError={exportError}
-            isExporting={isExporting || authorizeExport.isPending}
-            key="final"
-            onDocx={() => void exportWithGate("docx")}
-            onNew={() => {
-              if (applicationId) resetApplication.mutate({ applicationId });
+        {stage === "cv_generating" ? (
+          <CVGenerationLoadingState
+            candidateSource={{
+              contactInfoJson: state?.candidateProfileRow?.contactInfoJson,
+              jobTitle: state?.job?.title,
+              linksJson: state?.candidateProfileRow?.linksJson,
+              profileJson: state?.candidateProfileRow?.profileJson,
             }}
-            onPdf={() => void exportWithGate("pdf")}
+            cv={cv}
+            isReady={Boolean(cv)}
+            key="generating"
+            onReveal={() => setStage("final_cv")}
+            presentationJson={state?.cvDraft?.presentationJson}
+          />
+        ) : null}
+        {stage === "final_cv" ? (
+          <GeneratedCVPreviewState
+            cv={cv}
+            key="final"
+            onBack={() => setStage("gap_questions")}
+            onUnlock={unlockFullCv}
             presentationJson={state?.cvDraft?.presentationJson}
           />
         ) : null}

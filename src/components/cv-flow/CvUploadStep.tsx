@@ -15,7 +15,7 @@ const statusMessages = [
   "Preparing your questions",
 ] as const;
 
-const ringRadius = 132;
+const ringRadius = 118;
 const ringCircumference = 2 * Math.PI * ringRadius;
 
 function AnimatedDots() {
@@ -160,24 +160,24 @@ export function CvUploadStep(props: {
   return (
     <motion.section
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto flex min-h-[100dvh] w-full flex-col items-center px-4 pb-10 pt-[148px] sm:px-6 sm:pb-12 sm:pt-[188px] lg:px-8 lg:pt-[204px]"
+      className="mx-auto flex min-h-[100dvh] w-full flex-col items-center px-4 pb-8 pt-[124px] sm:px-6 sm:pb-10 sm:pt-[136px] lg:px-8 lg:pt-[144px] xl:pt-[150px]"
       exit={{ opacity: 0, y: -12 }}
       initial={{ opacity: 0, y: 12 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className="mx-auto w-full max-w-4xl text-center">
-        <p className="text-[13px] font-medium uppercase tracking-[0.24em] text-[#2563eb]">
+      <div className="mx-auto w-full max-w-[980px] text-center">
+        <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#2563eb] sm:text-[14px]">
           Step 2 of 4
         </p>
-        <h1 className="mt-4 text-balance text-[46px] font-[650] leading-[1.02] tracking-[-0.05em] text-[#081437] sm:text-[60px] lg:text-[68px]">
+        <h1 className="mt-3 text-balance text-[42px] font-[640] leading-[0.98] tracking-[-0.045em] text-[#081437] sm:mt-4 sm:text-[52px] lg:text-[58px]">
           Upload your CV
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-[16px] font-normal leading-7 text-[#7081a0] sm:mt-5 sm:text-[18px] sm:leading-8">
+        <p className="mx-auto mt-4 max-w-2xl text-[16px] font-normal leading-7 text-[#7081a0] sm:text-[17px] lg:mt-5 lg:text-[18px]">
           We&apos;ll review your CV and see how you match.
         </p>
       </div>
 
-      <div className="mt-8 flex w-full flex-col items-center sm:mt-12">
+      <div className="mt-4 flex w-full max-w-[960px] flex-col items-center sm:mt-4 lg:mt-2 xl:mt-0">
         <input
           accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           className="sr-only"
@@ -192,7 +192,7 @@ export function CvUploadStep(props: {
 
         <label
           className={cn(
-            "group relative grid h-[272px] w-[272px] cursor-pointer place-items-center rounded-full transition-all duration-300 sm:h-[332px] sm:w-[332px]",
+            "group relative grid h-[244px] w-[244px] cursor-pointer place-items-center rounded-full transition-all duration-300 sm:h-[276px] sm:w-[276px] lg:h-[304px] lg:w-[304px]",
             props.isLoading && "cursor-default",
             isDragActive && !props.isLoading && "scale-[1.015]",
             surfaceError && !props.isLoading && "drop-shadow-[0_0_0_rgba(0,0,0,0)]"
@@ -206,9 +206,9 @@ export function CvUploadStep(props: {
           onDragOver={(event) => event.preventDefault()}
           onDrop={handleDrop}
         >
-          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(244,247,255,0.88)_54%,rgba(224,232,255,0.58)_100%)] shadow-[0_24px_78px_rgba(174,190,232,0.24)]" />
-          <div className="absolute inset-[9px] rounded-full border border-[#edf1fb] bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(248,250,255,0.94)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]" />
-          <div className="absolute inset-[-18px] rounded-full bg-[radial-gradient(circle,rgba(162,180,255,0.18)_0%,rgba(162,180,255,0.06)_52%,transparent_72%)] blur-xl" />
+          <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.96)_0%,rgba(244,247,255,0.88)_54%,rgba(224,232,255,0.58)_100%)] shadow-[0_18px_54px_rgba(174,190,232,0.18)]" />
+          <div className="absolute inset-[7px] rounded-full border border-[#edf1fb] bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(248,250,255,0.94)_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]" />
+          <div className="absolute inset-[-12px] rounded-full bg-[radial-gradient(circle,rgba(162,180,255,0.16)_0%,rgba(162,180,255,0.05)_52%,transparent_72%)] blur-xl" />
 
           <svg
             aria-hidden="true"
@@ -228,7 +228,7 @@ export function CvUploadStep(props: {
               fill="none"
               r={ringRadius}
               stroke={isDragActive && !props.isLoading ? "#d7e2ff" : "#e8edf9"}
-              strokeWidth="8"
+              strokeWidth="6"
             />
             <motion.circle
               animate={{ strokeDashoffset: progressOffset, opacity: isAnalyzing || isSuccess ? 1 : 0 }}
@@ -240,12 +240,12 @@ export function CvUploadStep(props: {
               stroke="url(#cv-upload-progress)"
               strokeDasharray={ringCircumference}
               strokeLinecap="round"
-              strokeWidth="8"
+              strokeWidth="6"
               transition={{ duration: isSuccess ? 0.52 : 0.26, ease: "easeOut" }}
             />
           </svg>
 
-          <div className="relative z-10 flex max-w-[200px] flex-col items-center text-center sm:max-w-[240px]">
+          <div className="relative z-10 flex max-w-[168px] flex-col items-center text-center sm:max-w-[186px] lg:max-w-[198px]">
             <AnimatePresence mode="wait">
               {isAnalyzing || isSuccess ? (
                 <motion.div
@@ -258,26 +258,26 @@ export function CvUploadStep(props: {
                 >
                   {isSuccess ? (
                     <>
-                      <span className="grid h-[74px] w-[74px] place-items-center rounded-full bg-[linear-gradient(180deg,#165dff_0%,#0b4ef3_100%)] text-white shadow-[0_18px_42px_rgba(11,78,243,0.24)]">
-                        <Check className="h-9 w-9" />
+                      <span className="grid h-[56px] w-[56px] place-items-center rounded-full bg-[linear-gradient(180deg,#165dff_0%,#0b4ef3_100%)] text-white shadow-[0_14px_30px_rgba(11,78,243,0.2)] sm:h-[60px] sm:w-[60px]">
+                        <Check className="h-7 w-7" />
                       </span>
-                      <p className="mt-5 text-[24px] font-normal tracking-[-0.03em] text-[#09112f] sm:mt-6 sm:text-[27px]">
+                      <p className="mt-3 text-[20px] font-normal tracking-[-0.03em] text-[#09112f] sm:mt-4 sm:text-[22px]">
                         Ready
                       </p>
-                      <p className="mt-2 text-[15px] leading-6 text-[#73809b]">
+                      <p className="mt-2 text-[14px] leading-6 text-[#73809b]">
                         Taking you to your gap questions.
                       </p>
                     </>
                   ) : (
                     <>
-                      <span className="grid h-[62px] w-[62px] place-items-center rounded-full bg-white/88 text-[#0b4ef3] shadow-[0_14px_32px_rgba(144,162,214,0.18)] ring-1 ring-[#e8edf7]">
-                        <Loader2 className="h-7 w-7 animate-spin" />
+                      <span className="grid h-[50px] w-[50px] place-items-center rounded-full bg-white/88 text-[#0b4ef3] shadow-[0_10px_24px_rgba(144,162,214,0.18)] ring-1 ring-[#e8edf7] sm:h-[54px] sm:w-[54px]">
+                        <Loader2 className="h-5 w-5 animate-spin sm:h-6 sm:w-6" />
                       </span>
-                      <p className="mt-5 text-[21px] font-normal tracking-[-0.03em] text-[#09112f] sm:mt-6 sm:text-[24px]">
+                      <p className="mt-3 text-[18px] font-normal tracking-[-0.03em] text-[#09112f] sm:mt-4 sm:text-[19px]">
                         {statusMessages[messageIndex]}
                         <AnimatedDots />
                       </p>
-                      <p className="mt-2 text-[14px] leading-6 text-[#7d88a1]">
+                      <p className="mt-2 text-[13px] leading-6 text-[#7d88a1] sm:text-[14px]">
                         We&apos;re extracting the strongest evidence for this role.
                       </p>
                     </>
@@ -294,20 +294,20 @@ export function CvUploadStep(props: {
                 >
                   <span
                     className={cn(
-                      "grid h-[62px] w-[62px] place-items-center rounded-full bg-[linear-gradient(180deg,rgba(241,245,255,0.96)_0%,rgba(232,238,252,0.92)_100%)] text-[#0b4ef3] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_28px_rgba(158,175,223,0.16)] ring-1 ring-[#e3e8f5] transition-transform duration-300 sm:h-[68px] sm:w-[68px]",
+                      "grid h-[50px] w-[50px] place-items-center rounded-full bg-[linear-gradient(180deg,rgba(241,245,255,0.96)_0%,rgba(232,238,252,0.92)_100%)] text-[#0b4ef3] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_9px_22px_rgba(158,175,223,0.14)] ring-1 ring-[#e3e8f5] transition-transform duration-300 sm:h-[54px] sm:w-[54px]",
                       isDragActive && "scale-[1.03]"
                     )}
                   >
-                    <Upload className="h-7 w-7 sm:h-8 sm:w-8" />
+                    <Upload className="h-5 w-5 sm:h-6 sm:w-6" />
                   </span>
-                  <p className="mt-5 text-[20px] font-medium tracking-[-0.03em] text-[#0b122e] sm:mt-6 sm:text-[22px]">
+                  <p className="mt-3 text-[17px] font-medium tracking-[-0.03em] text-[#0b122e] sm:mt-4 sm:text-[18px]">
                     Click to upload
                   </p>
-                  <p className="mt-2 text-[15px] leading-6 text-[#74809a]">or drag and drop</p>
+                  <p className="mt-1 text-[13px] leading-6 text-[#74809a] sm:text-[14px]">or drag and drop</p>
                   {props.isReadingFile ? (
-                    <p className="mt-5 text-[14px] leading-6 text-[#5870b2]">Preparing your file...</p>
+                    <p className="mt-3 text-[13px] leading-6 text-[#5870b2] sm:text-[14px]">Preparing your file...</p>
                   ) : hasSelectedFile ? (
-                    <div className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full bg-white/82 px-4 py-2 text-[13px] text-[#4f5d7c] shadow-[0_8px_20px_rgba(160,176,218,0.12)] ring-1 ring-[#e5eaf6]">
+                    <div className="mt-3 inline-flex max-w-full items-center gap-2 rounded-full bg-white/82 px-4 py-2 text-[13px] text-[#4f5d7c] shadow-[0_8px_20px_rgba(160,176,218,0.12)] ring-1 ring-[#e5eaf6]">
                       <Check className="h-3.5 w-3.5 text-[#0b4ef3]" />
                       <span className="truncate">{props.fileName}</span>
                     </div>
@@ -318,18 +318,18 @@ export function CvUploadStep(props: {
           </div>
         </label>
 
-        <p className="mt-6 text-[14px] font-normal tracking-[-0.01em] text-[#7d88a1] sm:mt-8 sm:text-[15px]">
+        <p className="mt-3 text-[14px] font-normal tracking-[-0.01em] text-[#7d88a1] sm:mt-4 sm:text-[15px]">
           PDF or DOCX • Max 10MB
         </p>
 
         {surfaceError ? (
-          <p className="mt-4 rounded-full border border-[#f2d0c4] bg-white/84 px-4 py-2.5 text-[13px] text-[#9a4a34] shadow-[0_10px_24px_rgba(188,123,96,0.08)]">
+          <p className="mt-2.5 rounded-full border border-[#f2d0c4] bg-white/84 px-4 py-2.5 text-[13px] text-[#9a4a34] shadow-[0_10px_24px_rgba(188,123,96,0.08)]">
             {surfaceError}
           </p>
         ) : null}
 
         <button
-          className="mt-8 inline-flex h-[58px] min-w-[268px] items-center justify-center gap-3 rounded-[16px] border border-[#4b70ff]/18 bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-8 text-[17px] font-medium tracking-[-0.02em] text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_38px_rgba(11,78,243,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/18 disabled:cursor-not-allowed disabled:opacity-55 sm:mt-9 sm:h-[62px] sm:min-w-[286px] sm:text-[18px]"
+          className="mt-5 inline-flex h-[58px] w-full max-w-[304px] items-center justify-center gap-3 rounded-[16px] border border-[#4b70ff]/18 bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-8 text-[17px] font-medium tracking-[-0.02em] text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_38px_rgba(11,78,243,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/18 disabled:cursor-not-allowed disabled:opacity-55 sm:mt-6 sm:h-[60px] sm:max-w-[320px]"
           disabled={!canSubmit}
           onClick={props.onSubmit}
           type="button"
@@ -339,7 +339,7 @@ export function CvUploadStep(props: {
         </button>
 
         <button
-          className="mt-4 text-[14px] font-normal text-[#74809a] transition hover:text-[#0b4ef3]"
+          className="mt-2 text-[14px] font-normal text-[#74809a] transition hover:text-[#0b4ef3]"
           disabled={props.isLoading}
           onClick={props.onBack}
           type="button"
