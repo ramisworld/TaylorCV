@@ -9,6 +9,7 @@ import type { Prisma } from "../../../generated/prisma/index.js";
 import { env } from "~/env";
 import { plans, type PlanKey, isPlanKey } from "~/lib/plans";
 import { db } from "~/server/db";
+import { toPublicAppUrl } from "~/server/public-app-url";
 import {
   checkAndRecordAbuse,
   isAbuseDenied,
@@ -45,7 +46,7 @@ function getStripeWebhookSecret() {
 }
 
 function appUrl(path: string) {
-  return new URL(path, env.BETTER_AUTH_URL ?? "http://localhost:3000").toString();
+  return toPublicAppUrl(path).toString();
 }
 
 export function stripePriceIdForPlan(planKey: PlanKey) {

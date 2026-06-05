@@ -94,6 +94,7 @@ export const env = createEnv({
 
   client: {
     NEXT_PUBLIC_ENABLE_TRPC_LOGGER: z.enum(["true", "false"]).optional(),
+    NEXT_PUBLIC_APP_URL: z.string().url().optional(),
   },
 
   runtimeEnv: {
@@ -121,6 +122,7 @@ export const env = createEnv({
       process.env.STRIPE_CUSTOMER_PORTAL_ANNUAL_LOCKED_CONFIGURATION_ID,
     NEXT_PUBLIC_ENABLE_TRPC_LOGGER:
       process.env.NEXT_PUBLIC_ENABLE_TRPC_LOGGER,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     OPENAI_FAST_MODEL: process.env.OPENAI_FAST_MODEL,
     OPENAI_STRONG_MODEL: process.env.OPENAI_STRONG_MODEL,

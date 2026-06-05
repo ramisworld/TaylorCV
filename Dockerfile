@@ -15,7 +15,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN DATABASE_URL="postgresql://build:build@localhost:5432/build" \
   BETTER_AUTH_SECRET="build-time-placeholder-secret-000000000000" \
-  BETTER_AUTH_URL="http://localhost:3000" \
+  BETTER_AUTH_URL="https://build.tailorcv.invalid" \
+  NEXT_PUBLIC_APP_URL="https://build.tailorcv.invalid" \
   ABUSE_HASH_SECRET="build-time-placeholder-abuse-0000000000000" \
   USE_MOCK_AI="true" \
   ENABLE_EMAIL="false" \

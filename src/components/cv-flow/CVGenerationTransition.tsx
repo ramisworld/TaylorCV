@@ -238,6 +238,20 @@ function PuzzleGlyph() {
   );
 }
 
+function RatingStar(props: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={props.className}
+      fill="currentColor"
+      shapeRendering="geometricPrecision"
+      viewBox="0 0 20 19"
+    >
+      <path d="M10 0.9l2.9 5.88 6.5.95-4.7 4.57 1.11 6.47L10 15.72 4.19 18.77 5.3 12.3.6 7.73l6.5-.95L10 .9z" />
+    </svg>
+  );
+}
+
 function TargetGlyph() {
   return (
     <svg aria-hidden="true" fill="none" viewBox="0 0 28 28">
@@ -672,7 +686,7 @@ function CVRevealDocument(props: {
     border: "0",
     borderRadius: "28px 28px 0 0",
     boxShadow:
-      "0 36px 92px rgba(70, 88, 130, 0.14), 0 14px 40px rgba(84, 107, 158, 0.09)",
+      "0 30px 80px rgba(70, 88, 130, 0.13), 0 12px 32px rgba(84, 107, 158, 0.08)",
     outline: "none",
     overflow: "hidden",
   };
@@ -685,7 +699,7 @@ function CVRevealDocument(props: {
           cv={props.cv}
           documentStyle={documentStyle}
           fitToHeight={false}
-          maxScale={1.38}
+          maxScale={1.18}
           presentationJson={props.presentationJson}
         />
       </div>
@@ -696,7 +710,7 @@ function CVRevealDocument(props: {
           cv={props.cv}
           documentStyle={documentStyle}
           fitToHeight={false}
-          maxScale={1.38}
+          maxScale={1.18}
           presentationJson={props.presentationJson}
         />
       </div>
@@ -1020,9 +1034,7 @@ export function GeneratedCVPreviewState(props: {
         <div className={styles.trustRow}>
           <span className={styles.starGroup} aria-label="5 star rating">
             {Array.from({ length: 5 }).map((_, index) => (
-              <span className={styles.pointStar} key={index}>
-                ★
-              </span>
+              <RatingStar className={styles.pointStar} key={index} />
             ))}
           </span>
 

@@ -4,17 +4,24 @@ import { NextResponse, type NextRequest } from "next/server";
 import { anonymousSessionCookieName } from "~/server/services/session.service";
 import { getAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import {
+  sanitizeInternalReturnPath,
+  toPublicAppUrl,
+} from "~/server/public-app-url";
 
 export async function GET(request: NextRequest) {
-  const url = new URL(request.url);
-  const applicationId = url.searchParams.get("applicationId");
-  const next = url.searchParams.get("next") || "/dashboard";
+  const applicationId = request.nextUrl.searchParams.get("applicationId");
+  const next = sanitizeInternalReturnPath(request.nextUrl.searchParams.get("next"));
   const authSession = await getAuthSession(request.headers);
+  const currentPublicUrl = toPublicAppUrl(
+    `${request.nextUrl.pathname}${request.nextUrl.search}`,
+    { headers: request.headers }
+  );
 
   if (!authSession?.user?.id) {
-    return NextResponse.redirect(
-      new URL(`/auth?mode=sign-in&callbackUrl=${encodeURIComponent(request.url)}`, request.url)
-    );
+    const signInUrl = toPublicAppUrl("/auth/sign-in", { headers: request.headers });
+    signInUrl.searchParams.set("returnTo", currentPublicUrl.toString());
+    return NextResponse.redirect(signInUrl);
   }
 
   const anonymousSessionId = (await cookies()).get(
@@ -32,5 +39,5 @@ export async function GET(request: NextRequest) {
     }).catch(() => undefined);
   }
 
-  return NextResponse.redirect(new URL(next, request.url));
+  return NextResponse.redirect(toPublicAppUrl(next, { headers: request.headers }));
 }

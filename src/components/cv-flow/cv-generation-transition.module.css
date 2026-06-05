@@ -1212,12 +1212,13 @@
 }
 
 .generatedHeadline {
-  margin-top: 10px;
-  color: #071436;
-  font-size: 34px;
+  margin-top: 14px;
+  color: #07122f;
+  font-size: clamp(38px, 3.45vw, 56px);
   font-weight: 650;
-  line-height: 1.03;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.028em;
+  word-spacing: 0.04em;
+  line-height: 1.02;
   text-wrap: balance;
 }
 
@@ -1228,12 +1229,12 @@
 }
 
 .generatedSubtitle {
-  margin: 10px auto 0;
-  max-width: 760px;
-  color: #526994;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 24px;
+  margin-top: 12px;
+  max-width: 780px;
+  color: #53678c;
+  font-size: clamp(16px, 1.08vw, 19px);
+  font-weight: 500;
+  line-height: 1.42;
 }
 
 @media (min-width: 640px) {
@@ -1243,19 +1244,16 @@
 }
 
 .cvRevealWrap {
-  position: relative;
-  width: 100%;
-  max-width: 1280px;
-  margin-top: 16px;
+  margin-top: 22px;
+  max-width: 1180px;
 }
 
 .cvRevealStage {
   position: relative;
-  width: min(1180px, 88vw);
-  height: clamp(465px, 50vh, 560px);
-  margin-inline: auto;
-  overflow: visible;
-  background: transparent;
+  isolation: isolate;
+  width: min(1040px, 72vw);
+  height: clamp(440px, 47vh, 550px);
+  filter: none;
 }
 
 .cvRevealSharpLayer,
@@ -1718,19 +1716,19 @@
   background:
     radial-gradient(
       ellipse at 50% 0%,
-      rgba(255, 255, 255, 0.76) 0%,
-      rgba(255, 255, 255, 0.34) 32%,
-      transparent 54%
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.28) 30%,
+      transparent 52%
     ),
-    linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.06));
+    linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05));
 }
 
 .secureBottomWash {
   height: 34%;
   background: radial-gradient(
     ellipse at 50% 100%,
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(245, 242, 255, 0.14) 36%,
+    rgba(255, 255, 255, 0.36) 0%,
+    rgba(255, 255, 255, 0.14) 34%,
     transparent 72%
   );
 }
@@ -1739,55 +1737,55 @@
   position: absolute;
   inset-inline: 0;
   top: 0;
-  padding: clamp(20px, 3.7vh, 38px) clamp(22px, 4.6vw, 58px) 0;
+  padding: clamp(18px, 3vh, 30px) clamp(22px, 4.6vw, 58px) 0;
 }
 
 .secureLogo {
-  height: 56px;
-  width: 56px;
+  height: 50px;
+  width: 50px;
 }
 
 .secureLabel {
-  gap: 9px;
+  gap: 8px;
   color: #5b6d91;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 650;
 }
 
 .generatedState {
   min-height: 100dvh;
   height: auto;
-  max-width: 1360px;
+  max-width: 1520px;
   justify-content: flex-start;
-  padding: clamp(108px, 10.8vh, 128px) 24px 18px;
+  padding: 72px 24px 16px;
   transform: none;
 }
 
 .generatedHeadline {
-  margin-top: 16px;
+  margin-top: 14px;
   color: #07122f;
-  font-size: clamp(40px, 4.05vw, 64px);
+  font-size: clamp(36px, 3.8vw, 58px);
   font-weight: 720;
   letter-spacing: -0.055em;
   line-height: 0.98;
 }
 
 .generatedSubtitle {
-  margin-top: 15px;
-  max-width: 720px;
+  margin-top: 12px;
+  max-width: 760px;
   color: #53678c;
-  font-size: clamp(17px, 1.35vw, 21px);
+  font-size: clamp(16px, 1.1vw, 19px);
   font-weight: 500;
   line-height: 1.42;
 }
 
 .statusPill {
-  height: 40px;
+  height: 38px;
   border-color: rgba(78, 212, 130, 0.36);
   background: rgba(255, 255, 255, 0.68);
-  padding: 0 18px;
+  padding: 0 17px;
   color: #0fad55;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   box-shadow:
     0 10px 28px rgba(55, 144, 92, 0.08),
@@ -1797,8 +1795,9 @@
 
 .statusDot {
   position: relative;
-  height: 15px;
-  width: 15px;
+  height: 14px;
+  width: 14px;
+  border-radius: 999px;
   background: #19c96c;
 }
 
@@ -1806,7 +1805,7 @@
   position: absolute;
   left: 4px;
   top: 3px;
-  width: 6px;
+  width: 5px;
   height: 4px;
   border: solid #ffffff;
   border-width: 0 0 2px 2px;
@@ -1815,40 +1814,35 @@
 }
 
 .cvRevealWrap {
-  position: relative;
-  width: 100%;
-  max-width: 1320px;
-  margin-top: 30px;
+  margin-top: 22px;
+  max-width: 1240px;
 }
 
 .cvRevealStage {
   position: relative;
   isolation: isolate;
-  width: min(1220px, 84vw);
-  height: clamp(500px, 53vh, 640px);
-  margin-inline: auto;
-  overflow: visible;
-  background: transparent;
-  filter: drop-shadow(0 34px 82px rgba(68, 83, 126, 0.16));
+  width: min(1120px, 79vw);
+  height: clamp(430px, 45vh, 535px);
+  filter: drop-shadow(0 30px 70px rgba(68, 83, 126, 0.14));
 }
 
 .cvRevealStage::before {
   pointer-events: none;
   position: absolute;
   z-index: 1;
-  inset-inline: 8%;
-  bottom: -48px;
-  height: 150px;
+  inset-inline: 13%;
+  bottom: -34px;
+  height: 108px;
   border-radius: 999px;
   background: radial-gradient(
     ellipse at center,
-    rgba(255, 255, 255, 0.52) 0%,
-    rgba(235, 231, 255, 0.22) 38%,
-    rgba(225, 233, 255, 0.08) 62%,
-    transparent 76%
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(236, 232, 255, 0.16) 38%,
+    rgba(225, 233, 255, 0.04) 64%,
+    transparent 78%
   );
   content: "";
-  filter: blur(10px);
+  filter: blur(14px);
 }
 
 .cvRevealStage::after {
@@ -1857,11 +1851,7 @@
 
 .cvRevealSharpLayer,
 .cvRevealBlurLayer {
-  position: absolute;
-  inset: 0;
-  display: flex;
   align-items: flex-start;
-  justify-content: center;
   overflow: hidden;
   background: transparent;
 }
@@ -1871,50 +1861,50 @@
   mask-image: linear-gradient(
     180deg,
     #000 0%,
-    #000 58%,
-    rgba(0, 0, 0, 0.84) 68%,
-    rgba(0, 0, 0, 0.46) 80%,
-    rgba(0, 0, 0, 0.14) 91%,
+    #000 63%,
+    rgba(0, 0, 0, 0.84) 73%,
+    rgba(0, 0, 0, 0.42) 84%,
+    rgba(0, 0, 0, 0.12) 93%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     180deg,
     #000 0%,
-    #000 58%,
-    rgba(0, 0, 0, 0.84) 68%,
-    rgba(0, 0, 0, 0.46) 80%,
-    rgba(0, 0, 0, 0.14) 91%,
+    #000 63%,
+    rgba(0, 0, 0, 0.84) 73%,
+    rgba(0, 0, 0, 0.42) 84%,
+    rgba(0, 0, 0, 0.12) 93%,
     transparent 100%
   );
 }
 
 .cvRevealBlurLayer {
   z-index: 3;
-  opacity: 0.36;
-  filter: blur(9px);
-  transform: translateY(4px);
+  opacity: 0.22;
+  filter: blur(6px);
+  transform: translateY(5px);
   mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.16) 62%,
-    rgba(0, 0, 0, 0.32) 76%,
-    rgba(0, 0, 0, 0.18) 88%,
+    transparent 58%,
+    rgba(0, 0, 0, 0.1) 69%,
+    rgba(0, 0, 0, 0.24) 81%,
+    rgba(0, 0, 0, 0.12) 91%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     180deg,
     transparent 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.16) 62%,
-    rgba(0, 0, 0, 0.32) 76%,
-    rgba(0, 0, 0, 0.18) 88%,
+    transparent 58%,
+    rgba(0, 0, 0, 0.1) 69%,
+    rgba(0, 0, 0, 0.24) 81%,
+    rgba(0, 0, 0, 0.12) 91%,
     transparent 100%
   );
 }
 
 .cvRevealPreview {
-  width: min(1220px, 100%);
+  width: min(1040px, 100%);
   background: transparent;
 }
 
@@ -1923,8 +1913,8 @@
   border: 0 !important;
   border-radius: 28px 28px 0 0 !important;
   box-shadow:
-    0 36px 92px rgba(70, 88, 130, 0.14),
-    0 14px 40px rgba(84, 107, 158, 0.09) !important;
+    0 24px 62px rgba(70, 88, 130, 0.09),
+    0 8px 22px rgba(84, 107, 158, 0.05) !important;
   outline: 0 !important;
 }
 
@@ -1940,233 +1930,183 @@
 .cvRevealPreview :global([data-cv-document] svg) {
   display: none !important;
 }
-
 .lockBadgeWrap {
-  pointer-events: none;
-  position: absolute;
-  inset-inline: 0;
-  top: 70%;
-  z-index: 8;
-  display: flex;
-  justify-content: center;
-  transform: translateY(-50%);
+  top: 68%;
 }
 
 .lockBadgeOuter {
-  display: grid;
-  height: 54px;
-  width: 54px;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.78);
-  border-radius: 999px;
+  height: 50px;
+  width: 50px;
+  border-color: rgba(255, 255, 255, 0.78);
   background: rgba(255, 255, 255, 0.72);
   color: #15213a;
   box-shadow:
-    0 16px 34px rgba(38, 52, 86, 0.13),
+    0 14px 28px rgba(38, 52, 86, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(14px);
 }
 
 .unlockArea {
-  position: relative;
-  z-index: 20;
-  margin-top: -52px;
-  display: flex;
-  width: min(365px, calc(100vw - 48px));
-  flex-direction: column;
-  align-items: center;
+  margin-top: -44px;
+  width: min(332px, calc(100vw - 48px));
 }
 
 .unlockButton {
-  position: relative;
-  display: inline-flex;
-  height: 66px;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.26);
+  height: 60px;
   border-radius: 15px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.24) 0%,
-      rgba(255, 255, 255, 0.08) 22%,
-      rgba(255, 255, 255, 0) 42%
-    ),
-    linear-gradient(180deg, #6677ff 0%, #3159f6 48%, #0b4ef3 100%);
-  padding: 0 58px;
-  color: #ffffff;
-  font-size: 21px;
+  padding: 0 46px;
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.03em;
-  box-shadow:
-    0 22px 48px rgba(11, 78, 243, 0.32),
-    0 0 30px rgba(96, 118, 255, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.32);
-  backdrop-filter: blur(16px) saturate(1.12);
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    filter 180ms ease;
-}
-
-.unlockButton::before {
-  display: none;
-}
-
-.unlockButton:hover {
-  transform: translateY(-2px) scale(1.018);
-  box-shadow:
-    0 26px 56px rgba(11, 78, 243, 0.38),
-    0 0 36px rgba(96, 118, 255, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.34);
-  filter: brightness(1.04) saturate(1.04);
-}
-
-.unlockButton:focus-visible {
-  outline: none;
-  box-shadow:
-    0 26px 56px rgba(11, 78, 243, 0.38),
-    0 0 36px rgba(96, 118, 255, 0.28),
-    0 0 0 4px rgba(147, 197, 253, 0.5);
-}
-
-.unlockButtonLeft {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  text-align: center;
+  letter-spacing: -0.025em;
 }
 
 .unlockButton > :last-child {
-  position: absolute;
-  right: 22px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 20px;
 }
 
-.backButton {
-  display: none;
+.unlockButtonLeft {
+  gap: 10px;
 }
 
 .unlockMicrocopy {
-  margin-top: 14px;
+  margin-top: 11px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 8px;
   color: #687797;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .trustRow {
-  position: relative;
-  z-index: 20;
-  margin-top: 22px;
-  display: grid;
-  min-height: 68px;
-  width: min(1000px, calc(100vw - 64px));
-  grid-template-columns: auto auto 1px minmax(0, 1fr);
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 0 26px;
+  justify-content: flex-start;
+  min-height: 64px;
+  width: min(100%, 1460px);
+  align-items: center;
+  gap: 10px 18px;
   border: 1px solid rgba(255, 255, 255, 0.66);
-  border-radius: 20px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.38);
-  padding: 0 32px;
+  padding: 16px 20px;
   color: #43577c;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   box-shadow:
-    0 20px 50px rgba(72, 88, 130, 0.08),
+    0 18px 44px rgba(72, 88, 130, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.74);
   backdrop-filter: blur(18px) saturate(1.08);
 }
 
 .starGroup {
-  display: inline-flex;
+  display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 7px;
-  color: #f2b01f;
+  gap: 6px;
   white-space: nowrap;
 }
 
 .pointStar {
-  display: inline-block;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
   color: #f6b21f;
-  font-size: 27px;
-  line-height: 1;
-  text-shadow: 0 5px 12px rgba(243, 173, 29, 0.14);
+  shape-rendering: geometricPrecision;
 }
 
 .trustCopy {
+  flex: 0 1 auto;
+  min-width: 0;
   color: #304365;
+  font-size: clamp(13px, 0.9vw, 14px);
   font-weight: 700;
   white-space: nowrap;
 }
 
 .trustDivider {
+  flex: 0 0 auto;
   display: block;
-  height: 28px;
+  height: 22px;
   width: 1px;
   background: rgba(95, 112, 148, 0.22);
 }
 
 .trustQuote {
+  flex: 1 1 420px;
   min-width: 0;
-  overflow: hidden;
+  overflow-wrap: anywhere;
   color: #52627f;
-  font-size: 15px;
+  font-size: clamp(12px, 0.9vw, 14px);
   font-style: italic;
-  font-weight: 400;
-  letter-spacing: 0.002em;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.45;
+  white-space: normal;
 }
 
 @media (max-height: 850px) and (min-width: 900px) {
   .generatedState {
-    padding-top: 92px;
+    padding-top: 64px;
   }
 
   .generatedHeadline {
     margin-top: 12px;
-    font-size: clamp(38px, 3.7vw, 58px);
+    font-size: clamp(34px, 3.55vw, 52px);
   }
 
   .generatedSubtitle {
-    margin-top: 10px;
+    margin-top: 9px;
+    font-size: clamp(15px, 1vw, 18px);
+  }
+
+  .statusPill {
+    height: 34px;
+    font-size: 13px;
   }
 
   .cvRevealWrap {
-    margin-top: 22px;
+    margin-top: 18px;
   }
 
   .cvRevealStage {
-    height: clamp(455px, 49vh, 560px);
+    width: min(1040px, 77vw);
+    height: clamp(398px, 43vh, 485px);
   }
 
   .lockBadgeWrap {
-    top: 70%;
+    top: 68%;
   }
 
   .unlockArea {
-    margin-top: -50px;
+    margin-top: -44px;
+    width: min(318px, calc(100vw - 48px));
   }
 
   .unlockButton {
-    height: 62px;
-    font-size: 20px;
+    height: 58px;
+    padding-inline: 44px;
+    font-size: 17px;
+  }
+
+  .unlockMicrocopy {
+    margin-top: 10px;
+    font-size: 13px;
   }
 
   .trustRow {
-    margin-top: 18px;
-    min-height: 62px;
-    padding-inline: 30px;
+    margin-top: 16px;
+    min-height: 60px;
+    width: min(100%, 880px);
+    gap: 10px 16px;
+    padding: 14px 18px;
+  }
+
+  .pointStar {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -2207,11 +2147,11 @@
 
   .cvRevealStage {
     width: min(1100px, 96vw);
-    height: 420px;
+    height: 390px;
   }
 
   .lockBadgeWrap {
-    top: 70%;
+    top: 74%;
   }
 
   .unlockArea {
@@ -2220,9 +2160,9 @@
   }
 
   .unlockButton {
-    height: 62px;
-    padding-inline: 54px;
-    font-size: 18px;
+    height: 60px;
+    padding-inline: 52px;
+    font-size: 17px;
   }
 
   .unlockMicrocopy {
@@ -2233,8 +2173,8 @@
 
   .trustRow {
     width: min(380px, calc(100vw - 32px));
-    grid-template-columns: 1fr;
-    gap: 10px;
+    justify-content: center;
+    gap: 10px 14px;
     padding: 16px 18px;
     text-align: center;
     font-size: 14px;
@@ -2244,11 +2184,32 @@
     justify-content: center;
   }
 
+  .trustCopy {
+    white-space: normal;
+  }
+
   .trustDivider {
     display: none;
   }
 
   .trustQuote {
+    flex-basis: 100%;
     white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressParticles span,
+  .stepSpinner,
+  .confetti span {
+    animation: none;
+  }
+
+  .unlockButton {
+    transition: none;
+  }
+
+  .unlockButton:hover {
+    transform: none;
   }
 }

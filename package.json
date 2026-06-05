@@ -15,6 +15,7 @@
     "qa:cv-workflow": "node scripts/qa-cv-workflow.mjs",
     "qa:cv-screenshot": "node scripts/qa-cv-screenshot.mjs",
     "start": "node .next/standalone/server.js",
+    "test:public-origin": "node --experimental-strip-types --test src/server/public-app-url.test.ts",
     "test:billing": "NODE_ENV=test USE_MOCK_AI=true node scripts/test-billing-entitlements.mjs",
     "test:layout": "NODE_ENV=test USE_MOCK_AI=true node scripts/test-layout.mjs",
     "typecheck": "tsc --noEmit"
