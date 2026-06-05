@@ -2,8 +2,8 @@
   position: relative;
   z-index: 10;
   overflow: visible;
-  min-height: clamp(820px, 64vw, 920px);
-  padding: clamp(58px, 5.4vw, 86px) 24px clamp(86px, 6.2vw, 118px);
+  min-height: clamp(740px, 58vw, 840px);
+  padding: clamp(50px, 4.6vw, 74px) 24px clamp(70px, 5.3vw, 96px);
   color: #070b22;
   background: transparent;
   isolation: isolate;
@@ -88,11 +88,12 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(390px, 0.95fr) minmax(250px, 0.58fr) minmax(390px, 1.08fr);
+  grid-template-columns: minmax(360px, 0.86fr) minmax(220px, 0.48fr) minmax(340px, 0.9fr);
   align-items: center;
-  gap: clamp(28px, 3.2vw, 58px);
-  width: min(100%, 1440px);
-  min-height: 760px;
+  justify-content: center;
+  gap: clamp(22px, 2.6vw, 42px);
+  width: min(100%, 1280px);
+  min-height: 680px;
   margin: 0 auto;
 }
 
@@ -143,10 +144,10 @@
 }
 
 .beforeCard {
-  width: clamp(286px, 21.3vw, 330px);
-  min-height: 158px;
-  margin-top: 30px;
-  padding: 26px 31px;
+  width: clamp(264px, 19.2vw, 304px);
+  min-height: 144px;
+  margin-top: 26px;
+  padding: 22px 26px;
   border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 17px;
   background:
@@ -181,7 +182,7 @@
 
 .scoreLine span {
   color: #050923;
-  font-size: 54px;
+  font-size: 50px;
   font-weight: 650;
   line-height: 0.92;
   letter-spacing: -0.018em;
@@ -189,7 +190,7 @@
 
 .scoreLine strong {
   color: #090f2a;
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 610;
   letter-spacing: -0.012em;
 }
@@ -199,7 +200,7 @@
   align-items: center;
   gap: 9px;
   height: 31px;
-  margin-top: 19px;
+  margin-top: 16px;
   padding: 0 14px;
   color: #d95f00;
   font-size: 14px;
@@ -224,19 +225,19 @@
 
 .questionStack {
   display: grid;
-  gap: 19px;
-  width: min(100%, 440px);
-  margin-top: 28px;
+  gap: 16px;
+  width: min(100%, 408px);
+  margin-top: 24px;
 }
 
 .questionCard {
   position: relative;
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr);
+  grid-template-columns: 52px minmax(0, 1fr);
   align-items: center;
-  gap: 18px;
-  min-height: 84px;
-  padding: 17px 27px 17px 22px;
+  gap: 16px;
+  min-height: 76px;
+  padding: 15px 22px 15px 18px;
   border: 1px solid rgba(255, 255, 255, 0.92);
   border-radius: 15px;
   background:
@@ -296,13 +297,13 @@
 }
 
 .questionIcon {
-  width: 49px;
-  height: 49px;
+  width: 44px;
+  height: 44px;
 }
 
 .questionIcon svg {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   stroke-width: 2.1;
 }
 
@@ -310,7 +311,7 @@
   margin: 0;
   white-space: pre-line;
   color: #07102b;
-  font-size: 17px;
+  font-size: 15.5px;
   font-weight: 600;
   line-height: 1.44;
   letter-spacing: -0.012em;
@@ -318,18 +319,18 @@
 
 .questionNumber {
   position: absolute;
-  right: 18px;
-  bottom: 11px;
+  right: 15px;
+  bottom: 10px;
   color: rgba(90, 100, 190, 0.1);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 680;
 }
 
 .qualifyCard {
-  width: min(100%, 268px);
+  width: min(100%, 244px);
   justify-self: center;
-  margin-top: 86px;
-  padding: 24px 22px 22px;
+  margin-top: 58px;
+  padding: 20px 18px 18px;
   border: 1px solid rgba(255, 255, 255, 0.92);
   border-radius: 18px;
   background:
@@ -350,36 +351,36 @@
 .qualifyTitle {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 0 9px;
+  gap: 12px;
+  padding: 0 6px;
 }
 
 .qualifyLogo {
-  width: 39px;
-  height: 39px;
+  width: 34px;
+  height: 34px;
 }
 
 .qualifyTitle h3 {
   margin: 0;
   color: #070b22;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 680;
   letter-spacing: -0.01em;
 }
 
 .qualifyRows {
   display: grid;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
 .qualifyRow {
   display: grid;
-  grid-template-columns: 41px minmax(0, 1fr);
+  grid-template-columns: 37px minmax(0, 1fr);
   align-items: center;
-  gap: 12px;
-  min-height: 52px;
-  padding: 7px 13px;
+  gap: 10px;
+  min-height: 46px;
+  padding: 6px 11px;
   border: 1px solid rgba(225, 218, 244, 0.84);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.66);
@@ -390,29 +391,29 @@
 }
 
 .metalIcon {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
 }
 
 .metalIcon svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   stroke-width: 2;
 }
 
 .qualifyRow p {
   margin: 0;
   color: #121936;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 620;
   letter-spacing: -0.008em;
 }
 
 .afterPanel {
-  justify-self: end;
-  width: min(100%, 468px);
-  min-height: 730px;
-  padding: 32px 31px 28px;
+  justify-self: center;
+  width: min(100%, 412px);
+  min-height: 644px;
+  padding: 26px 24px 24px;
   border: 1px solid rgba(255, 255, 255, 0.94);
   border-radius: 24px;
   background:
@@ -432,17 +433,17 @@
 
 .afterLabel {
   color: #075cff;
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 650;
 }
 
 .ringWrap {
   position: relative;
   display: grid;
-  width: 224px;
-  height: 224px;
+  width: 196px;
+  height: 196px;
   place-items: center;
-  margin: 7px auto 8px;
+  margin: 6px auto 8px;
 }
 
 .ring {
@@ -467,16 +468,16 @@
 .ringText span {
   display: block;
   color: #050923;
-  font-size: 64px;
+  font-size: 56px;
   font-weight: 650;
   line-height: 0.95;
   letter-spacing: -0.018em;
 }
 
 .ringText p {
-  margin: 9px 0 0;
+  margin: 7px 0 0;
   color: #4f5d82;
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.025em;
@@ -485,13 +486,13 @@
 .qualifiedPill {
   display: flex;
   width: fit-content;
-  min-height: 40px;
+  min-height: 36px;
   align-items: center;
   gap: 10px;
-  margin: 12px auto 24px;
-  padding: 0 21px;
+  margin: 10px auto 20px;
+  padding: 0 18px;
   color: #12ad66;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 650;
   border: 1px solid rgba(49, 205, 130, 0.2);
   border-radius: 999px;
@@ -505,24 +506,24 @@
 }
 
 .shieldIcon {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   filter: drop-shadow(0 4px 8px rgba(15, 101, 239, 0.18));
   transform-origin: center;
 }
 
 .resultStack {
   display: grid;
-  gap: 15px;
+  gap: 13px;
 }
 
 .resultCard {
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) 24px;
+  grid-template-columns: 50px minmax(0, 1fr) 22px;
   align-items: center;
-  gap: 17px;
-  min-height: 84px;
-  padding: 17px 20px;
+  gap: 14px;
+  min-height: 76px;
+  padding: 14px 16px;
   border: 1px solid rgba(238, 232, 248, 0.92);
   border-radius: 13px;
   background:
@@ -538,13 +539,13 @@
 }
 
 .resultIcon {
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
 }
 
 .resultIcon svg {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   stroke-width: 2;
 }
 
@@ -552,7 +553,7 @@
 .miniCvCard h3 {
   margin: 0;
   color: #07102b;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 660;
   line-height: 1.2;
   letter-spacing: -0.008em;
@@ -560,9 +561,9 @@
 
 .resultCard p,
 .miniCvCard p {
-  margin: 7px 0 0;
+  margin: 5px 0 0;
   color: #40517c;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 520;
   line-height: 1.25;
   letter-spacing: -0.004em;
@@ -570,8 +571,8 @@
 
 .checkIcon {
   display: grid;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   place-items: center;
   color: #18c982;
   border-radius: 999px;
@@ -581,19 +582,19 @@
 }
 
 .checkIcon svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   stroke-width: 3;
 }
 
 .miniCvCard {
   display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
-  gap: 20px;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 16px;
   align-items: center;
-  min-height: 116px;
-  margin-top: 17px;
-  padding: 18px;
+  min-height: 102px;
+  margin-top: 14px;
+  padding: 15px;
   border: 1px solid rgba(231, 235, 248, 0.9);
   border-radius: 13px;
   background:
@@ -855,9 +856,9 @@
 .cvPreview {
   display: grid;
   align-content: start;
-  gap: 8px;
-  height: 98px;
-  padding: 11px 10px;
+  gap: 7px;
+  height: 86px;
+  padding: 10px 9px;
   border: 1px solid rgba(230, 225, 246, 0.92);
   border-radius: 8px;
   background:
@@ -869,13 +870,13 @@
 .avatarRow {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 }
 
 .avatar {
   position: relative;
-  width: 29px;
-  height: 29px;
+  width: 26px;
+  height: 26px;
   flex: 0 0 auto;
   border-radius: 999px;
   background: linear-gradient(145deg, #45a4ff, #075cff);
@@ -883,10 +884,10 @@
 
 .avatar::before {
   position: absolute;
-  top: 6px;
-  left: 9.5px;
-  width: 10px;
-  height: 10px;
+  top: 5px;
+  left: 8.5px;
+  width: 9px;
+  height: 9px;
   content: "";
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.9);
@@ -894,10 +895,10 @@
 
 .avatar::after {
   position: absolute;
-  right: 6px;
-  bottom: 5px;
-  left: 6px;
-  height: 8.5px;
+  right: 5px;
+  bottom: 4px;
+  left: 5px;
+  height: 7.5px;
   content: "";
   border-radius: 999px 999px 5px 5px;
   background: rgba(255, 255, 255, 0.9);
@@ -909,42 +910,42 @@
 .cvLineShort,
 .cvCopy span {
   display: block;
-  height: 5.5px;
+  height: 5px;
   border-radius: 999px;
   background: #dfe4f2;
 }
 
 .shortLine {
-  width: 28px;
+  width: 24px;
 }
 
 .cvLineWide {
-  width: 62px;
+  width: 56px;
 }
 
 .cvLine {
-  width: 54px;
+  width: 48px;
 }
 
 .cvLineShort {
-  width: 39px;
+  width: 34px;
 }
 
 .miniCvCard h3 {
   color: #075cff;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 660;
 }
 
 .miniCvCard p {
-  margin-top: 8px;
-  font-size: 13.5px;
+  margin-top: 6px;
+  font-size: 12.5px;
   font-weight: 540;
 }
 
 .cvCopy span {
-  height: 7px;
-  margin-top: 12px;
+  height: 6px;
+  margin-top: 10px;
   background: #e4e8f6;
 }
 
@@ -962,8 +963,8 @@
 
 @media (max-width: 1180px) {
   .inner {
-    grid-template-columns: minmax(340px, 1fr) minmax(230px, 0.72fr) minmax(360px, 1fr);
-    gap: 24px;
+    grid-template-columns: minmax(320px, 0.95fr) minmax(210px, 0.6fr) minmax(320px, 0.92fr);
+    gap: 22px;
   }
 
   .headline {
@@ -971,8 +972,8 @@
   }
 
   .afterPanel {
-    width: 410px;
-    padding-inline: 24px;
+    width: 388px;
+    padding-inline: 22px;
   }
 }
 
