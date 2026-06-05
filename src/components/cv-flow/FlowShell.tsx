@@ -27,7 +27,7 @@ export function FlowShell(props: {
       className={cn(
         "relative min-h-[100dvh] overflow-hidden bg-[#f7f9ff] font-sans text-[#080b1d]",
         usesWorkflowBackground &&
-          "bg-[url('/backgrounds/workflow_background.webP')] bg-cover bg-center bg-no-repeat sm:bg-[position:50%_50%] 2xl:bg-[position:50%_45%]",
+          "bg-[url('/backgrounds/workflow_background.webp')] bg-cover bg-center bg-no-repeat sm:bg-[position:50%_50%] 2xl:bg-[position:50%_45%]",
       )}
     >
       {!usesWorkflowBackground ? (
