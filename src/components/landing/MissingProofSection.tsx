@@ -52,6 +52,13 @@ const FINAL_BEFORE_SCORE = 58;
 const FINAL_AFTER_SCORE = 92;
 const INITIAL_AFTER_SCORE = 58;
 
+const afterRingStartStops = ["#7148f2", "#674df2", "#5a53f1", "#7b55f4"] as const;
+const afterRingEndStops = ["#5d55f6", "#465df5", "#2866f8", "#126cff"] as const;
+const afterRingStopPairs = afterRingStartStops.map((startColor, index) => [
+  startColor,
+  afterRingEndStops[index] ?? startColor,
+] as const);
+
 function GradientShield() {
   return (
     <svg aria-hidden="true" className={styles.shieldIcon} viewBox="0 0 28 28">
@@ -86,6 +93,24 @@ function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+function hexToRgb(hex: string) {
+  const value = hex.replace("#", "");
+  return {
+    r: parseInt(value.slice(0, 2), 16),
+    g: parseInt(value.slice(2, 4), 16),
+    b: parseInt(value.slice(4, 6), 16),
+  };
+}
+
+function blendHexColor(from: string, to: string, progress: number) {
+  const start = hexToRgb(from);
+  const end = hexToRgb(to);
+  const channel = (fromValue: number, toValue: number) =>
+    Math.round(fromValue + (toValue - fromValue) * progress);
+
+  return `rgb(${channel(start.r, end.r)}, ${channel(start.g, end.g)}, ${channel(start.b, end.b)})`;
+}
+
 export function MissingProofSection() {
   const ringRadius = 93;
   const ringCircumference = 2 * Math.PI * ringRadius;
@@ -95,22 +120,28 @@ export function MissingProofSection() {
   const [hasFinished, setHasFinished] = useState(false);
   const [beforeScore, setBeforeScore] = useState(FINAL_BEFORE_SCORE);
   const [afterScore, setAfterScore] = useState(FINAL_AFTER_SCORE);
+  const [afterRingColorProgress, setAfterRingColorProgress] = useState(1);
   const isReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const ringProgress = afterScore / 100;
   const ringOffset = ringCircumference * (1 - ringProgress);
+  const afterRingStops = afterRingStopPairs.map(([startColor, endColor]) =>
+    blendHexColor(startColor, endColor, afterRingColorProgress),
+  );
 
   useEffect(() => {
     if (isReducedMotion) {
       setBeforeScore(FINAL_BEFORE_SCORE);
       setAfterScore(FINAL_AFTER_SCORE);
+      setAfterRingColorProgress(1);
       setHasFinished(true);
       return;
     }
 
     setBeforeScore(0);
     setAfterScore(INITIAL_AFTER_SCORE);
+    setAfterRingColorProgress(0);
   }, [isReducedMotion]);
 
   useEffect(() => {
@@ -144,15 +175,18 @@ export function MissingProofSection() {
       to: number,
       duration: number,
       setter: (value: number) => void,
+      onFrame?: (progress: number) => void,
     ) => {
       const startedAt = performance.now();
       const tick = (now: number) => {
         const progress = Math.min(1, (now - startedAt) / duration);
         const eased = easeInOutCubic(progress);
+        onFrame?.(eased);
         setter(Math.round(from + (to - from) * eased));
         if (progress < 1) {
           return requestAnimationFrame(tick);
         }
+        onFrame?.(1);
         setter(to);
         return 0;
       };
@@ -167,6 +201,7 @@ export function MissingProofSection() {
           FINAL_AFTER_SCORE,
           1650,
           setAfterScore,
+          setAfterRingColorProgress,
         );
       }, 3550),
       window.setTimeout(() => {
@@ -269,15 +304,10 @@ export function MissingProofSection() {
             <svg aria-hidden="true" className={styles.ring} viewBox="0 0 220 220">
               <defs>
                 <linearGradient id="after-ring" x1="182" x2="38" y1="30" y2="184">
-                  <stop offset="0%" stopColor="#7148f2" />
-                  <stop offset="34%" stopColor="#5b50f1" />
-                  <stop offset="64%" stopColor="#315ff4" />
-                  <stop offset="100%" stopColor="#126cff" />
-                </linearGradient>
-                <linearGradient id="after-ring-active" x1="182" x2="38" y1="30" y2="184">
-                  <stop offset="0%" stopColor="#f27a13" />
-                  <stop offset="42%" stopColor="#9b61e9" />
-                  <stop offset="100%" stopColor="#126cff" />
+                  <stop offset="0%" stopColor={afterRingStops[0]} />
+                  <stop offset="35%" stopColor={afterRingStops[1]} />
+                  <stop offset="68%" stopColor={afterRingStops[2]} />
+                  <stop offset="100%" stopColor={afterRingStops[3]} />
                 </linearGradient>
               </defs>
               <circle
@@ -293,11 +323,7 @@ export function MissingProofSection() {
                 cy="110"
                 fill="none"
                 r={ringRadius}
-                stroke={
-                  afterScore < FINAL_AFTER_SCORE
-                    ? "url(#after-ring-active)"
-                    : "url(#after-ring)"
-                }
+                stroke="url(#after-ring)"
                 strokeDasharray={ringCircumference}
                 strokeDashoffset={ringOffset}
                 strokeLinecap="round"
