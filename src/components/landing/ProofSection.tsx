@@ -624,7 +624,7 @@ function RevealControl(props: {
               TaylorCV would improve.
             </p>
             <button
-              className="mt-[40px] inline-flex h-[74px] w-[291px] cursor-pointer items-center justify-center gap-[14px] rounded-[10px] border border-[#3f62ff]/40 bg-[linear-gradient(180deg,#2254ff_0%,#103bff_48%,#0530de_100%)] px-5 text-[19px] font-semibold tracking-[-0.02em] text-white shadow-[0_18px_34px_rgba(18,59,226,0.28),0_5px_14px_rgba(12,43,156,0.14),inset_0_1px_0_rgba(255,255,255,0.34)] transition-[transform,box-shadow,filter] duration-200 hover:scale-[1.015] hover:shadow-[0_20px_38px_rgba(18,59,226,0.33),0_6px_16px_rgba(12,43,156,0.16),inset_0_1px_0_rgba(255,255,255,0.4)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/25 active:scale-[0.99] motion-reduce:transition-none"
+              className="taylor-premium-button mt-[40px] inline-flex h-[74px] w-[291px] cursor-pointer items-center justify-center gap-[14px] rounded-[10px] border px-5 text-[19px] font-semibold tracking-[-0.02em] text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/25"
               onClick={props.onReveal}
               type="button"
             >

@@ -27,9 +27,9 @@ export function FlowStepper(props: { currentStep: WorkflowStepNumber }) {
               <div className="flex items-center gap-3 sm:gap-3.5">
                 <span
                   className={cn(
-                    "grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[13px] font-medium leading-none transition-all sm:h-8 sm:w-8 sm:text-[14px]",
+                    "grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full border text-[13px] font-medium leading-none transition-colors sm:h-8 sm:w-8 sm:text-[14px]",
                     isActive || isCompleted
-                      ? "border-[#0b4ef3] bg-[#0b4ef3] text-white shadow-[0_8px_22px_rgba(11,78,243,0.16)]"
+                      ? "border-[#0b4ef3] bg-[#0b4ef3] text-white"
                       : "border-[#d3ddec] bg-white text-[#8fa0be]"
                   )}
                 >

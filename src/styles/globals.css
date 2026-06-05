@@ -19,6 +19,129 @@ html {
   scroll-behavior: smooth;
 }
 
+.signup-auth-page {
+  min-height: 100vh;
+  background-image: url("/backgrounds/signup-desktop.avif");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 768px) {
+  .signup-auth-page {
+    background-image: url("/backgrounds/signup-mobile.avif");
+    background-position: center top;
+  }
+}
+
+.taylor-premium-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-color: rgba(126, 151, 255, 0.46) !important;
+  background:
+    radial-gradient(ellipse at 18% 100%, rgba(91, 154, 255, 0.36), transparent 42%),
+    radial-gradient(ellipse at 88% 0%, rgba(143, 91, 255, 0.28), transparent 40%),
+    linear-gradient(180deg, #254dff 0%, #1238dc 52%, #071e9f 100%) !important;
+  color: #fff;
+  box-shadow:
+    0 18px 40px rgba(20, 44, 156, 0.26),
+    0 7px 18px rgba(8, 20, 92, 0.18),
+    0 0 0 1px rgba(213, 224, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1px 0 rgba(3, 14, 88, 0.42);
+  transform: translateZ(0) scale(1);
+  transform-origin: center;
+  transition:
+    transform 580ms cubic-bezier(0.18, 1, 0.22, 1),
+    box-shadow 580ms cubic-bezier(0.18, 1, 0.22, 1),
+    border-color 580ms cubic-bezier(0.18, 1, 0.22, 1),
+    background 580ms cubic-bezier(0.18, 1, 0.22, 1),
+    filter 580ms cubic-bezier(0.18, 1, 0.22, 1),
+    opacity 240ms ease;
+  will-change: transform, box-shadow, filter;
+}
+
+.taylor-premium-button::before,
+.taylor-premium-button::after {
+  position: absolute;
+  pointer-events: none;
+  content: "";
+  border-radius: inherit;
+}
+
+.taylor-premium-button::before {
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(116deg, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0.18) 26%, transparent 48%),
+    radial-gradient(ellipse at 19% 0%, rgba(255, 255, 255, 0.52), transparent 40%),
+    radial-gradient(ellipse at 20% 92%, rgba(83, 182, 255, 0.26), transparent 44%);
+  opacity: 0.68;
+  transition: opacity 580ms cubic-bezier(0.18, 1, 0.22, 1);
+}
+
+.taylor-premium-button::after {
+  inset: 1px;
+  z-index: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 -2px 0 rgba(33, 84, 255, 0.2),
+    inset 0 16px 22px rgba(255, 255, 255, 0.08);
+  opacity: 0.94;
+}
+
+.taylor-premium-button > * {
+  position: relative;
+  z-index: 1;
+}
+
+.taylor-premium-button:not(:disabled):hover {
+  border-color: rgba(189, 205, 255, 0.7) !important;
+  background:
+    radial-gradient(ellipse at 16% 100%, rgba(74, 202, 255, 0.44), transparent 43%),
+    radial-gradient(ellipse at 86% 0%, rgba(173, 111, 255, 0.4), transparent 44%),
+    linear-gradient(180deg, #416fff 0%, #2152ff 46%, #102bc9 100%) !important;
+  box-shadow:
+    0 23px 54px rgba(255, 255, 255, 0.28),
+    0 18px 42px rgba(42, 67, 190, 0.24),
+    0 8px 22px rgba(7, 24, 110, 0.18),
+    -8px 12px 26px rgba(224, 244, 255, 0.16),
+    8px -6px 22px rgba(206, 190, 255, 0.12),
+    0 0 0 1px rgba(235, 241, 255, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.64),
+    inset 0 -1px 0 rgba(4, 16, 98, 0.34);
+  filter: brightness(1.06) saturate(1.08);
+  transform: translateZ(0) scale(1.04);
+}
+
+.taylor-premium-button:not(:disabled):hover::before {
+  opacity: 0.96;
+}
+
+.taylor-premium-button:not(:disabled):active {
+  box-shadow:
+    0 12px 28px rgba(20, 44, 156, 0.24),
+    0 5px 13px rgba(8, 20, 92, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    inset 0 3px 12px rgba(2, 12, 78, 0.26);
+  transform: translateZ(0) scale(0.99);
+  transition-duration: 210ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .taylor-premium-button {
+    transition: none !important;
+    will-change: auto;
+  }
+
+  .taylor-premium-button:not(:disabled):hover,
+  .taylor-premium-button:not(:disabled):active {
+    transform: none;
+  }
+}
+
 @keyframes taylor-dotted-spinner-rotate {
   to {
     transform: rotate(360deg);
@@ -463,6 +586,9 @@ html {
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  button:not(:disabled) {
+    cursor: pointer;
   }
   body {
     @apply bg-background text-foreground;

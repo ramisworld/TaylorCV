@@ -69,16 +69,39 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
       "Avoid unsupported user counts or production-scale claims",
     ],
   },
+  strategySignals: {
+    candidateEvidenceLevel: "credible",
+    candidatePresentationStage: "student",
+    candidateProfileType: "technical_builder",
+    strongestProofType: "projects",
+    formalExperienceStrength: "weak",
+    projectProofStrength: "strong",
+    educationCredentialStrength: "moderate",
+    certificationStrength: "moderate",
+    transferableProofStrength: "moderate",
+    roleFitStrength: "strong",
+    credentialsAreThreshold: false,
+    proofFirstRecommended: true,
+    hybridStructureRecommended: true,
+    founderFramingMode: "de_emphasise",
+    founderFramingGuidance:
+      "Prefer AI Product Engineer, Applied AI Engineer, or Independent Technical Project wording unless founder framing is explicitly useful.",
+    recommendedFocus:
+      "Lead with practical AI product proof, structured output reliability, and shipped full-stack implementation.",
+    primaryFraming:
+      "Early-career AI software candidate with strong independent product proof.",
+    positioningWarnings: [
+      "Do not overclaim seniority",
+      "Do not use founder framing as the main identity for a normal employee role",
+    ],
+  },
   gapQuestions: [
     {
       question:
         "What testing, deployment, latency, cost, reliability, or output-quality evidence can you point to from TaylorCV?",
-      questionTitle: "What measurable TaylorCV results can you point to?",
       shortTitle: "Measured results",
-      tinyExample:
-        "For example, faster generation, lower token cost, fewer failed outputs, or testing across multiple CVs.",
-      helperText:
-        "Include any testing, deployment, speed, cost, quality, or reliability evidence you can honestly point to.",
+      exampleAnswer:
+        "I tested TaylorCV across multiple CVs, tightened schema validation, and reduced failed outputs during preview and export.",
       whyItMatters:
         "This would turn the AI project from a build claim into stronger engineering proof.",
       targetArea: "TaylorCV reliability and quality proof",
@@ -87,12 +110,9 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
     {
       question:
         "Did TaylorCV or ReviewMate have real users, reviewers, or stakeholders who shaped what you built?",
-      questionTitle: "Did real users or stakeholders shape what you built?",
       shortTitle: "Real users",
-      tinyExample:
-        "For example, feedback from a recruiter, student, client, or teammate that changed the workflow.",
-      helperText:
-        "Mention who it was for, what they needed, and what changed because of that input.",
+      exampleAnswer:
+        "A recruiter reviewed the workflow, asked for clearer proof sections, and that feedback changed how I structured the CV output.",
       whyItMatters:
         "This adds product and communication proof instead of making the work sound purely academic.",
       targetArea: "user and stakeholder relevance",
@@ -110,7 +130,6 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
       "skills",
       "experience",
       "education",
-      "certifications",
     ],
     briefRationale:
       "Lead with role fit and strongest technical proof because project evidence is stronger than formal experience for this target role.",
@@ -124,7 +143,6 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
       "skills",
       "experience",
       "education",
-      "certifications",
     ],
     header: {
       name: "Jordan Lee",

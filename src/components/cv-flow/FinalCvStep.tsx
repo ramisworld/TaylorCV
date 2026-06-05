@@ -2,8 +2,8 @@
 
 import { ArrowLeft, Download, FileCheck2, Loader2, RotateCcw } from "lucide-react";
 
-import { A4CvPreview } from "~/components/cv-flow/A4CvPreview";
 import { GlassCard } from "~/components/cv-flow/JobDescriptionStep";
+import { RenderedCvPreview } from "~/components/cv-flow/RenderedCvPreview";
 import type { StructuredCv } from "~/lib/cvDocument";
 
 export function FinalCvStep(props: {
@@ -40,7 +40,7 @@ export function FinalCvStep(props: {
           </p>
           <div className="mt-6 grid gap-3">
           <button
-            className="inline-flex h-[52px] items-center justify-center gap-3 rounded-[12px] bg-[#2450f4] px-5 text-[15px] font-semibold text-white shadow-[0_16px_34px_rgba(32,71,240,0.28)] transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
+            className="taylor-premium-button inline-flex h-[52px] items-center justify-center gap-3 rounded-[12px] border px-5 text-[15px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
             disabled={!props.cv || props.isExporting}
             onClick={props.onPdf}
             type="button"
@@ -89,9 +89,11 @@ export function FinalCvStep(props: {
           </div>
           <GlassCard className="p-3 sm:min-h-[calc(100dvh-96px)] sm:p-5">
             {props.cv ? (
-              <A4CvPreview
-                className="flex items-start justify-center overflow-hidden py-2 sm:min-h-[calc(100dvh-150px)]"
+              <RenderedCvPreview
+                className="py-2"
                 cv={props.cv}
+                frameClassName="sm:min-h-[calc(100dvh-150px)]"
+                mode="user"
                 presentationJson={props.presentationJson}
               />
             ) : (

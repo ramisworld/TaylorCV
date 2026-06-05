@@ -1,6 +1,9 @@
 import type { StructuredCv } from "../../lib/cvDocument.ts";
 
-import { normalizeCvSectionsWithMetadata } from "../../lib/cvDocument.ts";
+import {
+  normalizeCvSectionsWithMetadata,
+  normalizeSectionId,
+} from "../../lib/cvDocument.ts";
 
 import type {
   CandidateBrief,
@@ -89,6 +92,39 @@ function sectionOrderKeys(cv: StructuredCv | StructuredCvDocument) {
 function sectionIndex(sectionOrder: string[], target: string) {
   const normalized = normalizeText(target);
   return sectionOrder.findIndex((value) => normalizeText(value) === normalized);
+}
+
+function dynamicSectionExists(cv: StructuredCv | StructuredCvDocument, entry: string) {
+  const normalizedEntry = normalizeText(entry);
+  return cv.sections.some(
+    (section) =>
+      normalizeText(section.id) === normalizedEntry ||
+      normalizeText(section.label) === normalizedEntry
+  );
+}
+
+function hasContentForSectionEntry(cv: StructuredCv | StructuredCvDocument, entry: string) {
+  const canonicalId = normalizeSectionId(entry);
+  if (canonicalId === "summary") return cv.summary.trim().length > 0;
+  if (canonicalId === "skills") return cv.skills.groups.some((group) => group.skills.length > 0);
+  if (canonicalId === "experience") return cv.experience.length > 0;
+  if (canonicalId === "projects") return cv.projects.length > 0;
+  if (canonicalId === "education") return cv.education.length > 0;
+  if (canonicalId === "certifications") return cv.certifications.length > 0;
+  return dynamicSectionExists(cv, entry);
+}
+
+function normalizedStrategyOrder(args: {
+  cv: StructuredCv | StructuredCvDocument;
+  sectionStrategy: SectionStrategy;
+}) {
+  return args.sectionStrategy.recommendedSectionOrder.filter((entry) =>
+    hasContentForSectionEntry(args.cv, entry)
+  );
+}
+
+function normalizedComposerOrder(cv: StructuredCv | StructuredCvDocument) {
+  return cv.sectionOrder.map((entry) => normalizeSectionId(entry) ?? entry).filter(Boolean);
 }
 
 function hasFounderFraming(cv: StructuredCv) {
@@ -186,7 +222,25 @@ export function repairCvForSectionStrategy(args: {
 }) {
   const selectedIds = findSelectedSectionIds(args.cv);
   const warnings: string[] = [];
-  let sectionOrder = [...args.cv.sectionOrder];
+  const recommendedOrder = normalizedStrategyOrder(args);
+  const composerOrder = normalizedComposerOrder(args.cv);
+  let sectionOrder = [...recommendedOrder];
+
+  if (
+    composerOrder.map(normalizeText).join("|") !==
+    recommendedOrder.map(normalizeText).join("|")
+  ) {
+    warnings.push("composer_section_order_differs_from_strategy");
+  }
+
+  if (
+    args.cv.projects.length > 0 &&
+    !args.sectionStrategy.recommendedSectionOrder.some(
+      (entry) => normalizeSectionId(entry) === "projects"
+    )
+  ) {
+    warnings.push("unsupported_projects_section_present");
+  }
 
   if (args.sectionStrategy.proofFirstRecommended && selectedIds.length > 0) {
     const selectedId = selectedIds[0];
@@ -236,23 +290,31 @@ export function repairCvForSectionStrategy(args: {
 export function collectCvQualityWarnings(args: {
   rawJobText: string;
   jobBrief: JobBrief | null;
-  candidateBrief: CandidateBrief;
+  candidateBrief?: CandidateBrief;
+  candidateContext?: {
+    notableEvidence?: string[];
+  };
   sectionStrategy?: SectionStrategy;
   blueprint?: CvBlueprint;
   cv: StructuredCv;
   layoutWarnings?: string[];
 }) {
   const { rawJobText, jobBrief, cv } = args;
+  const strongestEvidence =
+    args.candidateBrief?.strongestEvidence ?? args.candidateContext?.notableEvidence ?? [];
   const inferredProofFirstExpected =
     isTechnicalArchetype(cv.roleArchetype ?? jobBrief?.archetype ?? null) &&
     !isRegulatedOrCredentialHeavy(jobBrief, rawJobText) &&
     hasStrongProjectOrProofSection(cv) &&
-    args.candidateBrief.strongestEvidence.some((item) =>
+    strongestEvidence.some((item) =>
         /project|system|deployment|evaluation|benchmark|latency|reliability|cost/i.test(item)
       );
   const proofFirstExpected =
     args.sectionStrategy?.proofFirstRecommended ?? inferredProofFirstExpected;
   const normalizedSections = normalizeCvSectionsWithMetadata(cv);
+  const strategyOrder = args.sectionStrategy
+    ? normalizedStrategyOrder({ cv, sectionStrategy: args.sectionStrategy })
+    : [];
   const orderKeys = normalizedSections.sections.map((section) => normalizeText(section.id));
   const selectedIndex = orderKeys.findIndex((key) =>
     /selected|highlight|achievement|portfolio|campaign results|selected work|systems/.test(key)
@@ -262,6 +324,11 @@ export function collectCvQualityWarnings(args: {
   const hasSelectedSection = selectedIndex >= 0;
 
   return uniqueWarnings([
+    args.sectionStrategy &&
+    normalizedComposerOrder(cv).map(normalizeText).join("|") !==
+      strategyOrder.map(normalizeText).join("|")
+      ? "section_order_differs_from_strategy"
+      : null,
     proofFirstExpected && orderKeys[1] === "skills"
       ? "section_order_starts_with_skills_after_summary_when_proof_first_expected"
       : null,
@@ -287,6 +354,13 @@ export function collectCvQualityWarnings(args: {
     ((educationIndex >= 0 && hasSelectedSection && educationIndex < selectedIndex) ||
       (certificationsIndex >= 0 && hasSelectedSection && certificationsIndex < selectedIndex))
       ? "education_or_certifications_above_stronger_technical_proof_when_not_threshold"
+      : null,
+    args.sectionStrategy &&
+    cv.projects.length > 0 &&
+    !args.sectionStrategy.recommendedSectionOrder.some(
+      (entry) => normalizeSectionId(entry) === "projects"
+    )
+      ? "unsupported_projects_section_present"
       : null,
     args.blueprint &&
     normalizeText(args.blueprint.sectionOrder[0] ?? "") !== "summary"

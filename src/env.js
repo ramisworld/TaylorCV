@@ -32,6 +32,31 @@ const requiredWhenBillingEnabled = requiredWhen(
   'Required when ENABLE_BILLING is "true"'
 );
 
+const commaSeparatedOrigins = z
+  .string()
+  .optional()
+  .refine(
+    (value) => {
+      if (!value) return true;
+      return value
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean)
+        .every((origin) => {
+          try {
+            const url = new URL(origin);
+            return url.origin === origin.replace(/\/$/, "");
+          } catch {
+            return false;
+          }
+        });
+    },
+    {
+      message:
+        "BETTER_AUTH_TRUSTED_ORIGINS must be a comma-separated list of URL origins",
+    }
+  );
+
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
@@ -39,6 +64,10 @@ export const env = createEnv({
       "BETTER_AUTH_SECRET must be at least 32 characters"
     ),
     BETTER_AUTH_URL: z.string().url(),
+    BETTER_AUTH_TRUSTED_ORIGINS: commaSeparatedOrigins,
+    GOOGLE_CLIENT_ID: z.string().min(1).optional(),
+    GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+    ADMIN_EMAILS: z.string().default(""),
     RESEND_API_KEY: requiredWhenEmailEnabled,
     AUTH_EMAIL_FROM: requiredWhenEmailEnabled,
     ABUSE_HASH_SECRET: requiredSecret(
@@ -71,6 +100,10 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
+    BETTER_AUTH_TRUSTED_ORIGINS: process.env.BETTER_AUTH_TRUSTED_ORIGINS,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    ADMIN_EMAILS: process.env.ADMIN_EMAILS,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     AUTH_EMAIL_FROM: process.env.AUTH_EMAIL_FROM,
     ABUSE_HASH_SECRET: process.env.ABUSE_HASH_SECRET,

@@ -12,6 +12,7 @@ import {
   type DeterministicCandidateBasics,
   type GapAnswerForComposer,
   type JobBrief,
+  type StrategySignals,
 } from "../cvSchemas";
 import {
   CV_COMPOSER_SYSTEM_PROMPT,
@@ -27,6 +28,7 @@ export async function runCvComposerAgent(args: {
   rawCvText: string;
   jobBrief: JobBrief | null;
   candidateBrief: CandidateBrief;
+  strategySignals: StrategySignals;
   deterministicBasics: DeterministicCandidateBasics;
   gapAnswers: GapAnswerForComposer[];
   sectionStrategy: SectionStrategy;
@@ -37,6 +39,7 @@ export async function runCvComposerAgent(args: {
     rawCvText: args.rawCvText,
     jobBrief: args.jobBrief,
     candidateBrief: args.candidateBrief,
+    strategySignals: args.strategySignals,
     deterministicBasics: args.deterministicBasics,
     gapAnswers: args.gapAnswers,
     sectionStrategy: args.sectionStrategy,
@@ -46,6 +49,7 @@ export async function runCvComposerAgent(args: {
   const structuredContextChars =
     compactJsonChars(composerContext.jobBrief) +
     compactJsonChars(composerContext.candidateBrief) +
+    compactJsonChars(composerContext.strategySignals) +
     compactJsonChars(composerContext.deterministicBasics) +
     compactJsonChars(composerContext.gapAnswers) +
     compactJsonChars(composerContext.rendererContract);

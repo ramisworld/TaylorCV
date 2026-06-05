@@ -1,11 +1,5 @@
-import { Suspense } from "react";
+import { redirect } from "next/navigation";
 
-import { AuthShell } from "../AuthShell";
-
-export default function ResetPasswordPage() {
-  return (
-    <Suspense fallback={null}>
-      <AuthShell mode="reset" />
-    </Suspense>
-  );
+export default function LegacyResetPasswordPage() {
+  redirect("/auth?mode=sign-in");
 }

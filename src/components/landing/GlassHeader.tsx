@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
 
 import { cn } from "~/lib/utils";
@@ -76,6 +77,12 @@ export function GlassHeader(props: GlassHeaderProps) {
           </a>
         </nav>
         <div className="relative z-10 ml-auto flex items-center gap-[18px]">
+          <Link
+            className="inline-flex h-[46px] items-center justify-center rounded-[12px] border border-white/60 bg-white/72 px-4 text-[14px] font-semibold text-[#17305d] shadow-[0_10px_24px_rgba(70,92,146,0.08),inset_0_1px_0_rgba(255,255,255,0.92)] backdrop-blur-[18px] transition hover:border-[#cdd8ef] hover:text-[#0b4ef3] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/14 max-sm:h-10 max-sm:px-3.5 max-sm:text-[13px]"
+            href="/auth?mode=sign-in&callbackUrl=/dashboard"
+          >
+            Sign in
+          </Link>
           <PrimaryButton
             className="h-[52px] rounded-[13px] px-6 max-sm:h-11 max-sm:px-4"
             disabled={props.isLoading}

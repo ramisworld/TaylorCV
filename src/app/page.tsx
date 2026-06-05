@@ -270,11 +270,6 @@ export default function Home() {
         return;
       }
       setError(friendlyError(mutationError.message));
-      if (hasOpenQuestions(state)) {
-        setStage("gap_questions");
-      } else {
-        setStage("cv_upload");
-      }
     },
   });
 
@@ -339,12 +334,12 @@ export default function Home() {
 
   function unlockFullCv() {
     if (!applicationId) {
-      window.location.href = "/auth/sign-up";
+      window.location.href = "/auth?mode=sign-up&context=unlock&callbackUrl=/dashboard";
       return;
     }
-    const next = "/dashboard";
+    const next = `/dashboard?applicationId=${encodeURIComponent(applicationId)}&download=pdf`;
     const claimUrl = `/auth/claim?applicationId=${encodeURIComponent(applicationId)}&next=${encodeURIComponent(next)}`;
-    window.location.href = `/auth/sign-up?returnTo=${encodeURIComponent(claimUrl)}`;
+    window.location.href = `/auth?mode=sign-up&context=unlock&callbackUrl=${encodeURIComponent(claimUrl)}`;
   }
 
   if (showLanding) {
@@ -440,9 +435,11 @@ export default function Home() {
               profileJson: state?.candidateProfileRow?.profileJson,
             }}
             cv={cv}
+            error={error}
             isReady={Boolean(cv)}
             key="generating"
             onReveal={() => setStage("final_cv")}
+            onRetry={() => startCvGeneration()}
             presentationJson={state?.cvDraft?.presentationJson}
           />
         ) : null}
@@ -450,7 +447,6 @@ export default function Home() {
           <GeneratedCVPreviewState
             cv={cv}
             key="final"
-            onBack={() => setStage("gap_questions")}
             onUnlock={unlockFullCv}
             presentationJson={state?.cvDraft?.presentationJson}
           />

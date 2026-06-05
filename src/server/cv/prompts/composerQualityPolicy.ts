@@ -1,0 +1,15 @@
+export const COMPOSER_QUALITY_POLICY = `Composer quality policy:
+- A great CV is a compressed proof map, not a biography or keyword list.
+- The recruiter should see role fit in seconds, especially in the summary and next section.
+- Proof beats promises. Prefer action + object + scope/result.
+- Every important claim must come from the raw CV/profile text or a credible saved gap answer.
+- Use real metrics when present. Never invent numbers, scale, credentials, users, or outcomes.
+- Truthful context is better than fake precision.
+- Section order depends on role archetype, credentials, proof strength, candidate stage, and page budget.
+- Every section must earn space. Remove weak, repetitive, or generic content.
+- Soft skills should be proven through examples, not listed as empty claims.
+- Avoid keyword stuffing, generic filler, and unsupported seniority.
+- Avoid em dashes by default. Use commas only when needed. Prefer short, direct bullets.
+- Avoid dynamic, results-driven, proven track record, leveraged, and cutting-edge unless source evidence justifies them.
+- Education and certifications must be readable and structured.
+- One page should use space intelligently, not become thin or overly compressed.`;

@@ -1,8 +1,8 @@
 "use client";
 
 import { Download, FileText, Loader2, Plus, Settings, LogOut } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 import { TaylorLogoMark } from "~/components/TaylorBrand";
 import { authClient, useSession } from "~/lib/auth-client";
@@ -22,7 +22,7 @@ function DashboardButton(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
     <button
       {...props}
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-white/12 bg-white/[0.06] px-3 py-2 text-sm font-medium text-zinc-100 transition hover:scale-[1.02] hover:bg-white/[0.12] disabled:cursor-not-allowed disabled:opacity-50",
+        "taylor-premium-button inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium text-zinc-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-300/20 disabled:cursor-not-allowed disabled:opacity-50",
         props.className
       )}
     />
@@ -37,14 +37,23 @@ function formatDate(value: Date | string) {
   }).format(new Date(value));
 }
 
-export default function DashboardPage() {
+function DashboardContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const utils = api.useUtils();
   const session = useSession();
   const [exportingId, setExportingId] = useState<string | null>(null);
+  const [autoExportedId, setAutoExportedId] = useState<string | null>(null);
+  const [downloadStatus, setDownloadStatus] = useState<"idle" | "downloading" | "downloaded">("idle");
   const [error, setError] = useState<string | null>(null);
+  const unlockedApplicationId = searchParams.get("applicationId");
+  const requestedDownload = searchParams.get("download");
   const isSignedIn = !!session.data?.user;
   const applicationsQuery = api.application.listUserApplications.useQuery(undefined, {
+    enabled: isSignedIn,
+    retry: false,
+  });
+  const adminAccessQuery = api.auth.getAccess.useQuery(undefined, {
     enabled: isSignedIn,
     retry: false,
   });
@@ -101,6 +110,12 @@ export default function DashboardPage() {
     checkout.mutate({ planKey });
   }, [isSignedIn, checkout]);
 
+  useEffect(() => {
+    if (adminAccessQuery.data?.isAdmin) {
+      router.replace("/admin");
+    }
+  }, [adminAccessQuery.data?.isAdmin, router]);
+
   async function exportApplication(applicationId: string, type: "pdf" | "docx") {
     setExportingId(applicationId);
     setError(null);
@@ -121,6 +136,40 @@ export default function DashboardPage() {
     }
   }
 
+  useEffect(() => {
+    if (unlockedApplicationId) {
+      localStorage.setItem(currentApplicationStorageKey, unlockedApplicationId);
+    }
+  }, [unlockedApplicationId]);
+
+  useEffect(() => {
+    if (
+      !unlockedApplicationId ||
+      requestedDownload !== "pdf" ||
+      autoExportedId === unlockedApplicationId ||
+      applicationsQuery.isLoading
+    ) {
+      return;
+    }
+
+    const unlockedApplication = applicationsQuery.data?.applications.find(
+      (application) => application.id === unlockedApplicationId
+    );
+    if (!unlockedApplication || unlockedApplication.status !== "cv_ready") return;
+
+    setAutoExportedId(unlockedApplicationId);
+    setDownloadStatus("downloading");
+    void exportApplication(unlockedApplicationId, "pdf").then(() => {
+      setDownloadStatus("downloaded");
+    });
+  }, [
+    applicationsQuery.data?.applications,
+    applicationsQuery.isLoading,
+    autoExportedId,
+    requestedDownload,
+    unlockedApplicationId,
+  ]);
+
   if (session.isPending) {
     return (
       <main className="grid min-h-screen place-items-center bg-zinc-950 text-white">
@@ -130,8 +179,16 @@ export default function DashboardPage() {
   }
 
   if (!isSignedIn) {
-    router.replace("/auth/sign-in?returnTo=/dashboard");
+    router.replace("/auth?mode=sign-in&callbackUrl=/dashboard");
     return null;
+  }
+
+  if (adminAccessQuery.isLoading || adminAccessQuery.data?.isAdmin) {
+    return (
+      <main className="grid min-h-screen place-items-center bg-zinc-950 text-white">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </main>
+    );
   }
 
   const entitlement = entitlementQuery.data;
@@ -225,6 +282,21 @@ export default function DashboardPage() {
               </p>
             ) : null}
 
+            {unlockedApplicationId ? (
+              <div className="mb-5 rounded-lg border border-blue-300/20 bg-blue-400/10 p-4 backdrop-blur-xl">
+                <p className="text-sm font-semibold text-blue-100">
+                  Your generated CV has been saved to this account.
+                </p>
+                <p className="mt-1 text-sm text-zinc-300">
+                  {downloadStatus === "downloading"
+                    ? "Your PDF download is starting..."
+                    : downloadStatus === "downloaded"
+                      ? "Your PDF has been downloaded. You can also export DOCX below."
+                      : "Your CV is ready below. The download will start when the file is available."}
+                </p>
+              </div>
+            ) : null}
+
             <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.07] backdrop-blur-xl">
               {applicationsQuery.isLoading ? (
                 <div className="flex h-48 items-center justify-center text-zinc-400">
@@ -235,7 +307,11 @@ export default function DashboardPage() {
                 <div className="divide-y divide-white/10">
                   {applicationsQuery.data.applications.map((application) => (
                     <div
-                      className="grid gap-4 p-4 md:grid-cols-[1.2fr_0.7fr_0.6fr_0.9fr]"
+                      className={cn(
+                        "grid gap-4 p-4 md:grid-cols-[1.2fr_0.7fr_0.6fr_0.9fr]",
+                        application.id === unlockedApplicationId &&
+                          "bg-blue-400/10 ring-1 ring-inset ring-blue-300/20"
+                      )}
                       key={application.id}
                     >
                       <div className="min-w-0">
@@ -311,5 +387,19 @@ export default function DashboardPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="grid min-h-screen place-items-center bg-zinc-950 text-white">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </main>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }

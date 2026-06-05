@@ -36,6 +36,101 @@ const CandidateBriefSchema = z.object({
   warnings: z.array(z.string()).max(6),
 });
 
+const CandidateEvidenceLevelSchema = z.enum([
+  "limited",
+  "emerging",
+  "credible",
+  "strong",
+]);
+
+const CandidatePresentationStageSchema = z.enum([
+  "student",
+  "graduate",
+  "early_career",
+  "mid_level",
+  "senior_level",
+  "career_changer",
+  "unknown",
+]);
+
+const CandidateProfileTypeSchema = z.enum([
+  "student",
+  "graduate",
+  "technical_builder",
+  "operator",
+  "specialist",
+  "generalist",
+  "career_changer",
+  "experienced_professional",
+  "unknown",
+]);
+
+const StrongestProofTypeSchema = z.enum([
+  "formal_experience",
+  "projects",
+  "education",
+  "certifications",
+  "portfolio",
+  "research",
+  "transferable_experience",
+  "mixed",
+  "unclear",
+]);
+
+const ProofStrengthSchema = z.enum(["weak", "moderate", "strong"]);
+
+const FounderFramingModeSchema = z.enum([
+  "highlight",
+  "neutral",
+  "de_emphasise",
+  "avoid",
+]);
+
+const StrategySignalsSchema = z.object({
+  candidateEvidenceLevel: CandidateEvidenceLevelSchema,
+  candidatePresentationStage: CandidatePresentationStageSchema,
+  candidateProfileType: CandidateProfileTypeSchema,
+  strongestProofType: StrongestProofTypeSchema,
+  formalExperienceStrength: ProofStrengthSchema,
+  projectProofStrength: ProofStrengthSchema,
+  educationCredentialStrength: ProofStrengthSchema,
+  certificationStrength: ProofStrengthSchema,
+  transferableProofStrength: ProofStrengthSchema,
+  roleFitStrength: ProofStrengthSchema,
+  credentialsAreThreshold: z.boolean(),
+  proofFirstRecommended: z.boolean(),
+  hybridStructureRecommended: z.boolean(),
+  founderFramingMode: FounderFramingModeSchema,
+  founderFramingGuidance: z.string().min(1),
+  recommendedFocus: z.string().min(1),
+  primaryFraming: z.string().min(1),
+  positioningWarnings: z.array(z.string()).max(8),
+});
+
+export type StrategySignals = z.infer<typeof StrategySignalsSchema>;
+
+export const DefaultStrategySignals: StrategySignals = {
+  candidateEvidenceLevel: "emerging",
+  candidatePresentationStage: "unknown",
+  candidateProfileType: "unknown",
+  strongestProofType: "unclear",
+  formalExperienceStrength: "weak",
+  projectProofStrength: "weak",
+  educationCredentialStrength: "weak",
+  certificationStrength: "weak",
+  transferableProofStrength: "weak",
+  roleFitStrength: "moderate",
+  credentialsAreThreshold: false,
+  proofFirstRecommended: false,
+  hybridStructureRecommended: false,
+  founderFramingMode: "neutral",
+  founderFramingGuidance:
+    "Use founder or builder framing only when it is truthful and clearly useful for the target role.",
+  recommendedFocus: "Lead with truthful role fit and the strongest available proof.",
+  primaryFraming: "Role-aligned candidate with relevant evidence for the target role.",
+  positioningWarnings: [],
+};
+
 const DeterministicCandidateBasicsSchema = z.object({
   possibleName: z.string().nullable(),
   email: z.string().nullable(),
@@ -49,16 +144,19 @@ const DeterministicCandidateBasicsSchema = z.object({
 
 const StoredCandidateProfileSchema = z.object({
   candidateBrief: CandidateBriefSchema,
+  strategySignals: StrategySignalsSchema.default(DefaultStrategySignals),
   deterministicBasics: DeterministicCandidateBasicsSchema,
 });
 
 const GapQuestionOutputSchema = z.object({
-  question: z.string().min(1).max(120),
-  questionTitle: z.string().min(1).max(90),
-  shortTitle: z.string().min(1).max(60),
-  tinyExample: z.string().min(1).max(140),
-  helperText: z.string().min(1).max(140),
-  whyItMatters: z.string().min(1).max(140),
+  question: z
+    .string()
+    .min(25)
+    .max(220)
+    .regex(/\?\s*$/, "Gap question must end with a question mark."),
+  shortTitle: z.string().min(3).max(40),
+  exampleAnswer: z.string().min(20).max(220),
+  whyItMatters: z.string().min(20).max(180),
   targetArea: z.string().min(1).max(120),
   priority: z.enum(["high", "medium"]),
 });
@@ -66,6 +164,7 @@ const GapQuestionOutputSchema = z.object({
 export const IntakeGapOutputSchema = z.object({
   jobBrief: JobBriefSchema,
   candidateBrief: CandidateBriefSchema,
+  strategySignals: StrategySignalsSchema,
   gapQuestions: z.array(GapQuestionOutputSchema).max(3),
 });
 
@@ -204,11 +303,104 @@ const seniorityJsonSchema = {
   ],
 } as const;
 
+const proofStrengthJsonSchema = {
+  type: "string",
+  enum: ["weak", "moderate", "strong"],
+} as const;
+
+const strategySignalsJsonSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "candidateEvidenceLevel",
+    "candidatePresentationStage",
+    "candidateProfileType",
+    "strongestProofType",
+    "formalExperienceStrength",
+    "projectProofStrength",
+    "educationCredentialStrength",
+    "certificationStrength",
+    "transferableProofStrength",
+    "roleFitStrength",
+    "credentialsAreThreshold",
+    "proofFirstRecommended",
+    "hybridStructureRecommended",
+    "founderFramingMode",
+    "founderFramingGuidance",
+    "recommendedFocus",
+    "primaryFraming",
+    "positioningWarnings",
+  ],
+  properties: {
+    candidateEvidenceLevel: {
+      type: "string",
+      enum: ["limited", "emerging", "credible", "strong"],
+    },
+    candidatePresentationStage: {
+      type: "string",
+      enum: [
+        "student",
+        "graduate",
+        "early_career",
+        "mid_level",
+        "senior_level",
+        "career_changer",
+        "unknown",
+      ],
+    },
+    candidateProfileType: {
+      type: "string",
+      enum: [
+        "student",
+        "graduate",
+        "technical_builder",
+        "operator",
+        "specialist",
+        "generalist",
+        "career_changer",
+        "experienced_professional",
+        "unknown",
+      ],
+    },
+    strongestProofType: {
+      type: "string",
+      enum: [
+        "formal_experience",
+        "projects",
+        "education",
+        "certifications",
+        "portfolio",
+        "research",
+        "transferable_experience",
+        "mixed",
+        "unclear",
+      ],
+    },
+    formalExperienceStrength: proofStrengthJsonSchema,
+    projectProofStrength: proofStrengthJsonSchema,
+    educationCredentialStrength: proofStrengthJsonSchema,
+    certificationStrength: proofStrengthJsonSchema,
+    transferableProofStrength: proofStrengthJsonSchema,
+    roleFitStrength: proofStrengthJsonSchema,
+    credentialsAreThreshold: { type: "boolean" },
+    proofFirstRecommended: { type: "boolean" },
+    hybridStructureRecommended: { type: "boolean" },
+    founderFramingMode: {
+      type: "string",
+      enum: ["highlight", "neutral", "de_emphasise", "avoid"],
+    },
+    founderFramingGuidance: { type: "string" },
+    recommendedFocus: { type: "string" },
+    primaryFraming: { type: "string" },
+    positioningWarnings: boundedStringArrayJsonSchema(8),
+  },
+} as const;
+
 export const AgentJsonSchemas = {
   intakeGap: {
     type: "object",
     additionalProperties: false,
-    required: ["jobBrief", "candidateBrief", "gapQuestions"],
+    required: ["jobBrief", "candidateBrief", "strategySignals", "gapQuestions"],
     properties: {
       jobBrief: {
         type: "object",
@@ -262,6 +454,7 @@ export const AgentJsonSchemas = {
           warnings: boundedStringArrayJsonSchema(6),
         },
       },
+      strategySignals: strategySignalsJsonSchema,
       gapQuestions: {
         type: "array",
         maxItems: 3,
@@ -270,21 +463,22 @@ export const AgentJsonSchemas = {
           additionalProperties: false,
           required: [
             "question",
-            "questionTitle",
             "shortTitle",
-            "tinyExample",
-            "helperText",
+            "exampleAnswer",
             "whyItMatters",
             "targetArea",
             "priority",
           ],
           properties: {
-            question: { type: "string", maxLength: 120 },
-            questionTitle: { type: "string", maxLength: 90 },
-            shortTitle: { type: "string", maxLength: 60 },
-            tinyExample: { type: "string", maxLength: 140 },
-            helperText: { type: "string", maxLength: 140 },
-            whyItMatters: { type: "string", maxLength: 140 },
+            question: {
+              type: "string",
+              minLength: 25,
+              maxLength: 220,
+              pattern: "\\?\\s*$",
+            },
+            shortTitle: { type: "string", minLength: 3, maxLength: 40 },
+            exampleAnswer: { type: "string", minLength: 20, maxLength: 220 },
+            whyItMatters: { type: "string", minLength: 20, maxLength: 180 },
             targetArea: { type: "string", maxLength: 120 },
             priority: { type: "string", enum: ["high", "medium"] },
           },

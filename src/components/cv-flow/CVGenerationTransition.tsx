@@ -3,18 +3,16 @@
 import {
   ArrowRight,
   Check,
-  ChevronLeft,
-  Clock,
   LockKeyhole,
   LockOpen,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { A4CvPreview } from "~/components/cv-flow/A4CvPreview";
-import { TaylorBrand } from "~/components/TaylorBrand";
+import { TaylorBrand, TaylorLogoMark } from "~/components/TaylorBrand";
+import { FlowStepper } from "~/components/cv-flow/FlowStepper";
 import {
   contactItems,
   isRecord,
@@ -31,6 +29,15 @@ const generationSteps = [
   "Writing your CV",
   "Complete",
 ] as const;
+
+const loadingTasks = [
+  "Analyzing your experience",
+  "Matching evidence to the role",
+  "Refining achievements & impact",
+  "Generating your tailored CV",
+] as const;
+
+const stageMilestones = [27, 50, 72, 96] as const;
 
 type CandidatePreviewSource = {
   profileJson?: unknown;
@@ -106,13 +113,35 @@ function fallbackHeader(source?: CandidatePreviewSource | null): CvHeader {
   };
 }
 
-function previewSections(cv: StructuredCv | null) {
-  if (!cv) return ["Professional Summary", "Experience", "Skills"];
+const fallbackLoadingSections = [
+  "Professional Summary",
+  "Key Achievements",
+  "Professional Experience",
+  "Education",
+  "Skills",
+  "Tools & Technologies",
+];
 
-  return normalizeCvSections(cv)
-    .map((section) => section.label)
-    .filter(Boolean)
-    .slice(0, 3);
+function loadingDocumentSections(cv: StructuredCv | null) {
+  const realSections = cv
+    ? normalizeCvSections(cv)
+        .map((section) => section.label)
+        .filter(Boolean)
+    : [];
+
+  const merged = [...realSections];
+
+  for (const fallback of fallbackLoadingSections) {
+    if (
+      !merged.some(
+        (section) => section.toLowerCase() === fallback.toLowerCase(),
+      )
+    ) {
+      merged.push(fallback);
+    }
+  }
+
+  return merged.slice(0, 6);
 }
 
 function SecureChrome(props: { children: React.ReactNode }) {
@@ -122,11 +151,7 @@ function SecureChrome(props: { children: React.ReactNode }) {
       <div className={styles.secureBottomWash} />
 
       <div className={styles.secureTopbar}>
-        <TaylorBrand
-          className="gap-3"
-          markClassName="h-9 w-9 sm:h-10 sm:w-10"
-          textClassName="text-[18px] font-[650] tracking-[-0.045em] text-[#0b1637] sm:text-[20px]"
-        />
+        <TaylorLogoMark className={styles.secureLogo} />
 
         <div className={styles.secureLabel}>
           <ShieldCheck className="h-4 w-4 text-[#5a78b1]" />
@@ -136,6 +161,109 @@ function SecureChrome(props: { children: React.ReactNode }) {
 
       {props.children}
     </section>
+  );
+}
+
+function GenerationHeader() {
+  return (
+    <header className={styles.generationHeader}>
+      <TaylorBrand
+        className={styles.generationBrand}
+        markClassName="h-10 w-10 sm:h-11 sm:w-11"
+        textClassName="text-[22px] font-[700] tracking-[-0.045em] text-[#07134a] sm:text-[26px]"
+      />
+
+      <div className={styles.generationStepper}>
+        <FlowStepper currentStep={4} />
+      </div>
+    </header>
+  );
+}
+
+function SparkleGlyph(props: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={props.className}
+      fill="none"
+      viewBox="0 0 52 52"
+    >
+      <path
+        d="M19.7 7.7l3.1 9.1 8.9 3.2-8.9 3.2-3.1 9.1-3.2-9.1-8.8-3.2 8.8-3.2 3.2-9.1z"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="3"
+      />
+      <path
+        d="M35.7 18.5l2 5.7 5.6 2-5.6 2.1-2 5.7-2-5.7-5.6-2.1 5.6-2 2-5.7zM22.4 34.5l1.2 3.6 3.5 1.3-3.5 1.2-1.2 3.7-1.3-3.7-3.5-1.2 3.5-1.3 1.3-3.6z"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="2.8"
+      />
+    </svg>
+  );
+}
+
+function SearchGlyph() {
+  return (
+    <svg aria-hidden="true" fill="none" viewBox="0 0 28 28">
+      <circle
+        cx="12.2"
+        cy="12.2"
+        r="7.4"
+        stroke="currentColor"
+        strokeWidth="2.6"
+      />
+      <path
+        d="M17.8 17.8l6 6"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2.8"
+      />
+    </svg>
+  );
+}
+
+function PuzzleGlyph() {
+  return (
+    <svg aria-hidden="true" fill="none" viewBox="0 0 28 28">
+      <path
+        d="M11.2 4.7h5.7v4.1h1.8a3.2 3.2 0 110 6.4h-1.8v3.9h-4.2v-1.4a3.2 3.2 0 10-6.4 0v1.4H3.7v-7h4.1v-2H3.7V4.7h4.1"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2.4"
+      />
+    </svg>
+  );
+}
+
+function TargetGlyph() {
+  return (
+    <svg aria-hidden="true" fill="none" viewBox="0 0 28 28">
+      <circle cx="14" cy="14" r="9.4" stroke="currentColor" strokeWidth="2.4" />
+      <circle cx="14" cy="14" r="5.2" stroke="currentColor" strokeWidth="2.4" />
+      <circle cx="14" cy="14" r="1.7" fill="currentColor" />
+    </svg>
+  );
+}
+
+function NorthStarGlyph() {
+  return (
+    <svg aria-hidden="true" fill="none" viewBox="0 0 28 28">
+      <path
+        d="M14 3.5l2.1 7.4 7.4 3.1-7.4 3.1L14 24.5l-2.1-7.4L4.5 14l7.4-3.1L14 3.5z"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="2.4"
+      />
+      <path
+        d="M5 6.2v3.1M3.4 7.8h3.2M22 20v3.1M20.4 21.6h3.2"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+    </svg>
   );
 }
 
@@ -345,23 +473,129 @@ function GenerationStepRow(props: { ready: boolean }) {
   );
 }
 
-function SkeletonSectionLines(props: { index: number }) {
-  const widths = [
-    ["92%", "86%", "54%"],
-    ["74%", "91%", "72%", "88%"],
-    ["68%", "82%", "58%"],
-  ][props.index] ?? ["86%", "72%", "64%"];
-
+function LoadingLine(props: {
+  width: string;
+  short?: boolean;
+  faint?: boolean;
+}) {
   return (
-    <div className="mt-3 space-y-2.5">
-      {widths.map((width, index) => (
+    <span
+      className={[
+        styles.loadingCvLine,
+        props.short ? styles.loadingCvLineShort : "",
+        props.faint ? styles.loadingCvLineFaint : "",
+      ].join(" ")}
+      style={{ width: props.width }}
+    />
+  );
+}
+
+function LoadingAchievementGrid() {
+  return (
+    <div className={styles.loadingAchievementGrid}>
+      {[0, 1, 2, 3].map((item) => (
+        <div className={styles.loadingBulletRow} key={item}>
+          <span className={styles.loadingBulletDot} />
+          <div className={styles.loadingBulletLines}>
+            <LoadingLine width={item % 2 === 0 ? "88%" : "76%"} />
+            <LoadingLine faint width={item % 2 === 0 ? "68%" : "58%"} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function LoadingExperienceTimeline() {
+  return (
+    <div className={styles.loadingExperienceTimeline}>
+      {[0, 1, 2].map((entry) => (
+        <div className={styles.loadingExperienceEntry} key={entry}>
+          <span className={styles.loadingTimelineDot} />
+
+          {entry < 2 ? <span className={styles.loadingTimelineLine} /> : null}
+
+          <div className={styles.loadingExperienceContent}>
+            <div className={styles.loadingEntryHeader}>
+              <LoadingLine width={entry === 0 ? "42%" : "34%"} />
+              <LoadingLine short width={entry === 0 ? "22%" : "18%"} />
+            </div>
+
+            <div className={styles.loadingEntryBody}>
+              <LoadingLine width="86%" />
+              <LoadingLine width="78%" />
+              <LoadingLine width={entry === 2 ? "64%" : "72%"} />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function LoadingChipRows() {
+  return (
+    <div className={styles.loadingChipGrid}>
+      {Array.from({ length: 10 }).map((_, index) => (
         <span
-          className={styles.skeletonLine}
-          key={`${width}-${index}`}
-          style={{ width }}
+          className={styles.loadingChip}
+          key={index}
+          style={{
+            width: `${46 + ((index * 17) % 48)}px`,
+          }}
         />
       ))}
     </div>
+  );
+}
+
+function LoadingPlainLines(props: { compact?: boolean }) {
+  return (
+    <div className={styles.loadingPlainLines}>
+      <LoadingLine width="94%" />
+      <LoadingLine width="86%" />
+      {!props.compact ? <LoadingLine width="68%" /> : null}
+    </div>
+  );
+}
+
+function LoadingCvSection(props: { label: string; index: number }) {
+  const lower = props.label.toLowerCase();
+
+  const isAchievements =
+    lower.includes("achievement") || lower.includes("accomplishment");
+  const isExperience =
+    lower.includes("experience") ||
+    lower.includes("employment") ||
+    lower.includes("work");
+  const isChips =
+    lower.includes("skill") ||
+    lower.includes("tool") ||
+    lower.includes("technolog") ||
+    lower.includes("certification");
+
+  return (
+    <section className={styles.loadingCvSection}>
+      <div className={styles.loadingCvSectionHeader}>
+        <span className={styles.loadingCvSectionIcon}>
+          {isAchievements ? "✧" : isExperience ? "•" : isChips ? "◆" : "○"}
+        </span>
+
+        <h3>{props.label}</h3>
+      </div>
+
+      <div className={styles.loadingCvSectionContent}>
+        {isAchievements ? (
+          <LoadingAchievementGrid />
+        ) : isExperience ? (
+          <LoadingExperienceTimeline />
+        ) : isChips ? (
+          <LoadingChipRows />
+        ) : (
+          <LoadingPlainLines compact={props.index > 3} />
+        )}
+      </div>
+    </section>
   );
 }
 
@@ -370,54 +604,51 @@ function CVLoadingPreview(props: {
   source?: CandidatePreviewSource | null;
 }) {
   const header = props.cv?.header ?? fallbackHeader(props.source);
-  const sections = previewSections(props.cv);
-  const details = contactItems(header).slice(0, 5);
+  const sections = loadingDocumentSections(props.cv);
+  const details = contactItems(header).slice(0, 4);
 
   return (
-    <div className={styles.loadingPreview}>
-      <div>
-        <h2 className={styles.loadingPreviewName}>{header.name}</h2>
+    <div className={styles.loadingPreviewStage}>
+      <div className={styles.loadingStageBeam} />
+      <div className={styles.loadingStageBaseGlow} />
 
-        {header.targetTitle ? (
-          <p className={styles.loadingPreviewTitle}>{header.targetTitle}</p>
-        ) : null}
+      <article className={styles.loadingPreviewDocument}>
+        <div className={styles.loadingPreviewPaperInner}>
+          <header className={styles.loadingCvHeader}>
+            <h2 className={styles.loadingCvName}>{header.name}</h2>
 
-        {details.length ? (
-          <div className={styles.loadingPreviewDetails}>
-            {details.map((item) => (
-              <span
-                className={styles.loadingPreviewDetail}
-                key={`${item.kind}-${item.value}`}
-              >
-                <span className={styles.loadingPreviewDetailDot} />
-                <span className="truncate">{item.value}</span>
-              </span>
+            {header.targetTitle ? (
+              <p className={styles.loadingCvTitle}>{header.targetTitle}</p>
+            ) : null}
+
+            {details.length ? (
+              <div className={styles.loadingCvContacts}>
+                {details.map((item, index) => (
+                  <span
+                    className={styles.loadingCvContact}
+                    key={`${item.kind}-${item.value}`}
+                  >
+                    {index > 0 ? (
+                      <span className={styles.loadingCvContactDivider} />
+                    ) : null}
+                    {item.value}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </header>
+
+          <div className={styles.loadingCvBody}>
+            {sections.map((section, index) => (
+              <LoadingCvSection
+                index={index}
+                key={`${section}-${index}`}
+                label={section}
+              />
             ))}
           </div>
-        ) : null}
-      </div>
-
-      <div className={styles.loadingSections}>
-        {sections.map((section, index) => (
-          <section
-            className={index > 0 ? "py-5" : "pb-5"}
-            key={`${section}-${index}`}
-          >
-            <div className="flex items-start gap-5">
-              <span className={styles.loadingSectionIcon}>
-                <Sparkles className="h-4 w-4" />
-              </span>
-
-              <div className="min-w-0 flex-1">
-                <h3 className={styles.loadingSectionTitle}>{section}</h3>
-                <SkeletonSectionLines index={index} />
-              </div>
-            </div>
-          </section>
-        ))}
-      </div>
-
-      <div className={styles.loadingPreviewFade} />
+        </div>
+      </article>
     </div>
   );
 }
@@ -439,11 +670,11 @@ function CVRevealDocument(props: {
   const documentStyle = {
     background: "#ffffff",
     border: "0",
-    borderTopLeftRadius: "26px",
-    borderTopRightRadius: "26px",
+    borderRadius: "28px 28px 0 0",
     boxShadow:
-      "0 34px 86px rgba(70, 88, 130, 0.13), 0 12px 34px rgba(84, 107, 158, 0.08)",
+      "0 36px 92px rgba(70, 88, 130, 0.14), 0 14px 40px rgba(84, 107, 158, 0.09)",
     outline: "none",
+    overflow: "hidden",
   };
 
   return (
@@ -454,7 +685,7 @@ function CVRevealDocument(props: {
           cv={props.cv}
           documentStyle={documentStyle}
           fitToHeight={false}
-          maxScale={1.24}
+          maxScale={1.38}
           presentationJson={props.presentationJson}
         />
       </div>
@@ -465,7 +696,7 @@ function CVRevealDocument(props: {
           cv={props.cv}
           documentStyle={documentStyle}
           fitToHeight={false}
-          maxScale={1.24}
+          maxScale={1.38}
           presentationJson={props.presentationJson}
         />
       </div>
@@ -493,63 +724,256 @@ function CVPreviewCard(props: {
   );
 }
 
+function randomStageDuration() {
+  return 2000 + Math.random() * 2000;
+}
+
+function useGenerationProgress(isReady: boolean, hasError: boolean) {
+  const [activeStage, setActiveStage] = useState(0);
+  const [completedStages, setCompletedStages] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const targetRef = useRef(16);
+  const readyRef = useRef(isReady);
+  const errorRef = useRef(hasError);
+
+  useEffect(() => {
+    readyRef.current = isReady;
+  }, [isReady]);
+
+  useEffect(() => {
+    errorRef.current = hasError;
+  }, [hasError]);
+
+  useEffect(() => {
+    if (hasError) return;
+    let frame = 0;
+
+    const tick = () => {
+      setProgress((current) => {
+        const target = targetRef.current;
+        if (current >= target) return current;
+        return Math.min(
+          target,
+          current + Math.max(0.035, (target - current) * 0.018),
+        );
+      });
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, [hasError]);
+
+  useEffect(() => {
+    if (hasError) return;
+    let cancelled = false;
+    const timers: number[] = [];
+
+    const runStage = (stage: number) => {
+      if (cancelled || readyRef.current || errorRef.current) return;
+      setActiveStage(stage);
+      targetRef.current =
+        stage === 0 ? 18 : stage === 1 ? 42 : stage === 2 ? 64 : 94;
+
+      if (stage >= 3) return;
+
+      const timer = window.setTimeout(() => {
+        if (cancelled || errorRef.current) return;
+        setCompletedStages(stage + 1);
+        targetRef.current = stageMilestones[stage as 0 | 1 | 2];
+        window.setTimeout(() => runStage(stage + 1), 360);
+      }, randomStageDuration());
+      timers.push(timer);
+    };
+
+    runStage(0);
+
+    return () => {
+      cancelled = true;
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
+  }, [hasError]);
+
+  useEffect(() => {
+    if (!isReady || hasError) return;
+    setCompletedStages(4);
+    setActiveStage(3);
+    targetRef.current = 100;
+    setProgress(100);
+  }, [hasError, isReady]);
+
+  return {
+    activeStage,
+    completedStages,
+    progress: Math.min(100, Math.round(progress)),
+  };
+}
+
+function LoadingStatusIcon(props: {
+  state: "complete" | "active" | "pending";
+}) {
+  if (props.state === "complete") {
+    return (
+      <motion.span
+        animate={{ opacity: 1, scale: 1 }}
+        className={styles.loadingCheck}
+        initial={{ opacity: 0, scale: 0.75 }}
+        transition={{ duration: 0.22, ease: "easeOut" }}
+      >
+        <Check className="h-3.5 w-3.5" strokeWidth={3.2} />
+      </motion.span>
+    );
+  }
+
+  if (props.state === "active")
+    return <span className={styles.loadingSpinner} />;
+
+  return <span className={styles.loadingPendingDot} />;
+}
+
+function LoadingTaskRow(props: {
+  index: number;
+  label: string;
+  state: "complete" | "active" | "pending";
+}) {
+  const icons = [
+    <SearchGlyph key="search" />,
+    <PuzzleGlyph key="puzzle" />,
+    <TargetGlyph key="target" />,
+    <NorthStarGlyph key="star" />,
+  ];
+
+  return (
+    <div className={styles.loadingTaskRow}>
+      <span
+        className={[
+          styles.loadingTaskIcon,
+          props.index === 3 ? styles.loadingTaskIconPink : "",
+        ].join(" ")}
+      >
+        {icons[props.index]}
+      </span>
+      <span className={styles.loadingTaskText}>{props.label}</span>
+      <LoadingStatusIcon state={props.state} />
+    </div>
+  );
+}
+
+export function CVGenerationLoadingScreen(props: {
+  cv: StructuredCv | null;
+  presentationJson?: unknown;
+  candidateSource?: CandidatePreviewSource | null;
+  isReady: boolean;
+  error?: string | null;
+  onReveal: () => void;
+  onRetry?: () => void;
+}) {
+  const hasError = Boolean(props.error);
+  const { activeStage, completedStages, progress } = useGenerationProgress(
+    props.isReady,
+    hasError,
+  );
+
+  useEffect(() => {
+    if (!props.isReady || hasError) return;
+
+    const revealTimer = window.setTimeout(props.onReveal, 520);
+
+    return () => window.clearTimeout(revealTimer);
+  }, [hasError, props.isReady, props.onReveal]);
+
+  return (
+    <section className={styles.generationPage}>
+      <div className={styles.generationBackground} />
+      <GenerationHeader />
+
+      <main className={styles.generationMain}>
+        <div className={styles.sparkleOrb}>
+          <SparkleGlyph className={styles.sparkleIcon} />
+        </div>
+
+        <h1 className={styles.generationHeadline}>Building your tailored CV</h1>
+
+        <p className={styles.generationSubtitle}>
+          Our AI is carefully crafting a CV that best showcases your strengths
+          and aligns with the role.
+        </p>
+
+        <div className={styles.linearProgressGroup}>
+          <div
+            aria-label={`CV generation progress ${progress}%`}
+            aria-valuemax={100}
+            aria-valuemin={0}
+            aria-valuenow={progress}
+            className={styles.linearProgressTrack}
+            role="progressbar"
+          >
+            <motion.span
+              animate={{ width: `${progress}%` }}
+              className={styles.linearProgressFill}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            />
+          </div>
+          <span className={styles.linearProgressPercent}>{progress}%</span>
+        </div>
+
+        <div className={styles.loadingTaskList}>
+          {loadingTasks.map((task, index) => {
+            const state =
+              index < completedStages
+                ? "complete"
+                : index === activeStage && !hasError
+                  ? "active"
+                  : "pending";
+
+            return (
+              <LoadingTaskRow
+                index={index}
+                key={task}
+                label={task}
+                state={state}
+              />
+            );
+          })}
+        </div>
+
+        {props.error ? (
+          <div className={styles.generationError} role="alert">
+            <p>{props.error}</p>
+            {props.onRetry ? (
+              <button onClick={props.onRetry} type="button">
+                Try again
+              </button>
+            ) : null}
+          </div>
+        ) : null}
+
+        <p className={styles.generationSecurityNote}>
+          <span className={styles.generationSecurityIcon}>
+            <LockKeyhole className="h-4 w-4" strokeWidth={2.3} />
+          </span>
+          Your information is secure and private
+        </p>
+      </main>
+    </section>
+  );
+}
+
 export function CVGenerationLoadingState(props: {
   cv: StructuredCv | null;
   presentationJson?: unknown;
   candidateSource?: CandidatePreviewSource | null;
   isReady: boolean;
+  error?: string | null;
   onReveal: () => void;
+  onRetry?: () => void;
 }) {
-  const [confettiActive, setConfettiActive] = useState(false);
-
-  useEffect(() => {
-    if (!props.isReady) return;
-
-    const revealTimer = window.setTimeout(props.onReveal, 2200);
-
-    return () => window.clearTimeout(revealTimer);
-  }, [props.isReady, props.onReveal]);
-
-  return (
-    <SecureChrome>
-      <div className={styles.loadingState}>
-        <div className="relative mx-auto w-max">
-          <CircularProgressToTick
-            onSuccessShown={() => setConfettiActive(true)}
-            ready={props.isReady}
-          />
-          <CompletionConfetti active={confettiActive} />
-        </div>
-
-        <div className="mt-3">
-          <StatusPill dot>
-            {props.isReady ? "100% Complete" : "Creating CV"}
-          </StatusPill>
-        </div>
-
-        <h1 className={styles.loadingHeadline}>Creating your tailored CV</h1>
-
-        <p className={styles.loadingSubtitle}>
-          We&apos;re analyzing your experience and tailoring it to the role.
-        </p>
-
-        <GenerationStepRow ready={props.isReady} />
-
-        <CVLoadingPreview cv={props.cv} source={props.candidateSource} />
-
-        <p className={styles.loadingTime}>
-          <Clock className="h-4 w-4" />
-          Usually takes under 30 seconds
-        </p>
-      </div>
-    </SecureChrome>
-  );
+  return <CVGenerationLoadingScreen {...props} />;
 }
 
 export function GeneratedCVPreviewState(props: {
   cv: StructuredCv | null;
   presentationJson?: unknown;
-  onBack: () => void;
   onUnlock: () => void;
 }) {
   return (
@@ -560,27 +984,9 @@ export function GeneratedCVPreviewState(props: {
         initial={{ opacity: 0, y: 18 }}
         transition={{ duration: 0.55, ease: "easeOut" }}
       >
-        <div className={styles.successIconShell}>
-          <div className={styles.progressParticles} aria-hidden="true">
-            {Array.from({ length: 10 }).map((_, index) => (
-              <span key={index} />
-            ))}
-          </div>
+        <StatusPill dot>Tailored CV ready</StatusPill>
 
-          <div className={styles.successRingOne} />
-          <div className={styles.successRingTwo} />
-          <div className={styles.successRingThree} />
-
-          <span className={styles.successTick}>
-            <Check className="h-10 w-10" strokeWidth={3.2} />
-          </span>
-        </div>
-
-        <div className="-mt-1">
-          <StatusPill dot>100% Complete</StatusPill>
-        </div>
-
-        <h1 className={styles.generatedHeadline}>Your tailored CV is ready!</h1>
+        <h1 className={styles.generatedHeadline}>Your tailored CV is ready</h1>
 
         <p className={styles.generatedSubtitle}>
           Preview your CV below and unlock the full version to download and
@@ -594,7 +1000,7 @@ export function GeneratedCVPreviewState(props: {
 
         <div className={styles.unlockArea}>
           <button
-            className={styles.unlockButton}
+            className={`taylor-premium-button ${styles.unlockButton}`}
             onClick={props.onUnlock}
             type="button"
           >
@@ -605,14 +1011,10 @@ export function GeneratedCVPreviewState(props: {
             <ArrowRight className="h-7 w-7" strokeWidth={2.25} />
           </button>
 
-          <button
-            className={styles.backButton}
-            onClick={props.onBack}
-            type="button"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Back to edit answers
-          </button>
+          <p className={styles.unlockMicrocopy}>
+            <LockKeyhole className="h-3.5 w-3.5" strokeWidth={2.2} />
+            Quick unlock • Download instantly • Secure & private
+          </p>
         </div>
 
         <div className={styles.trustRow}>
@@ -629,7 +1031,8 @@ export function GeneratedCVPreviewState(props: {
           <span className={styles.trustDivider} />
 
           <span className={styles.trustQuote}>
-            “TaylorCV helped me get more interviews in just two weeks.”
+            “TaylorCV helped me get more interviews in just two weeks.” – Sarah,
+            Product Manager
           </span>
         </div>
       </motion.div>

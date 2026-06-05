@@ -13,6 +13,7 @@ export const runtime = "nodejs";
 function authActionFor(pathname: string): AbuseAction | null {
   if (pathname.endsWith("/sign-up/email")) return "account_create";
   if (pathname.endsWith("/sign-in/email")) return "sign_in";
+  if (pathname.endsWith("/sign-in/magic-link")) return "sign_in";
   if (pathname.endsWith("/request-password-reset")) return "password_reset";
   if (pathname.endsWith("/send-verification-email")) return "verification_resend";
   return null;
@@ -42,6 +43,24 @@ async function handler(request: NextRequest) {
     }
   }
   const response = await auth.handler(request);
+  if (
+    process.env.NODE_ENV === "development" &&
+    request.nextUrl.pathname.endsWith("/sign-in/social") &&
+    request.method === "POST"
+  ) {
+    response
+      .clone()
+      .json()
+      .then((body) => {
+        const authUrl = typeof body?.url === "string" ? body.url : "";
+        const redirectUri = authUrl
+          ? new URL(authUrl).searchParams.get("redirect_uri")
+          : null;
+        console.info("[TaylorCV auth] social auth URL", authUrl);
+        console.info("[TaylorCV auth] social redirect_uri", redirectUri);
+      })
+      .catch(() => undefined);
+  }
   resHeaders.forEach((value, key) => response.headers.append(key, value));
   return response;
 }

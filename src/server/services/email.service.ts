@@ -53,6 +53,20 @@ export async function sendVerificationEmail(args: { email: string; url: string }
   });
 }
 
+export async function sendMagicLinkEmail(args: { email: string; url: string }) {
+  await getResend().emails.send({
+    from: getEmailFrom(),
+    to: args.email,
+    subject: "Your TaylorCV sign-in link",
+    html: emailShell({
+      title: "Continue to TaylorCV",
+      body: "Use this secure email link to sign in or create your TaylorCV account without a password.",
+      cta: "Continue to TaylorCV",
+      url: args.url,
+    }),
+  });
+}
+
 export async function sendPasswordResetEmail(args: { email: string; url: string }) {
   await getResend().emails.send({
     from: getEmailFrom(),

@@ -1,269 +1,367 @@
 "use client";
 
-import type { ReactNode } from "react";
 import {
-  BriefcaseBusiness,
+  BarChart3,
+  Check,
   MessageCircleQuestion,
-  PencilLine,
-  SearchCheck,
+  Search,
+  Settings,
+  ShieldCheck,
   Sparkles,
-  Target,
+  UsersRound,
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
+import { TaylorLogoMark } from "~/components/TaylorBrand";
 import { cn } from "~/lib/utils";
-import { GlassSmileyOrb } from "./GlassSmileyOrb";
-import { MissingProofScoreGlassCard } from "./MissingProofScoreGlassCard";
 
 import styles from "./missing-proof-section.module.css";
 
-const benefits = [
-  { icon: Target, label: "Spots weak evidence" },
-  { icon: MessageCircleQuestion, label: "Asks the right follow-up" },
-  { icon: PencilLine, label: "Turns answers into stronger CV bullets" },
-] as const;
-
 const questions = [
-  "What was the biggest project you led and what was the goal?",
-  "What actions did you take and who did you collaborate with?",
-  "What tools or frameworks did you use and what was the result?",
+  "What was the biggest\nproject you led?",
+  "What actions did you take\nand who did you collaborate with?",
+  "What tools or frameworks\ndid you use and what was the result?",
 ] as const;
 
-function IconCircle(props: {
-  children: ReactNode;
-  small?: boolean;
-  className?: string;
-}) {
-  return (
-    <span
-      className={cn(
-        styles.iconCircle,
-        props.small && styles.iconCircleSmall,
-        props.className,
-      )}
-    >
-      {props.children}
-    </span>
-  );
-}
+const qualifyRows = [
+  { icon: Search, label: "Analyzes role" },
+  { icon: Sparkles, label: "Finds gaps" },
+  { icon: ShieldCheck, label: "Strengthens proof" },
+] as const;
 
-function DiagramCard(props: {
-  children: ReactNode;
-  className?: string;
-  icon: ReactNode;
-  title: string;
-}) {
-  return (
-    <article className={cn(styles.glassCard, props.className)}>
-      <div className={styles.cardHeader}>
-        <IconCircle small>{props.icon}</IconCircle>
-        <h3 className={styles.cardTitle}>{props.title}</h3>
-      </div>
-      {props.children}
-    </article>
-  );
-}
+const resultRows = [
+  {
+    icon: BarChart3,
+    title: "Stronger leadership signals",
+    subtitle: "Impact and scope clearly highlighted",
+  },
+  {
+    icon: UsersRound,
+    title: "Quantified results added",
+    subtitle: "Measurable outcomes increase match",
+  },
+  {
+    icon: Settings,
+    title: "Keywords aligned",
+    subtitle: "Better alignment with job requirements",
+  },
+] as const;
 
-function ConnectorLines() {
+const STORY_DURATION_MS = 5600;
+const FINAL_BEFORE_SCORE = 58;
+const FINAL_AFTER_SCORE = 92;
+const INITIAL_AFTER_SCORE = 58;
+
+function GradientShield() {
   return (
-    <svg
-      xia-hidden="true"
-      className={styles.connectorSvg}
-      fill="none"
-      viewBox="0 0 1000 560"
-      preserveAspectRatio="none"
-    >
+    <svg aria-hidden="true" className={styles.shieldIcon} viewBox="0 0 28 28">
       <defs>
-        <linearGradient
-          id="mp-line"
-          x1="330"
-          y1="70"
-          x2="675"
-          y2="245"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0%" stopColor="#5f67ff" stopOpacity="0.88" />
-          <stop offset="52%" stopColor="#6560ff" stopOpacity="0.84" />
-          <stop offset="100%" stopColor="#755cff" stopOpacity="0.86" />
-        </linearGradient>
-
-        <filter
-          id="mp-line-glow"
-          x="340"
-          y="20"
-          width="360"
-          height="290"
-          filterUnits="userSpaceOnUse"
-        >
-          <feGaussianBlur result="blur" stdDeviation="1.15" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
+        <clipPath id="qualified-shield-clip">
+          <path d="M14 3.2 23 6.85v6.95c0 5.7-3.75 10.25-9 11.75-5.25-1.5-9-6.05-9-11.75V6.85L14 3.2Z" />
+        </clipPath>
       </defs>
-
-      {/* left arm - raised higher */}
+      <g clipPath="url(#qualified-shield-clip)">
+        <rect fill="#1768ff" height="28" width="14" />
+        <rect fill="#16bf78" height="28" width="14" x="14" />
+      </g>
       <path
-        d="M445 128 H421 Q409 128 409 116 V89 Q409 77 397 77 H384"
-        filter="url(#mp-line-glow)"
-        stroke="url(#mp-line)"
+        d="M14 3.2 23 6.85v6.95c0 5.7-3.75 10.25-9 11.75-5.25-1.5-9-6.05-9-11.75V6.85L14 3.2Z"
+        fill="none"
+        stroke="rgba(255,255,255,0.34)"
+        strokeWidth="0.8"
+      />
+      <path
+        d="m9.35 14.1 2.95 2.82 6.35-7"
+        fill="none"
+        stroke="white"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="2.15"
+        strokeWidth="1.95"
       />
-
-      {/* right arm - raised higher */}
-      <path
-        d="M565 128 H589 Q601 128 601 116 V58 Q601 44 613 44 H633"
-        filter="url(#mp-line-glow)"
-        stroke="url(#mp-line)"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2.15"
-      />
-
-      {/* vertical connector - unchanged */}
-      {/* vertical connector - connects the two bottom purple circles */}
-      {/* vertical connector - reliable straight line between bottom circles */}
-      <path
-        d="M505 200 V276"
-        filter="url(#mp-line-glow)"
-        stroke="url(#mp-line)"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2.15"
-      />
-
-      {[
-        [384, 78],
-        [444, 128],
-        [565, 128],
-        [633, 44],
-        [505, 200],
-        [505, 276],
-      ].map(([cx, cy]) => (
-        <ellipse
-          cx={cx}
-          cy={cy}
-          fill="#665cff"
-          key={`${cx}-${cy}`}
-          rx="4.8"
-          ry="5.75"
-        />
-      ))}
     </svg>
   );
 }
 
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 export function MissingProofSection() {
+  const ringRadius = 93;
+  const ringCircumference = 2 * Math.PI * ringRadius;
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const hasStartedRef = useRef(false);
+  const [isActive, setIsActive] = useState(false);
+  const [hasFinished, setHasFinished] = useState(false);
+  const [beforeScore, setBeforeScore] = useState(FINAL_BEFORE_SCORE);
+  const [afterScore, setAfterScore] = useState(FINAL_AFTER_SCORE);
+  const isReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ringProgress = afterScore / 100;
+  const ringOffset = ringCircumference * (1 - ringProgress);
+
+  useEffect(() => {
+    if (isReducedMotion) {
+      setBeforeScore(FINAL_BEFORE_SCORE);
+      setAfterScore(FINAL_AFTER_SCORE);
+      setHasFinished(true);
+      return;
+    }
+
+    setBeforeScore(0);
+    setAfterScore(INITIAL_AFTER_SCORE);
+  }, [isReducedMotion]);
+
+  useEffect(() => {
+    if (isReducedMotion) return;
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (hasStartedRef.current || !entry?.isIntersecting) return;
+        hasStartedRef.current = true;
+        setIsActive(true);
+      },
+      { threshold: 0.38 },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [isReducedMotion]);
+
+  useEffect(() => {
+    if (!isActive || isReducedMotion) return;
+
+    let beforeFrame = 0;
+    let afterFrame = 0;
+    const timers: number[] = [];
+
+    const animateNumber = (
+      from: number,
+      to: number,
+      duration: number,
+      setter: (value: number) => void,
+    ) => {
+      const startedAt = performance.now();
+      const tick = (now: number) => {
+        const progress = Math.min(1, (now - startedAt) / duration);
+        const eased = easeInOutCubic(progress);
+        setter(Math.round(from + (to - from) * eased));
+        if (progress < 1) {
+          return requestAnimationFrame(tick);
+        }
+        setter(to);
+        return 0;
+      };
+      return requestAnimationFrame(tick);
+    };
+
+    beforeFrame = animateNumber(0, FINAL_BEFORE_SCORE, 1450, setBeforeScore);
+    timers.push(
+      window.setTimeout(() => {
+        afterFrame = animateNumber(
+          INITIAL_AFTER_SCORE,
+          FINAL_AFTER_SCORE,
+          1650,
+          setAfterScore,
+        );
+      }, 3550),
+      window.setTimeout(() => {
+        setHasFinished(true);
+      }, STORY_DURATION_MS),
+    );
+
+    return () => {
+      cancelAnimationFrame(beforeFrame);
+      cancelAnimationFrame(afterFrame);
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
+  }, [isActive, isReducedMotion]);
+
   return (
-    <section className={styles.section} id="how-it-works">
-      <div className={styles.bgBase} />
-      <div className={styles.bgArc} />
-      <div className={styles.bgContours} />
-      <div className={styles.scoreGlow} />
-
-      <div className={styles.scene}>
-        <div className={styles.heroBlock}>
-          <p className={styles.pill}>
-            <Sparkles className="h-[17px] w-[17px]" strokeWidth={2.1} />
-            AI-powered CV analyst
-          </p>
-
+    <section
+      className={cn(
+        styles.section,
+        isActive && styles.storyActive,
+        hasFinished && styles.storyFinished,
+      )}
+      id="how-it-works"
+      ref={sectionRef}
+    >
+      <div className={styles.glowOne} />
+      <div className={styles.glowTwo} />
+      <div className={styles.inner}>
+        <div className={styles.leftColumn}>
           <h2 className={styles.headline}>
-            <span>TaylorCV finds</span>
-            <span>
-              the <em className={styles.gradientText}>missing proof.</em>
-            </span>
+            <span>From unclear to</span>
+            <span className={styles.gradientText}>interview ready.</span>
           </h2>
-
-          <p className={styles.subheadline}>
-            It compares your background to the job, spots what recruiters still
-            need to see, and asks focused questions that turn vague experience
-            into stronger evidence.
+          <p className={styles.subcopy}>
+            TaylorCV finds what&apos;s missing,
+            <br />
+            strengthens your proof, and gets you noticed.
           </p>
 
-          <div className={styles.benefits}>
-            {benefits.map((benefit) => {
-              const Icon = benefit.icon;
+          <article className={styles.beforeCard}>
+            <p className={styles.labelDark}>Before</p>
+            <div className={styles.scoreLine}>
+              <span>{beforeScore}%</span>
+              <strong>match</strong>
+            </div>
+            <div className={styles.weakPill}>
+              <span />
+              Weak proof
+            </div>
+          </article>
 
+          <div className={styles.questionStack}>
+            {questions.map((question, index) => (
+              <article
+                className={cn(
+                  styles.questionCard,
+                  styles[`questionCard${index + 1}`],
+                  styles[`storyQuestion${index + 1}`],
+                )}
+                key={question}
+              >
+                <span className={styles.questionIcon}>
+                  <MessageCircleQuestion aria-hidden="true" />
+                </span>
+                <p>{question}</p>
+                <span className={styles.questionNumber}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <article className={styles.qualifyCard}>
+          <div className={styles.qualifyTitle}>
+            <TaylorLogoMark className={styles.qualifyLogo} />
+            <h3>TaylorCV qualifies</h3>
+          </div>
+          <div className={styles.qualifyRows}>
+            {qualifyRows.map((row) => {
+              const Icon = row.icon;
               return (
-                <div className={styles.benefitRow} key={benefit.label}>
-                  <IconCircle>
-                    <Icon className="h-[24px] w-[24px]" strokeWidth={1.75} />
-                  </IconCircle>
-                  <p>{benefit.label}</p>
+                <div
+                  className={cn(styles.qualifyRow, styles[`storyQualify${qualifyRows.indexOf(row) + 1}`])}
+                  key={row.label}
+                >
+                  <span className={styles.metalIcon}>
+                    <Icon aria-hidden="true" />
+                  </span>
+                  <p>{row.label}</p>
                 </div>
               );
             })}
           </div>
-        </div>
+        </article>
 
-        <div className={styles.diagramStage}>
-          <ConnectorLines />
+        <article className={styles.afterPanel}>
+          <p className={styles.afterLabel}>After</p>
 
-          <DiagramCard
-            className={styles.jobCard}
-            icon={
-              <BriefcaseBusiness
-                className="h-[21px] w-[21px]"
-                strokeWidth={1.8}
+          <div className={styles.ringWrap}>
+            <svg aria-hidden="true" className={styles.ring} viewBox="0 0 220 220">
+              <defs>
+                <linearGradient id="after-ring" x1="182" x2="38" y1="30" y2="184">
+                  <stop offset="0%" stopColor="#7148f2" />
+                  <stop offset="34%" stopColor="#5b50f1" />
+                  <stop offset="64%" stopColor="#315ff4" />
+                  <stop offset="100%" stopColor="#126cff" />
+                </linearGradient>
+                <linearGradient id="after-ring-active" x1="182" x2="38" y1="30" y2="184">
+                  <stop offset="0%" stopColor="#f27a13" />
+                  <stop offset="42%" stopColor="#9b61e9" />
+                  <stop offset="100%" stopColor="#126cff" />
+                </linearGradient>
+              </defs>
+              <circle
+                cx="110"
+                cy="110"
+                fill="none"
+                r={ringRadius}
+                stroke="#e7eaff"
+                strokeWidth="12"
               />
-            }
-            title="Job requirement"
-          >
-            <p className={styles.cardBody}>
-              Lead cross-functional projects to deliver new features on time and
-              improve user outcomes.
-            </p>
-          </DiagramCard>
-
-          <div className={styles.orbSlot}>
-            <GlassSmileyOrb />
+              <circle
+                cx="110"
+                cy="110"
+                fill="none"
+                r={ringRadius}
+                stroke={
+                  afterScore < FINAL_AFTER_SCORE
+                    ? "url(#after-ring-active)"
+                    : "url(#after-ring)"
+                }
+                strokeDasharray={ringCircumference}
+                strokeDashoffset={ringOffset}
+                strokeLinecap="round"
+                strokeWidth="12"
+                transform="rotate(-90 110 110)"
+              />
+            </svg>
+            <div className={styles.ringText}>
+              <span>{afterScore}%</span>
+              <p>match</p>
+            </div>
           </div>
 
-          <DiagramCard
-            className={styles.questionsCard}
-            icon={
-              <MessageCircleQuestion
-                className="h-[21px] w-[21px]"
-                strokeWidth={1.8}
-              />
-            }
-            title="Smart questions"
-          >
-            <div className={styles.questionList}>
-              {questions.map((question) => (
-                <div className={styles.questionRow} key={question}>
-                  <IconCircle small>
-                    <MessageCircleQuestion
-                      className="h-[16px] w-[16px]"
-                      strokeWidth={1.85}
-                    />
-                  </IconCircle>
-                  <p>{question}</p>
+          <div className={styles.qualifiedPill}>
+            <GradientShield />
+            <span>Qualified for interview</span>
+          </div>
+
+          <div className={styles.resultStack}>
+            {resultRows.map((row) => {
+              const Icon = row.icon;
+              return (
+                <div
+                  className={cn(
+                    styles.resultCard,
+                    styles[`storyResult${resultRows.indexOf(row) + 1}`],
+                  )}
+                  key={row.title}
+                >
+                  <span className={styles.resultIcon}>
+                    <Icon aria-hidden="true" />
+                  </span>
+                  <div>
+                    <h3>{row.title}</h3>
+                    <p>{row.subtitle}</p>
+                  </div>
+                  <span className={styles.checkIcon}>
+                    <Check aria-hidden="true" />
+                  </span>
                 </div>
-              ))}
+              );
+            })}
+          </div>
+
+          <div className={styles.miniCvCard}>
+            <div className={styles.cvPreview}>
+              <div className={styles.avatarRow}>
+                <span className={styles.avatar} />
+                <span className={styles.shortLine} />
+              </div>
+              <span className={styles.cvLineWide} />
+              <span className={styles.cvLine} />
+              <span className={styles.cvLineWide} />
+              <span className={styles.cvLineShort} />
             </div>
-          </DiagramCard>
-
-          <DiagramCard
-            className={styles.gapCard}
-            icon={
-              <SearchCheck className="h-[21px] w-[21px]" strokeWidth={1.8} />
-            }
-            title="Gap detected"
-          >
-            <p className={styles.cardBody}>
-              We don&apos;t see measurable results or the impact your work had
-              on the business.
-            </p>
-          </DiagramCard>
-        </div>
-
-        <div className={styles.scoreWrap}>
-          <MissingProofScoreGlassCard />
-        </div>
+            <div className={styles.cvCopy}>
+              <h3>Senior Product Manager</h3>
+              <p>2M+ users &bull; Activation up 28%</p>
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+        </article>
       </div>
     </section>
   );

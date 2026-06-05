@@ -3,8 +3,8 @@
 export function LandingBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,#fbfdff_0%,#f2f6ff_18%,#eef4ff_38%,#f7f5ff_58%,#eef3ff_78%,#fbfdff_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_9%_7%,rgba(203,229,255,0.58),transparent_32%),radial-gradient(ellipse_at_91%_15%,rgba(242,213,233,0.4),transparent_28%),radial-gradient(ellipse_at_22%_48%,rgba(213,230,255,0.3),transparent_34%),radial-gradient(ellipse_at_81%_56%,rgba(223,214,255,0.28),transparent_34%),radial-gradient(ellipse_at_48%_96%,rgba(205,225,252,0.28),transparent_36%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#fbfdff_0%,#f4f7ff_15%,#f3f5ff_28%,#f8f1fb_42%,#f4f2ff_56%,#f3f7ff_72%,#fbfdff_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_9%_7%,rgba(203,229,255,0.58),transparent_32%),radial-gradient(ellipse_at_91%_15%,rgba(242,213,233,0.4),transparent_28%),radial-gradient(ellipse_at_48%_42%,rgba(246,220,243,0.28),transparent_36%),radial-gradient(ellipse_at_22%_48%,rgba(213,230,255,0.24),transparent_34%),radial-gradient(ellipse_at_81%_56%,rgba(223,214,255,0.24),transparent_34%),radial-gradient(ellipse_at_48%_96%,rgba(205,225,252,0.28),transparent_36%)]" />
       <div className="absolute inset-x-0 top-[88px] h-[420px] bg-[radial-gradient(ellipse_at_50%_18%,rgba(255,255,255,0.96),rgba(255,255,255,0.74)_38%,transparent_72%)]" />
       <div className="absolute inset-x-0 top-[32%] h-[34%] bg-[radial-gradient(ellipse_at_50%_48%,rgba(255,255,255,0.6),rgba(255,255,255,0.22)_44%,transparent_72%)]" />
       <div className="absolute inset-x-0 bottom-[10%] h-[34%] bg-[radial-gradient(ellipse_at_50%_50%,rgba(255,255,255,0.54),rgba(233,239,255,0.22)_46%,transparent_78%)]" />

@@ -44,7 +44,7 @@ export function JobDescriptionStep(props: {
         ) : null}
         <div className="mt-8 flex justify-center sm:mt-9 lg:mt-10">
           <button
-            className="inline-flex h-[58px] w-full max-w-[304px] items-center justify-center gap-3 rounded-[16px] bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-7 text-[17px] font-medium text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_38px_rgba(11,78,243,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/20 disabled:cursor-not-allowed disabled:opacity-60 sm:h-[60px] sm:max-w-[320px]"
+            className="taylor-premium-button inline-flex h-[58px] w-full max-w-[304px] items-center justify-center gap-3 rounded-[16px] border px-7 text-[17px] font-medium text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/20 disabled:cursor-not-allowed disabled:opacity-60 sm:h-[60px] sm:max-w-[320px]"
             disabled={props.isLoading || !props.value.trim()}
             onClick={props.onSubmit}
             type="button"
@@ -64,17 +64,27 @@ export function WorkflowPanel(props: {
   title: string;
   subtitle?: string;
   titleClassName?: string;
+  className?: string;
+  headerClassName?: string;
   children: React.ReactNode;
 }) {
   return (
     <motion.section
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto flex min-h-[100dvh] w-full flex-col justify-start px-4 pb-8 pt-[124px] sm:px-6 sm:pb-10 sm:pt-[134px] lg:px-8 lg:pt-[142px] xl:pt-[148px]"
+      className={cn(
+        "mx-auto flex min-h-[100dvh] w-full flex-col justify-start px-4 pb-8 pt-[124px] sm:px-6 sm:pb-10 sm:pt-[134px] lg:px-8 lg:pt-[142px] xl:pt-[148px]",
+        props.className,
+      )}
       exit={{ opacity: 0, y: -12 }}
       initial={{ opacity: 0, y: 12 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
     >
-      <div className="mx-auto mb-5 w-full max-w-[980px] pt-1 text-center sm:mb-6 sm:pt-2 lg:mb-7">
+      <div
+        className={cn(
+          "mx-auto mb-5 w-full max-w-[980px] pt-1 text-center sm:mb-6 sm:pt-2 lg:mb-7",
+          props.headerClassName,
+        )}
+      >
         <p className="text-[13px] font-medium uppercase tracking-[0.18em] text-[#2563eb] sm:text-[14px]">
           {props.eyebrow}
         </p>

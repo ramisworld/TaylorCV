@@ -9,7 +9,15 @@ import {
   Loader2,
   Sparkles,
 } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 
 import {
@@ -41,29 +49,22 @@ function readQuestionJson(question: GapQuestion) {
 
 function questionMeta(question: GapQuestion) {
   const json = readQuestionJson(question);
-  const questionTitle =
-    typeof json.questionTitle === "string" && json.questionTitle.trim()
-      ? json.questionTitle
-      : question.question;
-  const helperText =
-    typeof json.helperText === "string"
-      ? json.helperText
-      : typeof json.tinyExample === "string"
+  const exampleAnswer =
+    typeof json.exampleAnswer === "string" && json.exampleAnswer.trim()
+      ? json.exampleAnswer
+      : typeof json.tinyExample === "string" && json.tinyExample.trim()
         ? json.tinyExample
-        : (question.answerGuidance ?? "A short, honest example is enough.");
-  const tinyExample =
-    typeof json.tinyExample === "string" && json.tinyExample.trim()
-      ? json.tinyExample
-      : null;
+        : typeof question.answerGuidance === "string" &&
+            question.answerGuidance.trim()
+          ? question.answerGuidance
+          : null;
   const shortTitle =
     typeof json.shortTitle === "string" && json.shortTitle.trim()
       ? json.shortTitle
       : compactQuestionTitle(question.question);
 
   return {
-    questionTitle,
-    helperText,
-    tinyExample,
+    exampleAnswer,
     shortTitle,
     why:
       typeof json.whyThisMatters === "string"
@@ -126,6 +127,20 @@ export function GapQuestionsStep(props: {
     null,
   );
   const prefersReducedMotion = useReducedMotion();
+  const progressValue = currentIndex + 1;
+  const progressTotal = Math.max(answerable.length, 1);
+  const progressRatio = progressValue / progressTotal;
+  const circumference = 2 * Math.PI * 58;
+  const ringProgress = useMotionValue(progressRatio);
+  const smoothRingProgress = useSpring(ringProgress, {
+    stiffness: 120,
+    damping: 24,
+    mass: 0.8,
+  });
+  const progressOffset = useTransform(
+    smoothRingProgress,
+    (value) => circumference * (1 - value),
+  );
 
   useEffect(() => {
     setAnswers((current) => {
@@ -142,6 +157,14 @@ export function GapQuestionsStep(props: {
       Math.min(current, Math.max(answerable.length - 1, 0)),
     );
   }, [answerable.length]);
+
+  useEffect(() => {
+    const controls = animate(ringProgress, progressRatio, {
+      duration: prefersReducedMotion ? 0.01 : 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    });
+    return controls.stop;
+  }, [prefersReducedMotion, progressRatio, ringProgress]);
 
   if (answerable.length === 0) {
     return (
@@ -178,7 +201,7 @@ export function GapQuestionsStep(props: {
               Back
             </button>
             <button
-              className="inline-flex h-[56px] items-center justify-center gap-3 rounded-[16px] bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-6 text-[16px] font-medium text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)]"
+              className="taylor-premium-button inline-flex h-[56px] items-center justify-center gap-3 rounded-[16px] border px-6 text-[16px] font-medium text-white"
               onClick={props.onSkip}
               type="button"
             >
@@ -195,11 +218,6 @@ export function GapQuestionsStep(props: {
   if (!currentQuestion) return null;
   const currentQuestionId = currentQuestion.id;
   const currentMeta = questionMeta(currentQuestion);
-  const progressValue = currentIndex + 1;
-  const progressTotal = answerable.length;
-  const progressRatio = progressTotal > 0 ? progressValue / progressTotal : 0;
-  const circumference = 2 * Math.PI * 58;
-  const progressOffset = circumference * (1 - progressRatio);
   const isLastQuestion = currentIndex === answerable.length - 1;
   const currentAnswer = answers[currentQuestion.id] ?? "";
 
@@ -263,17 +281,19 @@ export function GapQuestionsStep(props: {
       eyebrow="Step 3 of 4"
       subtitle="Answer a few quick questions so we can strengthen your CV."
       title="Fill the gaps"
-      titleClassName="text-[48px] font-[620] sm:text-[52px] lg:text-[54px]"
+      className="pb-4 pt-[102px] sm:pb-6 sm:pt-[112px] lg:pt-[118px] xl:pt-[122px]"
+      headerClassName="mb-3 sm:mb-4 lg:mb-4"
+      titleClassName="text-[40px] font-[620] sm:text-[44px] lg:text-[46px]"
     >
-      <div className="mx-auto w-full max-w-[1160px]">
-        <div className="grid gap-6 lg:grid-cols-[248px_minmax(0,1fr)]">
-          <GlassCard className="p-6 lg:self-start">
-            <p className="text-[16px] font-semibold tracking-[-0.02em] text-[#33476b]">
+      <div className="mx-auto w-full max-w-[1040px]">
+        <div className="grid items-start gap-4 lg:grid-cols-[208px_minmax(0,1fr)]">
+          <GlassCard className="p-4 lg:self-start">
+            <p className="text-[15px] font-semibold tracking-[-0.02em] text-[#33476b]">
               Your progress
             </p>
 
-            <div className="mt-5 flex items-center justify-center">
-              <div className="relative h-[168px] w-[168px]">
+            <div className="mt-3 flex items-center justify-center">
+              <div className="relative h-[128px] w-[128px]">
                 <svg
                   aria-hidden="true"
                   className="h-full w-full -rotate-90"
@@ -287,24 +307,24 @@ export function GapQuestionsStep(props: {
                     stroke="#e7edf8"
                     strokeWidth="6"
                   />
-                  <circle
+                  <motion.circle
                     cx="74"
                     cy="74"
                     fill="none"
                     r="58"
                     stroke="#2450f4"
                     strokeDasharray={circumference}
-                    strokeDashoffset={progressOffset}
                     strokeLinecap="round"
                     strokeWidth="6"
+                    style={{ strokeDashoffset: progressOffset }}
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <div className="flex items-start">
-                    <span className="text-[34px] font-semibold leading-none tracking-[-0.05em] text-[#1c2f56]">
+                  <div className="flex items-end gap-0.5">
+                    <span className="text-[30px] font-semibold leading-none tracking-[-0.05em] text-[#1c2f56]">
                       {progressValue}
                     </span>
-                    <span className="pt-1 text-[20px] font-medium leading-none text-[#95a3bc]">
+                    <span className="pb-0.5 text-[17px] font-medium leading-none text-[#95a3bc]">
                       /{progressTotal}
                     </span>
                   </div>
@@ -312,7 +332,7 @@ export function GapQuestionsStep(props: {
               </div>
             </div>
 
-            <div className="mt-6 space-y-4">
+            <div className="mt-4 space-y-2.5">
               {answerable.map((question, index) => {
                 const meta = questionMeta(question);
                 const isCurrent = index === currentIndex;
@@ -326,7 +346,7 @@ export function GapQuestionsStep(props: {
                     <div className="flex flex-col items-center">
                       <span
                         className={cn(
-                          "grid h-7 w-7 place-items-center rounded-full text-[13px] font-semibold",
+                          "grid h-6 w-6 place-items-center rounded-full text-[12px] font-semibold",
                           isCompleted
                             ? "bg-[#2450f4] text-white"
                             : isCurrent
@@ -356,12 +376,12 @@ export function GapQuestionsStep(props: {
                         </AnimatePresence>
                       </span>
                       {index < answerable.length - 1 ? (
-                        <span className="mt-2 h-8 w-px bg-[#e4eaf5]" />
+                        <span className="mt-1.5 h-5.5 w-px bg-[#e4eaf5]" />
                       ) : null}
                     </div>
                     <p
                       className={cn(
-                        "pt-0.5 text-[15px] leading-7",
+                        "pt-0.5 text-[13px] leading-5",
                         isCurrent
                           ? "font-medium text-[#2450f4]"
                           : isFuture
@@ -377,7 +397,7 @@ export function GapQuestionsStep(props: {
             </div>
           </GlassCard>
 
-          <GlassCard className="min-h-[560px] p-8 sm:p-10">
+          <GlassCard className="min-h-[420px] p-5 sm:p-6 lg:p-6">
             <AnimatePresence initial={false} mode="wait">
               <motion.div
                 key={currentQuestion.id}
@@ -387,12 +407,12 @@ export function GapQuestionsStep(props: {
                   ease: "easeOut",
                 }}
               >
-                <h2 className="max-w-4xl text-[27px] font-[620] leading-[1.22] tracking-[-0.04em] text-[#081437] sm:text-[29px]">
+                <h2 className="max-w-4xl text-[21px] font-[620] leading-[1.18] tracking-[-0.04em] text-[#081437] sm:text-[23px] lg:text-[24px]">
                   {currentQuestion.question}
                 </h2>
 
                 <button
-                  className="mt-4 inline-flex items-center gap-2 text-[15px] font-medium text-[#2450f4] transition hover:text-[#1543d8]"
+                  className="mt-2.5 inline-flex items-center gap-2 text-[13px] font-medium text-[#2450f4] transition hover:text-[#1543d8]"
                   onClick={() =>
                     setExpandedExampleId((current) =>
                       current === currentQuestion.id
@@ -412,17 +432,17 @@ export function GapQuestionsStep(props: {
                 </button>
 
                 {expandedExampleId === currentQuestion.id &&
-                currentMeta.tinyExample ? (
-                  <div className="mt-4 rounded-[16px] border border-[#e3e9f5] bg-[#f8faff] p-4">
-                    <p className="text-[14px] leading-6 text-[#617391]">
-                      {currentMeta.tinyExample}
+                currentMeta.exampleAnswer ? (
+                  <div className="mt-2.5 rounded-[16px] border border-[#e3e9f5] bg-[#f8faff] p-3">
+                    <p className="text-[12.5px] leading-5 text-[#617391]">
+                      {currentMeta.exampleAnswer}
                     </p>
                     <button
-                      className="mt-3 inline-flex items-center gap-2 text-[14px] font-medium text-[#2450f4] transition hover:text-[#1543d8]"
+                      className="mt-2 inline-flex items-center gap-2 text-[12.5px] font-medium text-[#2450f4] transition hover:text-[#1543d8]"
                       onClick={() =>
                         updateAnswer(
                           currentQuestion.id,
-                          currentMeta.tinyExample ?? "",
+                          currentMeta.exampleAnswer ?? "",
                         )
                       }
                       type="button"
@@ -432,9 +452,9 @@ export function GapQuestionsStep(props: {
                   </div>
                 ) : null}
 
-                <div className="relative mt-6">
+                <div className="relative mt-4">
                   <textarea
-                    className="h-[248px] w-full resize-none rounded-[16px] border border-[#d8e2f3] bg-white px-6 py-5 text-[16px] leading-7 text-[#11203f] outline-none transition placeholder:text-[#a1aec7] focus:border-[#9bb2f5] focus:shadow-[0_0_0_4px_rgba(37,99,235,0.08)]"
+                    className="h-[160px] w-full resize-none rounded-[16px] border border-[#d8e2f3] bg-white px-4 py-3.5 text-[15px] leading-6 text-[#11203f] outline-none transition placeholder:text-[#a1aec7] focus:border-[#9bb2f5] focus:shadow-[0_0_0_4px_rgba(37,99,235,0.08)] sm:h-[172px]"
                     maxLength={MAX_CHARACTERS}
                     onChange={(event) =>
                       updateAnswer(currentQuestion.id, event.target.value)
@@ -442,15 +462,15 @@ export function GapQuestionsStep(props: {
                     placeholder="Type your answer here..."
                     value={currentAnswer}
                   />
-                  <span className="absolute bottom-4 right-5 text-[14px] text-[#8a99b5]">
+                  <span className="absolute bottom-3.5 right-4 text-[13px] text-[#8a99b5]">
                     {currentAnswer.length} / {MAX_CHARACTERS}
                   </span>
                 </div>
 
-                <div className="mt-4 flex flex-wrap gap-3">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {SUGGESTION_CHIPS.map((chip) => (
                     <button
-                      className="inline-flex items-center gap-2 rounded-full border border-[#e1e8f5] bg-[#f8faff] px-4 py-2 text-[13px] font-medium text-[#41506d] transition hover:border-[#c8d6f1] hover:text-[#2450f4]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[#e1e8f5] bg-[#f8faff] px-3 py-1.5 text-[11.5px] font-medium text-[#41506d] transition hover:border-[#c8d6f1] hover:text-[#2450f4]"
                       key={chip}
                       onClick={() => appendHint(chip)}
                       type="button"
@@ -461,11 +481,11 @@ export function GapQuestionsStep(props: {
                   ))}
                 </div>
 
-                <div className="mt-5 rounded-[16px] border border-[#e6edf8] bg-[#f9fbff] px-4 py-3">
+                <div className="mt-3 rounded-[16px] border border-[#e6edf8] bg-[#f9fbff] px-4 py-2.5">
                   <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#6b84b8]">
                     Why this matters
                   </p>
-                  <p className="mt-1 text-[14px] leading-6 text-[#62728d]">
+                  <p className="mt-1 text-[12.5px] leading-5 text-[#62728d]">
                     {currentMeta.why}
                   </p>
                 </div>
@@ -480,8 +500,8 @@ export function GapQuestionsStep(props: {
           </p>
         ) : null}
 
-        <div className="mx-auto mt-8 flex w-full max-w-[1180px] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-5 text-[17px]">
+        <div className="mx-auto mt-4 flex w-full max-w-[1040px] flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4 text-[16px]">
             <button
               className="inline-flex items-center gap-2 font-medium text-[#41506d] transition hover:text-[#0b4ef3] disabled:pointer-events-none disabled:opacity-35"
               disabled={currentIndex === 0 || props.isLoading}
@@ -496,7 +516,7 @@ export function GapQuestionsStep(props: {
 
             {!isLastQuestion ? (
               <>
-                <span className="h-7 w-px bg-[#d7deec]" />
+                <span className="h-6 w-px bg-[#d7deec]" />
                 <button
                   className="font-normal text-[#7b89a4] transition hover:text-[#0b4ef3] disabled:pointer-events-none disabled:opacity-35"
                   disabled={props.isLoading}
@@ -510,7 +530,7 @@ export function GapQuestionsStep(props: {
           </div>
 
           <button
-            className="inline-flex h-[62px] items-center justify-center gap-3 self-end rounded-[16px] bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-8 text-[18px] font-medium text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_38px_rgba(11,78,243,0.28)] disabled:cursor-not-allowed disabled:opacity-60"
+            className="taylor-premium-button inline-flex h-[58px] items-center justify-center gap-3 self-end rounded-[16px] border px-7 text-[17px] font-medium text-white disabled:cursor-not-allowed disabled:opacity-60"
             disabled={props.isLoading}
             onClick={moveNext}
             type="button"

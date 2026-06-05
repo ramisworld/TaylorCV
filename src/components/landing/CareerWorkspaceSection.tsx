@@ -13,6 +13,7 @@ import {
   User,
 } from "lucide-react";
 
+import { TaylorLogoMark } from "~/components/TaylorBrand";
 import { cn } from "~/lib/utils";
 
 type CareerWorkspaceSectionProps = {
@@ -164,7 +165,11 @@ const achievements = [
   "Defined experimentation framework that improved conversion rate by 16%.",
 ] as const;
 
-function CompanyLogo(props: { company: string; logoSrc: string; large?: boolean }) {
+function CompanyLogo(props: {
+  company: string;
+  logoSrc: string;
+  large?: boolean;
+}) {
   const isLarge = props.large === true;
   const logoSize = isLarge ? "h-[24px] w-[24px]" : "h-[24px] w-[24px]";
   const frameSize = isLarge ? "h-[30px] w-[30px]" : "h-8 w-8";
@@ -174,7 +179,7 @@ function CompanyLogo(props: { company: string; logoSrc: string; large?: boolean 
       className={cn(
         "grid shrink-0 place-items-center rounded-[7px]",
         frameSize,
-        logoFrameStyles[props.company] ?? "bg-white"
+        logoFrameStyles[props.company] ?? "bg-white",
       )}
     >
       <img
@@ -187,18 +192,10 @@ function CompanyLogo(props: { company: string; logoSrc: string; large?: boolean 
           props.company === "Shopify" && "h-[25px] w-[25px]",
           props.company === "OpenAI" && "h-[27px] w-[27px]",
           props.company === "Databricks" && "h-[29px] w-[29px]",
-          props.company === "Canva" && "h-[24px] w-[24px]"
+          props.company === "Canva" && "h-[24px] w-[24px]",
         )}
         src={props.logoSrc}
       />
-    </span>
-  );
-}
-
-function TaylorMark() {
-  return (
-    <span className="grid h-[28px] w-[28px] place-items-center rounded-[7px] bg-[linear-gradient(180deg,#245cff_0%,#0648f4_100%)] text-[18px] font-black leading-none text-white shadow-[0_8px_18px_rgba(32,71,240,0.26),inset_0_1px_0_rgba(255,255,255,0.28)]">
-      T
     </span>
   );
 }
@@ -208,7 +205,7 @@ function StatusPill(props: { status: StatusKey }) {
     <span
       className={cn(
         "inline-flex h-[23px] items-center gap-1.5 rounded-[7px] px-2.5 text-[11px] font-semibold leading-none",
-        statusStyles[props.status]
+        statusStyles[props.status],
       )}
     >
       <span className="h-1.5 w-1.5 rounded-full bg-current" />
@@ -353,7 +350,7 @@ function LatestCvPreview() {
 
 export function CareerWorkspaceSection(props: CareerWorkspaceSectionProps) {
   return (
-    <section className="relative z-10 -mt-[54px] overflow-hidden bg-transparent px-5 pb-[58px] pt-[94px] text-[#070d22] max-md:-mt-[26px] max-md:pb-[46px] max-md:pt-[68px]">
+    <section className="relative z-10 -mt-[54px] min-h-[960px] overflow-visible bg-transparent px-5 pb-[170px] pt-[94px] text-[#070d22] max-md:-mt-[26px] max-md:min-h-[820px] max-md:pb-[130px] max-md:pt-[68px]">
       <div className="pointer-events-none absolute inset-x-0 -top-[132px] h-[250px] bg-[radial-gradient(ellipse_at_50%_30%,rgba(247,249,255,0.14),rgba(247,249,255,0.06)_36%,transparent_72%),radial-gradient(ellipse_at_18%_26%,rgba(215,227,255,0.06),transparent_42%),radial-gradient(ellipse_at_82%_24%,rgba(232,224,255,0.06),transparent_40%)] blur-2xl" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_81%_38%,rgba(248,223,239,0.08),transparent_51%),radial-gradient(ellipse_at_53%_0%,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.06)_36%,transparent_64%),radial-gradient(ellipse_at_16%_95%,rgba(221,234,255,0.08),transparent_42%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-[-18px] h-[220px] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(247,250,255,0.08)_22%,rgba(244,247,255,0.18)_46%,rgba(245,247,255,0.34)_72%,rgba(247,249,255,0.52)_100%)] blur-[10px]" />
@@ -367,23 +364,27 @@ export function CareerWorkspaceSection(props: CareerWorkspaceSectionProps) {
           </span>
           Built for job seekers, proven by results
         </p>
-        <h2 className="mx-auto mt-[17px] max-w-[970px] text-[clamp(3.25rem,5.4vw,5.15rem)] font-normal leading-[0.95] tracking-[-0.038em] text-[#070d22] [font-family:Georgia,ui-serif,Cambria,'Times_New_Roman',serif]">
+        <h2 className="mx-auto mt-[17px] max-w-[970px] text-[clamp(2.9rem,3.8vw,4.18rem)] font-bold leading-[1.05] tracking-[-0.055em] text-[#070d22]">
           The career agent
           <br />
           that <span className="text-[#064fff]">improves</span> with you.
         </h2>
-        <p className="mx-auto mt-[18px] max-w-[620px] text-[22px] font-normal leading-[1.42] tracking-[-0.018em] text-[#324b78] max-md:text-[18px]">
-          TaylorCV remembers your strongest evidence, saved CVs, and job
-          applications—so every step forward gets smarter.
-        </p>
       </div>
 
-      <div className="relative mx-auto mt-[20px] w-full max-w-[1152px]">
-        <article className="group/dashboard h-auto overflow-hidden rounded-[18px] border border-[#dfe5ef] bg-white shadow-[0_30px_72px_rgba(31,43,73,0.16),0_5px_18px_rgba(27,38,64,0.055),inset_0_1px_0_rgba(255,255,255,0.98)] lg:h-[706px]">
-          <div className="grid h-full grid-cols-1 lg:grid-cols-[214px_minmax(0,1fr)]">
+      <div className="relative mx-auto mt-[24px] min-h-[930px] w-full max-w-[1152px] max-md:min-h-[650px]">
+        <img
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-[456px] z-[1] h-auto w-[121%] max-w-[1380px] -translate-x-1/2 select-none object-contain opacity-100 brightness-[1.055] contrast-[1.035] saturate-[1.08] drop-shadow-[0_30px_42px_rgba(88,102,198,0.13)] max-md:bottom-[-96px] max-md:top-auto max-md:w-[140%]"
+          draggable={false}
+          src="/assets/references/platform.PNG"
+        />
+        <div className="pointer-events-none absolute left-1/2 top-[636px] z-[2] h-[78px] w-[88%] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(72,91,178,0.24)_0%,rgba(96,78,204,0.15)_34%,rgba(15,23,42,0.08)_60%,transparent_78%)] opacity-90 blur-[36px] max-md:bottom-[-4px] max-md:top-auto max-md:h-[58px]" />
+        <article className="group/dashboard relative z-[3] h-auto origin-top overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.86)] bg-[linear-gradient(145deg,rgba(255,255,255,0.96),rgba(255,255,255,0.86)),rgba(255,255,255,0.9)] shadow-[0_46px_104px_rgba(31,43,73,0.19),0_18px_42px_rgba(27,38,64,0.09),0_0_58px_rgba(120,140,255,0.18),0_0_0_1px_rgba(130,150,255,0.12),inset_0_1px_0_rgba(255,255,255,1),inset_0_-2px_0_rgba(94,108,210,0.14)] backdrop-blur-[18px] before:pointer-events-none before:absolute before:inset-0 before:z-10 before:rounded-[inherit] before:bg-[linear-gradient(180deg,rgba(255,255,255,0.82),transparent_18%),linear-gradient(90deg,rgba(118,145,255,0.12),transparent_16%,transparent_82%,rgba(151,124,255,0.11)),radial-gradient(ellipse_at_50%_0%,rgba(255,255,255,0.74),transparent_34%)] before:opacity-90 after:pointer-events-none after:absolute after:inset-[1px] after:z-10 after:rounded-[17px] after:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.66),inset_0_2px_0_rgba(255,255,255,0.9),inset_0_-14px_34px_rgba(116,123,220,0.08)] lg:h-[706px] lg:scale-[0.965]">
+          <div className="relative z-20 grid h-full grid-cols-1 lg:grid-cols-[214px_minmax(0,1fr)]">
             <aside className="border-b border-[#e9eef6] bg-[#fbfcff] px-[30px] py-[29px] lg:border-b-0 lg:border-r">
               <div className="flex items-center gap-[12px]">
-                <TaylorMark />
+                <TaylorLogoMark className="h-[28px] w-[28px]" />
                 <span className="text-[19px] font-bold leading-none tracking-[-0.045em] text-[#071027]">
                   TaylorCV
                 </span>
@@ -398,14 +399,14 @@ export function CareerWorkspaceSection(props: CareerWorkspaceSectionProps) {
                         "flex h-[47px] items-center gap-[15px] rounded-[9px] px-[14px] text-[13px] font-semibold transition-colors",
                         isSelected
                           ? "bg-[#eef3ff] text-[#064fff]"
-                          : "text-[#30446d] hover:bg-[#f3f6fb] hover:text-[#071027]"
+                          : "text-[#30446d] hover:bg-[#f3f6fb] hover:text-[#071027]",
                       )}
                       key={item.label}
                     >
                       <Icon
                         className={cn(
                           "h-[18px] w-[18px]",
-                          isSelected ? "text-[#064fff]" : "text-[#30446d]"
+                          isSelected ? "text-[#064fff]" : "text-[#30446d]",
                         )}
                         strokeWidth={isSelected ? 2.2 : 1.9}
                       />
@@ -419,7 +420,7 @@ export function CareerWorkspaceSection(props: CareerWorkspaceSectionProps) {
             <div className="min-w-0 px-[27px] pb-[27px] pt-[22px]">
               <div className="flex items-center justify-end">
                 <button
-                  className="inline-flex h-[41px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#315cff]/35 bg-[linear-gradient(180deg,#1d5cff_0%,#064fff_56%,#0344df_100%)] px-[18px] text-[14px] font-semibold leading-none text-white shadow-[0_10px_23px_rgba(32,71,240,0.28),inset_0_1px_0_rgba(255,255,255,0.28)] transition-[transform,box-shadow,filter] duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(32,71,240,0.34),inset_0_1px_0_rgba(255,255,255,0.34)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/22 active:translate-y-0"
+                  className="taylor-premium-button inline-flex h-[41px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border px-[18px] text-[14px] font-semibold leading-none text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#2047f0]/22"
                   onClick={props.onGetStarted}
                   type="button"
                 >

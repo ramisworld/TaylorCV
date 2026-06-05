@@ -329,7 +329,7 @@ export function CvUploadStep(props: {
         ) : null}
 
         <button
-          className="mt-5 inline-flex h-[58px] w-full max-w-[304px] items-center justify-center gap-3 rounded-[16px] border border-[#4b70ff]/18 bg-[linear-gradient(180deg,#2162ff_0%,#0b4ef3_100%)] px-8 text-[17px] font-medium tracking-[-0.02em] text-white shadow-[0_16px_32px_rgba(11,78,243,0.24)] transition hover:translate-y-[-1px] hover:shadow-[0_20px_38px_rgba(11,78,243,0.28)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/18 disabled:cursor-not-allowed disabled:opacity-55 sm:mt-6 sm:h-[60px] sm:max-w-[320px]"
+          className="taylor-premium-button mt-5 inline-flex h-[58px] w-full max-w-[304px] items-center justify-center gap-3 rounded-[16px] border px-8 text-[17px] font-medium tracking-[-0.02em] text-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#0b4ef3]/18 disabled:cursor-not-allowed disabled:opacity-55 sm:mt-6 sm:h-[60px] sm:max-w-[320px]"
           disabled={!canSubmit}
           onClick={props.onSubmit}
           type="button"

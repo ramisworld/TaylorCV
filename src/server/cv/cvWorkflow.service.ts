@@ -77,7 +77,7 @@ function buildPresentationJson(args: {
       education: args.sectionStrategy.combineEducationAndCertifications
         ? labels.educationAndCertifications ?? "Education & Certifications"
         : "Education",
-      certifications: "Certifications",
+      certifications: labels.certifications ?? "Certifications",
     },
     renderBehavior: {
       combineEducationAndCertifications:
@@ -202,6 +202,7 @@ export async function submitCandidate(args: {
 
   const storedProfile = {
     candidateBrief,
+    strategySignals: intake.strategySignals,
     deterministicBasics,
   } satisfies StoredCandidateProfile;
 
@@ -247,12 +248,10 @@ export async function submitCandidate(args: {
         question: q.question,
         reason: q.targetArea,
         whyItMatters: q.whyItMatters,
-        answerGuidance: q.helperText,
+        answerGuidance: q.exampleAnswer,
         questionJson: {
-          questionTitle: q.questionTitle,
           shortTitle: q.shortTitle,
-          tinyExample: q.tinyExample,
-          helperText: q.helperText,
+          exampleAnswer: q.exampleAnswer,
           whyThisMatters: q.whyItMatters,
           targetArea: q.targetArea,
           priority: q.priority,
@@ -367,12 +366,9 @@ export async function generateCv(args: { applicationId: string }) {
     });
 
   const sectionStrategy = buildSectionStrategy({
-    rawJobText: job.rawText,
-    rawCvText: candidateProfileRow.rawCvText,
     jobBrief,
     candidateBrief: storedCandidateProfile.candidateBrief,
-    deterministicBasics: storedCandidateProfile.deterministicBasics,
-    gapAnswers: gapAnswersForComposer,
+    strategySignals: storedCandidateProfile.strategySignals,
   });
 
   const composerOutput = await runCvComposerAgent({
@@ -381,6 +377,7 @@ export async function generateCv(args: { applicationId: string }) {
     rawCvText: candidateProfileRow.rawCvText,
     jobBrief,
     candidateBrief: storedCandidateProfile.candidateBrief,
+    strategySignals: storedCandidateProfile.strategySignals,
     deterministicBasics: storedCandidateProfile.deterministicBasics,
     gapAnswers: gapAnswersForComposer,
     sectionStrategy,
@@ -442,9 +439,14 @@ export async function generateCv(args: { applicationId: string }) {
       cvText,
       presentationJson,
       builderOutputJson: {
+        composerOutput: {
+          blueprint: composerOutput.blueprint,
+          cv: composerOutput.cv,
+        },
         blueprint: repairedComposerOutput.blueprint,
         jobBrief,
         candidateBrief: storedCandidateProfile.candidateBrief,
+        strategySignals: storedCandidateProfile.strategySignals,
         deterministicBasics: storedCandidateProfile.deterministicBasics,
         gapAnswers: gapAnswersForComposer,
         sectionStrategy,

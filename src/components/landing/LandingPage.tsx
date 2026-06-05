@@ -7,12 +7,16 @@ import {
   MapPin,
   ShieldCheck,
 } from "lucide-react";
-import { animate, motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { useEffect, useState } from "react";
 
-import {
-  type PlanKey,
-} from "~/lib/plans";
+import { type PlanKey } from "~/lib/plans";
 
 import { LandingBackground } from "./LandingBackground";
 import { GlassHeader } from "./GlassHeader";
@@ -125,14 +129,16 @@ function TaylorWordmark(props: { center?: boolean; compact?: boolean }) {
       aria-label="TaylorCV"
       className={cn(
         "flex min-w-0 items-center gap-2.5",
-        props.center && "justify-center"
+        props.center && "justify-center",
       )}
     >
-      <TaylorLogoIcon className={props.compact ? "h-[34px] w-[34px]" : "h-9 w-9"} />
+      <TaylorLogoIcon
+        className={props.compact ? "h-[34px] w-[34px]" : "h-9 w-9"}
+      />
       <span
         className={cn(
           "truncate font-bold tracking-[-0.04em] text-[#080d22]",
-          props.compact ? "text-[25px]" : "text-[28px]"
+          props.compact ? "text-[25px]" : "text-[28px]",
         )}
       >
         TaylorCV
@@ -157,20 +163,30 @@ function ScoreRing({ isHovered }: { isHovered?: boolean }) {
     return controls.stop;
   }, [isHovered, percent]);
 
-  const offset = useTransform(smoothPercent, (v) => circumference * (1 - v / 100));
+  const offset = useTransform(
+    smoothPercent,
+    (v) => circumference * (1 - v / 100),
+  );
   const rVal = useTransform(smoothPercent, [84, 99.7], [42, 4]);
   const gVal = useTransform(smoothPercent, [84, 99.7], [83, 214]);
   const bVal = useTransform(smoothPercent, [84, 99.7], [250, 138]);
 
-  const color = useTransform([rVal, gVal, bVal], ([rv, gv, bv]) =>
-    `rgb(${Math.round(rv as number)}, ${Math.round(gv as number)}, ${Math.round(bv as number)})`
+  const color = useTransform(
+    [rVal, gVal, bVal],
+    ([rv, gv, bv]) =>
+      `rgb(${Math.round(rv as number)}, ${Math.round(gv as number)}, ${Math.round(bv as number)})`,
   );
 
   const displayPercent = useTransform(smoothPercent, (v) => `${v.toFixed(1)}%`);
 
   return (
     <div className="relative grid h-[126px] w-[126px] place-items-center">
-      <svg aria-hidden="true" className="absolute inset-0 h-full w-full" shapeRendering="geometricPrecision" viewBox="0 0 126 126">
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full"
+        shapeRendering="geometricPrecision"
+        viewBox="0 0 126 126"
+      >
         <circle
           cx="63"
           cy="63"
@@ -195,7 +211,9 @@ function ScoreRing({ isHovered }: { isHovered?: boolean }) {
         <motion.p className="tabular-nums text-[27px] font-semibold leading-[1.05] tracking-[-0.018em] text-[#080d22]">
           {displayPercent}
         </motion.p>
-        <p className="mt-1 text-[10.5px] font-medium leading-none text-[#64718d]">Overall fit</p>
+        <p className="mt-1 text-[10.5px] font-medium leading-none text-[#64718d]">
+          Overall fit
+        </p>
       </div>
     </div>
   );
@@ -212,19 +230,23 @@ function CardShell(props: {
   return (
     <article
       className={cn(
-        "relative min-h-[444px] rounded-[15px] border border-[#dfe6f2] bg-white/82 p-7 text-[#080d22] shadow-[0_24px_56px_rgba(29,42,78,0.12),inset_0_1px_0_rgba(255,255,255,0.95)] backdrop-blur-xl transition duration-300 ease-out hover:scale-[1.015] hover:shadow-[0_28px_64px_rgba(29,42,78,0.16),inset_0_1px_0_rgba(255,255,255,0.95)] xl:h-[444px]",
-        props.className
+        "relative min-h-[444px] overflow-hidden rounded-[15px] border border-[rgba(255,255,255,0.88)] bg-[radial-gradient(ellipse_at_17%_8%,rgba(255,255,255,0.86),transparent_34%),radial-gradient(ellipse_at_85%_88%,rgba(210,204,255,0.18),transparent_36%),linear-gradient(152deg,rgba(255,255,255,0.82),rgba(255,255,255,0.42)),rgba(255,255,255,0.3)] p-7 text-[#080d22] shadow-[0_30px_88px_rgba(64,68,144,0.14),0_12px_30px_rgba(64,68,144,0.06),inset_0_1px_0_rgba(255,255,255,0.98),inset_0_-1px_0_rgba(118,108,255,0.08)] backdrop-blur-[28px] before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(124deg,rgba(255,255,255,0.82),transparent_39%),linear-gradient(90deg,rgba(96,126,255,0.045),transparent_20%,transparent_76%,rgba(130,82,255,0.055)),radial-gradient(ellipse_at_76%_8%,rgba(228,238,255,0.36),transparent_30%)] before:opacity-95 after:pointer-events-none after:absolute after:inset-[1px] after:rounded-[inherit] after:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.56),inset_0_2px_0_rgba(255,255,255,0.84),inset_0_-2px_0_rgba(98,88,218,0.1),inset_0_0_26px_rgba(255,255,255,0.34)] [transform:translateZ(0)_scale(1)] transition-[transform,box-shadow,border-color,filter] duration-[620ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:[transform:translateZ(0)_scale(1.03)] hover:border-[rgba(255,255,255,0.96)] hover:shadow-[0_36px_104px_rgba(64,68,144,0.2),0_16px_38px_rgba(64,68,144,0.09),0_0_30px_rgba(118,108,255,0.12),inset_0_1px_0_rgba(255,255,255,1),inset_0_-1px_0_rgba(118,108,255,0.1)] hover:brightness-[1.02] hover:saturate-[1.04] motion-reduce:transform-none motion-reduce:transition-none xl:h-[444px]",
+        props.className,
       )}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
     >
-      <div className="mb-5 flex items-center gap-4">
-        <span className="grid h-8 w-8 place-items-center rounded-[8px] bg-[#2450f4] text-[17px] font-bold text-white shadow-[0_8px_18px_rgba(32,71,240,0.24),inset_0_1px_0_rgba(255,255,255,0.25)]">
-          {props.index}
-        </span>
-        <h3 className="text-[18px] font-semibold tracking-[-0.025em]">{props.title}</h3>
+      <div className="relative z-10">
+        <div className="mb-5 flex items-center gap-4">
+          <span className="grid h-8 w-8 place-items-center rounded-[8px] bg-[#2450f4] text-[17px] font-bold text-white shadow-[0_8px_18px_rgba(32,71,240,0.24),inset_0_1px_0_rgba(255,255,255,0.25)]">
+            {props.index}
+          </span>
+          <h3 className="text-[18px] font-semibold tracking-[-0.025em]">
+            {props.title}
+          </h3>
+        </div>
+        {props.children}
       </div>
-      {props.children}
     </article>
   );
 }
@@ -245,7 +267,9 @@ function JobAdCard() {
             <p className="max-w-[230px] text-[12.5px] font-bold leading-snug tracking-[-0.02em]">
               Senior Product & Engineering Executive
             </p>
-            <p className="mt-0.5 text-[11px] font-semibold text-[#2047f0]">SpaceX</p>
+            <p className="mt-0.5 text-[11px] font-semibold text-[#2047f0]">
+              SpaceX
+            </p>
             <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[9.5px] font-medium text-[#56627d]">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin className="h-3 w-3" />
@@ -259,7 +283,9 @@ function JobAdCard() {
           </div>
         </div>
         <div className="p-3">
-          <p className="mb-2 text-[12px] font-bold tracking-[-0.015em]">Key requirements</p>
+          <p className="mb-2 text-[12px] font-bold tracking-[-0.015em]">
+            Key requirements
+          </p>
           <div className="flex flex-wrap gap-2">
             {requirements.map((requirement) => (
               <span
@@ -281,25 +307,77 @@ function GapIcon(props: { type: (typeof gapRows)[number]["icon"] }) {
   if (props.type === "people") {
     return (
       <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 16 16">
-        <circle cx="6" cy="5" fill="none" r="2.2" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M2.8 12.5c.45-2 1.55-3 3.2-3s2.75 1 3.2 3" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
-        <path d="M10.2 7.3a2 2 0 1 0-.15-3.65" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
-        <path d="M10.7 9.7c1.25.2 2.08 1.1 2.5 2.8" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
+        <circle
+          cx="6"
+          cy="5"
+          fill="none"
+          r="2.2"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M2.8 12.5c.45-2 1.55-3 3.2-3s2.75 1 3.2 3"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M10.2 7.3a2 2 0 1 0-.15-3.65"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M10.7 9.7c1.25.2 2.08 1.1 2.5 2.8"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
       </svg>
     );
   }
   if (props.type === "factory") {
     return (
       <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 16 16">
-        <path d="M2.5 12.8V6.3l3.3 2.1V6.3l3.4 2.1V4.1h3.2v8.7" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.5" />
-        <path d="M2.2 12.8h11.6M5 11h1.2M8 11h1.2" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
+        <path
+          d="M2.5 12.8V6.3l3.3 2.1V6.3l3.4 2.1V4.1h3.2v8.7"
+          fill="none"
+          stroke="currentColor"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M2.2 12.8h11.6M5 11h1.2M8 11h1.2"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
       </svg>
     );
   }
   return (
     <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 16 16">
-      <rect fill="none" height="7" rx="1.7" stroke="currentColor" strokeWidth="1.5" width="9" x="3.5" y="6.5" />
-      <path d="M5.2 6.5V5a2.8 2.8 0 0 1 5.6 0v1.5" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
+      <rect
+        fill="none"
+        height="7"
+        rx="1.7"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        width="9"
+        x="3.5"
+        y="6.5"
+      />
+      <path
+        d="M5.2 6.5V5a2.8 2.8 0 0 1 5.6 0v1.5"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+      />
     </svg>
   );
 }
@@ -317,12 +395,27 @@ function FitGapsCard() {
       <div className="grid grid-cols-[132px_minmax(0,1fr)] items-center gap-3.5 max-sm:grid-cols-1">
         <ScoreRing isHovered={hovered} />
         <div className="flex items-start gap-3 rounded-[10px] bg-[#f1f4fc] p-4">
-          <svg aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#2450f4]" viewBox="0 0 18 18">
-            <path d="M9 1.6 10.4 6l4.4 1.4-4.4 1.4L9 13.2 7.6 8.8 3.2 7.4 7.6 6 9 1.6Z" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.7" />
-            <path d="m14.2 12.4.45 1.45 1.45.45-1.45.45-.45 1.45-.45-1.45-1.45-.45 1.45-.45.45-1.45Z" fill="currentColor" />
+          <svg
+            aria-hidden="true"
+            className="mt-0.5 h-4 w-4 shrink-0 text-[#2450f4]"
+            viewBox="0 0 18 18"
+          >
+            <path
+              d="M9 1.6 10.4 6l4.4 1.4-4.4 1.4L9 13.2 7.6 8.8 3.2 7.4 7.6 6 9 1.6Z"
+              fill="none"
+              stroke="currentColor"
+              strokeLinejoin="round"
+              strokeWidth="1.7"
+            />
+            <path
+              d="m14.2 12.4.45 1.45 1.45.45-1.45.45-.45 1.45-.45-1.45-1.45-.45 1.45-.45.45-1.45Z"
+              fill="currentColor"
+            />
           </svg>
           <p className="text-[12.3px] font-medium leading-[1.62] text-[#34415f]">
-            <span className="font-semibold text-[#2047f0]">TaylorCV found a few gaps.</span>
+            <span className="font-semibold text-[#2047f0]">
+              TaylorCV found a few gaps.
+            </span>
             <br />
             Answer 3 quick questions to
             <br />
@@ -333,7 +426,9 @@ function FitGapsCard() {
         </div>
       </div>
       <div className="mt-3">
-        <p className="mb-2.5 text-[12.5px] font-bold">3 smart questions to answer</p>
+        <p className="mb-2.5 text-[12.5px] font-bold">
+          3 smart questions to answer
+        </p>
         <div className="overflow-hidden rounded-[10px] border border-[#dfe5ef] bg-white">
           {gapRows.map((row) => (
             <div
@@ -343,13 +438,15 @@ function FitGapsCard() {
               <span className="grid h-7 w-7 place-items-center rounded-full bg-[#eef3ff] text-[#2047f0]">
                 <GapIcon type={row.icon} />
               </span>
-              <p className="text-[10.8px] font-medium leading-[1.55] text-[#263252]">{row.question}</p>
+              <p className="text-[10.8px] font-medium leading-[1.55] text-[#263252]">
+                {row.question}
+              </p>
               <span
                 className={cn(
                   "rounded-full px-2.5 py-1 text-center text-[9.5px] font-semibold leading-tight max-sm:col-start-2 max-sm:w-fit",
                   row.tone === "green" && "bg-[#daf6e9] text-[#07814f]",
                   row.tone === "amber" && "bg-[#fff0d9] text-[#c66a00]",
-                  row.tone === "red" && "bg-[#ffe4e8] text-[#d43857]"
+                  row.tone === "red" && "bg-[#ffe4e8] text-[#d43857]",
                 )}
               >
                 {row.status}
@@ -383,12 +480,19 @@ function CvPreviewCard() {
           </p>
         </header>
         <CvSection title="Professional Summary">
-          Product and engineering executive with a track record of building and scaling breakthrough technologies at SpaceX, Tesla, and xAI. Expert in product strategy, system design, manufacturing scale, and rapid iteration to deliver fundamentally better, lower-cost products to market.
+          Product and engineering executive with a track record of building and
+          scaling breakthrough technologies at SpaceX, Tesla, and xAI. Expert in
+          product strategy, system design, manufacturing scale, and rapid
+          iteration to deliver fundamentally better, lower-cost products to
+          market.
         </CvSection>
         <CvSection title="Selected Achievements">
           <div className="space-y-1.5">
             {cvAchievements.map((achievement) => (
-              <div className="grid grid-cols-[15px_minmax(0,1fr)] gap-2" key={achievement}>
+              <div
+                className="grid grid-cols-[15px_minmax(0,1fr)] gap-2"
+                key={achievement}
+              >
                 <span className="mt-0.5 grid h-3.5 w-3.5 place-items-center rounded-full bg-[#2047f0] text-white">
                   <Check className="h-2.5 w-2.5" strokeWidth={3} />
                 </span>
@@ -433,13 +537,24 @@ function WorkflowCards() {
       initial="hidden"
       transition={{ staggerChildren: 0.08, delayChildren: 0.18 }}
     >
-      <motion.div className="relative" transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }} variants={entrance}>
+      <motion.div
+        className="relative"
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        variants={entrance}
+      >
         <JobAdCard />
       </motion.div>
-      <motion.div className="relative" transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }} variants={entrance}>
+      <motion.div
+        className="relative"
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        variants={entrance}
+      >
         <FitGapsCard />
       </motion.div>
-      <motion.div transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }} variants={entrance}>
+      <motion.div
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        variants={entrance}
+      >
         <CvPreviewCard />
       </motion.div>
     </motion.div>
@@ -448,25 +563,22 @@ function WorkflowCards() {
 
 function Hero(props: LandingPageProps) {
   return (
-    <section className="relative z-10 pb-[14px] pt-6 md:pb-[24px]">
+    <section className="relative z-10 pb-[14px] pt-4 md:pb-[24px] md:pt-16">
       <motion.div
         animate="visible"
         className="mx-auto max-w-[960px] px-5 text-center"
         initial="hidden"
         transition={{ staggerChildren: 0.08, delayChildren: 0.05 }}
       >
-        <motion.div transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }} variants={entrance}>
-          <TaylorWordmark center />
-        </motion.div>
         <motion.h1
-          className="mx-auto mt-4 max-w-[900px] text-balance text-[clamp(2.9rem,3.8vw,4.18rem)] font-bold leading-[1.05] tracking-[-0.055em] text-[#080d22]"
+          className="mx-auto inline-flex w-fit max-w-none flex-col items-center text-center text-[clamp(2.1rem,6vw,4.9rem)] font-bold leading-[0.96] tracking-[-0.06em] text-[#080d22] sm:text-[clamp(2.8rem,4.4vw,4.9rem)]"
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           variants={entrance}
         >
-          Paste one job. Get a CV built
-          <br className="hidden sm:block" />
-          {" "}
-          for the interview.
+          <span className="block whitespace-nowrap">
+            Paste one job. Get a CV built
+          </span>
+          <span className="block whitespace-nowrap">for the interview.</span>
         </motion.h1>
         <motion.p
           className="mx-auto mt-3 max-w-[680px] text-[16px] leading-7 text-[#33405f]"
@@ -474,9 +586,8 @@ function Hero(props: LandingPageProps) {
           variants={entrance}
         >
           TaylorCV reads the role, compares your background, and builds a sharp,
-          <br className="hidden sm:block" />
-          {" "}
-          one-page CV that proves you’re the right hire.
+          <br className="hidden sm:block" /> one-page CV that proves you’re the
+          right hire.
         </motion.p>
         <motion.div
           className="mt-5 flex flex-wrap items-center justify-center gap-5"
@@ -503,7 +614,10 @@ function Hero(props: LandingPageProps) {
           variants={entrance}
         >
           <span className="grid h-5 w-5 place-items-center text-[#2047f0]">
-            <ShieldCheck className="h-5 w-5 fill-[#2047f0] text-white" strokeWidth={2.1} />
+            <ShieldCheck
+              className="h-5 w-5 fill-[#2047f0] text-white"
+              strokeWidth={2.1}
+            />
           </span>
           Built for job ads, ATS systems, and one-page CVs.
         </motion.p>
@@ -595,7 +709,10 @@ function LaunchSection(props: LandingPageProps) {
 
 function FaqSection() {
   return (
-    <section className="relative z-10 mx-auto max-w-[1040px] px-6 py-24" id="faq">
+    <section
+      className="relative z-10 mx-auto max-w-[1040px] px-6 py-24"
+      id="faq"
+    >
       <div className="text-center">
         <p className="text-[13px] font-bold uppercase tracking-[0.2em] text-[#2047f0]">
           FAQ
@@ -614,7 +731,9 @@ function FaqSection() {
               {item.question}
               <ChevronDown className="h-5 w-5 text-[#2047f0] transition group-open:rotate-180" />
             </summary>
-            <p className="mt-4 max-w-[780px] text-[15px] leading-7 text-[#42506d]">{item.answer}</p>
+            <p className="mt-4 max-w-[780px] text-[15px] leading-7 text-[#42506d]">
+              {item.answer}
+            </p>
           </details>
         ))}
       </div>

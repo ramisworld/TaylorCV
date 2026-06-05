@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
   if (!authSession?.user?.id) {
     return NextResponse.redirect(
-      new URL(`/auth/sign-in?returnTo=${encodeURIComponent(request.url)}`, request.url)
+      new URL(`/auth?mode=sign-in&callbackUrl=${encodeURIComponent(request.url)}`, request.url)
     );
   }
 

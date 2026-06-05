@@ -1,0 +1,63 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { CVGenerationLoadingScreen } from "~/components/cv-flow/CVGenerationTransition";
+
+const mockCandidateSource = {
+  contactInfoJson: {
+    email: "alex.taylor@example.com",
+    fullName: "Alex Taylor",
+    location: "Auckland, NZ",
+    phone: "+64 21 555 0142",
+    professionalTitle: "Applied AI Engineer",
+  },
+  jobTitle: "Senior AI Product Engineer",
+  linksJson: {
+    github: "github.com/alextaylor",
+    linkedin: "linkedin.com/in/alextaylor",
+    portfolio: "alextaylor.dev",
+  },
+  profileJson: {
+    candidateBrief: {
+      possibleHeadline: "Applied AI Engineer",
+    },
+    deterministicBasics: {
+      email: "alex.taylor@example.com",
+      github: "github.com/alextaylor",
+      linkedin: "linkedin.com/in/alextaylor",
+      phone: "+64 21 555 0142",
+      possibleName: "Alex Taylor",
+      portfolio: "alextaylor.dev",
+    },
+  },
+};
+
+export function DevCvLoadingPreview() {
+  const [isReady, setIsReady] = useState(false);
+  const [runKey, setRunKey] = useState(0);
+
+  useEffect(() => {
+    setIsReady(false);
+
+    const readyTimer = window.setTimeout(() => {
+      setIsReady(true);
+    }, 9000);
+
+    return () => window.clearTimeout(readyTimer);
+  }, [runKey]);
+
+  return (
+    <CVGenerationLoadingScreen
+      candidateSource={mockCandidateSource}
+      cv={null}
+      isReady={isReady}
+      key={runKey}
+      onReveal={() => {
+        window.setTimeout(() => {
+          setRunKey((current) => current + 1);
+        }, 1800);
+      }}
+    />
+  );
+}
