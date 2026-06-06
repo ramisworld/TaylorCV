@@ -178,6 +178,7 @@ exports.Prisma.ApplicationScalarFieldEnum = {
   anonymousSessionId: 'anonymousSessionId',
   userId: 'userId',
   status: 'status',
+  trackingStatus: 'trackingStatus',
   currentStep: 'currentStep',
   dreamRole: 'dreamRole',
   roleArchetype: 'roleArchetype',

@@ -11,6 +11,7 @@ export function A4CvPreview(props: {
   presentationJson?: unknown;
   className?: string;
   cropToFrame?: boolean;
+  scrollableCrop?: boolean;
   fitToHeight?: boolean;
   maxScale?: number;
   viewportHeightOffset?: number;
@@ -58,17 +59,22 @@ export function A4CvPreview(props: {
   return (
     <div className={props.className} ref={frameRef}>
       <div
-        className="mx-auto"
+        className={props.scrollableCrop ? "taylor-hide-scrollbar mx-auto" : "mx-auto"}
         style={{
           height: props.cropToFrame ? "100%" : 1123 * scale,
-          overflow: props.cropToFrame ? "hidden" : undefined,
+          overflowX: props.cropToFrame ? "hidden" : undefined,
+          overflowY: props.cropToFrame
+            ? props.scrollableCrop
+              ? "auto"
+              : "hidden"
+            : undefined,
           width: 794 * scale,
         }}
       >
         <div
           style={{
-            height: props.cropToFrame ? "100%" : 1123,
-            overflow: props.cropToFrame ? "hidden" : undefined,
+            height: props.cropToFrame && props.scrollableCrop ? 1123 * scale : props.cropToFrame ? "100%" : 1123,
+            overflow: props.cropToFrame && !props.scrollableCrop ? "hidden" : undefined,
             transform: `scale(${scale})`,
             transformOrigin: "top left",
             width: 794,
@@ -85,8 +91,12 @@ export function A4CvPreview(props: {
                       borderTopLeftRadius: "18px",
                       borderTopRightRadius: "18px",
                       boxShadow: "none",
-                      height: "100%",
-                      minHeight: "100%",
+                      ...(props.scrollableCrop
+                        ? null
+                        : {
+                            height: "100%",
+                            minHeight: "100%",
+                          }),
                     }
                   : null),
                 ...props.documentStyle,

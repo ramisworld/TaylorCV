@@ -124,7 +124,7 @@ export function AuthShell() {
         authClient.signIn.magicLink({
           email,
           name: isSignIn ? undefined : email.split("@")[0] || "TaylorCV user",
-          callbackURL: redirectTarget(params),
+          callbackURL: callbackURL(params),
         }),
       );
       setMessage(successMessage);

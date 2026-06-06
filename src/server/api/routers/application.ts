@@ -19,6 +19,16 @@ const applicationIdSchema = z.object({
   applicationId: z.string().min(1),
 });
 
+const trackingStatusSchema = z.enum([
+  "ready",
+  "applied",
+  "response",
+  "interview",
+  "offer",
+  "accepted",
+  "rejected",
+]);
+
 async function assertApplicationOwnership(args: {
   applicationId: string;
   anonymousSessionId: string;
@@ -318,5 +328,37 @@ export const applicationRouter = createTRPCRouter({
         cvText: cvDraft?.cvText ?? null,
         presentationJson: cvDraft?.presentationJson ?? null,
       };
+    }),
+
+  updateTrackingStatus: protectedProcedure
+    .input(
+      applicationIdSchema.extend({
+        trackingStatus: trackingStatusSchema,
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const application = await db.application.findFirst({
+        where: {
+          id: input.applicationId,
+          userId: ctx.userId,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (!application) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Application not found",
+        });
+      }
+
+      await db.application.update({
+        where: { id: input.applicationId },
+        data: { trackingStatus: input.trackingStatus },
+      });
+
+      return { success: true };
     }),
 });

@@ -19,6 +19,15 @@ html {
   scroll-behavior: smooth;
 }
 
+.taylor-hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.taylor-hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .signup-auth-page {
   min-height: 100vh;
   background-image: url("/backgrounds/signup-desktop.avif");

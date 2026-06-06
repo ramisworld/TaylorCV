@@ -8221,6 +8221,7 @@ export namespace Prisma {
     anonymousSessionId: string | null
     userId: string | null
     status: $Enums.ApplicationStatus | null
+    trackingStatus: string | null
     currentStep: string | null
     dreamRole: string | null
     roleArchetype: string | null
@@ -8233,6 +8234,7 @@ export namespace Prisma {
     anonymousSessionId: string | null
     userId: string | null
     status: $Enums.ApplicationStatus | null
+    trackingStatus: string | null
     currentStep: string | null
     dreamRole: string | null
     roleArchetype: string | null
@@ -8245,6 +8247,7 @@ export namespace Prisma {
     anonymousSessionId: number
     userId: number
     status: number
+    trackingStatus: number
     currentStep: number
     dreamRole: number
     roleArchetype: number
@@ -8259,6 +8262,7 @@ export namespace Prisma {
     anonymousSessionId?: true
     userId?: true
     status?: true
+    trackingStatus?: true
     currentStep?: true
     dreamRole?: true
     roleArchetype?: true
@@ -8271,6 +8275,7 @@ export namespace Prisma {
     anonymousSessionId?: true
     userId?: true
     status?: true
+    trackingStatus?: true
     currentStep?: true
     dreamRole?: true
     roleArchetype?: true
@@ -8283,6 +8288,7 @@ export namespace Prisma {
     anonymousSessionId?: true
     userId?: true
     status?: true
+    trackingStatus?: true
     currentStep?: true
     dreamRole?: true
     roleArchetype?: true
@@ -8368,6 +8374,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId: string | null
     status: $Enums.ApplicationStatus
+    trackingStatus: string
     currentStep: string
     dreamRole: string | null
     roleArchetype: string | null
@@ -8397,6 +8404,7 @@ export namespace Prisma {
     anonymousSessionId?: boolean
     userId?: boolean
     status?: boolean
+    trackingStatus?: boolean
     currentStep?: boolean
     dreamRole?: boolean
     roleArchetype?: boolean
@@ -8419,6 +8427,7 @@ export namespace Prisma {
     anonymousSessionId?: boolean
     userId?: boolean
     status?: boolean
+    trackingStatus?: boolean
     currentStep?: boolean
     dreamRole?: boolean
     roleArchetype?: boolean
@@ -8433,6 +8442,7 @@ export namespace Prisma {
     anonymousSessionId?: boolean
     userId?: boolean
     status?: boolean
+    trackingStatus?: boolean
     currentStep?: boolean
     dreamRole?: boolean
     roleArchetype?: boolean
@@ -8447,6 +8457,7 @@ export namespace Prisma {
     anonymousSessionId?: boolean
     userId?: boolean
     status?: boolean
+    trackingStatus?: boolean
     currentStep?: boolean
     dreamRole?: boolean
     roleArchetype?: boolean
@@ -8454,7 +8465,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "anonymousSessionId" | "userId" | "status" | "currentStep" | "dreamRole" | "roleArchetype" | "createdAt" | "updatedAt", ExtArgs["result"]["application"]>
+  export type ApplicationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "anonymousSessionId" | "userId" | "status" | "trackingStatus" | "currentStep" | "dreamRole" | "roleArchetype" | "createdAt" | "updatedAt", ExtArgs["result"]["application"]>
   export type ApplicationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     anonymousSession?: boolean | AnonymousSessionDefaultArgs<ExtArgs>
     user?: boolean | Application$userArgs<ExtArgs>
@@ -8494,6 +8505,7 @@ export namespace Prisma {
       anonymousSessionId: string
       userId: string | null
       status: $Enums.ApplicationStatus
+      trackingStatus: string
       currentStep: string
       dreamRole: string | null
       roleArchetype: string | null
@@ -8935,6 +8947,7 @@ export namespace Prisma {
     readonly anonymousSessionId: FieldRef<"Application", 'String'>
     readonly userId: FieldRef<"Application", 'String'>
     readonly status: FieldRef<"Application", 'ApplicationStatus'>
+    readonly trackingStatus: FieldRef<"Application", 'String'>
     readonly currentStep: FieldRef<"Application", 'String'>
     readonly dreamRole: FieldRef<"Application", 'String'>
     readonly roleArchetype: FieldRef<"Application", 'String'>
@@ -21512,6 +21525,7 @@ export namespace Prisma {
     anonymousSessionId: 'anonymousSessionId',
     userId: 'userId',
     status: 'status',
+    trackingStatus: 'trackingStatus',
     currentStep: 'currentStep',
     dreamRole: 'dreamRole',
     roleArchetype: 'roleArchetype',
@@ -22369,6 +22383,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFilter<"Application"> | string
     userId?: StringNullableFilter<"Application"> | string | null
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
+    trackingStatus?: StringFilter<"Application"> | string
     currentStep?: StringFilter<"Application"> | string
     dreamRole?: StringNullableFilter<"Application"> | string | null
     roleArchetype?: StringNullableFilter<"Application"> | string | null
@@ -22390,6 +22405,7 @@ export namespace Prisma {
     anonymousSessionId?: SortOrder
     userId?: SortOrderInput | SortOrder
     status?: SortOrder
+    trackingStatus?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrderInput | SortOrder
     roleArchetype?: SortOrderInput | SortOrder
@@ -22414,6 +22430,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFilter<"Application"> | string
     userId?: StringNullableFilter<"Application"> | string | null
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
+    trackingStatus?: StringFilter<"Application"> | string
     currentStep?: StringFilter<"Application"> | string
     dreamRole?: StringNullableFilter<"Application"> | string | null
     roleArchetype?: StringNullableFilter<"Application"> | string | null
@@ -22435,6 +22452,7 @@ export namespace Prisma {
     anonymousSessionId?: SortOrder
     userId?: SortOrderInput | SortOrder
     status?: SortOrder
+    trackingStatus?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrderInput | SortOrder
     roleArchetype?: SortOrderInput | SortOrder
@@ -22453,6 +22471,7 @@ export namespace Prisma {
     anonymousSessionId?: StringWithAggregatesFilter<"Application"> | string
     userId?: StringNullableWithAggregatesFilter<"Application"> | string | null
     status?: EnumApplicationStatusWithAggregatesFilter<"Application"> | $Enums.ApplicationStatus
+    trackingStatus?: StringWithAggregatesFilter<"Application"> | string
     currentStep?: StringWithAggregatesFilter<"Application"> | string
     dreamRole?: StringNullableWithAggregatesFilter<"Application"> | string | null
     roleArchetype?: StringNullableWithAggregatesFilter<"Application"> | string | null
@@ -23890,6 +23909,7 @@ export namespace Prisma {
   export type ApplicationCreateInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -23911,6 +23931,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -23928,6 +23949,7 @@ export namespace Prisma {
   export type ApplicationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23949,6 +23971,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23968,6 +23991,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -23978,6 +24002,7 @@ export namespace Prisma {
   export type ApplicationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23990,6 +24015,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25613,6 +25639,7 @@ export namespace Prisma {
     anonymousSessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    trackingStatus?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrder
     roleArchetype?: SortOrder
@@ -25625,6 +25652,7 @@ export namespace Prisma {
     anonymousSessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    trackingStatus?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrder
     roleArchetype?: SortOrder
@@ -25637,6 +25665,7 @@ export namespace Prisma {
     anonymousSessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    trackingStatus?: SortOrder
     currentStep?: SortOrder
     dreamRole?: SortOrder
     roleArchetype?: SortOrder
@@ -28023,6 +28052,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutAnonymousSessionInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -28042,6 +28072,7 @@ export namespace Prisma {
     id?: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -28172,6 +28203,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFilter<"Application"> | string
     userId?: StringNullableFilter<"Application"> | string | null
     status?: EnumApplicationStatusFilter<"Application"> | $Enums.ApplicationStatus
+    trackingStatus?: StringFilter<"Application"> | string
     currentStep?: StringFilter<"Application"> | string
     dreamRole?: StringNullableFilter<"Application"> | string | null
     roleArchetype?: StringNullableFilter<"Application"> | string | null
@@ -28387,6 +28419,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutUserInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -28406,6 +28439,7 @@ export namespace Prisma {
     id?: string
     anonymousSessionId: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29482,6 +29516,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutJobInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29502,6 +29537,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29534,6 +29570,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutJobInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29554,6 +29591,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29624,6 +29662,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutSourceCandidateProfilesInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29644,6 +29683,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29742,6 +29782,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutSourceCandidateProfilesInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29762,6 +29803,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29778,6 +29820,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutGapQuestionsInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29798,6 +29841,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29880,6 +29924,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutGapQuestionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29900,6 +29945,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29963,6 +30009,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutGapAnswersInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -29983,6 +30030,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30052,6 +30100,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutGapAnswersInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30072,6 +30121,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30088,6 +30138,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutCvDraftsInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30108,6 +30159,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30170,6 +30222,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutCvDraftsInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30190,6 +30243,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30333,6 +30387,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutCvGenerationUsageInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30353,6 +30408,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30455,6 +30511,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutCvGenerationUsageInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30475,6 +30532,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30526,6 +30584,7 @@ export namespace Prisma {
   export type ApplicationCreateWithoutAgentRunsInput = {
     id?: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30546,6 +30605,7 @@ export namespace Prisma {
     anonymousSessionId: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30578,6 +30638,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutAgentRunsInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30598,6 +30659,7 @@ export namespace Prisma {
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30615,6 +30677,7 @@ export namespace Prisma {
     id?: string
     userId?: string | null
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -30661,6 +30724,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutAnonymousSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30680,6 +30744,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30698,6 +30763,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30852,6 +30918,7 @@ export namespace Prisma {
     id?: string
     anonymousSessionId: string
     status?: $Enums.ApplicationStatus
+    trackingStatus?: string
     currentStep?: string
     dreamRole?: string | null
     roleArchetype?: string | null
@@ -31003,6 +31070,7 @@ export namespace Prisma {
   export type ApplicationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31022,6 +31090,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null
@@ -31040,6 +31109,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     anonymousSessionId?: StringFieldUpdateOperationsInput | string
     status?: EnumApplicationStatusFieldUpdateOperationsInput | $Enums.ApplicationStatus
+    trackingStatus?: StringFieldUpdateOperationsInput | string
     currentStep?: StringFieldUpdateOperationsInput | string
     dreamRole?: NullableStringFieldUpdateOperationsInput | string | null
     roleArchetype?: NullableStringFieldUpdateOperationsInput | string | null

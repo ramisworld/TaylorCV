@@ -23,24 +23,58 @@ const googleProvider =
           clientId: env.GOOGLE_CLIENT_ID,
           clientSecret: env.GOOGLE_CLIENT_SECRET,
         },
-      }
+    }
     : undefined;
 
-const trustedOrigins = Array.from(
-  new Set([
-    env.BETTER_AUTH_URL,
-    ...(env.BETTER_AUTH_TRUSTED_ORIGINS ?? "")
-      .split(",")
-      .map((origin) => origin.trim())
-      .filter(Boolean),
-  ])
-);
+const localDevOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:3001",
+  "http://127.0.0.1:3001",
+  "http://localhost:3002",
+  "http://127.0.0.1:3002",
+];
+
+function configuredTrustedOrigins() {
+  return (env.BETTER_AUTH_TRUSTED_ORIGINS ?? "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
+
+function isLocalOrigin(origin: string) {
+  try {
+    const url = new URL(origin);
+    return ["localhost", "127.0.0.1", "::1"].includes(url.hostname);
+  } catch {
+    return false;
+  }
+}
 
 const isDevelopment = env.NODE_ENV === "development";
+const trustedOrigins = Array.from(
+  new Set(
+    isDevelopment
+      ? [
+          ...localDevOrigins,
+          ...configuredTrustedOrigins(),
+          ...(isLocalOrigin(env.BETTER_AUTH_URL) ? [env.BETTER_AUTH_URL] : []),
+        ]
+      : [env.BETTER_AUTH_URL, ...configuredTrustedOrigins()]
+  )
+);
+
 const authBaseURL = isDevelopment
   ? {
-      allowedHosts: ["localhost:3000", "127.0.0.1:3000"],
-      fallback: env.BETTER_AUTH_URL,
+      allowedHosts: [
+        "localhost:3000",
+        "127.0.0.1:3000",
+        "localhost:3001",
+        "127.0.0.1:3001",
+        "localhost:3002",
+        "127.0.0.1:3002",
+      ],
+      fallback: "http://localhost:3000",
     }
   : env.BETTER_AUTH_URL;
 

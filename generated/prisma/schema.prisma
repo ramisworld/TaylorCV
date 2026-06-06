@@ -172,6 +172,7 @@ model Application {
   anonymousSessionId String            @map("anonymous_session_id")
   userId             String?           @map("user_id")
   status             ApplicationStatus @default(started)
+  trackingStatus     String            @default("ready") @map("tracking_status")
   currentStep        String            @default("started") @map("current_step")
   dreamRole          String?           @map("dream_role")
   roleArchetype      String?           @map("role_archetype")
