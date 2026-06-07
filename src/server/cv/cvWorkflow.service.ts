@@ -24,6 +24,14 @@ import {
 } from "./cvSchemas";
 import { extractCandidateBasics } from "./extractCandidateBasics";
 import { buildSectionStrategy } from "./sectionStrategy";
+import {
+  buildStructuredProfileFromLegacy,
+  findUserStructuredCareerProfile,
+  normalizeStructuredCareerProfile,
+  profileJsonStructuredCareerProfile,
+  saveImportedProfileForUserIfMissing,
+  toProfileJson,
+} from "./structuredProfile.service";
 
 function compactText(value: string, max = 140) {
   const text = value.replace(/\s+/g, " ").trim();
@@ -62,6 +70,24 @@ function normalizeStoredIntake(value: unknown) {
     value && typeof value === "object" && !Array.isArray(value)
       ? (value as { jobBrief?: unknown }).jobBrief
       : value
+  );
+  return parsed.success ? parsed.data : null;
+}
+
+function normalizeStoredCandidateBrief(value: unknown) {
+  const parsed = IntakeGapOutputSchema.shape.candidateBrief.safeParse(
+    value && typeof value === "object" && !Array.isArray(value)
+      ? (value as { candidateBrief?: unknown }).candidateBrief
+      : null
+  );
+  return parsed.success ? parsed.data : null;
+}
+
+function normalizeStoredStrategySignals(value: unknown) {
+  const parsed = IntakeGapOutputSchema.shape.strategySignals.safeParse(
+    value && typeof value === "object" && !Array.isArray(value)
+      ? (value as { strategySignals?: unknown }).strategySignals
+      : null
   );
   return parsed.success ? parsed.data : null;
 }
@@ -159,6 +185,7 @@ export async function submitJob(args: {
 export async function submitCandidate(args: {
   applicationId: string;
   rawCvText: string;
+  userId?: string | null;
 }) {
   const job = await db.job.findUnique({
     where: { applicationId: args.applicationId },
@@ -179,6 +206,11 @@ export async function submitCandidate(args: {
   });
 
   const { jobBrief, candidateBrief } = intake;
+  const structuredCareerProfile = normalizeStructuredCareerProfile(
+    intake.structuredCareerProfile ??
+      buildStructuredProfileFromLegacy({ candidateBrief, deterministicBasics }),
+    "intake_import"
+  );
 
   await db.job.update({
     where: { applicationId: args.applicationId },
@@ -189,7 +221,11 @@ export async function submitCandidate(args: {
       summary: jobBrief.roleSummary,
       roleDomain: jobBrief.marketOrLocation,
       archetypeHint: jobBrief.archetype,
-      analysisJson: { jobBrief } as Prisma.InputJsonValue,
+      analysisJson: {
+        jobBrief,
+        candidateBrief,
+        strategySignals: intake.strategySignals,
+      } as Prisma.InputJsonValue,
     },
   });
 
@@ -204,6 +240,7 @@ export async function submitCandidate(args: {
     candidateBrief,
     strategySignals: intake.strategySignals,
     deterministicBasics,
+    structuredCareerProfile,
   } satisfies StoredCandidateProfile;
 
   const profileRow = await db.candidateProfile.create({
@@ -211,7 +248,7 @@ export async function submitCandidate(args: {
       sourceApplicationId: args.applicationId,
       sourceType: "cv_upload",
       rawCvText: args.rawCvText,
-      profileJson: storedProfile as unknown as Prisma.InputJsonValue,
+      profileJson: toProfileJson(storedProfile) as Prisma.InputJsonValue,
       summary: compactText(profileSummary(candidateBrief), 700),
       skillsJson: serializeSkills(candidateBrief) as Prisma.InputJsonValue,
       projectsJson: [] as Prisma.InputJsonValue,
@@ -239,6 +276,13 @@ export async function submitCandidate(args: {
       } as Prisma.InputJsonValue,
     },
   });
+
+  if (args.userId) {
+    await saveImportedProfileForUserIfMissing({
+      userId: args.userId,
+      profile: structuredCareerProfile,
+    });
+  }
 
   const createdQuestions = [];
   for (const q of intake.gapQuestions) {
@@ -281,6 +325,142 @@ export async function submitCandidate(args: {
   };
 }
 
+export async function submitSavedProfileCandidate(args: {
+  applicationId: string;
+  userId: string;
+}) {
+  const [job, savedProfile] = await Promise.all([
+    db.job.findUnique({ where: { applicationId: args.applicationId } }),
+    findUserStructuredCareerProfile(args.userId),
+  ]);
+
+  if (!job) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Job description not found. Please submit a job description first.",
+    });
+  }
+
+  if (!savedProfile) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Saved profile not found. Please import or create your profile first.",
+    });
+  }
+
+  const profile = savedProfile.structuredCareerProfile;
+  const deterministicBasics: DeterministicCandidateBasics = {
+    possibleName: profile.basics.fullName || null,
+    email: profile.basics.email || null,
+    phone: profile.basics.phone || null,
+    linkedin: profile.links.find((link) => link.type === "linkedin")?.url ?? null,
+    github: profile.links.find((link) => link.type === "github")?.url ?? null,
+    portfolio: profile.links.find((link) => link.type === "portfolio")?.url ?? null,
+    otherUrls: profile.links
+      .filter((link) => !["linkedin", "github", "portfolio"].includes(link.type ?? ""))
+      .map((link) => link.url)
+      .slice(0, 12),
+    sectionHeadings: [],
+  };
+
+  const intake = await runIntakeGapAgent({
+    applicationId: args.applicationId,
+    rawJobText: job.rawText,
+    structuredCareerProfile: profile,
+  });
+  const { jobBrief, candidateBrief } = intake;
+
+  await db.job.update({
+    where: { applicationId: args.applicationId },
+    data: {
+      title: jobBrief.targetRoleTitle || job.title,
+      company: jobBrief.companyName,
+      seniority: jobBrief.seniority,
+      summary: jobBrief.roleSummary,
+      roleDomain: jobBrief.marketOrLocation,
+      archetypeHint: jobBrief.archetype,
+      analysisJson: {
+        jobBrief,
+        candidateBrief,
+        strategySignals: intake.strategySignals,
+      } as Prisma.InputJsonValue,
+    },
+  });
+
+  await db.gapAnswer.deleteMany({ where: { applicationId: args.applicationId } });
+  await db.gapQuestion.deleteMany({ where: { applicationId: args.applicationId } });
+
+  const storedProfile = {
+    candidateBrief,
+    strategySignals: intake.strategySignals,
+    deterministicBasics,
+    structuredCareerProfile: null,
+  } satisfies StoredCandidateProfile;
+
+  await db.candidateProfile.create({
+    data: {
+      sourceApplicationId: args.applicationId,
+      userId: args.userId,
+      sourceType: "profile",
+      profileSource: "saved_structured_profile",
+      profileJson: toProfileJson(storedProfile) as Prisma.InputJsonValue,
+      summary: compactText(profileSummary(candidateBrief), 700),
+      skillsJson: profile.skills as unknown as Prisma.InputJsonValue,
+      projectsJson: [] as Prisma.InputJsonValue,
+      educationJson: [] as Prisma.InputJsonValue,
+      certificationsJson: [] as Prisma.InputJsonValue,
+      experienceJson: [] as Prisma.InputJsonValue,
+      toolsJson: profile.skills.map((skill) => skill.name) as Prisma.InputJsonValue,
+      achievementsJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
+      strongProofCandidatesJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
+      likelyTopEvidenceJson: candidateBrief.usefulSections as Prisma.InputJsonValue,
+      cautionNotesJson: candidateBrief.warnings as Prisma.InputJsonValue,
+      scopeOpportunitiesJson: candidateBrief.missingOrWeakProof as Prisma.InputJsonValue,
+      contactInfoJson: profile.basics as Prisma.InputJsonValue,
+      linksJson: profile.links as unknown as Prisma.InputJsonValue,
+    },
+  });
+
+  const createdQuestions = [];
+  for (const q of intake.gapQuestions) {
+    const created = await db.gapQuestion.create({
+      data: {
+        applicationId: args.applicationId,
+        question: q.question,
+        reason: q.targetArea,
+        whyItMatters: q.whyItMatters,
+        answerGuidance: q.exampleAnswer,
+        questionJson: {
+          shortTitle: q.shortTitle,
+          exampleAnswer: q.exampleAnswer,
+          whyThisMatters: q.whyItMatters,
+          targetArea: q.targetArea,
+          priority: q.priority,
+        } as Prisma.InputJsonValue,
+      },
+    });
+    createdQuestions.push(created);
+  }
+
+  const newStatus =
+    intake.gapQuestions.length > 0 ? "questions_ready" : "candidate_added";
+
+  await db.application.update({
+    where: { id: args.applicationId },
+    data: {
+      status: newStatus,
+      currentStep: newStatus,
+      dreamRole: jobBrief.targetRoleTitle,
+      roleArchetype: jobBrief.archetype,
+    },
+  });
+
+  return {
+    candidateProfile: storedProfile,
+    gapQuestions: createdQuestions,
+  };
+}
+
 export async function submitGapAnswers(args: {
   applicationId: string;
   answers: Array<{
@@ -319,7 +499,8 @@ export async function submitGapAnswers(args: {
 }
 
 export async function generateCv(args: { applicationId: string }) {
-  const [job, candidateProfileRow, gapAnswers, gapQuestions] = await Promise.all([
+  const [application, job, candidateProfileRow, gapAnswers, gapQuestions] = await Promise.all([
+    db.application.findUnique({ where: { id: args.applicationId } }),
     db.job.findUnique({ where: { applicationId: args.applicationId } }),
     db.candidateProfile.findFirst({
       where: { sourceApplicationId: args.applicationId },
@@ -342,7 +523,14 @@ export async function generateCv(args: { applicationId: string }) {
     });
   }
 
-  if (!candidateProfileRow?.rawCvText || !candidateProfileRow.profileJson) {
+  if (!application) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Application not found.",
+    });
+  }
+
+  if (!candidateProfileRow?.profileJson) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "Candidate profile not found.",
@@ -351,6 +539,23 @@ export async function generateCv(args: { applicationId: string }) {
 
   const jobBrief = normalizeStoredIntake(job.analysisJson);
   const storedCandidateProfile = parseStoredCandidateProfile(candidateProfileRow.profileJson);
+  const candidateBrief =
+    normalizeStoredCandidateBrief(job.analysisJson) ?? storedCandidateProfile.candidateBrief;
+  const strategySignals =
+    normalizeStoredStrategySignals(job.analysisJson) ?? storedCandidateProfile.strategySignals;
+  const savedUserProfile = application.userId
+    ? await findUserStructuredCareerProfile(application.userId)
+    : null;
+  const structuredCareerProfile =
+    savedUserProfile?.structuredCareerProfile ??
+    profileJsonStructuredCareerProfile(candidateProfileRow.profileJson);
+
+  if (!structuredCareerProfile) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Structured career profile not found.",
+    });
+  }
 
   const gapAnswersForComposer: GapAnswerForComposer[] = gapAnswers
     .filter((answer) => !answer.skipped && answer.rawUserAnswer?.trim())
@@ -367,17 +572,18 @@ export async function generateCv(args: { applicationId: string }) {
 
   const sectionStrategy = buildSectionStrategy({
     jobBrief,
-    candidateBrief: storedCandidateProfile.candidateBrief,
-    strategySignals: storedCandidateProfile.strategySignals,
+    candidateBrief,
+    strategySignals,
   });
 
   const composerOutput = await runCvComposerAgent({
     applicationId: args.applicationId,
     rawJobText: job.rawText,
     rawCvText: candidateProfileRow.rawCvText,
+    structuredCareerProfile,
     jobBrief,
-    candidateBrief: storedCandidateProfile.candidateBrief,
-    strategySignals: storedCandidateProfile.strategySignals,
+    candidateBrief,
+    strategySignals,
     deterministicBasics: storedCandidateProfile.deterministicBasics,
     gapAnswers: gapAnswersForComposer,
     sectionStrategy,
@@ -402,7 +608,7 @@ export async function generateCv(args: { applicationId: string }) {
   const qualityWarnings = collectCvQualityWarnings({
     rawJobText: job.rawText,
     jobBrief,
-    candidateBrief: storedCandidateProfile.candidateBrief,
+    candidateBrief,
     sectionStrategy,
     blueprint: repairedComposerOutput.blueprint,
     cv: parsed,
@@ -445,8 +651,8 @@ export async function generateCv(args: { applicationId: string }) {
         },
         blueprint: repairedComposerOutput.blueprint,
         jobBrief,
-        candidateBrief: storedCandidateProfile.candidateBrief,
-        strategySignals: storedCandidateProfile.strategySignals,
+        candidateBrief,
+        strategySignals,
         deterministicBasics: storedCandidateProfile.deterministicBasics,
         gapAnswers: gapAnswersForComposer,
         sectionStrategy,

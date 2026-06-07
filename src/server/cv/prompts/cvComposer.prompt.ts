@@ -3,6 +3,7 @@ import type {
   DeterministicCandidateBasics,
   GapAnswerForComposer,
   JobBrief,
+  StructuredCareerProfile,
   StrategySignals,
 } from "../cvSchemas";
 import type { SectionStrategy } from "../sectionStrategy";
@@ -18,12 +19,14 @@ Output:
 
 Source rules:
 - rawJobText is the source of truth for the target role.
-- rawCandidateCvText is the source of truth for the candidate evidence.
+- structuredCareerProfile is the source of truth for the candidate evidence.
+- rawCandidateCvText is legacy/import fallback only when structuredCareerProfile is unavailable.
 - jobBrief and candidateBrief are compact guidance only.
 - strategySignals guide positioning, framing, proof emphasis, and founder wording.
 - sectionStrategy controls section order and section labels.
 - deterministicBasics helps preserve contact details and useful links.
 - gap answers may enrich the CV only when they credibly fill missing or weak proof.
+- You must never mutate, rewrite, update, or output structuredCareerProfile.
 - whyItMatters explains why a gap question was asked. It is not a fact to copy into the CV.
 - exampleAnswer from intake is only UI guidance. It is not evidence unless the user actually wrote matching proof in a saved answer.
 
@@ -95,7 +98,8 @@ function applyAbnormalRawCvSafetyCap(rawCvText: string) {
 
 export function buildCvComposerContext(args: {
   rawJobText: string;
-  rawCvText: string;
+  rawCvText?: string | null;
+  structuredCareerProfile: StructuredCareerProfile;
   jobBrief: JobBrief | null;
   candidateBrief: CandidateBrief;
   strategySignals: StrategySignals;
@@ -106,7 +110,10 @@ export function buildCvComposerContext(args: {
   return {
     pageTarget: "one_page",
     rawJobText: args.rawJobText,
-    rawCandidateCvText: applyAbnormalRawCvSafetyCap(args.rawCvText),
+    rawCandidateCvText: args.rawCvText
+      ? applyAbnormalRawCvSafetyCap(args.rawCvText)
+      : "",
+    structuredCareerProfile: args.structuredCareerProfile,
     jobBrief: args.jobBrief
       ? {
           ...args.jobBrief,
@@ -186,10 +193,13 @@ export function buildCvComposerUserPromptFromContext(
   context: CvComposerContext,
 ) {
   return `Compose the final one-page CV from this context.
-Use rawCandidateCvText and rawJobText as the primary evidence sources.
+Use structuredCareerProfile as the candidate source of truth.
+Use rawCandidateCvText only as legacy/import fallback if structuredCareerProfile is missing important source detail.
+Use rawJobText as the target role source of truth.
 Use jobBrief and candidateBrief as compact guidance only.
 Use strategySignals for positioning and founder framing.
 Use sectionStrategy for deterministic section order and section labels.
+Do not mutate, rewrite, or output structuredCareerProfile.
 
 ${JSON.stringify(context)}`;
 }

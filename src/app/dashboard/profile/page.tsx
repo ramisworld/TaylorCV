@@ -1,46 +1,30 @@
-import { ProfileForm } from "../_components/ProfileForm";
 import { requireDashboardUser } from "../dashboard-utils";
-import { isRecord, textOrNull } from "~/lib/cvDocument";
-import { db } from "~/server/db";
+import { ProfileWorkspace } from "./ProfileWorkspace";
+import {
+  emptyStructuredCareerProfile,
+  findUserStructuredCareerProfile,
+} from "~/server/cv/structuredProfile.service";
 
 export default async function ProfilePage() {
   const user = await requireDashboardUser("/dashboard/profile");
-  const profile = await db.candidateProfile.findFirst({
-    where: {
-      userId: user.id,
-      archivedAt: null,
-    },
-    orderBy: { updatedAt: "desc" },
-  });
-
-  const contact: Record<string, unknown> = isRecord(profile?.contactInfoJson)
-    ? profile.contactInfoJson
-    : {};
-  const links: Record<string, unknown> = isRecord(profile?.linksJson)
-    ? profile.linksJson
-    : {};
+  const saved = await findUserStructuredCareerProfile(user.id);
+  const profile =
+    saved?.structuredCareerProfile ??
+    emptyStructuredCareerProfile({ name: user.name, email: user.email });
 
   return (
-    <section className="rounded-[18px] border border-[#dce5f2] bg-white p-6 shadow-[0_20px_60px_rgba(47,68,115,0.08)] sm:p-7">
-      <div className="mb-7">
-        <h1 className="text-[28px] font-black tracking-normal text-[#071026]">Profile</h1>
-        <p className="mt-2 text-[15px] font-bold text-[#617294]">
-          Manage the baseline information TaylorCV can use for future applications.
-        </p>
-      </div>
-      <ProfileForm
-        initialValues={{
-          fullName: user.name || textOrNull(contact.fullName) || "",
-          email: user.email,
-          location: textOrNull(contact.location) || "",
-          linkedIn: textOrNull(links.linkedIn) || "",
-          github: textOrNull(links.github) || "",
-          portfolio: textOrNull(links.portfolio) || "",
-          otherLinks: textOrNull(links.otherLinks) || "",
-          currentTargetTitle: textOrNull(contact.currentTargetTitle) || "",
-          baseCv: profile?.rawCvText ?? "",
-        }}
-      />
-    </section>
+    <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-6">
+      <header className="flex items-start justify-between gap-5 pt-1 pr-0 lg:pr-[190px]">
+        <div>
+          <h1 className="text-[24px] font-semibold leading-tight text-[#081543]">
+            Profile
+          </h1>
+          <p className="mt-2 text-[13px] font-medium text-[#536485]">
+            Manage your professional profile and career information.
+          </p>
+        </div>
+      </header>
+      <ProfileWorkspace initialProfile={profile} />
+    </div>
   );
 }

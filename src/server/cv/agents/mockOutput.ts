@@ -119,6 +119,96 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
       priority: "medium",
     },
   ],
+  structuredCareerProfile: {
+    basics: {
+      fullName: "Jordan Lee",
+      currentRole: "Computer Science student building full-stack AI products",
+      location: "Auckland, New Zealand",
+      phone: "+64 21 555 0198",
+      email: "jordan.lee@example.com",
+    },
+    skills: [
+      { id: "skill-typescript", name: "TypeScript" },
+      { id: "skill-nextjs", name: "Next.js" },
+      { id: "skill-prisma", name: "Prisma" },
+      { id: "skill-postgresql", name: "PostgreSQL" },
+      { id: "skill-openai", name: "OpenAI APIs" },
+    ],
+    experiences: [
+      {
+        id: "exp-independent-projects",
+        title: "Independent Software Engineer",
+        company: "Independent Projects",
+        location: "Auckland, New Zealand",
+        startDate: "2025-02",
+        isCurrent: true,
+        bullets: [
+          {
+            id: "bullet-full-stack-ai",
+            text: "Built full-stack AI application workflows across frontend, backend, database and structured model-output layers.",
+          },
+        ],
+        tools: ["TypeScript", "Next.js", "Prisma", "PostgreSQL"],
+      },
+    ],
+    projects: [
+      {
+        id: "project-taylorcv",
+        name: "TaylorCV",
+        description: "AI CV tailoring platform",
+        bullets: [
+          {
+            id: "bullet-taylorcv-workflow",
+            text: "Built a CV tailoring workflow that asks targeted gap questions and generates structured CV JSON for preview, PDF and DOCX export.",
+          },
+        ],
+        tools: ["TypeScript", "Next.js", "OpenAI APIs", "Zod"],
+      },
+    ],
+    education: [
+      {
+        id: "edu-auckland",
+        institution: "University of Auckland",
+        qualification: "BSc",
+        field: "Computer Science and Mathematics",
+        startDate: "2025",
+        details: ["Faculty scholarship recipient"],
+      },
+    ],
+    credentials: [
+      {
+        id: "cred-azure-ai",
+        name: "Microsoft Azure AI Engineer Associate",
+        issuer: "Microsoft",
+        type: "certification",
+        issueDate: "2026",
+      },
+    ],
+    links: [
+      {
+        id: "link-linkedin",
+        label: "LinkedIn",
+        url: "https://www.linkedin.com/in/jordanlee",
+        type: "linkedin",
+      },
+      {
+        id: "link-github",
+        label: "GitHub",
+        url: "https://github.com/jordanlee",
+        type: "github",
+      },
+    ],
+    careerDetails: {
+      yearsOfExperience: "1+",
+      targetRoles: ["AI Software Engineer"],
+      industriesOfInterest: ["AI", "SaaS"],
+      preferredLocations: ["Auckland", "Remote"],
+      openToRemote: true,
+    },
+    metadata: {
+      source: "intake_import",
+    },
+  },
 };
 
 export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {

@@ -191,11 +191,17 @@ export default function Home() {
   }, [applicationId, stateQuery.error]);
 
   const submitJob = api.application.submitJob.useMutation({
-    onSuccess: async (_data, variables) => {
+    onSuccess: async (data, variables) => {
       localStorage.setItem(currentApplicationStorageKey, variables.applicationId);
       await utils.application.getApplicationState.invalidate({
         applicationId: variables.applicationId,
       });
+      if (data.hasSavedStructuredProfile) {
+        setCandidateAnalysisState("analyzing");
+        setStage("gap_questions");
+        submitSavedProfileCandidate.mutate({ applicationId: variables.applicationId });
+        return;
+      }
       setStage("cv_upload");
       setError(null);
     },
@@ -213,6 +219,26 @@ export default function Home() {
       }
       setError(friendlyError(mutationError.message));
       setStage("job_description");
+    },
+  });
+
+  const submitSavedProfileCandidate = api.application.submitSavedProfileCandidate.useMutation({
+    onSuccess: async (_data, variables) => {
+      await utils.application.getApplicationState.invalidate({
+        applicationId: variables.applicationId,
+      });
+      setCandidateAnalysisState("idle");
+      setError(null);
+      setStage("gap_questions");
+    },
+    onError: (mutationError) => {
+      setCandidateAnalysisState("idle");
+      if (isStaleApplicationError(mutationError.message)) {
+        void recoverFromStaleApplication(true);
+        return;
+      }
+      setError(friendlyError(mutationError.message));
+      setStage("cv_upload");
     },
   });
 
@@ -354,6 +380,7 @@ export default function Home() {
 
   const waiting =
     submitJob.isPending ||
+    submitSavedProfileCandidate.isPending ||
     submitCandidate.isPending ||
     submitGapAnswers.isPending ||
     generateCv.isPending;
@@ -402,7 +429,7 @@ export default function Home() {
             error={error}
             isLoading={waiting}
             key="gap-questions"
-            onBack={() => setStage("cv_upload")}
+            onBack={() => setStage(state?.hasSavedStructuredProfile ? "job_description" : "cv_upload")}
             onSkip={() => {
               if (!applicationId) return;
               if (hasOpenQuestions(state)) {

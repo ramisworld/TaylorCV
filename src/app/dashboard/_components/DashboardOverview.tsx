@@ -11,7 +11,7 @@ import Link from "next/link";
 import { A4CvPreview } from "~/components/cv-flow/A4CvPreview";
 import type { StructuredCv } from "~/lib/cvDocument";
 import { ExportMenu } from "./ExportMenu";
-import { EmptyStateNewCvButton, NewCvButton } from "./DashboardShell";
+import { EmptyStateNewCvButton } from "./DashboardShell";
 import { normalizeTrackerStatus, trackerStatusLabels } from "../tracking-status";
 
 export type DashboardOverviewApplication = {
@@ -48,7 +48,7 @@ export function DashboardOverview(props: {
   return (
     <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-4">
       <section className="pt-1">
-        <div className="flex items-start justify-between gap-5">
+        <div className="flex items-start justify-between gap-5 pr-0 lg:pr-[190px]">
           <div>
             <h1 className="text-[24px] font-semibold leading-tight text-[#081543]">
               {props.greeting.title}
@@ -57,7 +57,6 @@ export function DashboardOverview(props: {
               {props.greeting.subtitle}
             </p>
           </div>
-          <NewCvButton className="hidden h-[50px] px-7 text-[15px] lg:inline-flex" />
         </div>
         <div className="mt-5 grid gap-4 xl:grid-cols-3">
           <MetricCard

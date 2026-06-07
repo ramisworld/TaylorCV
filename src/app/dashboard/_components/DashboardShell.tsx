@@ -26,8 +26,8 @@ const currentApplicationStorageKey = "currentApplicationId";
 const navItems = [
   { href: "/dashboard", label: "Overview", icon: Home, active: true },
   { href: "/dashboard/applications", label: "Applications", icon: CheckSquare, active: true },
-  { href: "/dashboard/profile", label: "Profile", icon: User, active: false },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings, active: false },
+  { href: "/dashboard/profile", label: "Profile", icon: User, active: true },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings, active: true },
 ];
 
 export function NewCvButton(props: { className?: string; onDone?: () => void }) {
@@ -45,7 +45,7 @@ export function NewCvButton(props: { className?: string; onDone?: () => void }) 
   return (
     <button
       className={cn(
-        "taylor-premium-button inline-flex h-[52px] items-center justify-center gap-3 rounded-[10px] border px-8 text-[16px] font-semibold text-white disabled:pointer-events-none disabled:opacity-70",
+        "taylor-premium-button inline-flex h-[52px] items-center justify-center gap-3 rounded-[10px] border px-8 text-[16px] font-semibold whitespace-nowrap text-white disabled:pointer-events-none disabled:opacity-70",
         props.className
       )}
       disabled={createApplication.isPending}
@@ -186,7 +186,7 @@ export function DashboardShell(props: {
 
         <section className="min-w-0 flex-1 lg:h-dvh lg:pl-[236px]">
           <header className="sticky top-0 z-20 border-b border-[#dfe7f4]/70 bg-[#f6f9ff]/70 px-4 py-4 backdrop-blur-xl sm:px-6 lg:hidden">
-            <div className="mx-auto flex w-full max-w-[1560px] items-center justify-between gap-4">
+            <div className="flex w-full items-center justify-between gap-4">
               <button
                 className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[#d8e2f2] bg-white text-[#1c3766] shadow-sm lg:hidden"
                 onClick={() => setMobileOpen(true)}
@@ -203,7 +203,10 @@ export function DashboardShell(props: {
             </div>
           </header>
 
-          <div className="mx-auto w-full max-w-[1580px] px-4 pb-8 sm:px-6 lg:h-dvh lg:px-10 lg:py-7">
+          <div className="relative w-full px-4 pb-8 sm:px-6 lg:h-dvh lg:px-10 lg:py-7 2xl:px-12">
+            <div className="pointer-events-none absolute right-10 top-7 z-10 hidden lg:block 2xl:right-12">
+              <NewCvButton className="pointer-events-auto h-[50px] px-7 text-[15px]" />
+            </div>
             {props.children}
           </div>
         </section>

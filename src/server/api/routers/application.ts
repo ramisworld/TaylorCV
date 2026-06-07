@@ -10,10 +10,16 @@ import { db } from "~/server/db";
 import {
   submitJob as submitJobService,
   submitCandidate as submitCandidateService,
+  submitSavedProfileCandidate as submitSavedProfileCandidateService,
   submitGapAnswers as submitGapAnswersService,
   generateCv as generateCvService,
   authorizeExport as authorizeExportService,
 } from "~/server/cv/cvWorkflow.service";
+import {
+  findUserStructuredCareerProfile,
+  profileJsonStructuredCareerProfile,
+  saveImportedProfileForUserIfMissing,
+} from "~/server/cv/structuredProfile.service";
 
 const applicationIdSchema = z.object({
   applicationId: z.string().min(1),
@@ -116,8 +122,11 @@ export const applicationRouter = createTRPCRouter({
         applicationId: input.applicationId,
         rawJobText: input.rawJobText,
       });
+      const savedProfile = ctx.userId
+        ? await findUserStructuredCareerProfile(ctx.userId)
+        : null;
 
-      return { job };
+      return { job, hasSavedStructuredProfile: Boolean(savedProfile) };
     }),
 
   submitCandidate: publicProcedure
@@ -136,6 +145,34 @@ export const applicationRouter = createTRPCRouter({
       const result = await submitCandidateService({
         applicationId: input.applicationId,
         rawCvText: input.rawCvText,
+        userId: ctx.userId,
+      });
+
+      return {
+        candidateProfile: result.candidateProfile,
+        gapQuestions: result.gapQuestions,
+      };
+    }),
+
+  submitSavedProfileCandidate: publicProcedure
+    .input(applicationIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      await assertApplicationOwnership({
+        applicationId: input.applicationId,
+        anonymousSessionId: ctx.anonymousSessionId,
+        userId: ctx.userId,
+      });
+
+      if (!ctx.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Sign in to use your saved profile.",
+        });
+      }
+
+      const result = await submitSavedProfileCandidateService({
+        applicationId: input.applicationId,
+        userId: ctx.userId,
       });
 
       return {
@@ -196,7 +233,14 @@ export const applicationRouter = createTRPCRouter({
         userId: ctx.userId,
       });
 
-      const [job, candidateProfileRow, gapQuestions, gapAnswers, cvDraft] = await Promise.all([
+      const [
+        job,
+        candidateProfileRow,
+        gapQuestions,
+        gapAnswers,
+        cvDraft,
+        savedProfile,
+      ] = await Promise.all([
         db.job.findUnique({ where: { applicationId: input.applicationId } }),
         db.candidateProfile.findFirst({
           where: { sourceApplicationId: input.applicationId },
@@ -214,6 +258,7 @@ export const applicationRouter = createTRPCRouter({
           where: { applicationId: input.applicationId },
           orderBy: { version: "desc" },
         }),
+        ctx.userId ? findUserStructuredCareerProfile(ctx.userId) : Promise.resolve(null),
       ]);
 
       return {
@@ -225,6 +270,7 @@ export const applicationRouter = createTRPCRouter({
         cvDraft,
         cvJson: cvDraft?.cvJson ?? null,
         cvText: cvDraft?.cvText ?? null,
+        hasSavedStructuredProfile: Boolean(savedProfile),
       };
     }),
 
@@ -268,6 +314,15 @@ export const applicationRouter = createTRPCRouter({
       await db.application.update({
         where: { id: input.applicationId },
         data: { userId: ctx.userId },
+      });
+
+      const importedProfileRow = await db.candidateProfile.findFirst({
+        where: { sourceApplicationId: input.applicationId },
+        orderBy: { createdAt: "desc" },
+      });
+      await saveImportedProfileForUserIfMissing({
+        userId: ctx.userId,
+        profile: profileJsonStructuredCareerProfile(importedProfileRow?.profileJson),
       });
 
       return { success: true };

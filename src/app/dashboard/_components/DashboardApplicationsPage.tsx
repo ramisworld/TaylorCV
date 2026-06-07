@@ -17,7 +17,6 @@ import { useMemo, useState } from "react";
 
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import { NewCvButton } from "./DashboardShell";
 import { ExportMenu } from "./ExportMenu";
 import {
   normalizeTrackerStatus,
@@ -125,7 +124,7 @@ export function DashboardApplicationsPage(props: { applications: ApplicationView
 
   return (
     <div className="grid h-full min-h-0 grid-rows-[auto_auto_minmax(0,1fr)] gap-7">
-      <header className="flex items-start justify-between gap-5">
+      <header className="flex items-start justify-between gap-5 pr-0 lg:pr-[190px]">
         <div>
           <h1 className="text-[24px] font-semibold leading-tight text-[#081543]">
             Applications
@@ -134,7 +133,6 @@ export function DashboardApplicationsPage(props: { applications: ApplicationView
             Track, manage, and tailor your applications all in one place.
           </p>
         </div>
-        <NewCvButton className="hidden h-[50px] px-7 text-[15px] lg:inline-flex" />
       </header>
 
       <ApplicationsToolbar
@@ -174,7 +172,7 @@ function ApplicationsToolbar(props: {
 }) {
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-      <label className="flex h-[48px] w-full max-w-[800px] items-center gap-3 rounded-[12px] border border-white/72 bg-white/38 px-4 shadow-[0_16px_36px_rgba(67,82,128,0.09),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl">
+      <label className="flex h-[48px] w-full items-center gap-3 rounded-[12px] border border-white/72 bg-white/38 px-4 shadow-[0_16px_36px_rgba(67,82,128,0.09),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-2xl lg:max-w-[1120px] lg:flex-1 2xl:max-w-[1280px]">
         <Search className="h-5 w-5 shrink-0 text-[#43619d]" />
         <input
           className="h-full min-w-0 flex-1 bg-transparent text-[13px] font-medium text-[#0b1740] outline-none placeholder:text-[#69799c]"

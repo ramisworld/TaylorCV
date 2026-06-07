@@ -24,12 +24,14 @@ function sleep(ms: number) {
 export async function runIntakeGapAgent(args: {
   applicationId: string;
   rawJobText: string;
-  rawCvText: string;
+  rawCvText?: string;
+  structuredCareerProfile?: unknown;
 }): Promise<IntakeGapOutput> {
   const model = getFastModel();
   const userPrompt = buildIntakeGapUserPrompt({
     rawJobText: args.rawJobText,
     rawCvText: args.rawCvText,
+    structuredCareerProfile: args.structuredCareerProfile,
   });
 
   const run = () =>
@@ -46,7 +48,10 @@ export async function runIntakeGapAgent(args: {
       zodSchema: IntakeGapOutputSchema,
       telemetryContext: {
         rawJobChars: args.rawJobText.length,
-        rawCvChars: args.rawCvText.length,
+        rawCvChars: args.rawCvText?.length ?? 0,
+        structuredContextChars: args.structuredCareerProfile
+          ? JSON.stringify(args.structuredCareerProfile).length
+          : 0,
       },
       mockOutput: MOCK_INTAKE_GAP_OUTPUT,
     });

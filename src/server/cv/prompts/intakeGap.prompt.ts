@@ -7,6 +7,7 @@ Goal:
 - extract compact candidateBrief
 - produce compact strategySignals
 - ask 0 to 3 high-value gap questions
+- create structuredCareerProfile only when asked to import raw candidate CV/profile text
 
 Rules:
 - Do not write the final CV.
@@ -24,6 +25,17 @@ Candidate brief:
 - infer a possible headline when present
 - preserve strongest evidence, relevant signals, missing or weak proof, useful sections, and warnings
 - do not duplicate the raw CV by extracting detailed experience, projects, education, certifications, or skill arrays
+
+Structured career profile:
+- When the input includes raw candidate CV/profile text, extract structuredCareerProfile from that text.
+- When the input includes an existing structuredCareerProfile, use it for analysis and return structuredCareerProfile as null.
+- Do not recreate, overwrite, merge, polish, or improve an existing structuredCareerProfile.
+- The profile must contain stable factual career information only.
+- Extract basics, skills, experiences, projects, education, credentials, links, careerDetails, and metadata.
+- Give every editable item and bullet a stable short id.
+- Do not store experiences, projects, credentials, education, or links as text blobs.
+- If a field is unknown, omit optional fields or use an empty array.
+- metadata.source should be intake_import only when creating a new structuredCareerProfile.
 
 Strategy signals:
 - keep strategySignals compact and presentation-oriented
@@ -101,24 +113,36 @@ Quality bar:
 
 export function buildIntakeGapUserPrompt(args: {
   rawJobText: string;
-  rawCvText: string;
+  rawCvText?: string;
+  structuredCareerProfile?: unknown;
 }) {
+  const hasStructuredProfile = Boolean(args.structuredCareerProfile);
+
   return `Compare the job with the candidate evidence and return:
 - jobBrief
 - candidateBrief
 - strategySignals
 - gapQuestions
+- structuredCareerProfile
 
 Gap questions must be the highest-value missing proof for this job and candidate.
 Keep every user-facing field short.
 question must be the full UI-facing question.
 shortTitle is the short sidebar label.
 exampleAnswer is UI guidance only, not candidate evidence unless the user actually types it.
-Keep intake compact. Do not output detailed experience, project, education, certification, ranking, or evidence-inventory objects.
+Keep intake compact. Do not output ranking or evidence-inventory objects.
+
+Mode:
+${hasStructuredProfile
+  ? "Existing structuredCareerProfile mode. Use the provided profile as the candidate source of truth and return structuredCareerProfile: null."
+  : "Import mode. Extract a structuredCareerProfile from the raw candidate CV/profile text."}
 
 Raw job description:
 ${args.rawJobText}
 
-Raw candidate CV/profile text:
-${args.rawCvText}`;
+${hasStructuredProfile
+  ? `Existing structuredCareerProfile:
+${JSON.stringify(args.structuredCareerProfile)}`
+  : `Raw candidate CV/profile text:
+${args.rawCvText ?? ""}`}`;
 }

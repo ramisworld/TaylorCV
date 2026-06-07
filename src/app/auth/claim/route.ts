@@ -8,6 +8,10 @@ import {
   sanitizeInternalReturnPath,
   toPublicAppUrl,
 } from "~/server/public-app-url";
+import {
+  profileJsonStructuredCareerProfile,
+  saveImportedProfileForUserIfMissing,
+} from "~/server/cv/structuredProfile.service";
 
 export async function GET(request: NextRequest) {
   const applicationId = request.nextUrl.searchParams.get("applicationId");
@@ -36,6 +40,15 @@ export async function GET(request: NextRequest) {
         userId: null,
       },
       data: { userId: authSession.user.id },
+    }).catch(() => undefined);
+
+    const importedProfileRow = await db.candidateProfile.findFirst({
+      where: { sourceApplicationId: applicationId },
+      orderBy: { createdAt: "desc" },
+    }).catch(() => null);
+    await saveImportedProfileForUserIfMissing({
+      userId: authSession.user.id,
+      profile: profileJsonStructuredCareerProfile(importedProfileRow?.profileJson),
     }).catch(() => undefined);
   }
 
