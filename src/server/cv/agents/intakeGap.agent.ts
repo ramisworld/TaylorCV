@@ -15,7 +15,7 @@ import {
 } from "../prompts/intakeGap.prompt";
 import { MOCK_INTAKE_GAP_OUTPUT } from "./mockOutput.ts";
 
-const intakeGapRetryDelayMs = 1200;
+const intakeGapRetryDelayMs = 400;
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));

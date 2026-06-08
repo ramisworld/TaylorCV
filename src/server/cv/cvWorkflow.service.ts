@@ -13,21 +13,17 @@ import {
   repairCvForSectionStrategy,
 } from "./cvQualityWarnings";
 import {
-  IntakeGapOutputSchema,
-  StoredCandidateProfileJsonSchema,
+  JobContextSchema,
+  SectionSignalsSchema,
   StructuredCvDocumentSchema,
-  type CandidateBrief,
-  type DeterministicCandidateBasics,
   type GapAnswerForComposer,
-  type JobBrief,
-  type StoredCandidateProfile,
+  type StructuredCvDocument,
+  type StructuredCareerProfile,
 } from "./cvSchemas";
-import { extractCandidateBasics } from "./extractCandidateBasics";
 import { buildSectionStrategy } from "./sectionStrategy";
 import {
-  buildStructuredProfileFromLegacy,
   findUserStructuredCareerProfile,
-  normalizeStructuredCareerProfile,
+  normalizeCompactProfileImport,
   profileJsonStructuredCareerProfile,
   saveImportedProfileForUserIfMissing,
   toProfileJson,
@@ -48,48 +44,27 @@ function fallbackJobTitle(rawJobText: string) {
   return compactText(firstUsefulLine, 90);
 }
 
-function profileSummary(candidateBrief: CandidateBrief) {
+function profileSummaryFromStructuredProfile(profile: StructuredCareerProfile | null) {
   return (
-    candidateBrief.possibleHeadline ||
-    candidateBrief.strongestEvidence.join(". ") ||
-    candidateBrief.relevantSignals.join(". ") ||
+    profile?.basics.currentRole ||
+    profile?.basics.fullName ||
     "Candidate CV saved by TaylorCV."
   );
 }
 
-function serializeSkills(candidateBrief: CandidateBrief) {
-  return candidateBrief.relevantSignals.filter((signal) =>
-    /typescript|javascript|python|sql|react|next|node|postgres|prisma|openai|aws|azure|figma|excel|salesforce|seo|google ads/i.test(
-      signal
-    )
-  );
-}
-
-function normalizeStoredIntake(value: unknown) {
-  const parsed = IntakeGapOutputSchema.shape.jobBrief.safeParse(
-    value && typeof value === "object" && !Array.isArray(value)
-      ? (value as { jobBrief?: unknown }).jobBrief
-      : value
-  );
-  return parsed.success ? parsed.data : null;
-}
-
-function normalizeStoredCandidateBrief(value: unknown) {
-  const parsed = IntakeGapOutputSchema.shape.candidateBrief.safeParse(
-    value && typeof value === "object" && !Array.isArray(value)
-      ? (value as { candidateBrief?: unknown }).candidateBrief
-      : null
-  );
-  return parsed.success ? parsed.data : null;
-}
-
-function normalizeStoredStrategySignals(value: unknown) {
-  const parsed = IntakeGapOutputSchema.shape.strategySignals.safeParse(
-    value && typeof value === "object" && !Array.isArray(value)
-      ? (value as { strategySignals?: unknown }).strategySignals
-      : null
-  );
-  return parsed.success ? parsed.data : null;
+function parseAnalysisJson(value: unknown) {
+  const source = value && typeof value === "object" && !Array.isArray(value)
+    ? value as { jobContext?: unknown; sectionSignals?: unknown }
+    : {};
+  const jobContext = JobContextSchema.safeParse(source.jobContext);
+  const sectionSignals = SectionSignalsSchema.safeParse(source.sectionSignals);
+  if (!jobContext.success || !sectionSignals.success) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Job analysis is missing. Please submit the candidate again.",
+    });
+  }
+  return { jobContext: jobContext.data, sectionSignals: sectionSignals.data };
 }
 
 function buildPresentationJson(args: {
@@ -127,15 +102,72 @@ function validateAndParseCv(cv: unknown) {
   return { validatedCv, parsed };
 }
 
-function parseStoredCandidateProfile(value: unknown): StoredCandidateProfile {
-  const result = StoredCandidateProfileJsonSchema.safeParse(value);
-  if (!result.success) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Candidate profile is invalid. Please submit the CV again.",
-    });
+function normalizeCredentialText(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\b(certification|certified|certificate|credential|licence|license)\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isCertificationSection(section: unknown) {
+  if (!section || typeof section !== "object" || Array.isArray(section)) return false;
+  const value = section as { id?: unknown; label?: unknown; type?: unknown };
+  const id = typeof value.id === "string" ? value.id : "";
+  const label = typeof value.label === "string" ? value.label : "";
+  return (
+    value.type === "certifications" ||
+    /certification|certifications|credentials|licences|licenses/i.test(`${id} ${label}`)
+  );
+}
+
+function repairCvCertifications(cv: StructuredCvDocument): StructuredCvDocument {
+  const certificationMap = new Map<string, string>();
+  for (const certification of cv.certifications) {
+    const text = certification.replace(/\s+/g, " ").trim();
+    const key = normalizeCredentialText(text);
+    if (text && key && !certificationMap.has(key)) {
+      certificationMap.set(key, text);
+    }
   }
-  return result.data;
+  const certifications = [...certificationMap.values()];
+  const certificationKeys = new Set(certificationMap.keys());
+
+  const sections = cv.sections.filter((section) => !isCertificationSection(section));
+  const removedSectionIds = new Set(
+    cv.sections
+      .filter((section) => isCertificationSection(section))
+      .flatMap((section) => [section.id, section.label])
+      .map((value) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim())
+  );
+  const sectionOrder = cv.sectionOrder.filter((entry) => {
+    const normalized = entry.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+    return normalized !== "certifications" && !removedSectionIds.has(normalized);
+  });
+
+  const education = cv.education.map((item) => ({
+    ...item,
+    details: item.details.filter((detail) => {
+      const key = normalizeCredentialText(detail);
+      if (!key) return true;
+      if (certificationKeys.has(key)) return false;
+      return ![...certificationKeys].some(
+        (certificationKey) =>
+          key.length >= 12 &&
+          certificationKey.length >= 12 &&
+          (certificationKey.includes(key) || key.includes(certificationKey))
+      );
+    }),
+  }));
+
+  return {
+    ...cv,
+    sectionOrder,
+    education,
+    certifications,
+    sections,
+  };
 }
 
 export async function submitJob(args: {
@@ -198,33 +230,37 @@ export async function submitCandidate(args: {
     });
   }
 
-  const deterministicBasics = extractCandidateBasics(args.rawCvText);
   const intake = await runIntakeGapAgent({
     applicationId: args.applicationId,
     rawJobText: job.rawText,
     rawCvText: args.rawCvText,
   });
 
-  const { jobBrief, candidateBrief } = intake;
-  const structuredCareerProfile = normalizeStructuredCareerProfile(
-    intake.structuredCareerProfile ??
-      buildStructuredProfileFromLegacy({ candidateBrief, deterministicBasics }),
+  if (!intake.profile) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Intake did not return an imported profile.",
+    });
+  }
+
+  const { jobContext, sectionSignals } = intake;
+  const structuredCareerProfile = normalizeCompactProfileImport(
+    intake.profile,
     "intake_import"
   );
 
   await db.job.update({
     where: { applicationId: args.applicationId },
     data: {
-      title: jobBrief.targetRoleTitle || job.title,
-      company: jobBrief.companyName,
-      seniority: jobBrief.seniority,
-      summary: jobBrief.roleSummary,
-      roleDomain: jobBrief.marketOrLocation,
-      archetypeHint: jobBrief.archetype,
+      title: jobContext.roleTitle || job.title,
+      company: jobContext.companyName,
+      seniority: jobContext.seniority,
+      summary: jobContext.roleSummary,
+      roleDomain: jobContext.marketOrLocation,
+      archetypeHint: jobContext.roleFamily,
       analysisJson: {
-        jobBrief,
-        candidateBrief,
-        strategySignals: intake.strategySignals,
+        jobContext,
+        sectionSignals,
       } as Prisma.InputJsonValue,
     },
   });
@@ -237,11 +273,9 @@ export async function submitCandidate(args: {
   });
 
   const storedProfile = {
-    candidateBrief,
-    strategySignals: intake.strategySignals,
-    deterministicBasics,
+    sectionSignals,
     structuredCareerProfile,
-  } satisfies StoredCandidateProfile;
+  };
 
   const profileRow = await db.candidateProfile.create({
     data: {
@@ -249,31 +283,20 @@ export async function submitCandidate(args: {
       sourceType: "cv_upload",
       rawCvText: args.rawCvText,
       profileJson: toProfileJson(storedProfile) as Prisma.InputJsonValue,
-      summary: compactText(profileSummary(candidateBrief), 700),
-      skillsJson: serializeSkills(candidateBrief) as Prisma.InputJsonValue,
-      projectsJson: [] as Prisma.InputJsonValue,
-      educationJson: [] as Prisma.InputJsonValue,
-      certificationsJson: [] as Prisma.InputJsonValue,
-      experienceJson: [] as Prisma.InputJsonValue,
-      toolsJson: serializeSkills(candidateBrief) as Prisma.InputJsonValue,
-      achievementsJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
-      strongProofCandidatesJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
-      likelyTopEvidenceJson: candidateBrief.usefulSections as Prisma.InputJsonValue,
-      cautionNotesJson: candidateBrief.warnings as Prisma.InputJsonValue,
-      scopeOpportunitiesJson: candidateBrief.missingOrWeakProof as Prisma.InputJsonValue,
-      contactInfoJson: {
-        fullName: deterministicBasics.possibleName,
-        professionalTitle: candidateBrief.possibleHeadline,
-        location: null,
-        email: deterministicBasics.email,
-        phone: deterministicBasics.phone,
-      } as Prisma.InputJsonValue,
-      linksJson: {
-        linkedin: deterministicBasics.linkedin,
-        github: deterministicBasics.github,
-        portfolio: deterministicBasics.portfolio,
-        other: deterministicBasics.otherUrls,
-      } as Prisma.InputJsonValue,
+      summary: compactText(profileSummaryFromStructuredProfile(structuredCareerProfile), 700),
+      skillsJson: (structuredCareerProfile?.skills ?? []) as unknown as Prisma.InputJsonValue,
+      projectsJson: (structuredCareerProfile?.projects ?? []) as unknown as Prisma.InputJsonValue,
+      educationJson: (structuredCareerProfile?.education ?? []) as unknown as Prisma.InputJsonValue,
+      certificationsJson: (structuredCareerProfile?.credentials ?? []) as unknown as Prisma.InputJsonValue,
+      experienceJson: (structuredCareerProfile?.experiences ?? []) as unknown as Prisma.InputJsonValue,
+      toolsJson: (structuredCareerProfile?.skills.map((skill) => skill.name) ?? []) as Prisma.InputJsonValue,
+      achievementsJson: [] as Prisma.InputJsonValue,
+      strongProofCandidatesJson: [] as Prisma.InputJsonValue,
+      likelyTopEvidenceJson: [] as Prisma.InputJsonValue,
+      cautionNotesJson: sectionSignals.positioningWarnings as Prisma.InputJsonValue,
+      scopeOpportunitiesJson: jobContext.proofNeeds as Prisma.InputJsonValue,
+      contactInfoJson: (structuredCareerProfile?.basics ?? {}) as Prisma.InputJsonValue,
+      linksJson: (structuredCareerProfile?.links ?? []) as unknown as Prisma.InputJsonValue,
     },
   });
 
@@ -291,12 +314,12 @@ export async function submitCandidate(args: {
         applicationId: args.applicationId,
         question: q.question,
         reason: q.targetArea,
-        whyItMatters: q.whyItMatters,
-        answerGuidance: q.exampleAnswer,
+        whyItMatters: `This can add stronger proof for ${q.targetArea}.`,
+        answerGuidance: "Add concrete scope, tools, outcomes, users, metrics, or delivery detail if you have it.",
         questionJson: {
           shortTitle: q.shortTitle,
-          exampleAnswer: q.exampleAnswer,
-          whyThisMatters: q.whyItMatters,
+          exampleAnswer: "Mention scope, tools, metrics, users, or outcomes if you can.",
+          whyThisMatters: `This can add stronger proof for ${q.targetArea}.`,
           targetArea: q.targetArea,
           priority: q.priority,
         } as Prisma.InputJsonValue,
@@ -313,8 +336,8 @@ export async function submitCandidate(args: {
     data: {
       status: newStatus,
       currentStep: newStatus,
-      dreamRole: jobBrief.targetRoleTitle,
-      roleArchetype: jobBrief.archetype,
+      dreamRole: jobContext.roleTitle,
+      roleArchetype: jobContext.roleFamily,
     },
   });
 
@@ -349,40 +372,26 @@ export async function submitSavedProfileCandidate(args: {
   }
 
   const profile = savedProfile.structuredCareerProfile;
-  const deterministicBasics: DeterministicCandidateBasics = {
-    possibleName: profile.basics.fullName || null,
-    email: profile.basics.email || null,
-    phone: profile.basics.phone || null,
-    linkedin: profile.links.find((link) => link.type === "linkedin")?.url ?? null,
-    github: profile.links.find((link) => link.type === "github")?.url ?? null,
-    portfolio: profile.links.find((link) => link.type === "portfolio")?.url ?? null,
-    otherUrls: profile.links
-      .filter((link) => !["linkedin", "github", "portfolio"].includes(link.type ?? ""))
-      .map((link) => link.url)
-      .slice(0, 12),
-    sectionHeadings: [],
-  };
 
   const intake = await runIntakeGapAgent({
     applicationId: args.applicationId,
     rawJobText: job.rawText,
     structuredCareerProfile: profile,
   });
-  const { jobBrief, candidateBrief } = intake;
+  const { jobContext, sectionSignals } = intake;
 
   await db.job.update({
     where: { applicationId: args.applicationId },
     data: {
-      title: jobBrief.targetRoleTitle || job.title,
-      company: jobBrief.companyName,
-      seniority: jobBrief.seniority,
-      summary: jobBrief.roleSummary,
-      roleDomain: jobBrief.marketOrLocation,
-      archetypeHint: jobBrief.archetype,
+      title: jobContext.roleTitle || job.title,
+      company: jobContext.companyName,
+      seniority: jobContext.seniority,
+      summary: jobContext.roleSummary,
+      roleDomain: jobContext.marketOrLocation,
+      archetypeHint: jobContext.roleFamily,
       analysisJson: {
-        jobBrief,
-        candidateBrief,
-        strategySignals: intake.strategySignals,
+        jobContext,
+        sectionSignals,
       } as Prisma.InputJsonValue,
     },
   });
@@ -391,11 +400,9 @@ export async function submitSavedProfileCandidate(args: {
   await db.gapQuestion.deleteMany({ where: { applicationId: args.applicationId } });
 
   const storedProfile = {
-    candidateBrief,
-    strategySignals: intake.strategySignals,
-    deterministicBasics,
+    sectionSignals,
     structuredCareerProfile: null,
-  } satisfies StoredCandidateProfile;
+  };
 
   await db.candidateProfile.create({
     data: {
@@ -404,18 +411,18 @@ export async function submitSavedProfileCandidate(args: {
       sourceType: "profile",
       profileSource: "saved_structured_profile",
       profileJson: toProfileJson(storedProfile) as Prisma.InputJsonValue,
-      summary: compactText(profileSummary(candidateBrief), 700),
+      summary: compactText(profileSummaryFromStructuredProfile(profile), 700),
       skillsJson: profile.skills as unknown as Prisma.InputJsonValue,
-      projectsJson: [] as Prisma.InputJsonValue,
-      educationJson: [] as Prisma.InputJsonValue,
-      certificationsJson: [] as Prisma.InputJsonValue,
-      experienceJson: [] as Prisma.InputJsonValue,
+      projectsJson: profile.projects as unknown as Prisma.InputJsonValue,
+      educationJson: profile.education as unknown as Prisma.InputJsonValue,
+      certificationsJson: profile.credentials as unknown as Prisma.InputJsonValue,
+      experienceJson: profile.experiences as unknown as Prisma.InputJsonValue,
       toolsJson: profile.skills.map((skill) => skill.name) as Prisma.InputJsonValue,
-      achievementsJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
-      strongProofCandidatesJson: candidateBrief.strongestEvidence as Prisma.InputJsonValue,
-      likelyTopEvidenceJson: candidateBrief.usefulSections as Prisma.InputJsonValue,
-      cautionNotesJson: candidateBrief.warnings as Prisma.InputJsonValue,
-      scopeOpportunitiesJson: candidateBrief.missingOrWeakProof as Prisma.InputJsonValue,
+      achievementsJson: [] as Prisma.InputJsonValue,
+      strongProofCandidatesJson: [] as Prisma.InputJsonValue,
+      likelyTopEvidenceJson: [] as Prisma.InputJsonValue,
+      cautionNotesJson: sectionSignals.positioningWarnings as Prisma.InputJsonValue,
+      scopeOpportunitiesJson: jobContext.proofNeeds as Prisma.InputJsonValue,
       contactInfoJson: profile.basics as Prisma.InputJsonValue,
       linksJson: profile.links as unknown as Prisma.InputJsonValue,
     },
@@ -428,12 +435,12 @@ export async function submitSavedProfileCandidate(args: {
         applicationId: args.applicationId,
         question: q.question,
         reason: q.targetArea,
-        whyItMatters: q.whyItMatters,
-        answerGuidance: q.exampleAnswer,
+        whyItMatters: `This can add stronger proof for ${q.targetArea}.`,
+        answerGuidance: "Add concrete scope, tools, outcomes, users, metrics, or delivery detail if you have it.",
         questionJson: {
           shortTitle: q.shortTitle,
-          exampleAnswer: q.exampleAnswer,
-          whyThisMatters: q.whyItMatters,
+          exampleAnswer: "Mention scope, tools, metrics, users, or outcomes if you can.",
+          whyThisMatters: `This can add stronger proof for ${q.targetArea}.`,
           targetArea: q.targetArea,
           priority: q.priority,
         } as Prisma.InputJsonValue,
@@ -450,8 +457,8 @@ export async function submitSavedProfileCandidate(args: {
     data: {
       status: newStatus,
       currentStep: newStatus,
-      dreamRole: jobBrief.targetRoleTitle,
-      roleArchetype: jobBrief.archetype,
+      dreamRole: jobContext.roleTitle,
+      roleArchetype: jobContext.roleFamily,
     },
   });
 
@@ -537,12 +544,7 @@ export async function generateCv(args: { applicationId: string }) {
     });
   }
 
-  const jobBrief = normalizeStoredIntake(job.analysisJson);
-  const storedCandidateProfile = parseStoredCandidateProfile(candidateProfileRow.profileJson);
-  const candidateBrief =
-    normalizeStoredCandidateBrief(job.analysisJson) ?? storedCandidateProfile.candidateBrief;
-  const strategySignals =
-    normalizeStoredStrategySignals(job.analysisJson) ?? storedCandidateProfile.strategySignals;
+  const { jobContext, sectionSignals } = parseAnalysisJson(job.analysisJson);
   const savedUserProfile = application.userId
     ? await findUserStructuredCareerProfile(application.userId)
     : null;
@@ -565,52 +567,37 @@ export async function generateCv(args: { applicationId: string }) {
         gapQuestionId: answer.gapQuestionId,
         question: question?.question ?? "",
         targetArea: question?.reason ?? "",
-        whyItMatters: question?.whyItMatters ?? "",
         answer: answer.rawUserAnswer ?? "",
       };
     });
 
   const sectionStrategy = buildSectionStrategy({
-    jobBrief,
-    candidateBrief,
-    strategySignals,
+    jobContext,
+    sectionSignals,
   });
 
   const composerOutput = await runCvComposerAgent({
     applicationId: args.applicationId,
-    rawJobText: job.rawText,
-    rawCvText: candidateProfileRow.rawCvText,
     structuredCareerProfile,
-    jobBrief,
-    candidateBrief,
-    strategySignals,
-    deterministicBasics: storedCandidateProfile.deterministicBasics,
+    jobContext,
+    sectionSignals,
     gapAnswers: gapAnswersForComposer,
     sectionStrategy,
   });
 
   const repaired = repairCvForSectionStrategy({
-    cv: composerOutput.cv,
+    cv: repairCvCertifications(composerOutput.cv),
     sectionStrategy,
   });
-  const repairedComposerOutput = {
-    ...composerOutput,
-    blueprint: {
-      ...composerOutput.blueprint,
-      sectionOrder: repaired.cv.sectionOrder,
-    },
-    cv: repaired.cv,
-  };
-  const { validatedCv, parsed } = validateAndParseCv(repairedComposerOutput.cv);
+  const { validatedCv, parsed } = validateAndParseCv(repaired.cv);
   const presentationJson = buildPresentationJson({ sectionStrategy });
   const renderModel = buildCvRenderModel(parsed, presentationJson);
 
   const qualityWarnings = collectCvQualityWarnings({
     rawJobText: job.rawText,
-    jobBrief,
-    candidateBrief,
+    jobContext,
+    sectionSignals,
     sectionStrategy,
-    blueprint: repairedComposerOutput.blueprint,
     cv: parsed,
     layoutWarnings: renderModel.metrics.layoutWarnings,
   });
@@ -646,14 +633,10 @@ export async function generateCv(args: { applicationId: string }) {
       presentationJson,
       builderOutputJson: {
         composerOutput: {
-          blueprint: composerOutput.blueprint,
           cv: composerOutput.cv,
         },
-        blueprint: repairedComposerOutput.blueprint,
-        jobBrief,
-        candidateBrief,
-        strategySignals,
-        deterministicBasics: storedCandidateProfile.deterministicBasics,
+        jobContext,
+        sectionSignals,
         gapAnswers: gapAnswersForComposer,
         sectionStrategy,
         qualityWarnings: combinedQualityWarnings,

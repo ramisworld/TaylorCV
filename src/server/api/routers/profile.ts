@@ -15,10 +15,7 @@ export const profileRouter = createTRPCRouter({
     return {
       profile:
         existing?.structuredCareerProfile ??
-        emptyStructuredCareerProfile({
-          name: ctx.authSession?.user?.name,
-          email: ctx.authSession?.user?.email,
-        }),
+        emptyStructuredCareerProfile({}),
       hasSavedProfile: Boolean(existing),
     };
   }),

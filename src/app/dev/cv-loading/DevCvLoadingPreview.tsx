@@ -22,13 +22,26 @@ const mockCandidateSource = {
     candidateBrief: {
       possibleHeadline: "Applied AI Engineer",
     },
-    deterministicBasics: {
-      email: "alex.taylor@example.com",
-      github: "github.com/alextaylor",
-      linkedin: "linkedin.com/in/alextaylor",
-      phone: "+64 21 555 0142",
-      possibleName: "Alex Taylor",
-      portfolio: "alextaylor.dev",
+    structuredCareerProfile: {
+      basics: {
+        currentRole: "Applied AI Engineer",
+        email: "alex.taylor@example.com",
+        fullName: "Alex Taylor",
+        location: "Auckland, NZ",
+        phone: "+64 21 555 0142",
+      },
+      careerDetails: {},
+      credentials: [],
+      education: [],
+      experiences: [],
+      links: [
+        { id: "link-github", label: "GitHub", type: "github", url: "github.com/alextaylor" },
+        { id: "link-linkedin", label: "LinkedIn", type: "linkedin", url: "linkedin.com/in/alextaylor" },
+        { id: "link-portfolio", label: "Portfolio", type: "portfolio", url: "alextaylor.dev" },
+      ],
+      metadata: { source: "intake_import" },
+      projects: [],
+      skills: [],
     },
   },
 };

@@ -90,15 +90,38 @@ async function main() {
     warnings: [],
   };
 
-  const deterministicBasics = {
-    possibleName: "Seed Candidate",
-    email: "seed@example.com",
-    phone: null,
-    linkedin: null,
-    github: null,
-    portfolio: null,
-    otherUrls: [],
-    sectionHeadings: ["Experience", "Projects", "Skills"],
+  const structuredCareerProfile = {
+    basics: {
+      fullName: "Seed Candidate",
+      currentRole: "Full-stack developer",
+      location: "Auckland",
+      phone: null,
+      email: "seed@example.com",
+      profileImageUrl: null,
+    },
+    skills: [
+      { id: "skill-openai", name: "OpenAI", category: "AI" },
+      { id: "skill-postgresql", name: "PostgreSQL", category: "Database" },
+      { id: "skill-next-js", name: "Next.js", category: "Frontend" },
+      { id: "skill-typescript", name: "TypeScript", category: "Programming" },
+    ],
+    experiences: [],
+    projects: [],
+    education: [],
+    credentials: [],
+    links: [],
+    careerDetails: {
+      yearsOfExperience: null,
+      targetRoles: [],
+      industriesOfInterest: [],
+      preferredLocations: ["Auckland"],
+      openToRemote: null,
+    },
+    metadata: {
+      source: "intake_import",
+      createdAt: null,
+      updatedAt: null,
+    },
   };
 
   await prisma.candidateProfile.upsert({
@@ -115,21 +138,16 @@ async function main() {
       achievementsJson: candidateBrief.strongestEvidence,
       profileJson: {
         candidateBrief,
-        deterministicBasics,
+        structuredCareerProfile,
       },
       contactInfoJson: {
-        fullName: deterministicBasics.possibleName,
-        professionalTitle: candidateBrief.possibleHeadline,
-        location: "Auckland",
-        email: deterministicBasics.email,
-        phone: deterministicBasics.phone,
+        fullName: structuredCareerProfile.basics.fullName,
+        professionalTitle: structuredCareerProfile.basics.currentRole,
+        location: structuredCareerProfile.basics.location,
+        email: structuredCareerProfile.basics.email,
+        phone: structuredCareerProfile.basics.phone,
       },
-      linksJson: {
-        linkedin: deterministicBasics.linkedin,
-        github: deterministicBasics.github,
-        portfolio: deterministicBasics.portfolio,
-        other: deterministicBasics.otherUrls,
-      },
+      linksJson: structuredCareerProfile.links,
     },
     create: {
       id: seedProfileId,
@@ -150,21 +168,16 @@ async function main() {
       achievementsJson: candidateBrief.strongestEvidence,
       profileJson: {
         candidateBrief,
-        deterministicBasics,
+        structuredCareerProfile,
       },
       contactInfoJson: {
-        fullName: deterministicBasics.possibleName,
-        professionalTitle: candidateBrief.possibleHeadline,
-        location: "Auckland",
-        email: deterministicBasics.email,
-        phone: deterministicBasics.phone,
+        fullName: structuredCareerProfile.basics.fullName,
+        professionalTitle: structuredCareerProfile.basics.currentRole,
+        location: structuredCareerProfile.basics.location,
+        email: structuredCareerProfile.basics.email,
+        phone: structuredCareerProfile.basics.phone,
       },
-      linksJson: {
-        linkedin: deterministicBasics.linkedin,
-        github: deterministicBasics.github,
-        portfolio: deterministicBasics.portfolio,
-        other: deterministicBasics.otherUrls,
-      },
+      linksJson: structuredCareerProfile.links,
     },
   });
 

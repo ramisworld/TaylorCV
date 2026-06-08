@@ -28,7 +28,7 @@ export const AGENT_CONFIG: Record<"intakeGap" | "cvComposer", AgentConfig> = {
     ),
     maxOutputTokens: parsePositiveInt(
       process.env.OPENAI_MAX_OUTPUT_TOKENS_INTAKE_GAP,
-      3200,
+      5000,
     ),
   },
   cvComposer: {
@@ -38,7 +38,7 @@ export const AGENT_CONFIG: Record<"intakeGap" | "cvComposer", AgentConfig> = {
     ),
     maxOutputTokens: parsePositiveInt(
       process.env.OPENAI_MAX_OUTPUT_TOKENS_CV_COMPOSER,
-      2600,
+      4000,
     ),
   },
 };

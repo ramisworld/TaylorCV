@@ -5,8 +5,8 @@ import { Prisma } from "../../../generated/prisma/index.js";
 import { db } from "~/server/db";
 import {
   StructuredCareerProfileSchema,
-  type CandidateBrief,
-  type DeterministicCandidateBasics,
+  type CompactProfileImport,
+  type SectionSignals,
   type StructuredCareerProfile,
 } from "./cvSchemas";
 
@@ -30,7 +30,26 @@ function id(prefix: string, value: string, index: number) {
 
 function strings(values: unknown, max = 30) {
   if (!Array.isArray(values)) return [];
-  return [...new Set(values.map((value) => text(value)).filter(Boolean))].slice(0, max);
+  return [
+    ...new Map(
+      values
+        .map((value) => text(value))
+        .filter(Boolean)
+        .map((value) => [value.toLowerCase(), value] as const)
+    ).values(),
+  ].slice(0, max);
+}
+
+function dedupeBy<T>(values: T[], key: (value: T) => string) {
+  const seen = new Set<string>();
+  const result: T[] = [];
+  for (const value of values) {
+    const normalized = key(value).toLowerCase().replace(/\s+/g, " ").trim();
+    if (!normalized || seen.has(normalized)) continue;
+    seen.add(normalized);
+    result.push(value);
+  }
+  return result;
 }
 
 export function parseStructuredCareerProfile(value: unknown) {
@@ -179,64 +198,142 @@ export function normalizeStructuredCareerProfile(
   return StructuredCareerProfileSchema.parse(normalized);
 }
 
-export function buildStructuredProfileFromLegacy(args: {
-  candidateBrief: CandidateBrief;
-  deterministicBasics: DeterministicCandidateBasics;
-}): StructuredCareerProfile {
-  const basics = args.deterministicBasics;
-  const skills = args.candidateBrief.relevantSignals.map((skill, index) => ({
-    id: id("skill", skill, index),
-    name: skill,
-  }));
-  const links = [
-    basics.linkedin
-      ? { id: "link-linkedin", label: "LinkedIn", url: basics.linkedin, type: "linkedin" as const }
-      : null,
-    basics.github
-      ? { id: "link-github", label: "GitHub", url: basics.github, type: "github" as const }
-      : null,
-    basics.portfolio
-      ? { id: "link-portfolio", label: "Portfolio", url: basics.portfolio, type: "portfolio" as const }
-      : null,
-    ...basics.otherUrls.map((url, index) => ({
-      id: id("link", url, index),
-      label: "Website",
-      url,
-      type: "website" as const,
-    })),
-  ].filter((link): link is NonNullable<typeof link> => Boolean(link));
-
-  return normalizeStructuredCareerProfile(
-    {
-      basics: {
-        fullName: basics.possibleName ?? "",
-        currentRole: args.candidateBrief.possibleHeadline ?? "",
-        email: basics.email ?? undefined,
-        phone: basics.phone ?? undefined,
-      },
-      skills,
-      experiences: [],
-      projects: [],
-      education: [],
-      credentials: [],
-      links,
-      careerDetails: {},
-      metadata: { source: "intake_import" },
+export function normalizeCompactProfileImport(
+  profile: CompactProfileImport,
+  source: "intake_import" | "user_edited" = "intake_import"
+): StructuredCareerProfile {
+  const now = new Date().toISOString();
+  const structured: StructuredCareerProfile = {
+    basics: {
+      fullName: text(profile.basics.fullName),
+      currentRole: text(profile.basics.currentRole),
+      location: optionalText(profile.basics.location),
+      phone: optionalText(profile.basics.phone),
+      email: optionalText(profile.basics.email),
     },
-    "intake_import"
-  );
+    skills: strings(profile.skills, 40).map((skill, index) => ({
+      id: id("skill", skill, index),
+      name: skill,
+    })),
+    experiences: profile.experiences
+      .slice(0, 7)
+      .map((experience, index) => {
+        const title = text(experience.title);
+        const company = text(experience.company);
+        return {
+          id: id("exp", `${title}-${company}`, index),
+          title,
+          company,
+          location: optionalText(experience.location),
+          startDate: optionalText(experience.startDate),
+          endDate: optionalText(experience.endDate),
+          isCurrent: experience.isCurrent || undefined,
+          bullets: strings(experience.bullets, 5).map((bullet, bulletIndex) => ({
+            id: id("bullet", bullet, bulletIndex),
+            text: bullet,
+          })),
+          tools: strings(experience.tools, 12),
+        };
+      })
+      .filter((experience) => experience.title && experience.company),
+    projects: profile.projects
+      .slice(0, 7)
+      .map((project, index) => {
+        const name = text(project.name);
+        return {
+          id: id("project", name, index),
+          name,
+          description: optionalText(project.description),
+          bullets: strings(project.bullets, 5).map((bullet, bulletIndex) => ({
+            id: id("bullet", bullet, bulletIndex),
+            text: bullet,
+          })),
+          tools: strings(project.tools, 12),
+          links: dedupeBy(
+            project.links
+              .map((link, linkIndex) => ({
+                id: id("link", link.url, linkIndex),
+                label: optionalText(link.label),
+                url: text(link.url),
+              }))
+              .filter((link) => link.url),
+            (link) => link.url
+          ),
+        };
+      })
+      .filter((project) => project.name),
+    education: profile.education
+      .slice(0, 5)
+      .map((education, index) => {
+        const institution = text(education.institution);
+        const qualification = text(education.qualification);
+        return {
+          id: id("edu", `${qualification}-${institution}`, index),
+          institution,
+          qualification,
+          field: optionalText(education.field),
+          location: optionalText(education.location),
+          startDate: optionalText(education.startDate),
+          endDate: optionalText(education.endDate),
+          details: strings(education.details, 8),
+        };
+      })
+      .filter((education) => education.institution && education.qualification),
+    credentials: dedupeBy(
+      profile.credentials
+        .slice(0, 12)
+        .map((credential, index) => {
+          const name = text(credential.name);
+          return {
+            id: id("cred", name, index),
+            name,
+            issuer: optionalText(credential.issuer),
+            type: credential.type,
+            issueDate: optionalText(credential.issueDate),
+            expiryDate: optionalText(credential.expiryDate),
+            credentialId: optionalText(credential.credentialId),
+            url: optionalText(credential.url),
+          };
+        })
+        .filter((credential) => credential.name),
+      (credential) =>
+        `${credential.name} ${credential.issuer ?? ""} ${credential.credentialId ?? ""}`
+    ),
+    links: dedupeBy(
+      profile.links
+        .slice(0, 10)
+        .map((link, index) => ({
+          id: id("link", link.url, index),
+          label: text(link.label) || link.type || "Website",
+          url: text(link.url),
+          type: link.type,
+        }))
+        .filter((link) => link.url),
+      (link) => link.url
+    ),
+    careerDetails: {
+      yearsOfExperience: optionalText(profile.careerDetails.yearsOfExperience),
+      targetRoles: strings(profile.careerDetails.targetRoles, 8),
+      industriesOfInterest: strings(profile.careerDetails.industriesOfInterest, 8),
+      preferredLocations: strings(profile.careerDetails.preferredLocations, 8),
+      openToRemote: profile.careerDetails.openToRemote,
+    },
+    metadata: {
+      source,
+      createdAt: now,
+      updatedAt: now,
+    },
+  };
+
+  return normalizeStructuredCareerProfile(structured, source);
 }
 
 export function toProfileJson(args: {
-  candidateBrief: CandidateBrief;
-  strategySignals: Prisma.InputJsonValue;
-  deterministicBasics: DeterministicCandidateBasics;
+  sectionSignals?: SectionSignals;
   structuredCareerProfile: StructuredCareerProfile | null;
 }) {
   return {
-    candidateBrief: args.candidateBrief,
-    strategySignals: args.strategySignals,
-    deterministicBasics: args.deterministicBasics,
+    sectionSignals: args.sectionSignals,
     structuredCareerProfile: args.structuredCareerProfile,
   } as unknown as Prisma.InputJsonObject;
 }

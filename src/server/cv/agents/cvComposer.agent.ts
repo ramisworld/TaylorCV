@@ -8,12 +8,10 @@ import {
   AgentJsonSchemas,
   CvComposerOutputSchema,
   type CvComposerOutput,
-  type CandidateBrief,
-  type DeterministicCandidateBasics,
   type GapAnswerForComposer,
-  type JobBrief,
+  type JobContext,
+  type SectionSignals,
   type StructuredCareerProfile,
-  type StrategySignals,
 } from "../cvSchemas";
 import {
   CV_COMPOSER_SYSTEM_PROMPT,
@@ -25,44 +23,33 @@ import { MOCK_CV_COMPOSER_OUTPUT } from "./mockOutput.ts";
 
 export async function runCvComposerAgent(args: {
   applicationId: string;
-  rawJobText: string;
-  rawCvText?: string | null;
   structuredCareerProfile: StructuredCareerProfile;
-  jobBrief: JobBrief | null;
-  candidateBrief: CandidateBrief;
-  strategySignals: StrategySignals;
-  deterministicBasics: DeterministicCandidateBasics;
+  jobContext: JobContext;
+  sectionSignals: SectionSignals;
   gapAnswers: GapAnswerForComposer[];
   sectionStrategy: SectionStrategy;
 }): Promise<CvComposerOutput> {
   const model = getStrongModel();
   const composerContext = buildCvComposerContext({
-    rawJobText: args.rawJobText,
-    rawCvText: args.rawCvText,
     structuredCareerProfile: args.structuredCareerProfile,
-    jobBrief: args.jobBrief,
-    candidateBrief: args.candidateBrief,
-    strategySignals: args.strategySignals,
-    deterministicBasics: args.deterministicBasics,
+    jobContext: args.jobContext,
+    sectionSignals: args.sectionSignals,
     gapAnswers: args.gapAnswers,
     sectionStrategy: args.sectionStrategy,
   });
   const userPrompt = buildCvComposerUserPromptFromContext(composerContext);
   const schemaJson = JSON.stringify(AgentJsonSchemas.cvComposer);
   const structuredContextChars =
-    compactJsonChars(composerContext.jobBrief) +
-    compactJsonChars(composerContext.candidateBrief) +
-    compactJsonChars(composerContext.strategySignals) +
-    compactJsonChars(composerContext.deterministicBasics) +
     compactJsonChars(composerContext.structuredCareerProfile) +
-    compactJsonChars(composerContext.gapAnswers) +
-    compactJsonChars(composerContext.rendererContract);
+    compactJsonChars(composerContext.jobContext) +
+    compactJsonChars(composerContext.sectionSignals) +
+    compactJsonChars(composerContext.gapAnswers);
   const sectionStrategyChars = compactJsonChars(composerContext.sectionStrategy);
   const payloadChars =
     userPrompt.length + CV_COMPOSER_SYSTEM_PROMPT.length + schemaJson.length;
 
   console.log(
-    `[AgentPayload] cvComposer | payloadChars=${payloadChars} | userPromptChars=${userPrompt.length} | systemPromptChars=${CV_COMPOSER_SYSTEM_PROMPT.length} | schemaChars=${schemaJson.length} | rawJobChars=${composerContext.rawJobText.length} | rawCvChars=${composerContext.rawCandidateCvText.length} | structuredContextChars=${structuredContextChars} | sectionStrategyChars=${sectionStrategyChars} | gapAnswers=${composerContext.gapAnswers.length}`
+    `[AgentPayload] cvComposer | payloadChars=${payloadChars} | userPromptChars=${userPrompt.length} | systemPromptChars=${CV_COMPOSER_SYSTEM_PROMPT.length} | schemaChars=${schemaJson.length} | rawJobChars=0 | structuredContextChars=${structuredContextChars} | sectionStrategyChars=${sectionStrategyChars} | gapAnswers=${composerContext.gapAnswers.length}`
   );
 
   return runAgent({
@@ -77,8 +64,7 @@ export async function runCvComposerAgent(args: {
     jsonSchema: AgentJsonSchemas.cvComposer as Record<string, unknown>,
     zodSchema: CvComposerOutputSchema,
     telemetryContext: {
-      rawJobChars: composerContext.rawJobText.length,
-      rawCvChars: composerContext.rawCandidateCvText.length,
+      rawJobChars: 0,
       structuredContextChars,
       sectionStrategyChars,
       payloadChars,

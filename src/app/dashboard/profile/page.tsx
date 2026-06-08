@@ -10,7 +10,7 @@ export default async function ProfilePage() {
   const saved = await findUserStructuredCareerProfile(user.id);
   const profile =
     saved?.structuredCareerProfile ??
-    emptyStructuredCareerProfile({ name: user.name, email: user.email });
+    emptyStructuredCareerProfile({});
 
   return (
     <div className="grid h-full min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-6">

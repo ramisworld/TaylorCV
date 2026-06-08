@@ -12,28 +12,20 @@ const SenioritySchema = z.enum([
   "unknown",
 ]);
 
-const JobBriefSchema = z.object({
-  targetRoleTitle: z.string().min(1),
+export const JobContextSchema = z.object({
+  roleTitle: z.string().nullable(),
   companyName: z.string().nullable(),
   marketOrLocation: z.string().nullable(),
   seniority: SenioritySchema,
-  archetype: z.string().min(1),
-  subArchetype: z.string().nullable(),
+  roleFamily: z.string().min(1),
+  subRoleFamily: z.string().nullable(),
   roleSummary: z.string().min(1),
-  topPriorities: z.array(z.string()).max(8),
+  mustHaveRequirements: z.array(z.string()).max(10),
+  responsibilities: z.array(z.string()).max(8),
   proofNeeds: z.array(z.string()).max(8),
-  keywords: z.array(z.string()).max(16),
-  cultureSignals: z.array(z.string()).max(6),
-  risks: z.array(z.string()).max(6),
-});
-
-const CandidateBriefSchema = z.object({
-  possibleHeadline: z.string().nullable(),
-  strongestEvidence: z.array(z.string()).max(10),
-  relevantSignals: z.array(z.string()).max(12),
-  missingOrWeakProof: z.array(z.string()).max(8),
-  usefulSections: z.array(z.string()).max(8),
-  warnings: z.array(z.string()).max(6),
+  keywords: z.array(z.string()).max(20),
+  risks: z.array(z.string()).max(5),
+  exactPhrases: z.array(z.string()).max(8),
 });
 
 const CandidateEvidenceLevelSchema = z.enum([
@@ -86,16 +78,16 @@ const FounderFramingModeSchema = z.enum([
   "avoid",
 ]);
 
-const StrategySignalsSchema = z.object({
+export const SectionSignalsSchema = z.object({
   candidateEvidenceLevel: CandidateEvidenceLevelSchema,
   candidatePresentationStage: CandidatePresentationStageSchema,
   candidateProfileType: CandidateProfileTypeSchema,
   strongestProofType: StrongestProofTypeSchema,
-  formalExperienceStrength: ProofStrengthSchema,
-  projectProofStrength: ProofStrengthSchema,
-  educationCredentialStrength: ProofStrengthSchema,
+  experienceStrength: ProofStrengthSchema,
+  projectStrength: ProofStrengthSchema,
+  educationStrength: ProofStrengthSchema,
   certificationStrength: ProofStrengthSchema,
-  transferableProofStrength: ProofStrengthSchema,
+  transferableStrength: ProofStrengthSchema,
   roleFitStrength: ProofStrengthSchema,
   credentialsAreThreshold: z.boolean(),
   proofFirstRecommended: z.boolean(),
@@ -103,22 +95,21 @@ const StrategySignalsSchema = z.object({
   founderFramingMode: FounderFramingModeSchema,
   founderFramingGuidance: z.string().min(1),
   recommendedFocus: z.string().min(1),
-  primaryFraming: z.string().min(1),
   positioningWarnings: z.array(z.string()).max(8),
 });
 
-export type StrategySignals = z.infer<typeof StrategySignalsSchema>;
+export type SectionSignals = z.infer<typeof SectionSignalsSchema>;
 
-export const DefaultStrategySignals: StrategySignals = {
+export const DefaultSectionSignals: SectionSignals = {
   candidateEvidenceLevel: "emerging",
   candidatePresentationStage: "unknown",
   candidateProfileType: "unknown",
   strongestProofType: "unclear",
-  formalExperienceStrength: "weak",
-  projectProofStrength: "weak",
-  educationCredentialStrength: "weak",
+  experienceStrength: "weak",
+  projectStrength: "weak",
+  educationStrength: "weak",
   certificationStrength: "weak",
-  transferableProofStrength: "weak",
+  transferableStrength: "weak",
   roleFitStrength: "moderate",
   credentialsAreThreshold: false,
   proofFirstRecommended: false,
@@ -127,20 +118,8 @@ export const DefaultStrategySignals: StrategySignals = {
   founderFramingGuidance:
     "Use founder or builder framing only when it is truthful and clearly useful for the target role.",
   recommendedFocus: "Lead with truthful role fit and the strongest available proof.",
-  primaryFraming: "Role-aligned candidate with relevant evidence for the target role.",
   positioningWarnings: [],
 };
-
-const DeterministicCandidateBasicsSchema = z.object({
-  possibleName: z.string().nullable(),
-  email: z.string().nullable(),
-  phone: z.string().nullable(),
-  linkedin: z.string().nullable(),
-  github: z.string().nullable(),
-  portfolio: z.string().nullable(),
-  otherUrls: z.array(z.string()).max(12),
-  sectionHeadings: z.array(z.string()).max(12),
-});
 
 const CareerProfileLinkTypeSchema = z.enum([
   "linkedin",
@@ -165,20 +144,111 @@ const CareerProfileBulletSchema = z.object({
   text: z.string().min(1),
 });
 
+const OptionalStringSchema = z
+  .union([z.string(), z.null()])
+  .optional()
+  .transform((value) => value ?? undefined);
+const OptionalBooleanSchema = z
+  .union([z.boolean(), z.null()])
+  .optional()
+  .transform((value) => value ?? undefined);
+const OptionalCredentialTypeSchema = z
+  .union([CareerProfileCredentialTypeSchema, z.null()])
+  .optional()
+  .transform((value) => value ?? undefined);
+const OptionalLinkTypeSchema = z
+  .union([CareerProfileLinkTypeSchema, z.null()])
+  .optional()
+  .transform((value) => value ?? undefined);
+const OptionalMetadataSourceSchema = z
+  .union([z.enum(["intake_import", "user_edited"]), z.null()])
+  .optional()
+  .transform((value) => value ?? undefined);
+
+const CompactProfileLinkSchema = z.object({
+  label: OptionalStringSchema,
+  url: z.string().min(1),
+  type: OptionalLinkTypeSchema,
+});
+
+export const CompactProfileImportSchema = z.object({
+  basics: z.object({
+    fullName: OptionalStringSchema,
+    currentRole: OptionalStringSchema,
+    location: OptionalStringSchema,
+    phone: OptionalStringSchema,
+    email: OptionalStringSchema,
+  }),
+  skills: z.array(z.string().min(1)).max(40),
+  experiences: z.array(
+    z.object({
+      title: OptionalStringSchema,
+      company: OptionalStringSchema,
+      location: OptionalStringSchema,
+      startDate: OptionalStringSchema,
+      endDate: OptionalStringSchema,
+      isCurrent: OptionalBooleanSchema,
+      bullets: z.array(z.string().min(1)).max(5).optional().default([]),
+      tools: z.array(z.string().min(1)).max(12).optional().default([]),
+    })
+  ).max(7),
+  projects: z.array(
+    z.object({
+      name: OptionalStringSchema,
+      description: OptionalStringSchema,
+      bullets: z.array(z.string().min(1)).max(5).optional().default([]),
+      tools: z.array(z.string().min(1)).max(12).optional().default([]),
+      links: z.array(CompactProfileLinkSchema).max(5).optional().default([]),
+    })
+  ).max(7),
+  education: z.array(
+    z.object({
+      institution: OptionalStringSchema,
+      qualification: OptionalStringSchema,
+      field: OptionalStringSchema,
+      location: OptionalStringSchema,
+      startDate: OptionalStringSchema,
+      endDate: OptionalStringSchema,
+      details: z.array(z.string().min(1)).max(8).optional().default([]),
+    })
+  ).max(5),
+  credentials: z.array(
+    z.object({
+      name: OptionalStringSchema,
+      issuer: OptionalStringSchema,
+      type: OptionalCredentialTypeSchema,
+      issueDate: OptionalStringSchema,
+      expiryDate: OptionalStringSchema,
+      credentialId: OptionalStringSchema,
+      url: OptionalStringSchema,
+    })
+  ).max(12),
+  links: z.array(CompactProfileLinkSchema).max(10),
+  careerDetails: z.object({
+    yearsOfExperience: OptionalStringSchema,
+    targetRoles: z.array(z.string().min(1)).max(8).optional().default([]),
+    industriesOfInterest: z.array(z.string().min(1)).max(8).optional().default([]),
+    preferredLocations: z.array(z.string().min(1)).max(8).optional().default([]),
+    openToRemote: OptionalBooleanSchema,
+  }),
+});
+
+export type CompactProfileImport = z.infer<typeof CompactProfileImportSchema>;
+
 export const StructuredCareerProfileSchema = z.object({
   basics: z.object({
     fullName: z.string(),
     currentRole: z.string(),
-    location: z.string().optional(),
-    phone: z.string().optional(),
-    email: z.string().optional(),
-    profileImageUrl: z.string().optional(),
+    location: OptionalStringSchema,
+    phone: OptionalStringSchema,
+    email: OptionalStringSchema,
+    profileImageUrl: OptionalStringSchema,
   }),
   skills: z.array(
     z.object({
       id: z.string().min(1),
       name: z.string().min(1),
-      category: z.string().optional(),
+      category: OptionalStringSchema,
     })
   ),
   experiences: z.array(
@@ -186,10 +256,10 @@ export const StructuredCareerProfileSchema = z.object({
       id: z.string().min(1),
       title: z.string().min(1),
       company: z.string().min(1),
-      location: z.string().optional(),
-      startDate: z.string().optional(),
-      endDate: z.string().optional(),
-      isCurrent: z.boolean().optional(),
+      location: OptionalStringSchema,
+      startDate: OptionalStringSchema,
+      endDate: OptionalStringSchema,
+      isCurrent: OptionalBooleanSchema,
       bullets: z.array(CareerProfileBulletSchema),
       tools: z.array(z.string()).optional(),
     })
@@ -198,14 +268,14 @@ export const StructuredCareerProfileSchema = z.object({
     z.object({
       id: z.string().min(1),
       name: z.string().min(1),
-      description: z.string().optional(),
+      description: OptionalStringSchema,
       bullets: z.array(CareerProfileBulletSchema).optional(),
       tools: z.array(z.string()).optional(),
       links: z
         .array(
           z.object({
             id: z.string().min(1),
-            label: z.string().optional(),
+            label: OptionalStringSchema,
             url: z.string().min(1),
           })
         )
@@ -217,10 +287,10 @@ export const StructuredCareerProfileSchema = z.object({
       id: z.string().min(1),
       institution: z.string().min(1),
       qualification: z.string().min(1),
-      field: z.string().optional(),
-      location: z.string().optional(),
-      startDate: z.string().optional(),
-      endDate: z.string().optional(),
+      field: OptionalStringSchema,
+      location: OptionalStringSchema,
+      startDate: OptionalStringSchema,
+      endDate: OptionalStringSchema,
       details: z.array(z.string()).optional(),
     })
   ),
@@ -228,12 +298,12 @@ export const StructuredCareerProfileSchema = z.object({
     z.object({
       id: z.string().min(1),
       name: z.string().min(1),
-      issuer: z.string().optional(),
-      type: CareerProfileCredentialTypeSchema.optional(),
-      issueDate: z.string().optional(),
-      expiryDate: z.string().optional(),
-      credentialId: z.string().optional(),
-      url: z.string().optional(),
+      issuer: OptionalStringSchema,
+      type: OptionalCredentialTypeSchema,
+      issueDate: OptionalStringSchema,
+      expiryDate: OptionalStringSchema,
+      credentialId: OptionalStringSchema,
+      url: OptionalStringSchema,
     })
   ),
   links: z.array(
@@ -241,28 +311,21 @@ export const StructuredCareerProfileSchema = z.object({
       id: z.string().min(1),
       label: z.string().min(1),
       url: z.string().min(1),
-      type: CareerProfileLinkTypeSchema.optional(),
+      type: OptionalLinkTypeSchema,
     })
   ),
   careerDetails: z.object({
-    yearsOfExperience: z.string().optional(),
+    yearsOfExperience: OptionalStringSchema,
     targetRoles: z.array(z.string()).optional(),
     industriesOfInterest: z.array(z.string()).optional(),
     preferredLocations: z.array(z.string()).optional(),
-    openToRemote: z.boolean().optional(),
+    openToRemote: OptionalBooleanSchema,
   }),
   metadata: z.object({
-    source: z.enum(["intake_import", "user_edited"]).optional(),
-    createdAt: z.string().optional(),
-    updatedAt: z.string().optional(),
+    source: OptionalMetadataSourceSchema,
+    createdAt: OptionalStringSchema,
+    updatedAt: OptionalStringSchema,
   }),
-});
-
-const StoredCandidateProfileSchema = z.object({
-  candidateBrief: CandidateBriefSchema,
-  strategySignals: StrategySignalsSchema.default(DefaultStrategySignals),
-  deterministicBasics: DeterministicCandidateBasicsSchema,
-  structuredCareerProfile: StructuredCareerProfileSchema.nullable().optional(),
 });
 
 const GapQuestionOutputSchema = z.object({
@@ -272,28 +335,20 @@ const GapQuestionOutputSchema = z.object({
     .max(220)
     .regex(/\?\s*$/, "Gap question must end with a question mark."),
   shortTitle: z.string().min(3).max(40),
-  exampleAnswer: z.string().min(20).max(220),
-  whyItMatters: z.string().min(20).max(180),
   targetArea: z.string().min(1).max(120),
   priority: z.enum(["high", "medium"]),
 });
 
 export const IntakeGapOutputSchema = z.object({
-  jobBrief: JobBriefSchema,
-  candidateBrief: CandidateBriefSchema,
-  strategySignals: StrategySignalsSchema,
+  profile: CompactProfileImportSchema.nullable(),
+  jobContext: JobContextSchema,
+  sectionSignals: SectionSignalsSchema,
   gapQuestions: z.array(GapQuestionOutputSchema).max(3),
-  structuredCareerProfile: StructuredCareerProfileSchema.nullable(),
 });
 
 export type IntakeGapOutput = z.infer<typeof IntakeGapOutputSchema>;
-export type JobBrief = z.infer<typeof JobBriefSchema>;
-export type CandidateBrief = z.infer<typeof CandidateBriefSchema>;
-export type DeterministicCandidateBasics = z.infer<
-  typeof DeterministicCandidateBasicsSchema
->;
+export type JobContext = z.infer<typeof JobContextSchema>;
 export type StructuredCareerProfile = z.infer<typeof StructuredCareerProfileSchema>;
-export type StoredCandidateProfile = z.infer<typeof StoredCandidateProfileSchema>;
 export type GapQuestionOutput = z.infer<typeof GapQuestionOutputSchema>;
 
 const CvBulletClaimSchema = z.object({
@@ -353,7 +408,7 @@ const DynamicCvSectionItemSchema = z.object({
 const DynamicCvSectionSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
-  type: z.enum(["bullets", "inline", "certifications"]),
+  type: z.enum(["bullets", "inline"]),
   priority: z.enum(["primary", "secondary", "supporting"]),
   items: z.array(DynamicCvSectionItemSchema),
 });
@@ -380,7 +435,6 @@ const CvBlueprintSchema = z.object({
 });
 
 export const CvComposerOutputSchema = z.object({
-  blueprint: CvBlueprintSchema,
   cv: StructuredCvDocumentSchema,
 });
 
@@ -391,7 +445,6 @@ export const GapAnswerForComposerSchema = z.object({
   gapQuestionId: z.string(),
   question: z.string(),
   targetArea: z.string(),
-  whyItMatters: z.string(),
   answer: z.string(),
 });
 
@@ -435,14 +488,14 @@ const structuredCareerProfileJsonSchema = {
     basics: {
       type: "object",
       additionalProperties: false,
-      required: ["fullName", "currentRole"],
+      required: ["fullName", "currentRole", "location", "phone", "email", "profileImageUrl"],
       properties: {
         fullName: { type: "string" },
         currentRole: { type: "string" },
-        location: { type: "string" },
-        phone: { type: "string" },
-        email: { type: "string" },
-        profileImageUrl: { type: "string" },
+        location: { type: ["string", "null"] },
+        phone: { type: ["string", "null"] },
+        email: { type: ["string", "null"] },
+        profileImageUrl: { type: ["string", "null"] },
       },
     },
     skills: {
@@ -450,11 +503,11 @@ const structuredCareerProfileJsonSchema = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "name"],
+        required: ["id", "name", "category"],
         properties: {
           id: { type: "string" },
           name: { type: "string" },
-          category: { type: "string" },
+          category: { type: ["string", "null"] },
         },
       },
     },
@@ -463,15 +516,25 @@ const structuredCareerProfileJsonSchema = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "title", "company", "bullets"],
+        required: [
+          "id",
+          "title",
+          "company",
+          "location",
+          "startDate",
+          "endDate",
+          "isCurrent",
+          "bullets",
+          "tools",
+        ],
         properties: {
           id: { type: "string" },
           title: { type: "string" },
           company: { type: "string" },
-          location: { type: "string" },
-          startDate: { type: "string" },
-          endDate: { type: "string" },
-          isCurrent: { type: "boolean" },
+          location: { type: ["string", "null"] },
+          startDate: { type: ["string", "null"] },
+          endDate: { type: ["string", "null"] },
+          isCurrent: { type: ["boolean", "null"] },
           bullets: { type: "array", items: careerProfileBulletJsonSchema },
           tools: stringArrayJsonSchema,
         },
@@ -482,11 +545,11 @@ const structuredCareerProfileJsonSchema = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "name"],
+        required: ["id", "name", "description", "bullets", "tools", "links"],
         properties: {
           id: { type: "string" },
           name: { type: "string" },
-          description: { type: "string" },
+          description: { type: ["string", "null"] },
           bullets: { type: "array", items: careerProfileBulletJsonSchema },
           tools: stringArrayJsonSchema,
           links: {
@@ -494,10 +557,10 @@ const structuredCareerProfileJsonSchema = {
             items: {
               type: "object",
               additionalProperties: false,
-              required: ["id", "url"],
+              required: ["id", "label", "url"],
               properties: {
                 id: { type: "string" },
-                label: { type: "string" },
+                label: { type: ["string", "null"] },
                 url: { type: "string" },
               },
             },
@@ -510,15 +573,24 @@ const structuredCareerProfileJsonSchema = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "institution", "qualification"],
+        required: [
+          "id",
+          "institution",
+          "qualification",
+          "field",
+          "location",
+          "startDate",
+          "endDate",
+          "details",
+        ],
         properties: {
           id: { type: "string" },
           institution: { type: "string" },
           qualification: { type: "string" },
-          field: { type: "string" },
-          location: { type: "string" },
-          startDate: { type: "string" },
-          endDate: { type: "string" },
+          field: { type: ["string", "null"] },
+          location: { type: ["string", "null"] },
+          startDate: { type: ["string", "null"] },
+          endDate: { type: ["string", "null"] },
           details: stringArrayJsonSchema,
         },
       },
@@ -528,19 +600,28 @@ const structuredCareerProfileJsonSchema = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "name"],
+        required: [
+          "id",
+          "name",
+          "issuer",
+          "type",
+          "issueDate",
+          "expiryDate",
+          "credentialId",
+          "url",
+        ],
         properties: {
           id: { type: "string" },
           name: { type: "string" },
-          issuer: { type: "string" },
+          issuer: { type: ["string", "null"] },
           type: {
-            type: "string",
-            enum: ["certification", "licence", "credential", "award", "other"],
+            type: ["string", "null"],
+            enum: ["certification", "licence", "credential", "award", "other", null],
           },
-          issueDate: { type: "string" },
-          expiryDate: { type: "string" },
-          credentialId: { type: "string" },
-          url: { type: "string" },
+          issueDate: { type: ["string", "null"] },
+          expiryDate: { type: ["string", "null"] },
+          credentialId: { type: ["string", "null"] },
+          url: { type: ["string", "null"] },
         },
       },
     },
@@ -549,14 +630,14 @@ const structuredCareerProfileJsonSchema = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["id", "label", "url"],
+        required: ["id", "label", "url", "type"],
         properties: {
           id: { type: "string" },
           label: { type: "string" },
           url: { type: "string" },
           type: {
-            type: "string",
-            enum: ["linkedin", "github", "portfolio", "kaggle", "medium", "website", "other"],
+            type: ["string", "null"],
+            enum: ["linkedin", "github", "portfolio", "kaggle", "medium", "website", "other", null],
           },
         },
       },
@@ -564,23 +645,29 @@ const structuredCareerProfileJsonSchema = {
     careerDetails: {
       type: "object",
       additionalProperties: false,
-      required: [],
+      required: [
+        "yearsOfExperience",
+        "targetRoles",
+        "industriesOfInterest",
+        "preferredLocations",
+        "openToRemote",
+      ],
       properties: {
-        yearsOfExperience: { type: "string" },
+        yearsOfExperience: { type: ["string", "null"] },
         targetRoles: stringArrayJsonSchema,
         industriesOfInterest: stringArrayJsonSchema,
         preferredLocations: stringArrayJsonSchema,
-        openToRemote: { type: "boolean" },
+        openToRemote: { type: ["boolean", "null"] },
       },
     },
     metadata: {
       type: "object",
       additionalProperties: false,
-      required: [],
+      required: ["source", "createdAt", "updatedAt"],
       properties: {
-        source: { type: "string", enum: ["intake_import", "user_edited"] },
-        createdAt: { type: "string" },
-        updatedAt: { type: "string" },
+        source: { type: ["string", "null"], enum: ["intake_import", "user_edited", null] },
+        createdAt: { type: ["string", "null"] },
+        updatedAt: { type: ["string", "null"] },
       },
     },
   },
@@ -606,7 +693,173 @@ const proofStrengthJsonSchema = {
   enum: ["weak", "moderate", "strong"],
 } as const;
 
-const strategySignalsJsonSchema = {
+const compactProfileLinkJsonSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: ["label", "url", "type"],
+  properties: {
+    label: { type: ["string", "null"] },
+    url: { type: "string" },
+    type: {
+      type: ["string", "null"],
+      enum: ["linkedin", "github", "portfolio", "kaggle", "medium", "website", "other", null],
+    },
+  },
+} as const;
+
+const compactProfileImportJsonSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "basics",
+    "skills",
+    "experiences",
+    "projects",
+    "education",
+    "credentials",
+    "links",
+    "careerDetails",
+  ],
+  properties: {
+    basics: {
+      type: "object",
+      additionalProperties: false,
+      required: ["fullName", "currentRole", "location", "phone", "email"],
+      properties: {
+        fullName: { type: ["string", "null"] },
+        currentRole: { type: ["string", "null"] },
+        location: { type: ["string", "null"] },
+        phone: { type: ["string", "null"] },
+        email: { type: ["string", "null"] },
+      },
+    },
+    skills: boundedStringArrayJsonSchema(40),
+    experiences: {
+      type: "array",
+      maxItems: 7,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["title", "company", "location", "startDate", "endDate", "isCurrent", "bullets", "tools"],
+        properties: {
+          title: { type: ["string", "null"] },
+          company: { type: ["string", "null"] },
+          location: { type: ["string", "null"] },
+          startDate: { type: ["string", "null"] },
+          endDate: { type: ["string", "null"] },
+          isCurrent: { type: ["boolean", "null"] },
+          bullets: boundedStringArrayJsonSchema(5),
+          tools: boundedStringArrayJsonSchema(12),
+        },
+      },
+    },
+    projects: {
+      type: "array",
+      maxItems: 7,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["name", "description", "bullets", "tools", "links"],
+        properties: {
+          name: { type: ["string", "null"] },
+          description: { type: ["string", "null"] },
+          bullets: boundedStringArrayJsonSchema(5),
+          tools: boundedStringArrayJsonSchema(12),
+          links: { type: "array", maxItems: 5, items: compactProfileLinkJsonSchema },
+        },
+      },
+    },
+    education: {
+      type: "array",
+      maxItems: 5,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["institution", "qualification", "field", "location", "startDate", "endDate", "details"],
+        properties: {
+          institution: { type: ["string", "null"] },
+          qualification: { type: ["string", "null"] },
+          field: { type: ["string", "null"] },
+          location: { type: ["string", "null"] },
+          startDate: { type: ["string", "null"] },
+          endDate: { type: ["string", "null"] },
+          details: boundedStringArrayJsonSchema(8),
+        },
+      },
+    },
+    credentials: {
+      type: "array",
+      maxItems: 12,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["name", "issuer", "type", "issueDate", "expiryDate", "credentialId", "url"],
+        properties: {
+          name: { type: ["string", "null"] },
+          issuer: { type: ["string", "null"] },
+          type: {
+            type: ["string", "null"],
+            enum: ["certification", "licence", "credential", "award", "other", null],
+          },
+          issueDate: { type: ["string", "null"] },
+          expiryDate: { type: ["string", "null"] },
+          credentialId: { type: ["string", "null"] },
+          url: { type: ["string", "null"] },
+        },
+      },
+    },
+    links: { type: "array", maxItems: 10, items: compactProfileLinkJsonSchema },
+    careerDetails: {
+      type: "object",
+      additionalProperties: false,
+      required: ["yearsOfExperience", "targetRoles", "industriesOfInterest", "preferredLocations", "openToRemote"],
+      properties: {
+        yearsOfExperience: { type: ["string", "null"] },
+        targetRoles: boundedStringArrayJsonSchema(8),
+        industriesOfInterest: boundedStringArrayJsonSchema(8),
+        preferredLocations: boundedStringArrayJsonSchema(8),
+        openToRemote: { type: ["boolean", "null"] },
+      },
+    },
+  },
+} as const;
+
+const jobContextJsonSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: [
+    "roleTitle",
+    "companyName",
+    "marketOrLocation",
+    "seniority",
+    "roleFamily",
+    "subRoleFamily",
+    "roleSummary",
+    "mustHaveRequirements",
+    "responsibilities",
+    "proofNeeds",
+    "keywords",
+    "risks",
+    "exactPhrases",
+  ],
+  properties: {
+    roleTitle: { type: ["string", "null"] },
+    companyName: { type: ["string", "null"] },
+    marketOrLocation: { type: ["string", "null"] },
+    seniority: seniorityJsonSchema,
+    roleFamily: { type: "string" },
+    subRoleFamily: { type: ["string", "null"] },
+    roleSummary: { type: "string" },
+    mustHaveRequirements: boundedStringArrayJsonSchema(10),
+    responsibilities: boundedStringArrayJsonSchema(8),
+    proofNeeds: boundedStringArrayJsonSchema(8),
+    keywords: boundedStringArrayJsonSchema(20),
+    risks: boundedStringArrayJsonSchema(5),
+    exactPhrases: boundedStringArrayJsonSchema(8),
+  },
+} as const;
+
+const sectionSignalsJsonSchema = {
   type: "object",
   additionalProperties: false,
   required: [
@@ -614,11 +867,11 @@ const strategySignalsJsonSchema = {
     "candidatePresentationStage",
     "candidateProfileType",
     "strongestProofType",
-    "formalExperienceStrength",
-    "projectProofStrength",
-    "educationCredentialStrength",
+    "experienceStrength",
+    "projectStrength",
+    "educationStrength",
     "certificationStrength",
-    "transferableProofStrength",
+    "transferableStrength",
     "roleFitStrength",
     "credentialsAreThreshold",
     "proofFirstRecommended",
@@ -626,7 +879,6 @@ const strategySignalsJsonSchema = {
     "founderFramingMode",
     "founderFramingGuidance",
     "recommendedFocus",
-    "primaryFraming",
     "positioningWarnings",
   ],
   properties: {
@@ -674,11 +926,11 @@ const strategySignalsJsonSchema = {
         "unclear",
       ],
     },
-    formalExperienceStrength: proofStrengthJsonSchema,
-    projectProofStrength: proofStrengthJsonSchema,
-    educationCredentialStrength: proofStrengthJsonSchema,
+    experienceStrength: proofStrengthJsonSchema,
+    projectStrength: proofStrengthJsonSchema,
+    educationStrength: proofStrengthJsonSchema,
     certificationStrength: proofStrengthJsonSchema,
-    transferableProofStrength: proofStrengthJsonSchema,
+    transferableStrength: proofStrengthJsonSchema,
     roleFitStrength: proofStrengthJsonSchema,
     credentialsAreThreshold: { type: "boolean" },
     proofFirstRecommended: { type: "boolean" },
@@ -689,7 +941,6 @@ const strategySignalsJsonSchema = {
     },
     founderFramingGuidance: { type: "string" },
     recommendedFocus: { type: "string" },
-    primaryFraming: { type: "string" },
     positioningWarnings: boundedStringArrayJsonSchema(8),
   },
 } as const;
@@ -698,81 +949,20 @@ export const AgentJsonSchemas = {
   intakeGap: {
     type: "object",
     additionalProperties: false,
-    required: [
-      "jobBrief",
-      "candidateBrief",
-      "strategySignals",
-      "gapQuestions",
-      "structuredCareerProfile",
-    ],
+    required: ["profile", "jobContext", "sectionSignals", "gapQuestions"],
     properties: {
-      jobBrief: {
-        type: "object",
-        additionalProperties: false,
-        required: [
-          "targetRoleTitle",
-          "companyName",
-          "marketOrLocation",
-          "seniority",
-          "archetype",
-          "subArchetype",
-          "roleSummary",
-          "topPriorities",
-          "proofNeeds",
-          "keywords",
-          "cultureSignals",
-          "risks",
-        ],
-        properties: {
-          targetRoleTitle: { type: "string" },
-          companyName: { type: ["string", "null"] },
-          marketOrLocation: { type: ["string", "null"] },
-          seniority: seniorityJsonSchema,
-          archetype: { type: "string" },
-          subArchetype: { type: ["string", "null"] },
-          roleSummary: { type: "string" },
-          topPriorities: boundedStringArrayJsonSchema(8),
-          proofNeeds: boundedStringArrayJsonSchema(8),
-          keywords: boundedStringArrayJsonSchema(16),
-          cultureSignals: boundedStringArrayJsonSchema(6),
-          risks: boundedStringArrayJsonSchema(6),
-        },
+      profile: {
+        anyOf: [compactProfileImportJsonSchema, { type: "null" }],
       },
-      candidateBrief: {
-        type: "object",
-        additionalProperties: false,
-        required: [
-          "possibleHeadline",
-          "strongestEvidence",
-          "relevantSignals",
-          "missingOrWeakProof",
-          "usefulSections",
-          "warnings",
-        ],
-        properties: {
-          possibleHeadline: { type: ["string", "null"] },
-          strongestEvidence: boundedStringArrayJsonSchema(10),
-          relevantSignals: boundedStringArrayJsonSchema(12),
-          missingOrWeakProof: boundedStringArrayJsonSchema(8),
-          usefulSections: boundedStringArrayJsonSchema(8),
-          warnings: boundedStringArrayJsonSchema(6),
-        },
-      },
-      strategySignals: strategySignalsJsonSchema,
+      jobContext: jobContextJsonSchema,
+      sectionSignals: sectionSignalsJsonSchema,
       gapQuestions: {
         type: "array",
         maxItems: 3,
         items: {
           type: "object",
           additionalProperties: false,
-          required: [
-            "question",
-            "shortTitle",
-            "exampleAnswer",
-            "whyItMatters",
-            "targetArea",
-            "priority",
-          ],
+          required: ["question", "shortTitle", "targetArea", "priority"],
           properties: {
             question: {
               type: "string",
@@ -781,33 +971,18 @@ export const AgentJsonSchemas = {
               pattern: "\\?\\s*$",
             },
             shortTitle: { type: "string", minLength: 3, maxLength: 40 },
-            exampleAnswer: { type: "string", minLength: 20, maxLength: 220 },
-            whyItMatters: { type: "string", minLength: 20, maxLength: 180 },
             targetArea: { type: "string", maxLength: 120 },
             priority: { type: "string", enum: ["high", "medium"] },
           },
         },
-      },
-      structuredCareerProfile: {
-        anyOf: [structuredCareerProfileJsonSchema, { type: "null" }],
       },
     },
   },
   cvComposer: {
     type: "object",
     additionalProperties: false,
-    required: ["blueprint", "cv"],
+    required: ["cv"],
     properties: {
-      blueprint: {
-        type: "object",
-        additionalProperties: false,
-        required: ["sectionOrder", "briefRationale", "warnings"],
-        properties: {
-          sectionOrder: { ...stringArrayJsonSchema, minItems: 1 },
-          briefRationale: { type: "string" },
-          warnings: stringArrayJsonSchema,
-        },
-      },
       cv: {
         type: "object",
         additionalProperties: false,
@@ -966,7 +1141,7 @@ export const AgentJsonSchemas = {
                 label: { type: "string" },
                 type: {
                   type: "string",
-                  enum: ["bullets", "inline", "certifications"],
+                  enum: ["bullets", "inline"],
                 },
                 priority: {
                   type: "string",
@@ -993,6 +1168,3 @@ export const AgentJsonSchemas = {
     },
   },
 } as const;
-
-export const StoredCandidateProfileJsonSchema =
-  StoredCandidateProfileSchema;

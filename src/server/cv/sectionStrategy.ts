@@ -1,10 +1,9 @@
 import "server-only";
 
 import {
-  DefaultStrategySignals,
-  type CandidateBrief,
-  type JobBrief,
-  type StrategySignals,
+  DefaultSectionSignals,
+  type JobContext,
+  type SectionSignals,
 } from "./cvSchemas";
 
 export const SECTION_STRATEGY_ARCHETYPES = [
@@ -29,13 +28,13 @@ export type SectionStrategyArchetype =
 export type SectionStrategy = {
   archetype: SectionStrategyArchetype;
   subArchetype: string | null;
-  candidatePresentationStage: StrategySignals["candidatePresentationStage"];
-  candidateProfileType: StrategySignals["candidateProfileType"];
-  strongestProofType: StrategySignals["strongestProofType"];
+  candidatePresentationStage: SectionSignals["candidatePresentationStage"];
+  candidateProfileType: SectionSignals["candidateProfileType"];
+  strongestProofType: SectionSignals["strongestProofType"];
   credentialsAreThreshold: boolean;
   proofFirstRecommended: boolean;
   hybridStructureRecommended: boolean;
-  founderFramingMode: StrategySignals["founderFramingMode"];
+  founderFramingMode: SectionSignals["founderFramingMode"];
   founderFramingGuidance: string;
   recommendedSectionOrder: string[];
   preferredSectionLabels: Record<string, string>;
@@ -58,21 +57,21 @@ function normalizeArchetype(value: string | null | undefined): SectionStrategyAr
 }
 
 function effectiveArchetype(args: {
-  jobBrief: JobBrief | null;
-  strategySignals: StrategySignals;
+  jobContext: JobContext | null;
+  sectionSignals: SectionSignals;
 }) {
   if (
-    args.strategySignals.candidatePresentationStage === "career_changer" ||
-    args.strategySignals.candidateProfileType === "career_changer"
+    args.sectionSignals.candidatePresentationStage === "career_changer" ||
+    args.sectionSignals.candidateProfileType === "career_changer"
   ) {
     return "career_changer" as const;
   }
 
-  const archetype = normalizeArchetype(args.jobBrief?.archetype);
+  const archetype = normalizeArchetype(args.jobContext?.roleFamily);
   if (
     archetype === "general_professional" &&
-    (args.strategySignals.candidatePresentationStage === "student" ||
-      args.strategySignals.candidatePresentationStage === "graduate")
+    (args.sectionSignals.candidatePresentationStage === "student" ||
+      args.sectionSignals.candidatePresentationStage === "graduate")
   ) {
     return "graduate_early_career" as const;
   }
@@ -81,8 +80,8 @@ function effectiveArchetype(args: {
 }
 
 function presentationStageFromSeniority(
-  seniority: JobBrief["seniority"] | null | undefined
-): StrategySignals["candidatePresentationStage"] {
+  seniority: JobContext["seniority"] | null | undefined
+): SectionSignals["candidatePresentationStage"] {
   if (seniority === "intern") return "student";
   if (seniority === "graduate") return "graduate";
   if (seniority === "junior") return "early_career";
@@ -93,17 +92,17 @@ function presentationStageFromSeniority(
 }
 
 function withDeterministicFallbacks(args: {
-  jobBrief: JobBrief | null;
-  strategySignals: StrategySignals;
-}): StrategySignals {
-  if (args.strategySignals.candidatePresentationStage !== "unknown") {
-    return args.strategySignals;
+  jobContext: JobContext | null;
+  sectionSignals: SectionSignals;
+}): SectionSignals {
+  if (args.sectionSignals.candidatePresentationStage !== "unknown") {
+    return args.sectionSignals;
   }
 
   return {
-    ...args.strategySignals,
+    ...args.sectionSignals,
     candidatePresentationStage: presentationStageFromSeniority(
-      args.jobBrief?.seniority
+      args.jobContext?.seniority
     ),
   };
 }
@@ -175,9 +174,9 @@ function preferredLabelsFor(archetype: SectionStrategyArchetype) {
 
 function topThirdPrioritiesFor(args: {
   archetype: SectionStrategyArchetype;
-  strategySignals: StrategySignals;
+  sectionSignals: SectionSignals;
 }) {
-  if (args.strategySignals.credentialsAreThreshold) {
+  if (args.sectionSignals.credentialsAreThreshold) {
     return [
       "role fit",
       "must-have credentials",
@@ -186,10 +185,10 @@ function topThirdPrioritiesFor(args: {
     ];
   }
 
-  if (args.strategySignals.proofFirstRecommended) {
+  if (args.sectionSignals.proofFirstRecommended) {
     return [
       "role fit",
-      args.strategySignals.strongestProofType.replace(/_/g, " "),
+      args.sectionSignals.strongestProofType.replace(/_/g, " "),
       "credible outcomes",
       "must-have tools or credentials",
     ];
@@ -208,29 +207,6 @@ function topThirdPrioritiesFor(args: {
   return ["role fit", "strongest relevant proof", "must-have tools or credentials", "credible outcomes"];
 }
 
-function normalizeSectionHint(value: string) {
-  const normalized = value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  if (normalized === "project" || normalized === "projects" || normalized === "ai projects") {
-    return "projects";
-  }
-  if (normalized === "portfolio" || normalized === "selected portfolio") {
-    return "portfolio";
-  }
-  if (normalized === "experience" || normalized === "work experience") {
-    return "experience";
-  }
-  if (normalized === "education") return "education";
-  if (normalized === "certifications" || normalized === "certification") {
-    return "certifications";
-  }
-  if (normalized === "skills" || normalized === "technical skills") return "skills";
-  return normalized;
-}
-
-function candidateSectionHints(candidateBrief: CandidateBrief | undefined) {
-  return new Set((candidateBrief?.usefulSections ?? []).map(normalizeSectionHint).filter(Boolean));
-}
-
 function isTechnicalArchetype(archetype: SectionStrategyArchetype) {
   return archetype === "ai_ml_data_software";
 }
@@ -238,18 +214,16 @@ function isTechnicalArchetype(archetype: SectionStrategyArchetype) {
 function shouldUseProjectsSection(args: {
   archetype: SectionStrategyArchetype;
   subArchetype: string | null | undefined;
-  strategySignals: StrategySignals;
-  candidateBrief?: CandidateBrief;
+  sectionSignals: SectionSignals;
 }) {
-  const hints = candidateSectionHints(args.candidateBrief);
-  const strongestProof = args.strategySignals.strongestProofType;
-  const stage = args.strategySignals.candidatePresentationStage;
-  const profileType = args.strategySignals.candidateProfileType;
-  const strongProjectProof = args.strategySignals.projectProofStrength === "strong";
-  const weakFormalExperience = args.strategySignals.formalExperienceStrength === "weak";
+  const strongestProof = args.sectionSignals.strongestProofType;
+  const stage = args.sectionSignals.candidatePresentationStage;
+  const profileType = args.sectionSignals.candidateProfileType;
+  const strongProjectProof = args.sectionSignals.projectStrength === "strong";
+  const weakFormalExperience = args.sectionSignals.experienceStrength === "weak";
   const normalizedSubArchetype = (args.subArchetype ?? "").toLowerCase();
   const hasProjectEvidenceHint =
-    hints.has("projects") || hints.has("portfolio") || strongestProof === "projects" || strongestProof === "portfolio";
+    strongestProof === "projects" || strongestProof === "portfolio";
 
   if (!hasProjectEvidenceHint) return false;
   if (args.archetype === "research_academic_science" || args.archetype === "career_changer") {
@@ -271,13 +245,12 @@ function shouldUseProjectsSection(args: {
 function sectionOrderFor(args: {
   archetype: SectionStrategyArchetype;
   subArchetype: string | null | undefined;
-  strategySignals: StrategySignals;
-  candidateBrief?: CandidateBrief;
+  sectionSignals: SectionSignals;
 }) {
-  const { archetype, strategySignals } = args;
-  const proofFirst = strategySignals.proofFirstRecommended;
-  const credentialsThreshold = strategySignals.credentialsAreThreshold;
-  const strongestProof = strategySignals.strongestProofType;
+  const { archetype, sectionSignals } = args;
+  const proofFirst = sectionSignals.proofFirstRecommended;
+  const credentialsThreshold = sectionSignals.credentialsAreThreshold;
+  const strongestProof = sectionSignals.strongestProofType;
   const allowProjects = shouldUseProjectsSection(args);
 
   if (credentialsThreshold) {
@@ -339,13 +312,13 @@ function sectionOrderFor(args: {
 
 function shouldCombineEducationAndCertifications(args: {
   archetype: SectionStrategyArchetype;
-  strategySignals: StrategySignals;
+  sectionSignals: SectionSignals;
 }) {
-  if (args.strategySignals.credentialsAreThreshold) return false;
+  if (args.sectionSignals.credentialsAreThreshold) return false;
   if (isTechnicalArchetype(args.archetype)) return true;
   return (
-    args.strategySignals.educationCredentialStrength !== "strong" &&
-    args.strategySignals.certificationStrength !== "strong"
+    args.sectionSignals.educationStrength !== "strong" &&
+    args.sectionSignals.certificationStrength !== "strong"
   );
 }
 
@@ -354,55 +327,53 @@ function firstNonEmpty(values: Array<string | null | undefined>) {
 }
 
 export function buildSectionStrategy(args: {
-  jobBrief: JobBrief | null;
-  candidateBrief?: CandidateBrief;
-  strategySignals?: StrategySignals;
+  jobContext: JobContext | null;
+  sectionSignals?: SectionSignals;
 }): SectionStrategy {
-  const strategySignals = withDeterministicFallbacks({
-    jobBrief: args.jobBrief,
-    strategySignals: args.strategySignals ?? DefaultStrategySignals,
+  const sectionSignals = withDeterministicFallbacks({
+    jobContext: args.jobContext,
+    sectionSignals: args.sectionSignals ?? DefaultSectionSignals,
   });
   const archetype = effectiveArchetype({
-    jobBrief: args.jobBrief,
-    strategySignals,
+    jobContext: args.jobContext,
+    sectionSignals,
   });
   const preferredSectionLabels = preferredLabelsFor(archetype);
   const combineEducationAndCertifications =
-    shouldCombineEducationAndCertifications({ archetype, strategySignals });
+    shouldCombineEducationAndCertifications({ archetype, sectionSignals });
   const recommendedSectionOrder = sectionOrderFor({
     archetype,
-    subArchetype: args.jobBrief?.subArchetype,
-    strategySignals,
-    candidateBrief: args.candidateBrief,
+    subArchetype: args.jobContext?.subRoleFamily,
+    sectionSignals,
   }).filter(
     (section) => !combineEducationAndCertifications || section !== "certifications"
   );
 
   const roleHint = firstNonEmpty([
-    args.jobBrief?.targetRoleTitle,
-    strategySignals.primaryFraming,
+    args.jobContext?.roleTitle,
+    sectionSignals.recommendedFocus,
   ]) ?? "target role";
-  const sectionRationaleShort = strategySignals.proofFirstRecommended
-    ? `Proof-first strategy for ${roleHint}: ${strategySignals.recommendedFocus}`
-    : strategySignals.credentialsAreThreshold
+  const sectionRationaleShort = sectionSignals.proofFirstRecommended
+    ? `Proof-first strategy for ${roleHint}: ${sectionSignals.recommendedFocus}`
+    : sectionSignals.credentialsAreThreshold
       ? `Credential-aware strategy for ${roleHint}: threshold credentials need early visibility.`
-      : `Conservative strategy for ${roleHint}: ${strategySignals.recommendedFocus}`;
+      : `Conservative strategy for ${roleHint}: ${sectionSignals.recommendedFocus}`;
 
   return {
     archetype,
-    subArchetype: args.jobBrief?.subArchetype ?? null,
-    candidatePresentationStage: strategySignals.candidatePresentationStage,
-    candidateProfileType: strategySignals.candidateProfileType,
-    strongestProofType: strategySignals.strongestProofType,
-    credentialsAreThreshold: strategySignals.credentialsAreThreshold,
-    proofFirstRecommended: strategySignals.proofFirstRecommended,
-    hybridStructureRecommended: strategySignals.hybridStructureRecommended,
-    founderFramingMode: strategySignals.founderFramingMode,
-    founderFramingGuidance: strategySignals.founderFramingGuidance,
+    subArchetype: args.jobContext?.subRoleFamily ?? null,
+    candidatePresentationStage: sectionSignals.candidatePresentationStage,
+    candidateProfileType: sectionSignals.candidateProfileType,
+    strongestProofType: sectionSignals.strongestProofType,
+    credentialsAreThreshold: sectionSignals.credentialsAreThreshold,
+    proofFirstRecommended: sectionSignals.proofFirstRecommended,
+    hybridStructureRecommended: sectionSignals.hybridStructureRecommended,
+    founderFramingMode: sectionSignals.founderFramingMode,
+    founderFramingGuidance: sectionSignals.founderFramingGuidance,
     recommendedSectionOrder,
     preferredSectionLabels,
     combineEducationAndCertifications,
-    independentProjectTitleGuidance: strategySignals.founderFramingGuidance,
+    independentProjectTitleGuidance: sectionSignals.founderFramingGuidance,
     forbiddenLateSectionKinds: [
       "selected",
       "highlights",
@@ -414,7 +385,7 @@ export function buildSectionStrategy(args: {
     avoidDuplicateSections: true,
     topThirdPriorities: topThirdPrioritiesFor({
       archetype,
-      strategySignals,
+      sectionSignals,
     }),
     sectionRationaleShort,
   };

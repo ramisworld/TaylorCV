@@ -26,7 +26,7 @@ export async function runAgent<T>(args: {
   userPrompt: string;
   schemaName: string;
   jsonSchema: JsonSchema;
-  zodSchema: z.ZodType<T>;
+  zodSchema: z.ZodType<T, z.ZodTypeDef, unknown>;
   reasoningEffort: AgentReasoningEffort;
   maxOutputTokens: number;
   telemetryContext?: AgentTelemetryContext;

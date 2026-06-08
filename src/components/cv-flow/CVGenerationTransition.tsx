@@ -52,49 +52,54 @@ function text(value: unknown) {
 
 function fallbackHeader(source?: CandidatePreviewSource | null): CvHeader {
   const profile = isRecord(source?.profileJson) ? source.profileJson : {};
-  const basics = isRecord(profile.deterministicBasics)
-    ? profile.deterministicBasics
+  const structuredCareerProfile = isRecord(profile.structuredCareerProfile)
+    ? profile.structuredCareerProfile
     : {};
-  const brief = isRecord(profile.candidateBrief) ? profile.candidateBrief : {};
+  const basics = isRecord(structuredCareerProfile.basics)
+    ? structuredCareerProfile.basics
+    : {};
   const contact = isRecord(source?.contactInfoJson)
     ? source.contactInfoJson
     : {};
   const links = isRecord(source?.linksJson) ? source.linksJson : {};
-  const otherUrls = Array.isArray(links.other)
-    ? links.other
-    : Array.isArray(basics.otherUrls)
-      ? basics.otherUrls
-      : [];
+  const profileLinks = Array.isArray(structuredCareerProfile.links)
+    ? structuredCareerProfile.links.filter(isRecord)
+    : [];
+  const typedLink = (type: string) =>
+    profileLinks.find((link) => text(link.type) === type);
+  const otherUrls = profileLinks
+    .filter((link) => !["linkedin", "github", "portfolio"].includes(text(link.type) ?? ""))
+    .map((link) => link.url);
 
   return {
-    name: text(contact.fullName) ?? text(basics.possibleName) ?? "Your CV",
+    name: text(contact.fullName) ?? text(basics.fullName) ?? "Your CV",
     targetTitle:
       text(source?.jobTitle) ??
       text(contact.professionalTitle) ??
-      text(brief.possibleHeadline) ??
+      text(basics.currentRole) ??
       "Tailored CV",
     email: text(contact.email) ?? text(basics.email),
     phone: text(contact.phone) ?? text(basics.phone),
-    location: text(contact.location),
+    location: text(contact.location) ?? text(basics.location),
     links: [
-      (text(links.linkedin) ?? text(basics.linkedin))
+      (text(links.linkedin) ?? text(typedLink("linkedin")?.url))
         ? {
             label: "LinkedIn",
-            url: (text(links.linkedin) ?? text(basics.linkedin)) as string,
+            url: (text(links.linkedin) ?? text(typedLink("linkedin")?.url)) as string,
             linkType: "personal_contact",
           }
         : null,
-      (text(links.github) ?? text(basics.github))
+      (text(links.github) ?? text(typedLink("github")?.url))
         ? {
             label: "GitHub",
-            url: (text(links.github) ?? text(basics.github)) as string,
+            url: (text(links.github) ?? text(typedLink("github")?.url)) as string,
             linkType: "personal_contact",
           }
         : null,
-      (text(links.portfolio) ?? text(basics.portfolio))
+      (text(links.portfolio) ?? text(typedLink("portfolio")?.url))
         ? {
             label: "Portfolio",
-            url: (text(links.portfolio) ?? text(basics.portfolio)) as string,
+            url: (text(links.portfolio) ?? text(typedLink("portfolio")?.url)) as string,
             linkType: "portfolio_link",
           }
         : null,

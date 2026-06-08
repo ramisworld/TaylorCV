@@ -1,19 +1,95 @@
 import type { CvComposerOutput, IntakeGapOutput } from "../cvSchemas";
 
 export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
-  jobBrief: {
-    targetRoleTitle: "AI Software Engineer",
+  profile: {
+    basics: {
+      fullName: "Jordan Lee",
+      currentRole: "Computer Science student building full-stack AI products",
+      location: "Auckland, New Zealand",
+      phone: "+64 21 555 0198",
+      email: "jordan.lee@example.com",
+    },
+    skills: ["TypeScript", "Next.js", "React", "Prisma", "PostgreSQL", "OpenAI APIs", "Zod"],
+    experiences: [
+      {
+        title: "Independent Software Engineer",
+        company: "Independent Projects",
+        location: "Auckland, New Zealand",
+        startDate: "2025-02",
+        isCurrent: true,
+        bullets: [
+          "Built full-stack AI application workflows across frontend, backend, database and structured model-output layers.",
+        ],
+        tools: ["TypeScript", "Next.js", "Prisma", "PostgreSQL"],
+      },
+    ],
+    projects: [
+      {
+        name: "TaylorCV",
+        description: "AI CV tailoring platform",
+        bullets: [
+          "Built a CV tailoring workflow that asks targeted gap questions and generates structured CV JSON for preview, PDF and DOCX export.",
+        ],
+        tools: ["TypeScript", "Next.js", "OpenAI APIs", "Zod"],
+        links: [],
+      },
+    ],
+    education: [
+      {
+        institution: "University of Auckland",
+        qualification: "BSc",
+        field: "Computer Science and Mathematics",
+        location: "Auckland, New Zealand",
+        startDate: "2025",
+        details: ["Faculty scholarship recipient"],
+      },
+    ],
+    credentials: [
+      {
+        name: "Microsoft Azure AI Engineer Associate",
+        issuer: "Microsoft",
+        type: "certification",
+        issueDate: "2026",
+      },
+    ],
+    links: [
+      {
+        label: "LinkedIn",
+        url: "https://www.linkedin.com/in/jordanlee",
+        type: "linkedin",
+      },
+      {
+        label: "GitHub",
+        url: "https://github.com/jordanlee",
+        type: "github",
+      },
+    ],
+    careerDetails: {
+      yearsOfExperience: "1+",
+      targetRoles: ["AI Software Engineer"],
+      industriesOfInterest: ["AI", "SaaS"],
+      preferredLocations: ["Auckland", "Remote"],
+      openToRemote: true,
+    },
+  },
+  jobContext: {
+    roleTitle: "AI Software Engineer",
     companyName: "PastureIQ",
     marketOrLocation: "Auckland, New Zealand",
     seniority: "graduate",
-    archetype: "ai_ml_data_software",
-    subArchetype: "ai-full-stack",
+    roleFamily: "ai_ml_data_software",
+    subRoleFamily: "ai-full-stack",
     roleSummary:
       "Early-career AI software role focused on building practical AI-enabled web products, integrating model APIs, improving reliability, and shipping user-facing software.",
-    topPriorities: [
-      "Can build and ship useful software",
-      "Understands practical AI product development",
-      "Can debug reliability and output-quality issues",
+    mustHaveRequirements: [
+      "Build and ship useful software",
+      "Work with practical AI product development",
+      "Debug reliability and output-quality issues",
+    ],
+    responsibilities: [
+      "Build user-facing AI product features",
+      "Integrate model APIs into production workflows",
+      "Improve reliability of structured outputs",
     ],
     proofNeeds: [
       "Shipped projects or deployed products",
@@ -30,55 +106,22 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
       "API integration",
       "reliability",
     ],
-    cultureSignals: [
-      "Curiosity shown through practical learning",
-      "Ownership in ambiguous product work",
-      "Product-minded care for useful outcomes",
-    ],
     risks: [
       "Commercial usage and deployment scale are unclear from the CV text",
       "Candidate should not be positioned as senior without stronger evidence",
     ],
+    exactPhrases: ["AI software engineer", "LLM applications", "API integration"],
   },
-  candidateBrief: {
-    possibleHeadline: "Computer Science student building full-stack AI products",
-    strongestEvidence: [
-      "TaylorCV proves full-stack AI product development with structured model outputs",
-      "ReviewMate supports customer-feedback analysis and schema-based AI workflows",
-      "Original CV includes relevant Azure AI certification and scholarship detail",
-    ],
-    relevantSignals: [
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Prisma",
-      "PostgreSQL",
-      "OpenAI APIs",
-      "Structured outputs",
-      "Schema validation",
-      "Azure AI certification",
-      "Scholarship",
-    ],
-    missingOrWeakProof: [
-      "Real usage, deployment, latency, cost and reliability evidence is not fully stated",
-      "Stakeholder communication examples are not fully stated",
-    ],
-    usefulSections: ["Projects", "Education", "Certifications", "Skills"],
-    warnings: [
-      "Project evidence is stronger than formal employment history",
-      "Avoid unsupported user counts or production-scale claims",
-    ],
-  },
-  strategySignals: {
+  sectionSignals: {
     candidateEvidenceLevel: "credible",
     candidatePresentationStage: "student",
     candidateProfileType: "technical_builder",
     strongestProofType: "projects",
-    formalExperienceStrength: "weak",
-    projectProofStrength: "strong",
-    educationCredentialStrength: "moderate",
+    experienceStrength: "weak",
+    projectStrength: "strong",
+    educationStrength: "moderate",
     certificationStrength: "moderate",
-    transferableProofStrength: "moderate",
+    transferableStrength: "moderate",
     roleFitStrength: "strong",
     credentialsAreThreshold: false,
     proofFirstRecommended: true,
@@ -88,8 +131,6 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
       "Prefer AI Product Engineer, Applied AI Engineer, or Independent Technical Project wording unless founder framing is explicitly useful.",
     recommendedFocus:
       "Lead with practical AI product proof, structured output reliability, and shipped full-stack implementation.",
-    primaryFraming:
-      "Early-career AI software candidate with strong independent product proof.",
     positioningWarnings: [
       "Do not overclaim seniority",
       "Do not use founder framing as the main identity for a normal employee role",
@@ -100,10 +141,6 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
       question:
         "What testing, deployment, latency, cost, reliability, or output-quality evidence can you point to from TaylorCV?",
       shortTitle: "Measured results",
-      exampleAnswer:
-        "I tested TaylorCV across multiple CVs, tightened schema validation, and reduced failed outputs during preview and export.",
-      whyItMatters:
-        "This would turn the AI project from a build claim into stronger engineering proof.",
       targetArea: "TaylorCV reliability and quality proof",
       priority: "high",
     },
@@ -111,120 +148,13 @@ export const MOCK_INTAKE_GAP_OUTPUT: IntakeGapOutput = {
       question:
         "Did TaylorCV or ReviewMate have real users, reviewers, or stakeholders who shaped what you built?",
       shortTitle: "Real users",
-      exampleAnswer:
-        "A recruiter reviewed the workflow, asked for clearer proof sections, and that feedback changed how I structured the CV output.",
-      whyItMatters:
-        "This adds product and communication proof instead of making the work sound purely academic.",
       targetArea: "user and stakeholder relevance",
       priority: "medium",
     },
   ],
-  structuredCareerProfile: {
-    basics: {
-      fullName: "Jordan Lee",
-      currentRole: "Computer Science student building full-stack AI products",
-      location: "Auckland, New Zealand",
-      phone: "+64 21 555 0198",
-      email: "jordan.lee@example.com",
-    },
-    skills: [
-      { id: "skill-typescript", name: "TypeScript" },
-      { id: "skill-nextjs", name: "Next.js" },
-      { id: "skill-prisma", name: "Prisma" },
-      { id: "skill-postgresql", name: "PostgreSQL" },
-      { id: "skill-openai", name: "OpenAI APIs" },
-    ],
-    experiences: [
-      {
-        id: "exp-independent-projects",
-        title: "Independent Software Engineer",
-        company: "Independent Projects",
-        location: "Auckland, New Zealand",
-        startDate: "2025-02",
-        isCurrent: true,
-        bullets: [
-          {
-            id: "bullet-full-stack-ai",
-            text: "Built full-stack AI application workflows across frontend, backend, database and structured model-output layers.",
-          },
-        ],
-        tools: ["TypeScript", "Next.js", "Prisma", "PostgreSQL"],
-      },
-    ],
-    projects: [
-      {
-        id: "project-taylorcv",
-        name: "TaylorCV",
-        description: "AI CV tailoring platform",
-        bullets: [
-          {
-            id: "bullet-taylorcv-workflow",
-            text: "Built a CV tailoring workflow that asks targeted gap questions and generates structured CV JSON for preview, PDF and DOCX export.",
-          },
-        ],
-        tools: ["TypeScript", "Next.js", "OpenAI APIs", "Zod"],
-      },
-    ],
-    education: [
-      {
-        id: "edu-auckland",
-        institution: "University of Auckland",
-        qualification: "BSc",
-        field: "Computer Science and Mathematics",
-        startDate: "2025",
-        details: ["Faculty scholarship recipient"],
-      },
-    ],
-    credentials: [
-      {
-        id: "cred-azure-ai",
-        name: "Microsoft Azure AI Engineer Associate",
-        issuer: "Microsoft",
-        type: "certification",
-        issueDate: "2026",
-      },
-    ],
-    links: [
-      {
-        id: "link-linkedin",
-        label: "LinkedIn",
-        url: "https://www.linkedin.com/in/jordanlee",
-        type: "linkedin",
-      },
-      {
-        id: "link-github",
-        label: "GitHub",
-        url: "https://github.com/jordanlee",
-        type: "github",
-      },
-    ],
-    careerDetails: {
-      yearsOfExperience: "1+",
-      targetRoles: ["AI Software Engineer"],
-      industriesOfInterest: ["AI", "SaaS"],
-      preferredLocations: ["Auckland", "Remote"],
-      openToRemote: true,
-    },
-    metadata: {
-      source: "intake_import",
-    },
-  },
 };
 
 export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
-  blueprint: {
-    sectionOrder: [
-      "summary",
-      "selected-technical-achievements",
-      "projects",
-      "skills",
-      "experience",
-      "education",
-    ],
-    briefRationale:
-      "Lead with role fit and strongest technical proof because project evidence is stronger than formal experience for this target role.",
-    warnings: ["Do not position the candidate as senior", "Do not invent usage metrics"],
-  },
   cv: {
     sectionOrder: [
       "summary",
@@ -271,10 +201,6 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
             text: "Built full-stack AI application workflows across frontend, backend, database and structured model-output layers.",
             gapAnswerIds: [],
           },
-          {
-            text: "Validated AI-generated document data before storage, preview and export to keep outputs consistent.",
-            gapAnswerIds: [],
-          },
         ],
       },
     ],
@@ -285,7 +211,7 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
         dates: "2026",
         bullets: [
           {
-            text: "Built a CV tailoring workflow that saves raw job and CV text, asks targeted gap questions and generates structured CV JSON for preview, PDF and DOCX export.",
+            text: "Built a CV tailoring workflow that saves job and CV context, asks targeted gap questions and generates structured CV JSON for preview, PDF and DOCX export.",
             gapAnswerIds: [],
           },
           {
@@ -300,14 +226,11 @@ export const MOCK_CV_COMPOSER_OUTPUT: CvComposerOutput = {
         institution: "University of Auckland",
         degree: "BSc Computer Science and Mathematics",
         dates: "2025 - Present",
-        details: [
-          "Programming, mathematics, algorithms and software systems",
-          "Faculty scholarship recipient",
-        ],
+        details: ["Programming, mathematics, algorithms and software systems"],
       },
     ],
     certifications: [
-      "Microsoft Azure AI Engineer Associate - Microsoft, 2026 - Passed with distinction",
+      "Microsoft Azure AI Engineer Associate - Microsoft, 2026",
     ],
     sections: [
       {

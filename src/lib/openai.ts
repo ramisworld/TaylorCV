@@ -30,6 +30,10 @@ export type OpenAiProviderErrorMeta = {
   rayId: string | null;
   bodyPreview: string | null;
   durationMs: number;
+  responseStatus?: string | null;
+  incompleteDetails?: unknown;
+  outputPreview?: string | null;
+  usage?: unknown;
 };
 
 export class OpenAiProviderError extends Error {
@@ -55,6 +59,12 @@ function parseJsonPayload(text: string, serviceName: string) {
 
 function sanitizeBodyPreview(value: string) {
   return value.replace(/\s+/g, " ").trim().slice(0, 300) || null;
+}
+
+function looksTruncatedJson(text: string) {
+  const trimmed = text.trim();
+  if (!trimmed) return false;
+  return !/[}\]]\s*$/.test(trimmed);
 }
 
 function extractCloudflareRayId(value: string) {
@@ -278,6 +288,25 @@ export async function createStructuredJsonResponseWithUsage(args: {
     throw new Error("OpenAI response did not include output text");
   }
 
+  if (data.status === "incomplete" || data.incomplete_details) {
+    throw new OpenAiProviderError(
+      "OpenAI response was incomplete before structured JSON could be parsed.",
+      {
+        provider: "openai",
+        status: response.status,
+        errorClass: "openai_response_incomplete",
+        retryable: true,
+        rayId: null,
+        bodyPreview: null,
+        durationMs: Date.now() - startedAt,
+        responseStatus: data.status ?? null,
+        incompleteDetails: data.incomplete_details ?? null,
+        outputPreview: sanitizeBodyPreview(outputText),
+        usage: data.usage ?? null,
+      }
+    );
+  }
+
   const usage: OpenAiUsage = {
     promptTokens: data.usage?.input_tokens ?? null,
     completionTokens: data.usage?.output_tokens ?? null,
@@ -286,7 +315,32 @@ export async function createStructuredJsonResponseWithUsage(args: {
   };
 
   return {
-    parsed: parseJsonPayload(outputText, "OpenAI output text"),
+    parsed: (() => {
+      try {
+        return parseJsonPayload(outputText, "OpenAI output text");
+      } catch (error) {
+        throw new OpenAiProviderError(
+          looksTruncatedJson(outputText)
+            ? "OpenAI output text appears truncated and could not be parsed as JSON."
+            : "OpenAI output text could not be parsed as JSON.",
+          {
+            provider: "openai",
+            status: response.status,
+            errorClass: looksTruncatedJson(outputText)
+              ? "openai_output_truncated_json"
+              : "openai_output_invalid_json",
+            retryable: looksTruncatedJson(outputText),
+            rayId: null,
+            bodyPreview: error instanceof Error ? sanitizeBodyPreview(error.message) : null,
+            durationMs: Date.now() - startedAt,
+            responseStatus: data.status ?? null,
+            incompleteDetails: data.incomplete_details ?? null,
+            outputPreview: sanitizeBodyPreview(outputText),
+            usage: data.usage ?? null,
+          }
+        );
+      }
+    })(),
     usage,
     response: {
       status: data.status ?? null,
