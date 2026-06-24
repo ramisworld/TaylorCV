@@ -1,419 +1,513 @@
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "~/server/api/trpc";
-import { db } from "~/server/db";
+  analyzeJob,
+  extractProfile,
+  generateQuestions,
+  writeFinalCv,
+} from "~/server/cv/agents";
 import {
-  submitJob as submitJobService,
-  submitCandidate as submitCandidateService,
-  submitSavedProfileCandidate as submitSavedProfileCandidateService,
-  submitGapAnswers as submitGapAnswersService,
-  generateCv as generateCvService,
-  authorizeExport as authorizeExportService,
-} from "~/server/cv/cvWorkflow.service";
-import {
-  findUserStructuredCareerProfile,
-  profileJsonStructuredCareerProfile,
-  saveImportedProfileForUserIfMissing,
-} from "~/server/cv/structuredProfile.service";
+  CandidateVaultSchema,
+  FinalCvSchema,
+  JobAnalyzeSchema,
+  ProfileExtractSchema,
+  QuestionsSchema,
+  type FinalCv,
+  type JobAnalyze,
+  type ProfileExtract,
+  type QuestionsOutput,
+} from "~/server/cv/agentSchemas";
+import { runInitialProfileAndJobAnalysis } from "~/server/cv/initialAnalysis";
+import { renderPdfWithTypographyFit } from "~/server/cv/renderPdf";
 
 const applicationIdSchema = z.object({
   applicationId: z.string().min(1),
 });
 
-const trackingStatusSchema = z.enum([
-  "ready",
-  "applied",
-  "response",
-  "interview",
-  "offer",
-  "accepted",
-  "rejected",
-]);
+const answerSchema = z.object({
+  questionId: z.string().min(1),
+  answer: z.string().trim().max(4000).optional(),
+});
 
-async function assertApplicationOwnership(args: {
-  applicationId: string;
-  anonymousSessionId: string;
-  userId?: string | null;
+const GENERATION_STALE_MS = 10 * 60 * 1000;
+const STALE_GENERATION_ERROR =
+  "TaylorCV generation stopped before finishing. Please retry.";
+
+const globalForGeneration = globalThis as typeof globalThis & {
+  __taylorCvGenerationJobs?: Set<string>;
+};
+
+const generationJobs =
+  globalForGeneration.__taylorCvGenerationJobs ??= new Set<string>();
+
+function parseProfile(value: unknown) {
+  return ProfileExtractSchema.parse(value);
+}
+
+function parseJob(value: unknown) {
+  return JobAnalyzeSchema.parse(value);
+}
+
+function parseQuestions(value: unknown) {
+  return QuestionsSchema.parse(value);
+}
+
+function parseFinalCv(value: unknown) {
+  return FinalCvSchema.parse(value);
+}
+
+function jsonForDb<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
+async function importProfileRow(args: {
+  db: any;
+  userId: string;
+  rawCvText: string;
+  rawCvFileName?: string | null;
+  profile: ProfileExtract;
 }) {
-  const application = await db.application.findFirst({
-    where: {
-      id: args.applicationId,
-      OR: [
-        { anonymousSessionId: args.anonymousSessionId },
-        ...(args.userId ? [{ userId: args.userId }] : []),
-      ],
+  await args.db.user.update({
+    where: { id: args.userId },
+    data: { name: args.profile.basics.fullName },
+  });
+  return args.db.careerProfile.upsert({
+    where: { userId: args.userId },
+    create: {
+      userId: args.userId,
+      rawCvText: args.rawCvText,
+      rawCvFileName: args.rawCvFileName ?? null,
+      profileJson: jsonForDb(args.profile),
+      seniority: args.profile.seniority,
+    },
+    update: {
+      rawCvText: args.rawCvText,
+      rawCvFileName: args.rawCvFileName ?? null,
+      profileJson: jsonForDb(args.profile),
+      seniority: args.profile.seniority,
     },
   });
+}
 
+async function getOwnedApplication(ctx: { db: any; userId: string }, applicationId: string) {
+  const application = await ctx.db.cvApplication.findFirst({
+    where: { id: applicationId, userId: ctx.userId },
+    include: {
+      careerProfile: true,
+      draft: true,
+    },
+  });
   if (!application) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "Application does not belong to this session",
-    });
+    throw new TRPCError({ code: "NOT_FOUND", message: "Application not found." });
   }
-
   return application;
 }
 
-export const applicationRouter = createTRPCRouter({
-  getLandingActivity: publicProcedure.query(async () => {
-    const count = await db.application.count({
-      where: {
-        createdAt: {
-          gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
-        },
-      },
+function staleGenerationCutoff() {
+  return new Date(Date.now() - GENERATION_STALE_MS);
+}
+
+function isGenerationStale(updatedAt: Date) {
+  return updatedAt.getTime() < staleGenerationCutoff().getTime();
+}
+
+function applicationStatusForDashboard(application: {
+  id: string;
+  status: string;
+  updatedAt: Date;
+  draft: unknown;
+}) {
+  if (application.draft) return "ready";
+  if (
+    application.status === "generating" &&
+    !generationJobs.has(application.id) &&
+    isGenerationStale(application.updatedAt)
+  ) {
+    return "failed";
+  }
+  return application.status;
+}
+
+async function claimGeneration(args: {
+  ctx: { db: any; userId: string };
+  applicationId: string;
+}) {
+  const application = await getOwnedApplication(args.ctx, args.applicationId);
+  if (application.draft) {
+    await args.ctx.db.cvApplication.update({
+      where: { id: application.id },
+      data: { status: "ready", error: null },
     });
-    return { count };
-  }),
+    return { started: false, status: "ready" as const, cvDraftId: application.draft.id };
+  }
 
-  createApplication: publicProcedure.mutation(async ({ ctx }) => {
-    const application = await db.application.create({
-      data: {
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId ?? null,
-        status: "started",
-        currentStep: "started",
-      },
+  if (application.status === "generating" && generationJobs.has(application.id)) {
+    return { started: false, status: "generating" as const };
+  }
+
+  const generationClaim = await args.ctx.db.cvApplication.updateMany({
+    where: {
+      id: application.id,
+      userId: args.ctx.userId,
+      draft: { is: null },
+      OR: [
+        { status: { not: "generating" } },
+        { status: "generating", updatedAt: { lt: staleGenerationCutoff() } },
+      ],
+    },
+    data: {
+      status: "generating",
+      error: null,
+    },
+  });
+  if (generationClaim.count !== 1) {
+    const existingDraft = await args.ctx.db.cvDraft.findUnique({
+      where: { applicationId: application.id },
+      select: { id: true },
     });
-    return { applicationId: application.id };
-  }),
-
-  resetApplication: publicProcedure
-    .input(applicationIdSchema)
-    .mutation(async ({ ctx, input }) => {
-      await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
+    if (existingDraft) {
+      await args.ctx.db.cvApplication.update({
+        where: { id: application.id },
+        data: { status: "ready", error: null },
       });
+      return { started: false, status: "ready" as const, cvDraftId: existingDraft.id };
+    }
+    return { started: false, status: "generating" as const };
+  }
 
-      const newApplication = await db.application.create({
-        data: {
-          anonymousSessionId: ctx.anonymousSessionId,
-          userId: ctx.userId ?? null,
-          status: "started",
-          currentStep: "started",
-        },
-      });
+  return { started: true, status: "generating" as const };
+}
 
-      return { applicationId: newApplication.id };
-    }),
+async function runGeneration(args: {
+  ctx: { db: any; userId: string };
+  applicationId: string;
+}) {
+  const application = await getOwnedApplication(args.ctx, args.applicationId);
+  if (application.draft) {
+    await args.ctx.db.cvApplication.update({
+      where: { id: application.id },
+      data: { status: "ready", error: null },
+    });
+    return { cvDraftId: application.draft.id };
+  }
 
-  submitJob: publicProcedure
-    .input(
-      applicationIdSchema.extend({
-        rawJobText: z.string().min(1).max(20_000),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
-      });
+  try {
+    const profile = parseProfile(application.careerProfile.profileJson);
+    const job = parseJob(application.jobAnalysisJson);
+    const questions = parseQuestions(application.questionsJson);
 
-      const job = await submitJobService({
-        applicationId: input.applicationId,
-        rawJobText: input.rawJobText,
-      });
-      const savedProfile = ctx.userId
-        ? await findUserStructuredCareerProfile(ctx.userId)
-        : null;
+    const rawWriterCv = await writeFinalCv({
+      userId: args.ctx.userId,
+      applicationId: application.id,
+      profile,
+      job,
+      rawJobText: application.jobText,
+      questions,
+      answers: application.answersJson ?? [],
+      extraNotes: application.extraNotes,
+    });
 
-      return { job, hasSavedStructuredProfile: Boolean(savedProfile) };
-    }),
+    let finalStructuredCv: FinalCv = parseFinalCv(rawWriterCv);
+    let rendered = await renderPdfWithTypographyFit(finalStructuredCv);
+    let finalSanitizedCv = rendered.cv;
 
-  submitCandidate: publicProcedure
-    .input(
-      applicationIdSchema.extend({
-        rawCvText: z.string().min(1).max(30_000),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
-      });
-
-      const result = await submitCandidateService({
-        applicationId: input.applicationId,
-        rawCvText: input.rawCvText,
-        userId: ctx.userId,
-      });
-
-      return {
-        candidateProfile: result.candidateProfile,
-        gapQuestions: result.gapQuestions,
-      };
-    }),
-
-  submitSavedProfileCandidate: publicProcedure
-    .input(applicationIdSchema)
-    .mutation(async ({ ctx, input }) => {
-      await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
-      });
-
-      if (!ctx.userId) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Sign in to use your saved profile.",
-        });
-      }
-
-      const result = await submitSavedProfileCandidateService({
-        applicationId: input.applicationId,
-        userId: ctx.userId,
-      });
-
-      return {
-        candidateProfile: result.candidateProfile,
-        gapQuestions: result.gapQuestions,
-      };
-    }),
-
-  submitGapAnswers: publicProcedure
-    .input(
-      applicationIdSchema.extend({
-        answers: z.array(
-          z.object({
-            gapQuestionId: z.string().min(1),
-            answerText: z.string().nullable(),
-            skipped: z.boolean(),
-          })
-        ),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
-      });
-
-      await submitGapAnswersService({
-        applicationId: input.applicationId,
-        answers: input.answers,
-      });
-
-      return { success: true };
-    }),
-
-  generateCv: publicProcedure
-    .input(applicationIdSchema)
-    .mutation(async ({ ctx, input }) => {
-      await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
-      });
-
-      const cvDraft = await generateCvService({
-        applicationId: input.applicationId,
-      });
-
-      return { cvDraftId: cvDraft.id };
-    }),
-
-  getApplicationState: publicProcedure
-    .input(applicationIdSchema)
-    .query(async ({ ctx, input }) => {
-      const application = await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
-      });
-
-      const [
+    if (rendered.metrics.failedToFit) {
+      const tightCv = await writeFinalCv({
+        userId: args.ctx.userId,
+        applicationId: application.id,
+        profile,
         job,
-        candidateProfileRow,
-        gapQuestions,
-        gapAnswers,
-        cvDraft,
-        savedProfile,
-      ] = await Promise.all([
-        db.job.findUnique({ where: { applicationId: input.applicationId } }),
-        db.candidateProfile.findFirst({
-          where: { sourceApplicationId: input.applicationId },
-          orderBy: { createdAt: "desc" },
-        }),
-        db.gapQuestion.findMany({
-          where: { applicationId: input.applicationId },
-          orderBy: { createdAt: "asc" },
-        }),
-        db.gapAnswer.findMany({
-          where: { applicationId: input.applicationId },
-          orderBy: { createdAt: "asc" },
-        }),
-        db.cvDraft.findFirst({
-          where: { applicationId: input.applicationId },
-          orderBy: { version: "desc" },
-        }),
-        ctx.userId ? findUserStructuredCareerProfile(ctx.userId) : Promise.resolve(null),
-      ]);
-
-      return {
-        application,
-        job,
-        candidateProfileRow,
-        gapQuestions,
-        gapAnswers,
-        cvDraft,
-        cvJson: cvDraft?.cvJson ?? null,
-        cvText: cvDraft?.cvText ?? null,
-        hasSavedStructuredProfile: Boolean(savedProfile),
-      };
-    }),
-
-  authorizeExport: publicProcedure
-    .input(
-      applicationIdSchema.extend({
-        cvDraftId: z.string().min(1),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
+        rawJobText: application.jobText,
+        questions,
+        answers: application.answersJson ?? [],
+        extraNotes: application.extraNotes,
+        tighterBudget: true,
       });
-
-      const result = await authorizeExportService({
-        applicationId: input.applicationId,
-        cvDraftId: input.cvDraftId,
-      });
-
-      return result;
-    }),
-
-  claimApplication: protectedProcedure
-    .input(applicationIdSchema)
-    .mutation(async ({ ctx, input }) => {
-      const application = await assertApplicationOwnership({
-        applicationId: input.applicationId,
-        anonymousSessionId: ctx.anonymousSessionId,
-        userId: ctx.userId,
-      });
-
-      if (!ctx.userId) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Must be signed in to claim an application",
-        });
-      }
-
-      await db.application.update({
-        where: { id: input.applicationId },
-        data: { userId: ctx.userId },
-      });
-
-      const importedProfileRow = await db.candidateProfile.findFirst({
-        where: { sourceApplicationId: input.applicationId },
-        orderBy: { createdAt: "desc" },
-      });
-      await saveImportedProfileForUserIfMissing({
-        userId: ctx.userId,
-        profile: profileJsonStructuredCareerProfile(importedProfileRow?.profileJson),
-      });
-
-      return { success: true };
-    }),
-
-  listUserApplications: protectedProcedure.query(async ({ ctx }) => {
-    if (!ctx.userId) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "Must be signed in",
-      });
+      finalStructuredCv = parseFinalCv(tightCv);
+      rendered = await renderPdfWithTypographyFit(finalStructuredCv);
+      finalSanitizedCv = rendered.cv;
     }
 
-    const applications = await db.application.findMany({
-      where: { userId: ctx.userId },
-      orderBy: { createdAt: "desc" },
-      take: 50,
+    if (rendered.metrics.failedToFit) {
+      throw new Error("TaylorCV could not fit this CV onto one A4 page.");
+    }
+
+    const warningJson = {
+      warnings: [],
+      renderMetrics: rendered.metrics,
+    };
+
+    const draft = await args.ctx.db.cvDraft.upsert({
+      where: { applicationId: application.id },
+      create: {
+        applicationId: application.id,
+        structuredCvJson: finalStructuredCv,
+        sanitizedCvJson: finalSanitizedCv,
+        html: rendered.html,
+        pdfBytes: rendered.pdf,
+        renderMetricsJson: rendered.metrics,
+      },
+      update: {
+        structuredCvJson: finalStructuredCv,
+        sanitizedCvJson: finalSanitizedCv,
+        html: rendered.html,
+        pdfBytes: rendered.pdf,
+        renderMetricsJson: rendered.metrics,
+      },
     });
 
-    return { applications };
+    await args.ctx.db.cvApplication.update({
+      where: { id: application.id },
+      data: {
+        status: "ready",
+        warningJson,
+        error: null,
+      },
+    });
+
+    return { cvDraftId: draft.id };
+  } catch (error) {
+    await args.ctx.db.cvApplication.update({
+      where: { id: application.id },
+      data: {
+        status: "failed",
+        error: error instanceof Error ? error.message : "TaylorCV generation failed.",
+      },
+    });
+    throw error;
+  }
+}
+
+function startGenerationJob(args: {
+  ctx: { db: any; userId: string };
+  applicationId: string;
+}) {
+  if (generationJobs.has(args.applicationId)) return;
+  generationJobs.add(args.applicationId);
+
+  void runGeneration(args)
+    .catch((error) => {
+      console.error("[TaylorCV generation]", args.applicationId, error);
+    })
+    .finally(() => {
+      generationJobs.delete(args.applicationId);
+    });
+}
+
+export const applicationRouter = createTRPCRouter({
+  getDashboardState: protectedProcedure.query(async ({ ctx }) => {
+    const [profile, applications] = await Promise.all([
+      ctx.db.careerProfile.findUnique({ where: { userId: ctx.userId } }),
+      ctx.db.cvApplication.findMany({
+        where: { userId: ctx.userId },
+        orderBy: { createdAt: "desc" },
+        include: { draft: true },
+      }),
+    ]);
+    const vault = profile ? parseProfile(profile.profileJson) : null;
+
+    return {
+      profile: profile && vault
+        ? {
+            id: profile.id,
+            seniority: profile.seniority,
+            fullName: vault.basics.fullName,
+            updatedAt: profile.updatedAt,
+          }
+        : null,
+      vault,
+      applications: applications.map((application) => {
+        const status = applicationStatusForDashboard(application);
+        return {
+          id: application.id,
+          status,
+          targetRole: parseJob(application.jobAnalysisJson).targetRole,
+          company: parseJob(application.jobAnalysisJson).company ?? null,
+          matchScore: application.matchScore,
+          questions: application.questionsJson
+            ? parseQuestions(application.questionsJson)
+            : null,
+          answers: application.answersJson ?? [],
+          extraNotes: application.extraNotes,
+          warningJson: application.warningJson,
+          error:
+            status === "failed" && application.status === "generating"
+              ? STALE_GENERATION_ERROR
+              : application.error,
+          createdAt: application.createdAt,
+          updatedAt: application.updatedAt,
+          hasDraft: Boolean(application.draft),
+        };
+      }),
+    };
   }),
 
-  getApplicationExportData: protectedProcedure
-    .input(applicationIdSchema)
+  updateVault: protectedProcedure
+    .input(CandidateVaultSchema)
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.userId) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "Must be signed in",
-        });
-      }
-
-      const application = await db.application.findFirst({
-        where: {
-          id: input.applicationId,
-          userId: ctx.userId,
-        },
-        include: {
-          cvDrafts: {
-            orderBy: { version: "desc" },
-            take: 1,
-          },
-        },
+      const existingProfile = await ctx.db.careerProfile.findUnique({
+        where: { userId: ctx.userId },
       });
-
-      if (!application) {
+      if (!existingProfile) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Application not found",
+          message: "Upload your current CV before editing the Candidate Vault.",
         });
       }
 
-      const cvDraft = application.cvDrafts[0];
+      const vault = CandidateVaultSchema.parse(input);
+      const [row] = await Promise.all([
+        ctx.db.careerProfile.update({
+          where: { userId: ctx.userId },
+          data: {
+            profileJson: jsonForDb(vault),
+            seniority: vault.seniority,
+          },
+        }),
+        ctx.db.user.update({
+          where: { id: ctx.userId },
+          data: { name: vault.basics.fullName },
+        }),
+      ]);
 
-      return {
-        applicationId: application.id,
-        cvJson: cvDraft?.cvJson ?? null,
-        cvText: cvDraft?.cvText ?? null,
-        presentationJson: cvDraft?.presentationJson ?? null,
-      };
+      return { profileId: row.id, vault };
     }),
 
-  updateTrackingStatus: protectedProcedure
+  createApplication: protectedProcedure
     .input(
-      applicationIdSchema.extend({
-        trackingStatus: trackingStatusSchema,
+      z.object({
+        jobText: z.string().min(1).max(30_000),
+        rawCvText: z.string().min(1).max(35_000).optional(),
+        rawCvFileName: z.string().max(260).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const application = await db.application.findFirst({
-        where: {
-          id: input.applicationId,
-          userId: ctx.userId,
-        },
-        select: {
-          id: true,
-        },
+      const existingProfile = await ctx.db.careerProfile.findUnique({
+        where: { userId: ctx.userId },
       });
 
-      if (!application) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Application not found",
+      let profileRow = existingProfile;
+      let profile: ProfileExtract | null = existingProfile
+        ? parseProfile(existingProfile.profileJson)
+        : null;
+      let job: JobAnalyze;
+
+      if (!existingProfile && input.rawCvText) {
+        const { profile: profileOutput, job: jobOutput } =
+          await runInitialProfileAndJobAnalysis({
+            profileTask: () =>
+              extractProfile({ userId: ctx.userId, rawCvText: input.rawCvText! }),
+            jobTask: () =>
+              analyzeJob({ userId: ctx.userId, rawJobText: input.jobText }),
+          });
+        profile = profileOutput;
+        job = jobOutput;
+        profileRow = await importProfileRow({
+          db: ctx.db,
+          userId: ctx.userId,
+          rawCvText: input.rawCvText,
+          rawCvFileName: input.rawCvFileName,
+          profile,
+        });
+      } else {
+        if (!profileRow || !profile) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Upload your current CV before creating a tailored CV.",
+          });
+        }
+        job = await analyzeJob({
+          userId: ctx.userId,
+          rawJobText: input.jobText,
         });
       }
 
-      await db.application.update({
-        where: { id: input.applicationId },
-        data: { trackingStatus: input.trackingStatus },
+      if (!profileRow || !profile) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Upload your current CV before creating a tailored CV.",
+        });
+      }
+      const careerProfile = profileRow;
+      const candidateProfile = profile;
+
+      const application = await ctx.db.cvApplication.create({
+        data: {
+          userId: ctx.userId,
+          careerProfileId: careerProfile.id,
+          jobText: input.jobText,
+          jobAnalysisJson: job,
+          status: "matching",
+        },
       });
 
+      const questions = await generateQuestions({
+        userId: ctx.userId,
+        applicationId: application.id,
+        profile: candidateProfile,
+        job,
+      });
+
+      const updated = await ctx.db.cvApplication.update({
+        where: { id: application.id },
+        data: {
+          matchJson: questions,
+          questionsJson: questions,
+          matchScore: questions.matchScore,
+          status: "questions_ready",
+        },
+      });
+
+      return {
+        applicationId: updated.id,
+        questions,
+        job,
+      };
+    }),
+
+  saveAnswers: protectedProcedure
+    .input(
+      applicationIdSchema.extend({
+        answers: z.array(answerSchema).default([]),
+        extraNotes: z.string().max(6000).optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      await getOwnedApplication(ctx, input.applicationId);
+      await ctx.db.cvApplication.update({
+        where: { id: input.applicationId },
+        data: {
+          answersJson: input.answers,
+          extraNotes: input.extraNotes?.trim() || null,
+          status: "answers_saved",
+        },
+      });
       return { success: true };
+    }),
+
+  generate: protectedProcedure
+    .input(applicationIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      const claim = await claimGeneration({ ctx, applicationId: input.applicationId });
+      if (claim.started) {
+        startGenerationJob({ ctx, applicationId: input.applicationId });
+      }
+      return claim;
+    }),
+
+  retryGeneration: protectedProcedure
+    .input(applicationIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      await getOwnedApplication(ctx, input.applicationId);
+      await ctx.db.cvDraft.deleteMany({
+        where: { applicationId: input.applicationId },
+      });
+      const claim = await claimGeneration({ ctx, applicationId: input.applicationId });
+      if (claim.started) {
+        startGenerationJob({ ctx, applicationId: input.applicationId });
+      }
+      return claim;
     }),
 });

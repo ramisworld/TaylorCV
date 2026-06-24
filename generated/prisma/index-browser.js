@@ -173,188 +173,59 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ApplicationScalarFieldEnum = {
+exports.Prisma.CareerProfileScalarFieldEnum = {
   id: 'id',
-  anonymousSessionId: 'anonymousSessionId',
   userId: 'userId',
-  status: 'status',
-  trackingStatus: 'trackingStatus',
-  currentStep: 'currentStep',
-  dreamRole: 'dreamRole',
-  roleArchetype: 'roleArchetype',
+  rawCvText: 'rawCvText',
+  rawCvFileName: 'rawCvFileName',
+  profileJson: 'profileJson',
+  seniority: 'seniority',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.JobScalarFieldEnum = {
+exports.Prisma.CvApplicationScalarFieldEnum = {
   id: 'id',
-  applicationId: 'applicationId',
-  rawText: 'rawText',
-  title: 'title',
-  company: 'company',
-  seniority: 'seniority',
-  summary: 'summary',
-  roleDomain: 'roleDomain',
-  archetypeHint: 'archetypeHint',
-  analysisJson: 'analysisJson',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.CandidateProfileScalarFieldEnum = {
-  id: 'id',
-  anonymousSessionId: 'anonymousSessionId',
   userId: 'userId',
-  sourceApplicationId: 'sourceApplicationId',
-  rawCvText: 'rawCvText',
-  rawBackgroundText: 'rawBackgroundText',
-  contactInfoJson: 'contactInfoJson',
-  linksJson: 'linksJson',
-  sourceType: 'sourceType',
-  profileSource: 'profileSource',
-  sourceSummary: 'sourceSummary',
-  sourceUrl: 'sourceUrl',
-  sourceKey: 'sourceKey',
-  sourceHash: 'sourceHash',
-  contentHash: 'contentHash',
-  profileConfirmedAt: 'profileConfirmedAt',
-  summary: 'summary',
-  skillsJson: 'skillsJson',
-  projectsJson: 'projectsJson',
-  educationJson: 'educationJson',
-  certificationsJson: 'certificationsJson',
-  experienceJson: 'experienceJson',
-  toolsJson: 'toolsJson',
-  achievementsJson: 'achievementsJson',
-  cautionNotesJson: 'cautionNotesJson',
-  metricOpportunitiesJson: 'metricOpportunitiesJson',
-  strongProofCandidatesJson: 'strongProofCandidatesJson',
-  scopeOpportunitiesJson: 'scopeOpportunitiesJson',
-  likelyTopEvidenceJson: 'likelyTopEvidenceJson',
-  profileJson: 'profileJson',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  lastSeenAt: 'lastSeenAt',
-  archivedAt: 'archivedAt'
-};
-
-exports.Prisma.GapQuestionScalarFieldEnum = {
-  id: 'id',
-  applicationId: 'applicationId',
-  question: 'question',
-  reason: 'reason',
-  whyItMatters: 'whyItMatters',
-  answerGuidance: 'answerGuidance',
-  exampleAnglesJson: 'exampleAnglesJson',
-  questionJson: 'questionJson',
+  careerProfileId: 'careerProfileId',
+  jobText: 'jobText',
+  jobAnalysisJson: 'jobAnalysisJson',
+  matchJson: 'matchJson',
+  questionsJson: 'questionsJson',
+  answersJson: 'answersJson',
+  extraNotes: 'extraNotes',
+  matchScore: 'matchScore',
   status: 'status',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.GapAnswerScalarFieldEnum = {
-  id: 'id',
-  gapQuestionId: 'gapQuestionId',
-  applicationId: 'applicationId',
-  userId: 'userId',
-  buttonAnswer: 'buttonAnswer',
-  elaboration: 'elaboration',
-  selectedOption: 'selectedOption',
-  followUpText: 'followUpText',
-  metricText: 'metricText',
-  rawUserAnswer: 'rawUserAnswer',
-  extractedEvidenceSummary: 'extractedEvidenceSummary',
-  originalQuestion: 'originalQuestion',
-  usableStatus: 'usableStatus',
-  evidenceQuality: 'evidenceQuality',
-  boostPercent: 'boostPercent',
-  source: 'source',
-  skipped: 'skipped',
-  createdAt: 'createdAt'
+  warningJson: 'warningJson',
+  error: 'error',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.CvDraftScalarFieldEnum = {
   id: 'id',
   applicationId: 'applicationId',
-  version: 'version',
-  cvJson: 'cvJson',
-  cvText: 'cvText',
-  presentationJson: 'presentationJson',
-  builderOutputJson: 'builderOutputJson',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.BillingAccountScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  stripeCustomerId: 'stripeCustomerId',
-  stripeSubscriptionId: 'stripeSubscriptionId',
-  stripeSubscriptionScheduleId: 'stripeSubscriptionScheduleId',
-  activePlanKey: 'activePlanKey',
-  planFamily: 'planFamily',
-  planVariant: 'planVariant',
-  subscriptionStatus: 'subscriptionStatus',
-  priceId: 'priceId',
-  currentPeriodStart: 'currentPeriodStart',
-  currentPeriodEnd: 'currentPeriodEnd',
-  cancelAtPeriodEnd: 'cancelAtPeriodEnd',
-  commitmentStartAt: 'commitmentStartAt',
-  commitmentEndAt: 'commitmentEndAt',
-  commitmentActive: 'commitmentActive',
-  quotaPerPeriod: 'quotaPerPeriod',
-  lastSyncedAt: 'lastSyncedAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.CvGenerationUsageScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  applicationId: 'applicationId',
-  cvDraftId: 'cvDraftId',
-  planKey: 'planKey',
-  billingPeriodStart: 'billingPeriodStart',
-  billingPeriodEnd: 'billingPeriodEnd',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.StripeWebhookEventScalarFieldEnum = {
-  id: 'id',
-  stripeEventId: 'stripeEventId',
-  eventType: 'eventType',
-  processedAt: 'processedAt',
-  processingStatus: 'processingStatus',
-  error: 'error',
-  payloadHash: 'payloadHash',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.AbuseSignalEventScalarFieldEnum = {
-  id: 'id',
-  action: 'action',
-  decision: 'decision',
-  userId: 'userId',
-  anonymousSessionId: 'anonymousSessionId',
-  deviceKeyHash: 'deviceKeyHash',
-  ipKeyHash: 'ipKeyHash',
-  metadataJson: 'metadataJson',
+  structuredCvJson: 'structuredCvJson',
+  sanitizedCvJson: 'sanitizedCvJson',
+  html: 'html',
+  pdfBytes: 'pdfBytes',
+  renderMetricsJson: 'renderMetricsJson',
   createdAt: 'createdAt'
 };
 
 exports.Prisma.AgentRunScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   applicationId: 'applicationId',
-  agentName: 'agentName',
-  inputSummary: 'inputSummary',
-  outputSummary: 'outputSummary',
-  status: 'status',
-  error: 'error',
+  step: 'step',
   model: 'model',
+  status: 'status',
+  inputTokens: 'inputTokens',
+  cachedInputTokens: 'cachedInputTokens',
+  outputTokens: 'outputTokens',
+  costUsd: 'costUsd',
   durationMs: 'durationMs',
-  promptTokens: 'promptTokens',
-  completionTokens: 'completionTokens',
-  totalTokens: 'totalTokens',
-  estimatedCostUsd: 'estimatedCostUsd',
+  error: 'error',
   createdAt: 'createdAt'
 };
 
@@ -363,12 +234,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -387,89 +258,7 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
-exports.ApplicationStatus = exports.$Enums.ApplicationStatus = {
-  started: 'started',
-  job_added: 'job_added',
-  candidate_added: 'candidate_added',
-  questions_ready: 'questions_ready',
-  answers_added: 'answers_added',
-  cv_ready: 'cv_ready'
-};
 
-exports.SourceType = exports.$Enums.SourceType = {
-  profile: 'profile',
-  cv_upload: 'cv_upload',
-  linkedin: 'linkedin',
-  background: 'background',
-  gap_answer: 'gap_answer',
-  manual: 'manual'
-};
-
-exports.GapQuestionStatus = exports.$Enums.GapQuestionStatus = {
-  unanswered: 'unanswered',
-  answered: 'answered',
-  skipped: 'skipped'
-};
-
-exports.ButtonAnswer = exports.$Enums.ButtonAnswer = {
-  yes: 'yes',
-  kind_of: 'kind_of',
-  no: 'no',
-  skip: 'skip'
-};
-
-exports.PlanFamily = exports.$Enums.PlanFamily = {
-  free: 'free',
-  pro: 'pro',
-  premium: 'premium'
-};
-
-exports.PlanVariant = exports.$Enums.PlanVariant = {
-  free: 'free',
-  annual: 'annual',
-  monthly: 'monthly'
-};
-
-exports.BillingSubscriptionStatus = exports.$Enums.BillingSubscriptionStatus = {
-  incomplete: 'incomplete',
-  incomplete_expired: 'incomplete_expired',
-  trialing: 'trialing',
-  active: 'active',
-  past_due: 'past_due',
-  canceled: 'canceled',
-  unpaid: 'unpaid',
-  paused: 'paused',
-  none: 'none'
-};
-
-exports.StripeWebhookProcessingStatus = exports.$Enums.StripeWebhookProcessingStatus = {
-  processing: 'processing',
-  processed: 'processed',
-  failed: 'failed'
-};
-
-exports.AbuseAction = exports.$Enums.AbuseAction = {
-  account_create: 'account_create',
-  sign_in: 'sign_in',
-  anonymous_analysis: 'anonymous_analysis',
-  free_cv_claim: 'free_cv_claim',
-  checkout_create: 'checkout_create',
-  password_reset: 'password_reset',
-  verification_resend: 'verification_resend'
-};
-
-exports.AbuseDecision = exports.$Enums.AbuseDecision = {
-  allowed: 'allowed',
-  throttled: 'throttled',
-  blocked: 'blocked',
-  flagged: 'flagged'
-};
-
-exports.AgentRunStatus = exports.$Enums.AgentRunStatus = {
-  success: 'success',
-  error: 'error',
-  failed: 'failed'
-};
 
 exports.Prisma.ModelName = {
   AnonymousSession: 'AnonymousSession',
@@ -477,16 +266,9 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  Application: 'Application',
-  Job: 'Job',
-  CandidateProfile: 'CandidateProfile',
-  GapQuestion: 'GapQuestion',
-  GapAnswer: 'GapAnswer',
+  CareerProfile: 'CareerProfile',
+  CvApplication: 'CvApplication',
   CvDraft: 'CvDraft',
-  BillingAccount: 'BillingAccount',
-  CvGenerationUsage: 'CvGenerationUsage',
-  StripeWebhookEvent: 'StripeWebhookEvent',
-  AbuseSignalEvent: 'AbuseSignalEvent',
   AgentRun: 'AgentRun'
 };
 

@@ -4,9 +4,6 @@ import { prismaAdapter } from "@better-auth/prisma-adapter";
 import { betterAuth } from "better-auth";
 import { magicLink } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
-import { cache } from "react";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
@@ -33,6 +30,8 @@ const localDevOrigins = [
   "http://127.0.0.1:3001",
   "http://localhost:3002",
   "http://127.0.0.1:3002",
+  "http://localhost:3003",
+  "http://127.0.0.1:3003",
 ];
 
 function configuredTrustedOrigins() {
@@ -73,12 +72,14 @@ const authBaseURL = isDevelopment
         "127.0.0.1:3001",
         "localhost:3002",
         "127.0.0.1:3002",
+        "localhost:3003",
+        "127.0.0.1:3003",
       ],
       fallback: "http://localhost:3000",
     }
   : env.BETTER_AUTH_URL;
 
-if (isDevelopment) {
+if (isDevelopment && process.env.TAYLORCV_DEBUG_AUTH === "true") {
   console.info("[TaylorCV auth] NODE_ENV", env.NODE_ENV);
   console.info("[TaylorCV auth] BETTER_AUTH_URL", env.BETTER_AUTH_URL);
   console.info(
@@ -149,65 +150,4 @@ export type AuthSession = Awaited<ReturnType<typeof auth.api.getSession>>;
 
 export async function getAuthSession(headers: Headers) {
   return auth.api.getSession({ headers }).catch(() => null);
-}
-
-function adminEmails() {
-  return new Set(
-    env.ADMIN_EMAILS.split(/[,\s]+/)
-      .map((email) => email.trim().toLowerCase())
-      .filter(Boolean)
-  );
-}
-
-const getServerAdminAccess = cache(async () => {
-  const requestHeaders = await headers();
-  const session = await getAuthSession(requestHeaders);
-  const userId = session?.user?.id ?? null;
-  const email = session?.user?.email?.trim().toLowerCase() ?? null;
-
-  if (!userId || !email) {
-    return {
-      session,
-      userId,
-      email,
-      isSignedIn: false,
-      isAllowedEmail: false,
-      hasGoogleAccount: false,
-      isAdmin: false,
-    };
-  }
-
-  const allowedEmails = adminEmails();
-  const isAllowedEmail = allowedEmails.has(email);
-  const googleAccount = await db.account.findFirst({
-    where: {
-      userId,
-      providerId: "google",
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  return {
-    session,
-    userId,
-    email,
-    isSignedIn: true,
-    isAllowedEmail,
-    hasGoogleAccount: Boolean(googleAccount),
-    isAdmin: isAllowedEmail && Boolean(googleAccount),
-  };
-});
-
-export type AdminAccess = Awaited<ReturnType<typeof getServerAdminAccess>>;
-
-export async function requireAdmin(callbackUrl = "/admin") {
-  const access = await getServerAdminAccess();
-
-  if (!access.isSignedIn) {
-    redirect(`/auth?mode=sign-in&callbackUrl=${encodeURIComponent(callbackUrl)}`);
-  }
-
-  return access;
 }

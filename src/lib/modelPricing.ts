@@ -1,24 +1,26 @@
 type ModelPricing = {
-  promptPer1k: number;
-  completionPer1k: number;
+  inputPer1m: number;
+  cachedInputPer1m: number | null;
+  outputPer1m: number;
 };
 
 const pricing: Record<string, ModelPricing> = {
-  "gpt-5.4": { promptPer1k: 0.0025, completionPer1k: 0.015 },
-  "gpt-5.4-nano": { promptPer1k: 0.0002, completionPer1k: 0.00125 },
-  "gpt-4o": { promptPer1k: 0.005, completionPer1k: 0.015 },
-  "gpt-4o-mini": { promptPer1k: 0.00015, completionPer1k: 0.0006 },
-  "gpt-4.1": { promptPer1k: 0.002, completionPer1k: 0.008 },
-  "gpt-4.1-mini": { promptPer1k: 0.0004, completionPer1k: 0.0016 },
-  "gpt-4.1-nano": { promptPer1k: 0.0001, completionPer1k: 0.0004 },
-  "o3-mini": { promptPer1k: 0.0011, completionPer1k: 0.0044 },
-  "o4-mini": { promptPer1k: 0.0011, completionPer1k: 0.0044 },
+  "gpt-5.5": { inputPer1m: 5, cachedInputPer1m: 0.5, outputPer1m: 30 },
+  "gpt-5.4": { inputPer1m: 2.5, cachedInputPer1m: 0.25, outputPer1m: 15 },
+  "gpt-5.4-mini": { inputPer1m: 0.75, cachedInputPer1m: 0.075, outputPer1m: 4.5 },
+  "gpt-5.4-nano": { inputPer1m: 0.2, cachedInputPer1m: 0.02, outputPer1m: 1.25 },
 };
 
-const defaultPricing: ModelPricing = { promptPer1k: 0.005, completionPer1k: 0.015 };
+const defaultPricing: ModelPricing = {
+  inputPer1m: 5,
+  cachedInputPer1m: 0.5,
+  outputPer1m: 30,
+};
 
 function normalizeModelForPricing(model: string) {
+  if (/^gpt-5\.5(?:-|$)/.test(model)) return "gpt-5.5";
   if (/^gpt-5\.4-nano(?:-|$)/.test(model)) return "gpt-5.4-nano";
+  if (/^gpt-5\.4-mini(?:-|$)/.test(model)) return "gpt-5.4-mini";
   if (/^gpt-5\.4(?:-|$)/.test(model)) return "gpt-5.4";
   return model;
 }
@@ -34,16 +36,22 @@ export function getModelPricing(model: string) {
 
 export function estimateCost(args: {
   model: string;
-  promptTokens?: number | null;
-  completionTokens?: number | null;
-}): number | null {
-  const { model, promptTokens, completionTokens } = args;
-  if (!promptTokens && !completionTokens) return null;
+  inputTokens?: number | null;
+  cachedInputTokens?: number | null;
+  outputTokens?: number | null;
+}) {
+  const inputTokens = args.inputTokens ?? 0;
+  const cachedInputTokens = Math.min(args.cachedInputTokens ?? 0, inputTokens);
+  const uncachedInputTokens = Math.max(0, inputTokens - cachedInputTokens);
+  const outputTokens = args.outputTokens ?? 0;
+  if (!inputTokens && !outputTokens) return null;
 
-  const { pricing: p } = getModelPricing(model);
-  const cost =
-    ((promptTokens ?? 0) / 1000) * p.promptPer1k +
-    ((completionTokens ?? 0) / 1000) * p.completionPer1k;
+  const { pricing: p } = getModelPricing(args.model);
+  const cachedInputCost =
+    ((cachedInputTokens ?? 0) / 1_000_000) *
+    (p.cachedInputPer1m ?? p.inputPer1m);
+  const uncachedInputCost = (uncachedInputTokens / 1_000_000) * p.inputPer1m;
+  const outputCost = (outputTokens / 1_000_000) * p.outputPer1m;
 
-  return Math.round(cost * 1_000_000) / 1_000_000;
+  return Math.round((cachedInputCost + uncachedInputCost + outputCost) * 1_000_000) / 1_000_000;
 }

@@ -8,114 +8,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum ApplicationStatus {
-  started
-  job_added
-  candidate_added
-  questions_ready
-  answers_added
-  cv_ready
-}
-
-enum SourceType {
-  profile
-  cv_upload
-  linkedin
-  background
-  gap_answer
-  manual
-}
-
-enum GapQuestionStatus {
-  unanswered
-  answered
-  skipped
-}
-
-enum ButtonAnswer {
-  yes
-  kind_of
-  no
-  skip
-}
-
-enum AgentRunStatus {
-  success
-  error
-  failed
-}
-
-enum PlanFamily {
-  free
-  pro
-  premium
-}
-
-enum PlanVariant {
-  free
-  annual
-  monthly
-}
-
-enum BillingSubscriptionStatus {
-  incomplete
-  incomplete_expired
-  trialing
-  active
-  past_due
-  canceled
-  unpaid
-  paused
-  none
-}
-
-enum StripeWebhookProcessingStatus {
-  processing
-  processed
-  failed
-}
-
-enum AbuseAction {
-  account_create
-  sign_in
-  anonymous_analysis
-  free_cv_claim
-  checkout_create
-  password_reset
-  verification_resend
-}
-
-enum AbuseDecision {
-  allowed
-  throttled
-  blocked
-  flagged
-}
-
 model AnonymousSession {
-  id                String             @id @default(cuid())
-  createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @default(now()) @updatedAt @map("updated_at")
-  applications      Application[]
-  candidateProfiles CandidateProfile[]
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@map("anonymous_sessions")
 }
 
 model User {
-  id                String              @id @default(cuid())
-  email             String              @unique
-  emailVerified     Boolean             @default(false) @map("email_verified")
-  name              String              @default("")
-  image             String?
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @default(now()) @updatedAt @map("updated_at")
-  sessions          Session[]
-  accounts          Account[]
-  billingAccount    BillingAccount?
-  cvGenerationUsage CvGenerationUsage[]
-  applications      Application[]
-  candidateProfiles CandidateProfile[]
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false) @map("email_verified")
+  name          String   @default("")
+  image         String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
+
+  sessions      Session[]
+  accounts      Account[]
+  careerProfile CareerProfile?
+  applications  CvApplication[]
+  agentRuns     AgentRun[]
 
   @@map("users")
 }
@@ -167,261 +81,86 @@ model Verification {
   @@map("verifications")
 }
 
-model Application {
-  id                 String            @id @default(cuid())
-  anonymousSessionId String            @map("anonymous_session_id")
-  userId             String?           @map("user_id")
-  status             ApplicationStatus @default(started)
-  trackingStatus     String            @default("ready") @map("tracking_status")
-  currentStep        String            @default("started") @map("current_step")
-  dreamRole          String?           @map("dream_role")
-  roleArchetype      String?           @map("role_archetype")
-  createdAt          DateTime          @default(now()) @map("created_at")
-  updatedAt          DateTime          @default(now()) @updatedAt @map("updated_at")
+model CareerProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique @map("user_id")
+  rawCvText     String   @map("raw_cv_text") @db.Text
+  rawCvFileName String?  @map("raw_cv_file_name")
+  profileJson   Json     @map("profile_json")
+  seniority     String
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
-  anonymousSession        AnonymousSession    @relation(fields: [anonymousSessionId], references: [id], onDelete: Cascade)
-  user                    User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
-  job                     Job?
-  sourceCandidateProfiles CandidateProfile[]  @relation("SourceApplicationCandidateProfiles")
-  gapQuestions            GapQuestion[]
-  gapAnswers              GapAnswer[]
-  cvDrafts                CvDraft[]
-  cvGenerationUsage       CvGenerationUsage[]
-  agentRuns               AgentRun[]
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  applications CvApplication[]
 
-  @@index([anonymousSessionId])
   @@index([userId])
-  @@map("applications")
+  @@map("career_profiles")
 }
 
-model Job {
-  id            String      @id @default(cuid())
-  applicationId String      @unique @map("application_id")
-  rawText       String      @map("raw_text") @db.Text
-  title         String
-  company       String?
-  seniority     String?
-  summary       String      @db.Text
-  roleDomain    String?     @map("role_domain")
-  archetypeHint String?     @map("archetype_hint")
-  analysisJson  Json?       @map("analysis_json")
-  createdAt     DateTime    @default(now()) @map("created_at")
-  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+model CvApplication {
+  id              String   @id @default(cuid())
+  userId          String   @map("user_id")
+  careerProfileId String   @map("career_profile_id")
+  jobText         String   @map("job_text") @db.Text
+  jobAnalysisJson Json?    @map("job_analysis_json")
+  matchJson       Json?    @map("match_json")
+  questionsJson   Json?    @map("questions_json")
+  answersJson     Json?    @map("answers_json")
+  extraNotes      String?  @map("extra_notes") @db.Text
+  matchScore      Int?     @map("match_score")
+  status          String   @default("questions_ready")
+  warningJson     Json?    @map("warning_json")
+  error           String?  @db.Text
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
-  @@map("jobs")
-}
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  careerProfile CareerProfile @relation(fields: [careerProfileId], references: [id], onDelete: Cascade)
+  draft         CvDraft?
+  agentRuns     AgentRun[]
 
-model CandidateProfile {
-  id                        String            @id @default(cuid())
-  anonymousSessionId        String?           @map("anonymous_session_id")
-  userId                    String?           @map("user_id")
-  sourceApplicationId       String?           @map("source_application_id")
-  rawCvText                 String?           @map("raw_cv_text") @db.Text
-  rawBackgroundText         String?           @map("raw_background_text") @db.Text
-  contactInfoJson           Json?             @map("contact_info_json")
-  linksJson                 Json?             @map("links_json")
-  sourceType                SourceType?       @map("source_type")
-  profileSource             String?           @map("profile_source")
-  sourceSummary             String?           @map("source_summary") @db.Text
-  sourceUrl                 String?           @map("source_url")
-  sourceKey                 String?           @map("source_key")
-  sourceHash                String?           @map("source_hash")
-  contentHash               String?           @map("content_hash")
-  profileConfirmedAt        DateTime?         @map("profile_confirmed_at")
-  summary                   String            @db.Text
-  skillsJson                Json              @map("skills_json")
-  projectsJson              Json              @map("projects_json")
-  educationJson             Json              @map("education_json")
-  certificationsJson        Json              @map("certifications_json")
-  experienceJson            Json              @map("experience_json")
-  toolsJson                 Json              @map("tools_json")
-  achievementsJson          Json              @map("achievements_json")
-  cautionNotesJson          Json?             @map("caution_notes_json")
-  metricOpportunitiesJson   Json?             @map("metric_opportunities_json")
-  strongProofCandidatesJson Json?             @map("strong_proof_candidates_json")
-  scopeOpportunitiesJson    Json?             @map("scope_opportunities_json")
-  likelyTopEvidenceJson     Json?             @map("likely_top_evidence_json")
-  profileJson               Json?             @map("profile_json")
-  createdAt                 DateTime          @default(now()) @map("created_at")
-  updatedAt                 DateTime          @default(now()) @updatedAt @map("updated_at")
-  lastSeenAt                DateTime          @default(now()) @map("last_seen_at")
-  archivedAt                DateTime?         @map("archived_at")
-  anonymousSession          AnonymousSession? @relation(fields: [anonymousSessionId], references: [id], onDelete: SetNull)
-  user                      User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
-  sourceApplication         Application?      @relation("SourceApplicationCandidateProfiles", fields: [sourceApplicationId], references: [id], onDelete: SetNull)
-
-  @@index([anonymousSessionId])
-  @@index([userId])
-  @@index([sourceApplicationId])
-  @@index([sourceKey])
-  @@index([contentHash])
-  @@map("candidate_profiles")
-}
-
-model GapQuestion {
-  id                String            @id @default(cuid())
-  applicationId     String            @map("application_id")
-  question          String            @db.Text
-  reason            String            @db.Text
-  whyItMatters      String?           @map("why_it_matters") @db.Text
-  answerGuidance    String?           @map("answer_guidance") @db.Text
-  exampleAnglesJson Json?             @map("example_angles_json")
-  questionJson      Json?             @map("question_json")
-  status            GapQuestionStatus @default(unanswered)
-  createdAt         DateTime          @default(now()) @map("created_at")
-  application       Application       @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  answers           GapAnswer[]
-
-  @@index([applicationId])
-  @@map("gap_questions")
-}
-
-model GapAnswer {
-  id                       String       @id @default(cuid())
-  gapQuestionId            String       @map("gap_question_id")
-  applicationId            String       @map("application_id")
-  userId                   String?      @map("user_id")
-  buttonAnswer             ButtonAnswer @map("button_answer")
-  elaboration              String?      @db.Text
-  selectedOption           String?      @map("selected_option")
-  followUpText             String?      @map("follow_up_text") @db.Text
-  metricText               String?      @map("metric_text") @db.Text
-  rawUserAnswer            String?      @map("raw_user_answer") @db.Text
-  extractedEvidenceSummary String?      @map("extracted_evidence_summary") @db.Text
-  originalQuestion         String?      @map("original_question") @db.Text
-  usableStatus             String?      @map("usable_status")
-  evidenceQuality          String?      @map("evidence_quality")
-  boostPercent             Int?         @map("boost_percent")
-  source                   String?
-  skipped                  Boolean      @default(false)
-  createdAt                DateTime     @default(now()) @map("created_at")
-  gapQuestion              GapQuestion  @relation(fields: [gapQuestionId], references: [id], onDelete: Cascade)
-  application              Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-
-  @@index([applicationId])
-  @@index([gapQuestionId])
-  @@index([userId])
-  @@map("gap_answers")
+  @@index([userId, createdAt])
+  @@index([careerProfileId])
+  @@index([status])
+  @@map("cv_applications")
 }
 
 model CvDraft {
-  id                String              @id @default(cuid())
-  applicationId     String              @map("application_id")
-  version           Int                 @default(1)
-  cvJson            Json                @map("cv_json")
-  cvText            String              @map("cv_text") @db.Text
-  presentationJson  Json?               @map("presentation_json")
-  builderOutputJson Json?               @map("builder_output_json")
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @default(now()) @updatedAt @map("updated_at")
-  application       Application         @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  usage             CvGenerationUsage[]
+  id                String   @id @default(cuid())
+  applicationId     String   @unique @map("application_id")
+  structuredCvJson  Json     @map("structured_cv_json")
+  sanitizedCvJson   Json     @map("sanitized_cv_json")
+  html              String   @db.Text
+  pdfBytes          Bytes    @map("pdf_bytes")
+  renderMetricsJson Json     @map("render_metrics_json")
+  createdAt         DateTime @default(now()) @map("created_at")
 
-  @@index([applicationId])
+  application CvApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
   @@map("cv_drafts")
 }
 
-model BillingAccount {
-  id                           String                    @id @default(cuid())
-  userId                       String                    @unique @map("user_id")
-  stripeCustomerId             String?                   @unique @map("stripe_customer_id")
-  stripeSubscriptionId         String?                   @unique @map("stripe_subscription_id")
-  stripeSubscriptionScheduleId String?                   @unique @map("stripe_subscription_schedule_id")
-  activePlanKey                String                    @default("free") @map("active_plan_key")
-  planFamily                   PlanFamily                @default(free) @map("plan_family")
-  planVariant                  PlanVariant               @default(free) @map("plan_variant")
-  subscriptionStatus           BillingSubscriptionStatus @default(none) @map("subscription_status")
-  priceId                      String?                   @map("price_id")
-  currentPeriodStart           DateTime?                 @map("current_period_start")
-  currentPeriodEnd             DateTime?                 @map("current_period_end")
-  cancelAtPeriodEnd            Boolean                   @default(false) @map("cancel_at_period_end")
-  commitmentStartAt            DateTime?                 @map("commitment_start_at")
-  commitmentEndAt              DateTime?                 @map("commitment_end_at")
-  commitmentActive             Boolean                   @default(false) @map("commitment_active")
-  quotaPerPeriod               Int                       @default(1) @map("quota_per_period")
-  lastSyncedAt                 DateTime?                 @map("last_synced_at")
-  createdAt                    DateTime                  @default(now()) @map("created_at")
-  updatedAt                    DateTime                  @updatedAt @map("updated_at")
-  user                         User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+model AgentRun {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  applicationId     String?  @map("application_id")
+  step              String
+  model             String
+  status            String
+  inputTokens       Int?     @map("input_tokens")
+  cachedInputTokens Int?     @map("cached_input_tokens")
+  outputTokens      Int?     @map("output_tokens")
+  costUsd           Decimal? @map("cost_usd") @db.Decimal(10, 6)
+  durationMs        Int?     @map("duration_ms")
+  error             String?  @db.Text
+  createdAt         DateTime @default(now()) @map("created_at")
 
-  @@index([stripeCustomerId])
-  @@index([stripeSubscriptionId])
-  @@index([activePlanKey])
-  @@map("billing_accounts")
-}
-
-model CvGenerationUsage {
-  id                 String      @id @default(cuid())
-  userId             String      @map("user_id")
-  applicationId      String      @map("application_id")
-  cvDraftId          String?     @map("cv_draft_id")
-  planKey            String      @map("plan_key")
-  billingPeriodStart DateTime?   @map("billing_period_start")
-  billingPeriodEnd   DateTime?   @map("billing_period_end")
-  createdAt          DateTime    @default(now()) @map("created_at")
-  user               User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  application        Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  cvDraft            CvDraft?    @relation(fields: [cvDraftId], references: [id], onDelete: SetNull)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  application CvApplication? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   @@index([userId, createdAt])
-  @@index([userId, billingPeriodStart, billingPeriodEnd])
   @@index([applicationId])
-  @@index([cvDraftId])
-  @@map("cv_generation_usage")
-}
-
-model StripeWebhookEvent {
-  id               String                        @id @default(cuid())
-  stripeEventId    String                        @unique @map("stripe_event_id")
-  eventType        String                        @map("event_type")
-  processedAt      DateTime?                     @map("processed_at")
-  processingStatus StripeWebhookProcessingStatus @default(processing) @map("processing_status")
-  error            String?                       @db.Text
-  payloadHash      String?                       @map("payload_hash")
-  createdAt        DateTime                      @default(now()) @map("created_at")
-  updatedAt        DateTime                      @updatedAt @map("updated_at")
-
-  @@index([eventType])
-  @@index([processingStatus])
-  @@map("stripe_webhook_events")
-}
-
-model AbuseSignalEvent {
-  id                 String        @id @default(cuid())
-  action             AbuseAction
-  decision           AbuseDecision @default(allowed)
-  userId             String?       @map("user_id")
-  anonymousSessionId String?       @map("anonymous_session_id")
-  deviceKeyHash      String?       @map("device_key_hash")
-  ipKeyHash          String?       @map("ip_key_hash")
-  metadataJson       Json?         @map("metadata_json")
-  createdAt          DateTime      @default(now()) @map("created_at")
-
-  @@index([action, createdAt])
-  @@index([userId, action, createdAt])
-  @@index([anonymousSessionId, action, createdAt])
-  @@index([deviceKeyHash, action, createdAt])
-  @@index([ipKeyHash, action, createdAt])
-  @@map("abuse_signal_events")
-}
-
-model AgentRun {
-  id               String         @id @default(cuid())
-  applicationId    String         @map("application_id")
-  agentName        String         @map("agent_name")
-  inputSummary     String         @map("input_summary") @db.Text
-  outputSummary    String         @map("output_summary") @db.Text
-  status           AgentRunStatus
-  error            String?        @db.Text
-  model            String?
-  durationMs       Int?           @map("duration_ms")
-  promptTokens     Int?           @map("prompt_tokens")
-  completionTokens Int?           @map("completion_tokens")
-  totalTokens      Int?           @map("total_tokens")
-  estimatedCostUsd Float?         @map("estimated_cost_usd")
-  createdAt        DateTime       @default(now()) @map("created_at")
-  application      Application    @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-
-  @@index([applicationId])
+  @@index([step, createdAt])
   @@map("agent_runs")
 }

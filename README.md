@@ -1,68 +1,55 @@
-# Taylor CV
+# TaylorCV
 
-Minimal T3 MVP for AI-assisted CV tailoring.
+Dashboard-first MVP for turning a user's existing CV and a target job description into a one-page, recruiter-readable PDF.
 
 ## Local Setup
 
-1. Install Docker Desktop for Mac.
-2. Open Docker Desktop at least once and wait until it says Docker is running.
-3. Restart your terminal if `docker` was previously unavailable.
-4. Verify the Docker CLI works:
+1. Install dependencies:
 
 ```bash
-docker --version
+npm install
 ```
 
-If this still returns `zsh: command not found: docker`, Docker Desktop is not installed, has not been opened, or the terminal needs to be restarted so the Docker CLI is on PATH. Do not continue to Prisma until this works.
+2. Copy `.env.example` to `.env`.
 
-5. Copy `.env.example` to `.env`.
-6. Keep `USE_MOCK_AI="true"` to run the mock flow without OpenAI credentials.
-7. Confirm `.env` points at Docker Postgres on host port `5433`:
+3. Start Postgres:
 
 ```bash
-DATABASE_URL="postgresql://postgres:password@localhost:5433/tailorcv"
-```
-
-8. Reset and start the Docker pgvector database:
-
-```bash
-docker compose down -v
 docker compose up -d
 ```
 
-9. Apply migrations:
+4. Apply migrations and generate Prisma:
 
 ```bash
 npx prisma migrate dev
+npx prisma generate
 ```
 
-10. Optionally seed the mock dataset:
-
-```bash
-npm run db:seed
-```
-
-11. Start the app:
+5. Start the app:
 
 ```bash
 npm run dev
 ```
 
-The app uses Docker PostgreSQL on host port `5433` so it does not connect to a Mac-installed PostgreSQL server on port `5432`.
+Keep `USE_MOCK_AI="true"` for local UI and pipeline work without OpenAI credentials.
 
 ## Real OpenAI Mode
 
-Set `USE_MOCK_AI="false"` and provide:
-
 ```bash
-OPENAI_API_KEY=""
-OPENAI_FAST_MODEL=""
-OPENAI_STRONG_MODEL=""
+USE_MOCK_AI="false"
+OPENAI_API_KEY="..."
+OPENAI_PROFILE_MODEL="gpt-5.4-nano"
+OPENAI_JOB_MODEL="gpt-5.4-nano"
+OPENAI_QUESTIONS_MODEL="gpt-5.4-nano"
+OPENAI_WRITER_MODEL="gpt-5.5"
 ```
+
+The app uses `@openai/agents` structured outputs. A1 profile extraction and A2 job analysis run in parallel for first-time users; repeat users reuse the saved `CareerProfile`.
 
 ## Checks
 
 ```bash
 npm run typecheck
+npm run test:cv
 npm run build
 ```

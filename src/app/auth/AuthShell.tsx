@@ -100,7 +100,22 @@ export function AuthShell() {
           provider: "google",
           callbackURL: resolvedCallbackURL,
         }),
-      );
+      ).then((result) => {
+        const authUrl =
+          result &&
+          typeof result === "object" &&
+          "data" in result &&
+          result.data &&
+          typeof result.data === "object" &&
+          "url" in result.data &&
+          typeof result.data.url === "string"
+            ? result.data.url
+            : null;
+
+        if (authUrl) {
+          window.location.href = authUrl;
+        }
+      });
     } catch (googleError) {
       setError(
         googleError instanceof Error

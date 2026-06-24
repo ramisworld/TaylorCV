@@ -16,8 +16,6 @@ import {
 } from "motion/react";
 import { useEffect, useState } from "react";
 
-import { type PlanKey } from "~/lib/plans";
-
 import { LandingBackground } from "./LandingBackground";
 import { GlassHeader } from "./GlassHeader";
 import { PrimaryButton } from "./GlassButton";
@@ -30,7 +28,6 @@ type LandingPageProps = {
   error?: string | null;
   isLoading: boolean;
   onGetStarted: () => void;
-  onPlanSelected?: (planKey: PlanKey) => void;
 };
 
 const requirements = [
@@ -89,7 +86,7 @@ const faqItems = [
   {
     question: "Do I need an account?",
     answer:
-      "No. This version is focused on one fast anonymous flow: paste the job, upload the CV, answer any short gap questions, and export the final result.",
+      "Yes. Create an account or sign in first, then TaylorCV saves your profile, applications, previews, and generated PDFs in your dashboard.",
   },
   {
     question: "Is the CV ATS-safe?",
@@ -637,7 +634,7 @@ function LaunchSection(props: LandingPageProps) {
     "Answer up to three targeted gap questions",
     "Generate a structured tailored CV",
     "Preview the final one-page result",
-    "Export PDF or DOCX immediately",
+    "Download the finished PDF immediately",
   ];
 
   return (
@@ -655,9 +652,9 @@ function LaunchSection(props: LandingPageProps) {
             One focused flow, live first.
           </h2>
           <p className="mx-auto mt-4 max-w-[620px] text-[17px] leading-7 text-[#42506d]">
-            TaylorCV is currently set up for the core anonymous experience only:
-            job description, CV upload, gap questions, final CV preview, PDF,
-            and DOCX export.
+            TaylorCV is currently set up around one focused dashboard flow:
+            sign in, upload your CV, paste the job description, answer gap
+            questions, preview the final CV, and download the PDF.
           </p>
         </div>
 
@@ -685,11 +682,12 @@ function LaunchSection(props: LandingPageProps) {
                 MVP scope
               </p>
               <p className="mt-4 text-[17px] font-semibold leading-7 text-[#080d22]">
-                No signup. No billing. No extra workflow.
+                One account. One dashboard. One clean CV flow.
               </p>
               <p className="mt-3 text-[14.5px] leading-6 text-[#42506d]">
-                This deploy is intentionally narrowed to the fastest useful path
-                so you can get the core product live cleanly.
+                This deploy is intentionally narrowed to the fastest useful path:
+                save the user's profile, tailor against a job, and generate a
+                one-page PDF from the same HTML used in preview.
               </p>
               <PrimaryButton
                 className="mt-6 w-full"
