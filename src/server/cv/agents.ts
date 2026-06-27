@@ -19,6 +19,7 @@ import {
   type Seniority,
 } from "./agentSchemas";
 import { registerAgentRunTraceProcessor } from "./agentTelemetry";
+import { normalizeExtractedProfile } from "./profileNormalize";
 import { sectionOrderForSeniority, strategyBlockForSeniority } from "./seniorityStrategy";
 
 type AgentRunContext = {
@@ -78,7 +79,7 @@ function mockProfile(rawCvText: string): ProfileExtract {
     )
   );
 
-  return {
+  return normalizeExtractedProfile({
     basics: {
       fullName: firstLine,
       currentTitle: lines[1] ?? "Software Engineer",
@@ -108,7 +109,7 @@ function mockProfile(rawCvText: string): ProfileExtract {
     achievements: [],
     evidenceNotes: [compactText(rawCvText, 260)],
     preferences: { roleTypes: [], industries: [], locations: [], exclusions: [] },
-  };
+  });
 }
 
 function mockJob(rawJobText: string): JobAnalyze {
@@ -219,16 +220,17 @@ export async function extractProfile(args: AgentRunContext & {
     },
     outputType: ProfileExtractSchema,
     instructions:
-      "Extract a complete editable Candidate Vault from the CV. Preserve truthful career evidence, contact details, links, paid experience, projects, education, certifications, skills, metrics, achievements, and useful extra notes. Classify paid work under experience and self-directed or unpaid builds under projects. Preserve metrics exactly. Do not tailor to a job and do not rewrite the final CV.",
+      "Extract a complete editable Candidate Vault from the CV. Preserve truthful career evidence, contact details, links, paid experience, projects, education, certifications, skills, metrics, achievements, and useful extra notes. Classify paid work under experience and self-directed, coursework, portfolio, or unpaid builds under projects. If a source item is labelled Project, keep it under projects and never infer contract work from that label alone. Preserve metrics exactly. Do not tailor to a job and do not rewrite the final CV.",
   });
 
-  return runStructuredAgent<ProfileExtract>({
+  const profile = await runStructuredAgent<ProfileExtract>({
     ...args,
     step: "profileExtract",
     model,
     agent,
     input: { rawCvText: args.rawCvText },
   });
+  return normalizeExtractedProfile(profile);
 }
 
 export async function analyzeJob(args: AgentRunContext & {
@@ -302,7 +304,6 @@ export async function writeFinalCv(args: AgentRunContext & {
   questions: QuestionsOutput;
   answers: unknown;
   extraNotes?: string | null;
-  tighterBudget?: boolean;
 }) {
   const seniority = args.profile.seniority;
   if (env.USE_MOCK_AI === "true") {
@@ -315,16 +316,14 @@ export async function writeFinalCv(args: AgentRunContext & {
 
 ## Seniority Strategy
 
-${strategyBlockForSeniority(seniority)}
-
-${args.tighterBudget ? "## Extra Tight Budget\nUse shorter wording and combine related facts so the CV fits one A4 page. Preserve strong role-relevant evidence. You may omit vault details that are irrelevant, duplicative, distracting, or likely to weaken this application, but do not remove major relevant experience, flagship projects, education, or meaningful credentials merely to save space." : ""}`;
+${strategyBlockForSeniority(seniority)}`;
 
   const agent = new Agent({
     name: "TaylorCV writer",
     model,
     modelSettings: {
       reasoning: { effort: "medium" },
-      maxTokens: args.tighterBudget ? 5000 : 7000,
+      maxTokens: 7000,
       store: false,
       promptCacheRetention: "24h",
       providerData: {
@@ -345,19 +344,11 @@ ${args.tighterBudget ? "## Extra Tight Budget\nUse shorter wording and combine r
     requiredSectionOrder: sectionOrderForSeniority(seniority),
   };
 
-  let lastError: unknown;
-  for (let attempt = 0; attempt < 2; attempt += 1) {
-    try {
-      return await runStructuredAgent<FinalCv>({
-        ...args,
-        step: attempt === 0 ? "writer" : "writerRetry",
-        model,
-        agent,
-        input,
-      });
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  throw lastError instanceof Error ? lastError : new Error("TaylorCV writer failed.");
+  return runStructuredAgent<FinalCv>({
+    ...args,
+    step: "writer",
+    model,
+    agent,
+    input,
+  });
 }

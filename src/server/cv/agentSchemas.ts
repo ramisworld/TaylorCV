@@ -138,7 +138,7 @@ const CvExperienceSchema = z.object({
   location: z.string().optional(),
   dates: z.string().optional(),
   priorityRank: PrioritySchema,
-  bullets: z.array(CvBulletSchema).min(1).max(4),
+  bullets: z.array(CvBulletSchema).min(1).max(6),
 });
 
 const CvProjectSchema = z.object({
@@ -146,7 +146,7 @@ const CvProjectSchema = z.object({
   descriptor: z.string().optional(),
   dates: z.string().optional(),
   priorityRank: PrioritySchema,
-  bullets: z.array(CvBulletSchema).min(1).max(4),
+  bullets: z.array(CvBulletSchema).min(1).max(6),
 });
 
 export const FinalCvSchema = z.object({

@@ -209,29 +209,14 @@ async function runGeneration(args: {
       extraNotes: application.extraNotes,
     });
 
-    let finalStructuredCv: FinalCv = parseFinalCv(rawWriterCv);
-    let rendered = await renderPdfWithTypographyFit(finalStructuredCv);
-    let finalSanitizedCv = rendered.cv;
+    const finalStructuredCv: FinalCv = parseFinalCv(rawWriterCv);
+    const rendered = await renderPdfWithTypographyFit(finalStructuredCv);
+    const finalSanitizedCv = rendered.cv;
 
     if (rendered.metrics.failedToFit) {
-      const tightCv = await writeFinalCv({
-        userId: args.ctx.userId,
-        applicationId: application.id,
-        profile,
-        job,
-        rawJobText: application.jobText,
-        questions,
-        answers: application.answersJson ?? [],
-        extraNotes: application.extraNotes,
-        tighterBudget: true,
-      });
-      finalStructuredCv = parseFinalCv(tightCv);
-      rendered = await renderPdfWithTypographyFit(finalStructuredCv);
-      finalSanitizedCv = rendered.cv;
-    }
-
-    if (rendered.metrics.failedToFit) {
-      throw new Error("TaylorCV could not fit this CV onto one A4 page.");
+      throw new Error(
+        "TaylorCV could not fit this CV onto one A4 page with typography adjustments only."
+      );
     }
 
     const warningJson = {

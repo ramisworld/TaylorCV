@@ -3,8 +3,9 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { estimateCost } from "../../lib/modelPricing.ts";
-import type { FinalCv, JobAnalyze, ProfileExtract } from "./agentSchemas.ts";
+import { FinalCvSchema, type FinalCv, type JobAnalyze, type ProfileExtract } from "./agentSchemas.ts";
 import { runInitialProfileAndJobAnalysis } from "./initialAnalysis.ts";
+import { normalizeExtractedProfile } from "./profileNormalize.ts";
 import { renderCvHtml } from "./renderHtml.ts";
 import { closePdfRenderer, renderPdfWithTypographyFit } from "./renderPdf.ts";
 import { sectionOrderForSeniority } from "./seniorityStrategy.ts";
@@ -140,8 +141,25 @@ test("writer prompt forbids unsupported seniority in displayed title", async () 
 test("writer prompt preserves useful core evidence without forcing every vault item", async () => {
   const prompt = await readFile("prompts/writer-base.v1.md", "utf8");
   assert.match(prompt, /Preserve the candidate's useful core evidence inventory/);
+  assert.match(prompt, /early-career AI\/ML candidates/);
+  assert.match(prompt, /relevant ML\/AI\/cloud certifications/);
   assert.match(prompt, /may omit details that are irrelevant, duplicative, distracting/);
   assert.match(prompt, /Compress bullets before dropping an entire project/);
+});
+
+test("writer prompt treats six bullets as a ceiling, not a target", async () => {
+  const prompt = await readFile("prompts/writer-base.v1.md", "utf8");
+  assert.match(prompt, /Six bullets is a hard schema ceiling, not a goal/);
+  assert.match(prompt, /Prefer fewer sharper bullets over dense clumps/);
+  assert.match(prompt, /merge or drop overlapping bullets/);
+});
+
+test("writer prompt avoids rubric-sounding summary language", async () => {
+  const prompt = await readFile("prompts/writer-base.v1.md", "utf8");
+  assert.match(prompt, /Make the summary understandable without knowing project names/);
+  assert.match(prompt, /Strongest evidence is/);
+  assert.match(prompt, /Never write like an evaluator rubric/);
+  assert.match(prompt, /AI\/ML engineer building practical LLM systems/);
 });
 
 test("question agent asks concise candidate-friendly questions", async () => {
@@ -155,6 +173,71 @@ test("writer receives candidate vault instead of raw CV evidence", async () => {
   const agents = await readFile("src/server/cv/agents.ts", "utf8");
   assert.match(agents, /candidateVault: args\.profile/);
   assert.doesNotMatch(agents, /rawCvEvidence/);
+});
+
+test("generation uses one writer call without retry budget rewrites", async () => {
+  const [agents, applicationRouter] = await Promise.all([
+    readFile("src/server/cv/agents.ts", "utf8"),
+    readFile("src/server/api/routers/application.ts", "utf8"),
+  ]);
+  assert.doesNotMatch(agents, /writerRetry/);
+  assert.doesNotMatch(agents, /tighterBudget/);
+  assert.doesNotMatch(applicationRouter, /tighterBudget/);
+  assert.match(applicationRouter, /typography adjustments only/);
+});
+
+test("project-labelled profile experience is normalized into projects", () => {
+  const source = profile();
+  source.experience.push({
+    role: "AI Software Engineer",
+    company: "TaylorCV",
+    location: "Auckland, NZ",
+    dates: "Project",
+    employmentType: "contract",
+    bullets: ["Built an agent workflow for tailored CV generation."],
+    tools: ["TypeScript", "PostgreSQL"],
+    links: [],
+  });
+
+  const normalized = normalizeExtractedProfile(source);
+
+  assert.equal(
+    normalized.experience.some((item) => item.company === "TaylorCV"),
+    false
+  );
+  assert.deepEqual(
+    normalized.projects.find(
+      (item) => item.name === "TaylorCV" && item.descriptor === "AI Software Engineer"
+    ),
+    {
+      name: "TaylorCV",
+      descriptor: "AI Software Engineer",
+      dates: "Project",
+      bullets: ["Built an agent workflow for tailored CV generation."],
+      tools: ["TypeScript", "PostgreSQL"],
+      links: [],
+    }
+  );
+});
+
+test("final CV schema accepts six bullets but rejects seven", () => {
+  const sixBulletCv = cv();
+  sixBulletCv.experience[0]!.bullets = Array.from({ length: 6 }, (_, index) => ({
+    text: `Distinct evidence bullet ${index + 1}`,
+    priorityRank: index + 1,
+    evidenceRefs: [],
+  }));
+
+  assert.doesNotThrow(() => FinalCvSchema.parse(sixBulletCv));
+
+  const sevenBulletCv = cv();
+  sevenBulletCv.experience[0]!.bullets = Array.from({ length: 7 }, (_, index) => ({
+    text: `Distinct evidence bullet ${index + 1}`,
+    priorityRank: index + 1,
+    evidenceRefs: [],
+  }));
+
+  assert.throws(() => FinalCvSchema.parse(sevenBulletCv), /Too big/);
 });
 
 test("fitting uses typography instead of deterministic content removal", async () => {
