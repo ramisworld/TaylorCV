@@ -1,9 +1,10 @@
 import type { FinalCv } from "./agentSchemas";
 
-export type CvRenderDensity = "normal" | "compact" | "tight" | "compressed";
+export type CvRenderDensity = "normal" | "soft" | "compact" | "tight" | "compressed";
 
 export const cvRenderDensities = [
   "normal",
+  "soft",
   "compact",
   "tight",
   "compressed",
@@ -38,6 +39,35 @@ const densityStyles = {
     skillsLineHeight: "1.12",
     skillsMargin: "0.75mm",
     certMargin: "1.6mm",
+  },
+  soft: {
+    pagePadding: "10.8mm 11.5mm 9.3mm",
+    headerMargin: "3.9mm",
+    h1Size: "24.2pt",
+    h1Margin: "1.6mm",
+    subtitleSize: "11.9pt",
+    subtitleMargin: "1.6mm",
+    contactSize: "10.45pt",
+    sectionMargin: "3.65mm",
+    h2Margin: "1.9mm",
+    h2Padding: "1.05mm",
+    h2Size: "16.4pt",
+    paragraphSize: "10.6pt",
+    paragraphLineHeight: "1.145",
+    itemMargin: "1.95mm",
+    compactItemMargin: "1.4mm",
+    itemGap: "5.5mm",
+    itemTitleSize: "10.85pt",
+    itemMetaSize: "10pt",
+    listMargin: "0.88mm 0 0 4.05mm",
+    listItemMargin: "0.55mm 0",
+    listItemPadding: "0.7mm",
+    listItemSize: "9.95pt",
+    listItemLineHeight: "1.06",
+    skillsSize: "10.2pt",
+    skillsLineHeight: "1.1",
+    skillsMargin: "0.65mm",
+    certMargin: "1.4mm",
   },
   compact: {
     pagePadding: "10mm 11mm 8.8mm",
@@ -218,8 +248,12 @@ function section(label: string, body: string) {
 }
 
 function sectionHtml(sectionId: string, cv: FinalCv) {
-  if (sectionId === "summary" && cv.summary.text) {
-    return section("Professional Summary", `<p>${text(cv.summary.text)}</p>`);
+  if (sectionId === "summary" && cv.summary.text && cv.summary.display !== "omit") {
+    const summaryText = `<p>${text(cv.summary.text)}</p>`;
+    if (cv.summary.display === "lede") {
+      return `<div class="lede">${summaryText}</div>`;
+    }
+    return section("Professional Summary", summaryText);
   }
   if (sectionId === "experience") return renderExperience(cv);
   if (sectionId === "projects") return renderProjects(cv);
@@ -264,6 +298,8 @@ export function renderCvHtml(
     h1 { margin: 0 0 ${styles.h1Margin}; font-size: ${styles.h1Size}; line-height: 1.05; font-weight: 500; }
     .subtitle { margin: 0 0 ${styles.subtitleMargin}; font-size: ${styles.subtitleSize}; line-height: 1.12; font-weight: 700; }
     .contact { margin: 0; font-size: ${styles.contactSize}; line-height: 1.12; }
+    .lede { margin-top: ${styles.headerMargin}; }
+    .lede p { font-size: ${styles.paragraphSize}; line-height: ${styles.paragraphLineHeight}; }
     section { margin-top: ${styles.sectionMargin}; }
     h2 {
       margin: 0 0 ${styles.h2Margin};

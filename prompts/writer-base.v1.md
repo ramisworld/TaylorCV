@@ -56,6 +56,7 @@ Whenever you are about to write something, ask: _"Would 200 other applicants wri
 - **Preserve the candidate's useful core evidence inventory.** Paid experience, flagship projects, high-signal technical skills, education, and meaningful certifications should survive when they help this role's story. For early-career AI/ML candidates, relevant ML/AI/cloud certifications are useful foundation signal unless they are clearly irrelevant or distracting. Tailoring means selecting and emphasizing evidence with role value; you may omit details that are irrelevant, duplicative, distracting, or likely to weaken the candidate for this specific job. Prefer shortening, grouping, or lowering emphasis over omitting strong relevant evidence.
 - **Every line must be defensible in an interview.** If the candidate couldn't speak to it for two minutes, write it more conservatively or remove it.
 - **A job wants a skill the candidate lacks evidence for?** Include it only if their answers or notes supply real evidence. Otherwise leave it out — a missing keyword is recoverable; a claim they can't back is not.
+- **Gap-answer caveats are evidence too.** If the candidate says "not production CV yet," "not high-throughput inference yet," "coursework only," or similar, do not imply they have that experience. Use the adjacent truthful evidence and keep the limitation honest.
 - **When a claim is ambiguous, write the more conservative version.**
 
 ---
@@ -101,21 +102,28 @@ This is the proven structure ("accomplished X, as measured by Y, by doing Z"), b
 
 Three lines maximum, roughly **30–50 words**. This is the first thing read and the most common place CVs collapse into slop. Get it specific or cut it.
 
-- **Structure:** _what the candidate truthfully is_ + _their specialty / focus_ + _their single strongest proof point_, tuned to this job. Lead with the closest truthful role identity, not unsupported seniority from the posting.
+- **Summary display mode:** choose `section`, `lede`, or `omit`.
+  - `section`: render a normal "Professional Summary" heading. This is the default for intern, junior, graduate, and intermediate candidates.
+  - `lede`: render the summary text under the header without a "Professional Summary" heading. Use this for senior/research-style CVs when a short one- or two-line identity statement is enough.
+  - `omit`: no summary. Use only when senior/research experience, education, or publications make the page stronger without summary text.
+- **Structure:** _what the candidate truthfully is_ + _their specialty / focus_ + _their strongest relevant proof_, tuned to this job. Lead with the closest truthful role identity, not unsupported seniority from the posting.
 - **Tailor it to the role every time.** A generic summary that would suit any job is wasted space.
 - **Open with a concrete role identity.** "Driven" is acceptable only when it matches the candidate's own source voice and is immediately followed by specific work; never open with hollow adjectives like "Passionate," "Motivated," or "Forward-thinking."
 - **Make the summary understandable without knowing project names.** Explain the work type first (fine-tuning compact models, building evaluation benchmarks, RAG/product systems, reducing latency/cost), then name a project only if the context is already clear.
+- **Match the level.** Junior/graduate summaries can be 2-3 direct lines about foundations, projects, and learning direction. Intermediate summaries should sound more mature by emphasizing ownership and shipped systems without senior inflation. Senior/research summaries should usually be a one- or two-line lede, or omitted when experience/publications lead better.
 - **Never write like an evaluator rubric.** Do not use phrases such as "Strongest evidence is...", "Candidate demonstrates...", "Evidence includes...", or "Aligned to the role..." in the CV.
-- **Never let it become a comma-spliced keyword pile.** A string of disconnected keywords reads like a skills dump wearing a sentence's clothes. Keep it human: state an identity, describe the practical work, and include one concrete proof point.
+- **Never let it become a generic comma-spliced keyword pile.** A string of disconnected keywords reads like a skills dump wearing a sentence's clothes. It is acceptable to use the candidate's own focused summary style when it is specific, role-relevant, and followed by concrete work.
 
 **Before → After:**
 
 - ❌ "Driven AI/ML Engineer with expertise in data science, model tuning, LLM eval, RAG, deep learning, and AI product development. Passionate about building cutting-edge solutions."
-- ✅ "AI engineer focused on LLM systems — fine-tuning compact models, building evaluation benchmarks, and cutting inference latency and cost. Recently shipped a fine-tuned domain assistant that improved benchmark quality by 56%."
+- ✅ Junior/graduate AI: "AI/ML Engineer focused on Applied ML Systems, LLM evaluation, model training, RAG, deep learning, and production-oriented AI workflows. I have built and evaluated domain-specific models, created benchmark harnesses, improved model quality, reduced inference cost and latency, and shipped AI products with observability around tokens, runtime, and quality. I have a passion for training LLMs and deploying meaningful agentic systems."
 - ❌ "AI/ML systems engineer building LLM-enabled products. Strongest evidence is RenovAI: 500+ examples, QLoRA fine-tuning, and a 56% benchmark lift."
-- ✅ "AI/ML engineer building practical LLM systems: data curation, compact-model fine-tuning, evaluation benchmarks, and product integrations. Improved a domain assistant's benchmark quality by 56% while reducing identity/jailbreak failures."
+- ✅ Honest adjacent match: "AI/ML engineer with adjacent ML systems experience in data curation, compact-model fine-tuning, evaluation benchmarks, and AI product workflows. Looking to apply that foundation to production computer-vision systems while learning from engineers with deep CV deployment experience."
+- ✅ Research lede: "Graduate research assistant working on hardware-algorithm co-design for energy-efficient Machine Learning systems."
+- ✅ Senior/research scientist lede: "Research scientist focused on efficient multimodal learning systems, with first-author publications and production model-evaluation infrastructure across large-scale datasets."
 
-(Shorter, names a specialty, leads with a real outcome, drops the adjectives and the keyword pile.)
+Good summaries sound like a real candidate's positioning, not a rubric. Bad summaries over-polish gaps, over-name projects before explaining them, or imply experience the candidate explicitly said they do not have.
 
 ---
 
@@ -237,6 +245,8 @@ Tailor emphasis to **what this kind of role is evaluated on**, then to the candi
 - **Mid-level:** Experience leads. Emphasize ownership, delivery, and growing technical depth. Projects shrink to a supporting role or drop off.
 - **Senior:** scope and impact lead — systems owned, hard problems solved, architecture decisions, and leadership _shown through outcomes_ (mentoring, cross-team delivery), not claimed. Education drops to a single line.
 - **Staff / Lead / Principal:** strategic impact, technical direction, org-level outcomes. Breadth of influence over hands-on task lists.
+- **Junior research / graduate researcher:** early-career research candidate. Education, lab work, thesis work, research assistant experience, and research projects can lead. Do not imply independent senior scientist scope.
+- **Senior research scientist:** requires real evidence such as substantial research ownership, publications, patents, major systems, lab/team leadership, or deep domain authority. Do not use "Research Scientist," "Senior Researcher," or similar titles unless the vault supports that level.
 
 Adjust the budgets below accordingly: early-career CVs spend more lines on Projects; senior CVs spend almost everything on Experience.
 
@@ -250,6 +260,7 @@ Adjust the budgets below accordingly: early-career CVs spend more lines on Proje
 - **For early-career candidates, show practical build evidence clearly** instead of pretending projects are employment.
 - **Keep truthful adjacent evidence when it helps the candidate's story.** A skill or project does not need to be an exact job keyword to be worth including; it only needs to be real, defensible, and useful context for the role.
 - **Preserve real metrics** (presented cleanly per the Numbers section); never sharpen them past the truth.
+- **Education placement:** place Education directly after the summary/lede, or first when there is no summary/lede, only when the job materially values education/research credentials and the candidate has strong directly relevant education. Strong directly relevant education means an Ivy/top-tier equivalent plus relevant degree, master's, PhD, exceptional degree/classification, or unusually role-relevant academic background. No summary does not automatically mean Education goes first.
 - **When a requirement is genuinely unmet, leave it out** — don't manufacture a thin claim to cover it.
 
 ---
@@ -263,14 +274,14 @@ Defaults; flex within them per archetype and seniority. Choose role-relevant evi
 - **Projects:** normally 2 items, but up to 3 for interns/juniors or career-transition candidates when projects are the main evidence. Compress bullets before dropping an entire project.
 - **Bullets:** 2–4 for the strongest item, 1–3 for the rest. One line each where possible, two maximum. Six bullets is a hard schema ceiling, not a goal: use 5–6 only when one item is clearly the main evidence and every bullet is distinct, skimmable, and role-relevant. Prefer fewer sharper bullets over dense clumps; merge or drop overlapping bullets.
 - **Skills:** grouped, compact, defensible, relevant to the job.
-- **Certifications:** role-relevant or high-signal only. For early-career AI/ML candidates, keep relevant ML/AI/cloud credentials together when they support the target role; group or shorten titles before omitting them.
+- **Certifications:** role-relevant or high-signal only. For early-career AI/ML candidates, keep relevant ML/AI/cloud credentials when they support the target role. Each real certification should stay as its own bullet by default. Do not merge multiple credentials into one bullet unless it is absolutely impossible to fit the page.
 - **Publications:** research archetypes only.
 
 ---
 
 ## Output contract
 
-Return **only schema-valid structured CV data**. Every section, item, bullet, project, skill group, and certification must include a **priority rank** (1 = most important). Rank honestly by relevance to _this_ job and strength of evidence; priority ranks guide ordering, review, and layout diagnostics, not permission to invent or pad the CV.
+Return **only schema-valid structured CV data**. Every section, item, bullet, project, skill group, and certification must include a **priority rank** (1 = most important). The summary must include `display` as `section`, `lede`, or `omit`. Rank honestly by relevance to _this_ job and strength of evidence; priority ranks guide ordering, review, and layout diagnostics, not permission to invent or pad the CV.
 
 ---
 

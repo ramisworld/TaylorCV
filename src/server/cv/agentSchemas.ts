@@ -159,10 +159,13 @@ export const FinalCvSchema = z.object({
     links: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
   }),
   sectionOrder: z.array(z.string()).min(3),
-  summary: z.object({
-    text: z.string().min(1),
-    priorityRank: PrioritySchema,
-  }),
+  summary: z
+    .object({
+      text: z.string().default(""),
+      display: z.enum(["section", "lede", "omit"]).default("section"),
+      priorityRank: PrioritySchema.default(1),
+    })
+    .default({ text: "", display: "omit", priorityRank: 1 }),
   experience: z.array(CvExperienceSchema).max(3).default([]),
   projects: z.array(CvProjectSchema).max(3).default([]),
   skills: z

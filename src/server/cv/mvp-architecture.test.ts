@@ -70,6 +70,7 @@ function cv(): FinalCv {
     sectionOrder: ["summary", "experience", "projects", "skills", "education"],
     summary: {
       text: "AI Engineer with practical model and product evidence.",
+      display: "section",
       priorityRank: 1,
     },
     experience: [
@@ -142,7 +143,7 @@ test("writer prompt preserves useful core evidence without forcing every vault i
   const prompt = await readFile("prompts/writer-base.v1.md", "utf8");
   assert.match(prompt, /Preserve the candidate's useful core evidence inventory/);
   assert.match(prompt, /early-career AI\/ML candidates/);
-  assert.match(prompt, /relevant ML\/AI\/cloud certifications/);
+  assert.match(prompt, /Each real certification should stay as its own bullet by default/);
   assert.match(prompt, /may omit details that are irrelevant, duplicative, distracting/);
   assert.match(prompt, /Compress bullets before dropping an entire project/);
 });
@@ -159,7 +160,25 @@ test("writer prompt avoids rubric-sounding summary language", async () => {
   assert.match(prompt, /Make the summary understandable without knowing project names/);
   assert.match(prompt, /Strongest evidence is/);
   assert.match(prompt, /Never write like an evaluator rubric/);
-  assert.match(prompt, /AI\/ML engineer building practical LLM systems/);
+  assert.match(prompt, /AI\/ML Engineer focused on Applied ML Systems/);
+  assert.match(prompt, /Graduate research assistant working on hardware-algorithm co-design/);
+  assert.match(prompt, /Honest adjacent match/);
+});
+
+test("writer prompt distinguishes junior research from senior scientist positioning", async () => {
+  const prompt = await readFile("prompts/writer-base.v1.md", "utf8");
+  assert.match(prompt, /Junior research \/ graduate researcher/);
+  assert.match(prompt, /Do not imply independent senior scientist scope/);
+  assert.match(prompt, /Senior research scientist/);
+  assert.match(prompt, /Do not use "Research Scientist," "Senior Researcher," or similar titles unless the vault supports that level/);
+});
+
+test("writer prompt has strong-education placement without defaulting education first", async () => {
+  const prompt = await readFile("prompts/writer-base.v1.md", "utf8");
+  assert.match(prompt, /Education placement/);
+  assert.match(prompt, /only when the job materially values education\/research credentials/);
+  assert.match(prompt, /Ivy\/top-tier equivalent/);
+  assert.match(prompt, /No summary does not automatically mean Education goes first/);
 });
 
 test("question agent asks concise candidate-friendly questions", async () => {
@@ -259,6 +278,28 @@ test("certifications remain as bullets in the rendered CV", () => {
   assert.match(html, /Low priority cert/);
 });
 
+test("summary can render as a headingless lede or be omitted", () => {
+  const ledeCv = cv();
+  ledeCv.summary = {
+    text: "Graduate research assistant working on hardware-algorithm co-design.",
+    display: "lede",
+    priorityRank: 1,
+  };
+  const ledeHtml = renderCvHtml(ledeCv);
+  assert.match(ledeHtml, /<div class="lede"><p>Graduate research assistant/);
+  assert.doesNotMatch(ledeHtml, /Professional Summary/);
+
+  const omittedCv = cv();
+  omittedCv.summary = {
+    text: "This should not render.",
+    display: "omit",
+    priorityRank: 1,
+  };
+  const omittedHtml = renderCvHtml(omittedCv);
+  assert.doesNotMatch(omittedHtml, /This should not render/);
+  assert.doesNotMatch(omittedHtml, /Professional Summary/);
+});
+
 test("PDF fitting renders one page without removing structured content", async () => {
   const source = cv();
   try {
@@ -276,10 +317,13 @@ test("PDF fitting renders one page without removing structured content", async (
     assert.match(rendered.html, /Important certification/);
     assert.match(rendered.html, /Low priority cert/);
     assert.ok(
-      ["normal", "compact", "tight", "compressed"].includes(
+      ["normal", "soft", "compact", "tight", "compressed"].includes(
         rendered.metrics.layoutDensity
       )
     );
+    assert.ok(rendered.metrics.pageHeightPx > 0);
+    assert.ok(rendered.metrics.contentHeightPx > 0);
+    assert.ok(rendered.metrics.pageUtilization > 0);
   } finally {
     await closePdfRenderer();
   }

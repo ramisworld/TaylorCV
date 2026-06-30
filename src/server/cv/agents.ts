@@ -159,6 +159,7 @@ function mockFinalCv(args: {
     sectionOrder: order,
     summary: {
       text: `${args.profile.basics.currentTitle ?? "Candidate"} with practical experience aligned to ${args.job.targetRole}. Builds clear, evidence-backed work and communicates technical decisions in a recruiter-readable way.`,
+      display: "section",
       priorityRank: 1,
     },
     experience: args.profile.experience.slice(0, 2).map((item, index) => ({
